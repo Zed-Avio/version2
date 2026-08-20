@@ -1,6 +1,6 @@
 # ELECARM Crisis2 - Contexte complet du projet
 
-Document de passation, pense pour etre lu par une autre session Claude qui n'a aucun contexte prealable. Ecrit le 2026-08-20.
+Document de passation, pense pour etre lu par quelqu'un qui n'a aucun contexte prealable sur le projet. Ecrit le 2026-08-20.
 
 ## Qui est l'utilisateur
 
