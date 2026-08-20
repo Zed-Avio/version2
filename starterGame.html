@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ELECARM - Salle d'attente</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;--s1:#0d0d0d;--s2:#111;--s3:#161616;--s4:#1c1c1c;
+  --bd:#1e1e1e;--bd2:#262626;
+  --red:#7f1d1d;--red2:#991b1b;--red3:#b91c1c;--red4:#dc2626;--red-dim:#3b0000;
+  --tx:#d4d4d4;--tx2:#8a8a8a;--tx3:#555;--tx4:#333;
+  --font:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--font);overflow:hidden}
+
+@keyframes scan{0%{top:0}100%{top:100%}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(153,27,27,.5)}70%{box-shadow:0 0 0 9px rgba(153,27,27,0)}}
+@keyframes flashIn{from{opacity:0}to{opacity:1}}
+
+/* ── BACKGROUND ── */
+.bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.bg-img{width:100%;height:100%;object-fit:cover;opacity:.08;filter:blur(10px) grayscale(65%);transform:scale(1.06)}
+.bg-overlay{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 30%,rgba(185,28,28,.16) 0%,transparent 55%),
+    radial-gradient(ellipse at 82% 75%,rgba(100,10,10,.14) 0%,transparent 50%),
+    linear-gradient(180deg,rgba(10,10,10,.4) 0%,rgba(10,10,10,.75) 100%);
+}
+.bg-grain{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;opacity:.45;
+}
+.scan-line{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(to bottom,transparent,rgba(220,38,38,.06),transparent);
+  animation:scan 6s linear infinite;pointer-events:none;z-index:1;
+}
+
+/* ── LAYOUT ── */
+.stage{
+  position:relative;z-index:2;height:100vh;width:100vw;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:24px;
+}
+
+.pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(127,29,29,.28);border:1px solid rgba(185,28,28,.5);
+  color:#fca5a5;font-size:clamp(10px,1vw,12px);font-weight:700;letter-spacing:.2em;
+  padding:6px 16px;border-radius:2px;margin-bottom:18px;text-transform:uppercase;
+}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:#dc2626;animation:pulse 2s infinite}
+
+.kicker{
+  font-family:var(--mono);font-size:clamp(11px,1.1vw,14px);color:var(--tx2);
+  letter-spacing:.35em;text-transform:uppercase;margin-bottom:10px;
+}
+
+.title{
+  font-size:clamp(20px,2.6vw,34px);font-weight:800;color:#fff;letter-spacing:-.01em;
+  margin-bottom:38px;
+}
+
+.timer{
+  font-family:var(--mono);font-weight:700;line-height:1;
+  font-size:clamp(72px,16vw,220px);color:#fff;
+  letter-spacing:.02em;
+  text-shadow:0 0 60px rgba(185,28,28,.25);
+  font-variant-numeric:tabular-nums;
+}
+.timer.idle{color:var(--tx3)}
+.timer.warn{color:var(--red4);animation:blink 1s infinite}
+.timer.done{color:var(--red4)}
+
+.caption{
+  margin-top:22px;font-size:clamp(12px,1.1vw,14px);color:var(--tx2);
+  max-width:560px;line-height:1.6;
+}
+.caption b{color:var(--tx)}
+
+.state-label{
+  margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--tx3);
+}
+.state-label.running{color:#4ade80}
+
+/* ── REDIRECT FLASH ── */
+.redirect-flash{
+  position:fixed;inset:0;z-index:50;background:#050000;
+  display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;
+  animation:flashIn .3s ease-out;
+}
+.redirect-flash.show{display:flex}
+.redirect-flash .rf-title{
+  font-size:clamp(22px,3vw,38px);font-weight:800;color:#fff;letter-spacing:.02em;
+  animation:blink .5s infinite;
+}
+.redirect-flash .rf-sub{font-family:var(--mono);font-size:12px;color:var(--red4);letter-spacing:.2em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <img src="photo6.png" class="bg-img" alt="">
+  <div class="bg-overlay"></div>
+  <div class="bg-grain"></div>
+  <div class="scan-line"></div>
+</div>
+
+<div class="stage">
+  <div class="pill"><span class="dot"></span>ELECARM - DOSSIER CONFIDENTIEL</div>
+  <div class="kicker">OPERATION SILENT GATEWAY</div>
+  <div class="title">OUVERTURE DU DOSSIER DE MISSION</div>
+  <div class="timer idle" id="timer">--:--:--</div>
+  <div class="caption">Installez-vous par equipe et preparez vos postes. Le <b>dossier d'enquete</b> s'ouvrira automatiquement a la fin du compte a rebours.</div>
+  <div class="state-label" id="state-label">EN ATTENTE DU LANCEMENT PAR L'ENSEIGNANT</div>
+</div>
+
+<div class="redirect-flash" id="redirect-flash">
+  <div class="rf-title">OUVERTURE DU DOSSIER...</div>
+  <div class="rf-sub">Acces au dossier de mission</div>
+</div>
+
+<script>
+// Cette page n'a aucun controle visible ou accessible : la duree et le
+// declenchement sont entierement determines par le parametre "end" (horodatage
+// cible en millisecondes) fourni dans le lien envoye par l'enseignant, genere
+// depuis lobbyControl.html. Rien ici ne permet de modifier la duree.
+
+const timerEl = document.getElementById('timer');
+const stateEl = document.getElementById('state-label');
+let redirected = false;
+
+function fmt(ms){
+  const total = Math.max(0, Math.round(ms/1000));
+  const h = Math.floor(total/3600);
+  const m = Math.floor((total%3600)/60);
+  const s = total%60;
+  return h.toString().padStart(2,'0')+':'+m.toString().padStart(2,'0')+':'+s.toString().padStart(2,'0');
+}
+
+function onZero(){
+  if(redirected) return;
+  redirected = true;
+  stateEl.textContent = 'TEMPS ECOULE';
+  stateEl.className = 'state-label';
+  timerEl.classList.remove('warn');
+  timerEl.classList.add('done');
+  document.getElementById('redirect-flash').classList.add('show');
+  setTimeout(()=>{ window.location.href = 'https://elecarm-crisis2.vercel.app'; }, 1800);
+}
+
+function tick(end){
+  const remaining = end - Date.now();
+  if(remaining <= 0){
+    timerEl.textContent = '00:00:00';
+    onZero();
+    return;
+  }
+  timerEl.classList.remove('idle');
+  timerEl.textContent = fmt(remaining);
+  timerEl.classList.toggle('warn', remaining <= 30000);
+  stateEl.textContent = 'COMPTE A REBOURS EN COURS';
+  stateEl.className = 'state-label running';
+}
+
+(function init(){
+  const params = new URLSearchParams(window.location.search);
+  const end = parseInt(params.get('end'), 10);
+  if(!end || isNaN(end)){
+    // Pas de lien de lancement fourni : ecran neutre, rien ne se declenche.
+    return;
+  }
+  tick(end);
+  setInterval(()=>tick(end), 250);
+})();
+</script>
+
+</body>
+</html>

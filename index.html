@@ -1,0 +1,2605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ELECARM - Audit de Securite</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;--s1:#0d0d0d;--s2:#111;--s3:#161616;--s4:#1c1c1c;
+  --bd:#1e1e1e;--bd2:#262626;
+  --red:#7f1d1d;--red2:#991b1b;--red3:#b91c1c;--red4:#dc2626;--red-dim:#3b0000;
+  --tx:#d4d4d4;--tx2:#8a8a8a;--tx3:#555;--tx4:#333;
+  --font:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;overflow:hidden}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:3px}
+
+/* ── ANIMATIONS ── */
+@keyframes glitch{
+  0%,85%,100%{text-shadow:none;transform:none}
+  87%{text-shadow:4px 0 #dc2626,-4px 0 rgba(255,255,255,.35);transform:skewX(-1deg)}
+  90%{text-shadow:-3px 0 #dc2626,3px 0 rgba(255,255,255,.25);transform:skewX(1deg)}
+  92%{text-shadow:none;transform:none}
+  95%{text-shadow:2px 0 #dc2626,-2px 0 rgba(255,255,255,.2)}
+}
+@keyframes scanIn{0%{opacity:0;letter-spacing:.8em;filter:blur(4px)}100%{opacity:1;letter-spacing:.12em;filter:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes slideR{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(153,27,27,.5)}70%{box-shadow:0 0 0 8px rgba(153,27,27,0)}}
+@keyframes scan{0%{top:0}100%{top:100%}}
+@keyframes noise{0%,100%{background-position:0 0}10%{background-position:-5% -10%}30%{background-position:3% 5%}50%{background-position:-3% 12%}70%{background-position:5% -5%}90%{background-position:-4% 8%}}
+
+.glitch{animation:glitch 4s infinite}
+.scan-in{animation:scanIn 1.2s cubic-bezier(.16,1,.3,1) forwards}
+.blink{animation:blink 1.4s infinite}
+.fade-up{animation:fadeUp .4s ease-out}
+.slide-r{animation:slideR .35s ease-out}
+.pulse-red{animation:pulse 2s infinite}
+
+/* ── SPLASH ── */
+#splash{
+  position:fixed;inset:0;z-index:2000;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  background:#0a0a0a;
+  transition:opacity .8s ease;
+  overflow-y:auto;
+}
+#splash.out{opacity:0;pointer-events:none}
+
+.splash-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.splash-bg-img{
+  width:100%;height:100%;object-fit:cover;
+  opacity:.1;filter:blur(8px) grayscale(60%);transform:scale(1.06);
+}
+.splash-bg-overlay{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 15% 55%,rgba(185,28,28,.28) 0%,transparent 52%),
+    radial-gradient(ellipse at 85% 20%,rgba(100,10,10,.18) 0%,transparent 48%),
+    linear-gradient(180deg,rgba(10,10,10,.55) 0%,rgba(10,10,10,.15) 50%,rgba(10,10,10,.75) 100%);
+}
+.splash-grain{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;opacity:.5;
+}
+.scan-line{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(to bottom,transparent,rgba(220,38,38,.07),transparent);
+  animation:scan 5s linear infinite;pointer-events:none;z-index:3;
+}
+
+.splash-content{
+  position:relative;z-index:4;
+  max-width:740px;width:100%;
+  padding:28px 20px 32px;
+  display:flex;flex-direction:column;align-items:center;
+}
+
+.splash-alert{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(127,29,29,.3);border:1px solid rgba(185,28,28,.55);
+  color:#fca5a5;font-size:10px;font-weight:700;letter-spacing:.2em;
+  padding:5px 12px;border-radius:2px;margin-bottom:14px;text-transform:uppercase;
+}
+
+/* Photo principale BFMTV */
+.splash-tv-frame{
+  position:relative;width:100%;
+  border:1px solid rgba(185,28,28,.45);border-radius:2px;overflow:hidden;
+  margin-bottom:7px;
+  box-shadow:0 0 50px rgba(185,28,28,.12),inset 0 0 30px rgba(0,0,0,.25);
+}
+.splash-tv-img{
+  width:100%;display:block;max-height:310px;
+  object-fit:cover;object-position:center top;
+  filter:contrast(1.04) saturate(0.9);
+}
+.splash-tv-vignette{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,transparent 25%,transparent 75%,rgba(0,0,0,.35) 100%);
+  pointer-events:none;
+}
+
+/* Grille CCTV */
+.splash-cctv-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:7px;
+  width:100%;margin-bottom:13px;
+}
+.cctv-tile{
+  position:relative;overflow:hidden;border-radius:2px;
+  border:1px solid #1c1c1c;
+}
+.cctv-tile img{
+  width:100%;display:block;height:125px;object-fit:cover;
+  filter:grayscale(80%) contrast(1.12) brightness(0.72);
+}
+.cctv-scanlines{
+  position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
+}
+.cctv-label{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(0,0,0,.78);color:#bbb;
+  font-family:var(--mono);font-size:9px;padding:4px 8px;
+  letter-spacing:.07em;display:flex;justify-content:space-between;align-items:center;
+}
+.cctv-rec{color:#dc2626;display:flex;align-items:center;gap:3px;font-size:9px}
+
+/* Carte incident */
+.splash-card{
+  background:rgba(8,8,8,.93);border:1px solid #222;border-radius:3px;
+  padding:15px 18px;margin-bottom:18px;text-align:left;width:100%;
+}
+.splash-incident{
+  color:var(--red3);font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:7px;
+}
+.splash-title{
+  font-size:19px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:5px;
+  letter-spacing:-.01em;
+}
+.splash-detail{font-size:12px;color:var(--tx2);line-height:1.6;margin-bottom:11px}
+.splash-stats{display:flex;gap:20px;padding-top:10px;border-top:1px solid #1a1a1a}
+.splash-stat-label{font-size:10px;color:var(--tx3);letter-spacing:.08em;margin-bottom:2px;text-transform:uppercase}
+.splash-stat-val{font-size:15px;font-weight:700;color:var(--red3)}
+.splash-stat-val.amber{color:var(--tx2)}
+
+.btn-enter{
+  background:var(--red2);color:#fff;border:none;
+  padding:12px 38px;font-size:14px;font-weight:700;border-radius:3px;
+  cursor:pointer;letter-spacing:.05em;font-family:var(--font);
+  transition:background .15s,transform .1s;
+  text-transform:uppercase;
+}
+.btn-enter:hover{background:var(--red3);transform:translateY(-1px)}
+.btn-enter:active{transform:none}
+
+/* ── APP ── */
+#app{display:none;flex-direction:column;height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{
+  height:42px;background:#0a0a0a;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 16px;gap:16px;flex-shrink:0;z-index:100;
+}
+.topbar-brand{font-weight:800;font-size:14px;color:#f5f5f5;letter-spacing:.06em}
+.topbar-op{font-size:11px;color:var(--tx3);letter-spacing:.12em;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.topbar-clock{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--tx2)}
+.topbar-countdown{display:flex;align-items:center;gap:7px;background:#120000;border:1px solid #3b0000;border-radius:5px;padding:4px 10px}
+.topbar-countdown-label{font-size:9px;font-weight:700;letter-spacing:.1em;color:#888}
+.topbar-countdown-val{font-family:var(--mono);font-size:14px;font-weight:700;color:#fca5a5}
+.topbar-countdown.warn .topbar-countdown-val{animation:timerBlink 1s infinite}
+@keyframes timerBlink{0%,100%{opacity:1}50%{opacity:.4}}
+.badge-threat{
+  background:var(--red);color:#fff;font-size:10px;font-weight:700;
+  padding:3px 10px;border-radius:3px;letter-spacing:.1em;
+}
+.btn-icon{
+  background:var(--s2);border:1px solid var(--bd);color:var(--tx3);
+  width:30px;height:30px;border-radius:5px;cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;transition:background .1s,color .1s;
+}
+.btn-icon:hover{background:var(--s3);color:var(--tx)}
+
+/* ── MAIN LAYOUT ── */
+.layout{display:flex;flex:1;min-height:0}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:218px;background:#090909;border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;flex-shrink:0;
+}
+.sidebar-head{
+  padding:9px 12px;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sidebar-head-label{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase}
+.live-dot{font-size:9px;color:#dc2626;display:flex;align-items:center;gap:4px;font-weight:600}
+.timeline-list{flex:1;overflow-y:auto;padding:6px 0}
+.tl-event{display:flex;gap:10px;padding:8px 12px;animation:slideR .35s ease-out}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.tl-time{font-size:10px;color:var(--tx3);font-family:var(--mono);margin-bottom:2px}
+.tl-badge{font-size:8px;font-weight:700;padding:1px 5px;border-radius:2px;letter-spacing:.05em;margin-left:5px}
+.tl-title{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px}
+.tl-desc{font-size:11px;color:var(--tx3);line-height:1.4}
+.sidebar-footer{padding:10px;border-top:1px solid var(--bd)}
+.anim-label{font-size:9px;color:var(--tx4);text-align:center;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px}
+.btn-advance{
+  width:100%;background:var(--s3);border:1px solid var(--bd2);color:var(--tx2);
+  padding:8px;font-size:12px;font-weight:600;border-radius:5px;cursor:pointer;
+  font-family:var(--font);transition:all .15s;letter-spacing:.02em;
+}
+.btn-advance:hover:not(:disabled){background:var(--s4);color:var(--tx)}
+.btn-advance:disabled{opacity:.35;cursor:default}
+.step-label{font-size:9px;color:var(--tx4);text-align:center;margin-top:6px;letter-spacing:.05em}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+
+/* ── TABS ── */
+.tabs{
+  background:#090909;border-bottom:1px solid var(--bd);
+  display:flex;padding:0 14px;gap:0;flex-shrink:0;overflow-x:auto;
+}
+.tab{
+  padding:11px 15px;font-size:12px;font-weight:600;letter-spacing:.04em;
+  color:var(--tx3);border:none;background:none;cursor:pointer;
+  border-bottom:2px solid transparent;white-space:nowrap;font-family:var(--font);
+  transition:color .12s,border-color .12s;
+}
+.tab:hover{color:var(--tx2)}
+.tab.active{color:var(--tx);border-color:var(--red2)}
+.tab-badge{
+  background:var(--red2);color:#fff;font-size:9px;font-weight:700;
+  padding:1px 6px;border-radius:10px;margin-left:5px;
+}
+
+/* ── PANELS ── */
+.panels{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.panel{display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+.panel.active{display:flex}
+
+/* ── SITUATION ── */
+.sit-scroll{overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.sit-overview{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:7px;padding:16px 20px;
+}
+.sit-overview-tag{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.sit-overview-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:6px;letter-spacing:-.01em}
+.sit-overview-body{font-size:13px;color:var(--tx2);line-height:1.65;margin-bottom:14px}
+.alert-stats{display:flex;gap:20px;flex-wrap:wrap}
+.stat-box{min-width:80px}
+.stat-box label{display:block;font-size:10px;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.stat-box .val{font-size:17px;font-weight:700;color:#fff}
+.stat-box .val.amber{color:var(--tx2)}
+.stat-box .val.mono{font-family:var(--mono);font-size:13px}
+
+.sit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sit-card{background:var(--s1);border:1px solid var(--bd);border-radius:7px;padding:14px}
+.sit-card-title{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.item-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.item-row:last-child{border:none;padding-bottom:0}
+.item-label{color:var(--tx2)}
+.item-val{font-weight:600;color:var(--tx)}
+.status-pill{font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.06em}
+.pill-red{background:var(--red-dim);color:#fca5a5}
+.pill-amber{background:#1c1c1c;color:#888}
+.pill-green{background:#1a1a1a;color:var(--tx2)}
+.pill-blue{background:#1a1a1a;color:var(--tx3)}
+
+/* ── MAILS ── */
+.mail-layout{display:flex;height:100%;min-height:0}
+.mail-list{width:290px;border-right:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0}
+.mail-list-head{padding:9px 12px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
+.mail-list-head span{font-size:12px;font-weight:700;color:var(--tx)}
+.mail-items{overflow-y:auto;flex:1}
+.mail-item{
+  padding:10px 12px;cursor:pointer;border-left:3px solid transparent;
+  transition:background .1s;border-bottom:1px solid #111;
+}
+.mail-item:hover{background:#141414}
+.mail-item.unread{border-left-color:#555}
+.mail-item.urgent{border-left-color:var(--red2)}
+.mail-item.forensic{border-left-color:#444}
+.mail-item.selected{background:#181818;border-left-color:#666}
+.mail-from{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px}
+.mail-from.bold{font-weight:700;color:#fff}
+.mail-subj{font-size:12px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.mail-subj.unread{color:var(--tx);font-weight:500}
+.mail-time{font-size:10px;color:var(--tx3);font-family:var(--mono)}
+.mail-body{flex:1;overflow-y:auto;padding:22px 24px}
+.mail-body-empty{display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:8px;color:var(--tx4)}
+.mail-body-empty .icon{font-size:36px;opacity:.3}
+.mail-meta{padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--bd)}
+.mail-subject{font-size:18px;font-weight:700;color:#fff;margin-bottom:12px;letter-spacing:-.01em;line-height:1.3}
+.mail-field{font-size:12px;color:var(--tx3);margin-bottom:4px}
+.mail-field span{color:var(--tx2)}
+.mail-text{font-size:14px;color:var(--tx);line-height:1.75}
+.mail-text p{margin-bottom:12px}
+.mail-text p:last-child{margin:0}
+.mail-text strong{color:#fff;font-weight:600}
+.mail-text ul,ol{margin:8px 0 8px 20px;line-height:1.9}
+.attachment{
+  display:inline-flex;align-items:center;gap:10px;margin-top:16px;
+  background:var(--s2);border:1px solid var(--bd2);border-radius:5px;
+  padding:10px 14px;cursor:pointer;transition:background .15s;
+}
+.attachment:hover{background:var(--s3)}
+.attachment-icon{font-size:22px}
+.attachment-name{font-size:12px;font-weight:700;color:var(--tx)}
+.attachment-size{font-size:11px;color:var(--tx3)}
+
+/* ── ENQUETE ── */
+.enq-scroll{overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.enq-header{background:var(--s1);border:1px solid var(--bd);border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.enq-ref{font-size:11px;color:var(--tx3)}
+.enq-ref span{color:var(--tx2);font-family:var(--mono);font-weight:600;margin-left:4px}
+.enq-badge{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:3px;margin-left:auto;letter-spacing:.08em}
+.suspects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.suspect{
+  background:var(--s1);border:1px solid var(--bd);border-radius:7px;
+  overflow:hidden;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.suspect:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.5);border-color:#333}
+.suspect-head{background:var(--s2);padding:14px;display:flex;gap:12px;align-items:flex-start}
+.suspect-avatar{
+  width:46px;height:46px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;letter-spacing:.03em;
+}
+.suspect-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.suspect-role{font-size:12px;color:var(--tx3)}
+.suspect-age{font-size:11px;color:var(--tx4);margin-top:1px}
+.suspect-body{padding:10px 14px;border-top:1px solid var(--bd)}
+.suspect-access{font-size:9px;font-weight:700;color:var(--tx4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.suspect-li{font-size:12px;color:var(--tx2);line-height:1.7}
+.osint-btn{background:#0d1929;border:1px solid #2a3a5c;color:#6a9cc0;font-size:9px;font-weight:700;letter-spacing:.1em;padding:3px 10px;border-radius:3px;cursor:pointer;font-family:var(--font);text-transform:uppercase}
+.osint-btn:hover{background:#1a2a44;border-color:#3a5a80;color:#a8c8f0}
+.osint-stab{background:var(--s1);border:1px solid var(--bd);color:var(--tx4);font-size:11px;font-weight:600;letter-spacing:.06em;padding:6px 14px;border-radius:4px;cursor:pointer;font-family:var(--font);text-transform:uppercase;transition:background .15s,color .15s}
+.osint-stab:hover{background:var(--s2);color:var(--tx2)}
+.osint-stab.active{background:#0d1929;border-color:#2a3a5c;color:#8ab0d8}
+
+/* ── DSI ── */
+.dsi-wrap{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+.dsi-bar{
+  padding:8px 14px;background:#090909;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap;
+}
+.wazuh-brand{font-size:12px;font-weight:700;color:#fff;letter-spacing:.03em}
+.wazuh-meta{font-size:11px;color:var(--tx3)}
+.dsi-counts{display:flex;gap:6px;margin-left:auto}
+.count-pill{font-size:10px;font-weight:700;padding:2px 9px;border-radius:3px}
+.log-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+.log-table thead{position:sticky;top:0;background:#090909;z-index:5}
+.log-table th{
+  padding:7px 10px;text-align:left;font-size:9px;font-weight:700;
+  color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:1px solid var(--bd);
+}
+.log-table td{padding:6px 10px;border-bottom:1px solid #111;vertical-align:top;line-height:1.5}
+.log-row{cursor:pointer;transition:background .08s}
+.log-row:hover td{background:rgba(255,255,255,.025)}
+.log-time{color:var(--tx3);white-space:nowrap;font-size:10px}
+.log-agent{font-size:10px}
+.log-lv{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;text-align:center}
+.log-desc{color:var(--tx2);max-width:480px;word-break:break-word}
+.log-desc .kw{color:#fff}
+.log-desc .alert{color:#dc2626}
+.log-desc .path{color:#aaa}
+.log-desc .ip{color:var(--tx2)}
+.log-desc .hash{color:var(--tx3);font-size:10px}
+.log-mitre{white-space:nowrap}
+.mitre-tag{font-size:9px;background:#1c1c1c;color:#666;padding:1px 5px;border-radius:3px;margin:1px 1px 1px 0;display:inline-block}
+.log-scroll{overflow-y:auto;flex:1}
+
+
+/* ── DOCUMENTS ── */
+.docs-scroll{overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.doc-card{
+  background:var(--s1);border:1px solid var(--bd);border-radius:7px;
+  padding:14px;cursor:pointer;transition:background .12s,border-color .12s;
+}
+.doc-card:hover{background:var(--s2);border-color:#333}
+.doc-icon{font-size:26px;margin-bottom:8px}
+.doc-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px}
+.doc-meta{font-size:11px;color:var(--tx3);margin-bottom:8px}
+
+/* ── MODAL ── */
+.modal-bg{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.8);align-items:center;justify-content:center;padding:20px;
+}
+.modal-bg.show{display:flex}
+.modal-box{
+  background:var(--s1);border:1px solid var(--bd2);border-radius:10px;
+  max-width:680px;width:100%;max-height:82vh;overflow-y:auto;padding:24px;
+}
+.modal-close{
+  background:var(--s2);border:1px solid var(--bd);color:var(--tx3);
+  padding:7px 18px;border-radius:5px;cursor:pointer;font-size:12px;font-family:var(--font);
+  margin-top:16px;
+}
+
+/* ── TOAST ── */
+#toast{
+  display:none;position:fixed;bottom:20px;right:20px;z-index:900;
+  background:var(--s1);border:1px solid var(--bd2);border-radius:8px;
+  padding:12px 16px;max-width:300px;box-shadow:0 8px 30px rgba(0,0,0,.7);
+  animation:slideR .3s ease-out;
+}
+#toast.show{display:flex;gap:10px;align-items:flex-start}
+#toast-icon{font-size:18px;flex-shrink:0}
+#toast-text .title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+#toast-text .body{font-size:12px;color:var(--tx3);line-height:1.4}
+#toast-close{margin-left:auto;background:none;border:none;color:var(--tx4);cursor:pointer;font-size:16px;flex-shrink:0;padding:0}
+
+/* ── ANIMATOR PANEL ── */
+#anim-panel{
+  display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:1500;background:var(--s1);border:1px solid var(--bd2);
+  border-radius:8px;padding:20px;min-width:310px;box-shadow:0 20px 60px rgba(0,0,0,.85);
+}
+#anim-panel.show{display:block}
+.anim-panel-title{font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;display:flex;justify-content:space-between}
+.btn-anim-close{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:18px;padding:0}
+.btn-anim-advance{width:100%;background:var(--red);border:none;color:#fff;padding:9px;font-size:13px;font-weight:700;border-radius:5px;cursor:pointer;font-family:var(--font);letter-spacing:.04em;margin-top:10px}
+.btn-anim-ransom{width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--tx3);padding:8px;font-size:12px;border-radius:5px;cursor:pointer;font-family:var(--font);margin-top:7px}
+.btn-anim-ransom:hover{background:var(--s3);color:var(--tx)}
+.anim-note{font-size:10px;color:var(--tx4);text-align:center;margin-top:10px}
+.anim-section-label{font-size:9px;font-weight:700;color:var(--tx4);letter-spacing:.08em;text-transform:uppercase;margin-top:14px;margin-bottom:4px;padding-top:10px;border-top:1px solid var(--bd)}
+.anim-solution{display:none;margin-top:8px;background:#0a0a0a;border:1px solid var(--bd2);border-radius:5px;padding:10px;font-size:11px;color:var(--tx2);line-height:1.8}
+.anim-solution.show{display:block}
+#anim-panel{max-width:340px}
+
+/* ── BRIEFING ── */
+#briefing{position:fixed;inset:0;z-index:1900;background:#060606;display:none;flex-direction:column;overflow-y:auto}
+#briefing.show{display:flex}
+.brief-wrap{max-width:860px;width:100%;margin:0 auto;padding:24px 20px 36px;display:flex;flex-direction:column;gap:16px}
+.brief-photos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.brief-photo-frame{position:relative;overflow:hidden;border-radius:3px;border:1px solid #1c1c1c}
+.brief-photo-frame img{width:100%;display:block;height:190px;object-fit:cover;filter:grayscale(25%) contrast(1.08) brightness(0.78)}
+.brief-scanlines{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px)}
+.brief-cam-label{position:absolute;top:0;left:0;right:0;background:rgba(0,0,0,.72);color:#bbb;font-family:var(--mono);font-size:9px;padding:4px 8px;letter-spacing:.06em;display:flex;justify-content:space-between;align-items:center}
+.brief-header{padding-bottom:14px;border-bottom:1px solid #181818}
+.brief-tag{font-size:10px;font-weight:700;letter-spacing:.2em;color:#ef4444;text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.brief-title{font-size:clamp(24px,4vw,38px);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:7px}
+.brief-sub{font-size:13px;color:var(--tx2);line-height:1.6}
+.brief-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.brief-fact{background:#0d0d0d;border:1px solid #181818;border-radius:5px;padding:12px 14px}
+.brief-fact label{display:block;font-size:10px;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.brief-fact .bv{font-size:16px;font-weight:700;color:var(--red3)}
+.brief-fact .bv.amber{color:var(--tx)}
+.brief-fact .bv.green{color:var(--tx)}
+.brief-alert-box{background:#0f0f0f;border:1px solid var(--bd2);border-radius:6px;padding:14px 18px}
+.brief-alert-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:5px}
+.brief-alert-body{font-size:13px;color:var(--tx2);line-height:1.7}
+.brief-alert-body strong{color:var(--tx)}
+.brief-mission{padding:14px 0 0;border-top:1px solid #181818}
+.brief-mission-tag{font-size:9px;font-weight:700;letter-spacing:.2em;color:var(--tx4);text-transform:uppercase;margin-bottom:7px}
+.brief-mission-text{font-size:15px;font-weight:600;color:var(--tx);line-height:1.6}
+.brief-nav-label{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--tx4);text-transform:uppercase;margin-bottom:10px}
+.brief-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.brief-nav-card{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:16px 10px;cursor:pointer;text-align:center;transition:background .15s,border-color .15s,transform .12s;display:flex;flex-direction:column;align-items:center;gap:7px}
+.brief-nav-card:hover{background:var(--s3);border-color:#333;transform:translateY(-2px)}
+.brief-nav-card:active{transform:none}
+.brief-nav-icon{font-size:22px}
+.brief-nav-name{font-size:11px;font-weight:700;color:#fff;letter-spacing:.04em}
+.brief-nav-desc{font-size:10px;color:var(--tx3);line-height:1.4}
+.brief-anim{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.brief-anim.in{opacity:1;transform:none}
+.brief-photo-anim{opacity:0;transform:scale(.97);transition:opacity .6s ease,transform .6s ease}
+.brief-photo-anim.in{opacity:1;transform:none}
+.suspect-photo{width:64px;height:64px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,.07)}
+.suspect-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(12%)}
+
+/* ── MAIL SUB-NAV ── */
+.mail-subnav{display:flex;border-bottom:1px solid var(--bd);flex-shrink:0;padding:0 12px;background:#090909}
+.mail-subnav-btn{padding:8px 16px;font-size:11px;font-weight:700;color:var(--tx3);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;font-family:var(--font);letter-spacing:.04em;transition:color .12s,border-color .12s}
+.mail-subnav-btn:hover{color:var(--tx2)}
+.mail-subnav-btn.active{color:var(--tx);border-bottom-color:var(--red2)}
+.emp-inbox-list{width:200px;border-right:1px solid var(--bd);display:none;flex-direction:column;flex-shrink:0;overflow-y:auto;background:#090909}
+.emp-inbox-item{padding:10px 12px;cursor:pointer;border-bottom:1px solid #111;border-left:3px solid transparent;transition:background .1s}
+.emp-inbox-item:hover{background:var(--s2)}
+.emp-inbox-item.active{background:#181818;border-left-color:#555}
+.emp-inbox-name{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px}
+.emp-inbox-role{font-size:10px;color:var(--tx3)}
+/* ── ENIGMES ── */
+.enig-scroll{overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+.enig-section{background:var(--s1);border:1px solid var(--bd);border-radius:7px;padding:14px}
+.enig-section-title{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bd)}
+.enig-msgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.enig-msg{background:var(--s2);border-left:2px solid #333;padding:10px 12px;border-radius:0 4px 4px 0;font-size:13px;color:var(--tx2);line-height:1.65}
+.enig-msg-label{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.06em;margin-bottom:5px;text-transform:uppercase}
+.enig-ref{font-size:12px;color:var(--tx2);font-weight:500;padding:9px 12px;background:#0f0f0f;border:1px solid var(--bd);border-radius:5px;line-height:1.6}
+/* ── ENIGMES INTERACTIVE ── */
+.enig-row{cursor:pointer;transition:background .1s}
+.enig-row:hover td{background:rgba(255,255,255,.025)!important}
+.enig-row.selected td{background:rgba(127,29,29,.12)!important;color:var(--tx)!important}
+.enig-detail{display:none;background:#0d0d0d;padding:12px 14px;margin-top:8px;border-radius:5px;border:1px solid var(--bd);font-family:var(--mono);font-size:12px;color:var(--tx2);line-height:1.9}
+.enig-detail.show{display:block;animation:fadeUp .25s ease-out}
+.enig-bar-wrap{display:flex;align-items:center;gap:8px;margin:8px 0 4px}
+.enig-bar-track{flex:1;height:5px;background:#1c1c1c;border-radius:3px;overflow:hidden}
+.enig-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.enig-calc-box{background:#111;border:1px solid var(--bd);border-radius:4px;padding:10px 12px;margin-top:8px}
+.enig-calc-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:11px}
+.enig-calc-label{color:var(--tx3);width:200px;flex-shrink:0}
+.enig-calc-val{color:var(--tx);font-weight:600}
+.enig-calc-val.warn{color:#888}
+.enig-verdict{margin-top:8px;padding:9px 12px;border-radius:4px;font-size:12px;line-height:1.7;font-family:var(--font)}
+.enig-verdict.ok{background:#111;border:1px solid #222;color:#888}
+.enig-verdict.ko{background:#0d0d0d;border:1px solid #2a2a2a;color:var(--tx2)}
+
+/* ── VERDICT ── */
+.verdict-q{margin-bottom:18px}
+.verdict-q-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.5}
+.verdict-opts{display:flex;flex-direction:column;gap:2px}
+.verdict-opt{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tx2);padding:6px 8px;border-radius:4px;cursor:pointer;transition:background .1s}
+.verdict-opt:hover{background:var(--s2)}
+.verdict-opt input{accent-color:#991b1b}
+.verdict-result{margin-top:18px}
+.verdict-score{font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
+.verdict-score-label{font-size:11px;color:var(--tx3);margin-bottom:14px}
+.verdict-line{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--bd);font-size:12px;line-height:1.6}
+.verdict-line:last-child{border:none}
+.verdict-icon{flex-shrink:0;font-size:13px;font-weight:800;width:16px}
+.verdict-icon.ok{color:#4ade80}
+.verdict-icon.ko{color:#f87171}
+.verdict-line-text{color:var(--tx2)}
+.verdict-line-text strong{color:#fff}
+.verdict-recap{margin-top:16px;background:var(--s2);border:1px solid var(--bd2);border-radius:6px;padding:14px;font-size:12px;color:var(--tx2);line-height:1.75}
+
+/* ── TABLE DATA (BX-4216) ── */
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+.data-table th{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-bottom:1px solid var(--bd);text-align:left}
+.data-table td{padding:6px 10px;border-bottom:1px solid #111;color:var(--tx2);font-family:var(--mono);font-size:12px}
+.data-table tr:last-child td{border:none}
+.data-table tr.anomaly td{background:#141414;font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- ═══ SPLASH ═══ -->
+<div id="splash">
+  <!-- Fond photo floutée + grain -->
+  <div class="splash-bg">
+    <img src="photo6.png" class="splash-bg-img" alt="">
+    <div class="splash-bg-overlay"></div>
+    <div class="splash-grain"></div>
+    <div class="scan-line"></div>
+  </div>
+
+  <div class="splash-content">
+    <div class="splash-alert">DOSSIER CONFIDENTIEL - USAGE RESTREINT</div>
+
+    <!-- Photo principale -->
+    <div class="splash-tv-frame">
+      <img src="photo3.png" class="splash-tv-img" alt="Passerelle de télémaintenance BX-4400 - ELECARM">
+      <div class="splash-tv-vignette"></div>
+    </div>
+
+    <!-- Grille de pièces techniques -->
+    <div class="splash-cctv-grid">
+      <div class="cctv-tile">
+        <img src="photo4.png" alt="Carte Raspberry Pi - passerelle BX-GATEWAY-07">
+        <div class="cctv-scanlines"></div>
+        <div class="cctv-label">
+          <span>BX-GATEWAY-07 - PASSERELLE</span>
+          <span class="cctv-rec">PIÈCE&nbsp;À&nbsp;CONVICTION</span>
+        </div>
+      </div>
+      <div class="cctv-tile">
+        <img src="photo5.png" alt="Salle serveurs ELECARM">
+        <div class="cctv-scanlines"></div>
+        <div class="cctv-label">
+          <span>SALLE SERVEURS - ELECARM</span>
+          <span class="cctv-rec">AUDIT&nbsp;DSI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carte incident -->
+    <div class="splash-card">
+      <div class="splash-incident">Alerte sécurité - 19 mai 2026</div>
+      <div class="splash-title">FLUX DE DONNÉES<br>SUSPECT DÉTECTÉ</div>
+      <div class="splash-detail">La DSI d'ELECARM a repéré un flux de données anormal depuis la passerelle de télémaintenance des boîtiers BX-4400 vers une adresse IP externe non identifiée. Origine et étendue de la compromission à déterminer.</div>
+      <div class="splash-stats">
+        <div><div class="splash-stat-label">Volume suspect</div><div class="splash-stat-val">600+ Mo</div></div>
+        <div><div class="splash-stat-label">Zone</div><div class="splash-stat-val amber">ZI Blois</div></div>
+        <div><div class="splash-stat-label">Statut</div><div class="splash-stat-val">CRITIQUE</div></div>
+      </div>
+    </div>
+
+    <button class="btn-enter" onclick="enterApp()">OUVRIR LE DOSSIER DE MISSION</button>
+  </div>
+</div>
+
+<!-- ═══ BRIEFING ═══ -->
+<div id="briefing">
+  <div class="brief-wrap">
+
+    <!-- Photos pièces techniques -->
+    <div class="brief-photos">
+      <div class="brief-photo-frame brief-photo-anim" id="bp1">
+        <img src="photo11.png" alt="Salle serveurs ELECARM">
+        <div class="brief-scanlines"></div>
+        <div class="brief-cam-label">
+          <span>SALLE SERVEURS - ELECARM</span>
+          <span style="color:#dc2626">AUDIT DSI</span>
+        </div>
+      </div>
+      <div class="brief-photo-frame brief-photo-anim" id="bp2">
+        <img src="photo12.png" alt="Carte Raspberry Pi - passerelle BX-GATEWAY-07">
+        <div class="brief-scanlines"></div>
+        <div class="brief-cam-label">
+          <span>BX-GATEWAY-07 - PASSERELLE</span>
+          <span style="color:#dc2626">PIÈCE À CONVICTION</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header incident -->
+    <div class="brief-header">
+      <div class="brief-tag brief-anim" id="ba1">ALERTE SÉCURITÉ - 19 MAI 2026</div>
+      <div class="brief-title brief-anim" id="ba2">FLUX SUSPECT<br>DÉTECTÉ PAR LA DSI</div>
+      <div class="brief-sub brief-anim" id="ba3">Dans le cadre du renforcement de vigilance demandé par le Ministère de l'Intérieur, la DSI d'ELECARM SAS (ZI Les Charmes, Blois) a passé en revue ses journaux de supervision. Elle y a découvert un flux de données suspect, actif depuis plusieurs semaines, depuis la passerelle de télémaintenance des boîtiers BX-4400 vers une adresse IP externe non identifiée.</div>
+    </div>
+
+    <!-- Chiffres clés -->
+    <div class="brief-facts">
+      <div class="brief-fact brief-anim" id="ba4"><label>Volume exfiltré (estimé)</label><div class="bv">1,5 Go+</div></div>
+      <div class="brief-fact brief-anim" id="ba5"><label>Programme concerné</label><div class="bv amber">Thales - Diffusion Restreinte</div></div>
+      <div class="brief-fact brief-anim" id="ba6"><label>Alerte DSI</label><div class="bv green">CONFIRMÉE</div></div>
+    </div>
+
+    <!-- Directive ministérielle -->
+    <div class="brief-alert-box brief-anim" id="ba7">
+      <div class="brief-alert-title">Directive Ministère de l'Intérieur - Revue de sécurité</div>
+      <div class="brief-alert-body">Dans un contexte géopolitique tendu et à l'approche des élections présidentielles, le Ministère de l'Intérieur a demandé à tous les sous-traitants de secteurs sensibles de renforcer leur vigilance. <strong>Les sous-traitants de l'industrie de la défense doivent produire, sous 15 jours, un rapport d'analyse de sécurité (diagnostic et préconisations).</strong> ELECARM SAS, sous-traitant Thales Defence, est concernée au premier chef. Texte complet disponible dans l'onglet Documents.</div>
+    </div>
+
+    <!-- Mission -->
+    <div class="brief-mission brief-anim" id="ba8">
+      <div class="brief-mission-tag">Votre mission</div>
+      <div class="brief-mission-text">Vous formez un <strong style="color:#fff">cabinet d'audit externe mandaté par la DSI d'ELECARM SAS</strong> pour répondre à cette directive. Établir <strong style="color:#fff">comment l'intrusion a été rendue possible</strong>, identifier la faille humaine et technique, et proposer des mesures correctives. Votre rapport est attendu par la direction et transmis au Ministère. L'enquête commence maintenant.</div>
+    </div>
+
+    <!-- Navigation 5 onglets -->
+    <div class="brief-anim" id="ba9">
+      <div class="brief-nav-label">Par où commencer votre enquête ?</div>
+      <div class="brief-nav">
+        <div class="brief-nav-card" onclick="enterMain('situation')">
+          <div class="brief-nav-name">SITUATION</div>
+          <div class="brief-nav-desc">Vue d'ensemble et contacts</div>
+        </div>
+        <div class="brief-nav-card" onclick="enterMain('mails')">
+          <div class="brief-nav-name">MAILS</div>
+          <div class="brief-nav-desc">Boîte de réception interne</div>
+        </div>
+        <div class="brief-nav-card" onclick="enterMain('enquete')">
+          <div class="brief-nav-name">ENQUETE</div>
+          <div class="brief-nav-desc">Dossier personnel (8)</div>
+        </div>
+        <div class="brief-nav-card" onclick="enterMain('dsi')">
+          <div class="brief-nav-name">DSI / LOGS</div>
+          <div class="brief-nav-desc">Systèmes informatiques</div>
+        </div>
+        <div class="brief-nav-card" onclick="enterMain('documents')">
+          <div class="brief-nav-name">DOCUMENTS</div>
+          <div class="brief-nav-desc">Fichiers internes</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="app" style="display:none;flex-direction:column;height:100vh">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-brand">ELECARM SAS</div>
+    <div class="topbar-op">Operation Silent Gateway</div>
+    <div class="topbar-right">
+      <div class="topbar-countdown" id="session-countdown-wrap" title="Temps restant de la mission">
+        <span class="topbar-countdown-label">MISSION</span>
+        <span class="topbar-countdown-val" id="session-countdown">--:--:--</span>
+      </div>
+      <div class="topbar-clock" id="clock">--:--:--</div>
+      <div class="badge-threat pulse-red">CRITIQUE</div>
+      <button class="btn-icon" onclick="document.getElementById('anim-panel').classList.toggle('show')" title="Panneau animateur" style="font-size:10px;font-weight:700;letter-spacing:.04em">ANIM</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-head">
+        <div class="sidebar-head-label">Fil des événements</div>
+        <div class="live-dot">LIVE</div>
+      </div>
+      <div class="timeline-list" id="timeline">
+        <div class="tl-event">
+          <div class="tl-dot" style="background:#ef4444;margin-top:5px"></div>
+          <div>
+            <div class="tl-time">08:00 <span class="tl-badge" style="background:#7f1d1d;color:#fca5a5">DSI</span></div>
+            <div class="tl-title">Alerte passerelle BX-GATEWAY-07</div>
+            <div class="tl-desc">Flux sortant suspect vers IP externe repéré lors de la revue de vigilance.</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="anim-label">Animateur</div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="tabs">
+        <button class="tab active" data-tab="situation" onclick="switchTab(this)">SITUATION</button>
+        <button class="tab" data-tab="mails" onclick="switchTab(this)">MAILS <span class="tab-badge" id="mail-badge" style="display:none">0</span></button>
+        <button class="tab" data-tab="enquete" onclick="switchTab(this)">ENQUETE</button>
+        <button class="tab" data-tab="dsi" onclick="switchTab(this)">DSI / LOGS</button>
+        <button class="tab" data-tab="documents" onclick="switchTab(this)">DOCUMENTS</button>
+        <button class="tab" data-tab="enigmes" onclick="switchTab(this)">ENIGMES</button>
+        <button class="tab" data-tab="osint" onclick="switchTab(this)">OSINT</button>
+        <button class="tab" data-tab="verdict" onclick="switchTab(this)">VERDICT</button>
+      </div>
+      <div class="panels">
+
+        <!-- SITUATION -->
+        <div class="panel active" id="panel-situation">
+          <div class="sit-scroll">
+            <div class="sit-overview">
+              <div class="sit-overview-tag">Vue d'ensemble - dossier ouvert le 19 mai 2026</div>
+              <div class="sit-overview-title">Flux de données suspect sur la passerelle BX-GATEWAY-07</div>
+              <div class="sit-overview-body">Flux sortant suspect repéré depuis la passerelle de télémaintenance des boîtiers BX-4400 vers une adresse IP externe non identifiée. Audit externe mandaté par la DSI en réponse à la directive du Ministère de l'Intérieur.</div>
+              <div class="alert-stats">
+                <div class="stat-box"><label>Volume suspect</label><div class="val">600+ Mo</div></div>
+                <div class="stat-box"><label>Référence mandat</label><div class="val mono" style="font-size:12px;margin-top:3px">MININT-DGSI-2026-0517</div></div>
+                <div class="stat-box"><label>Échéance rapport</label><div class="val amber">3 juin 2026</div></div>
+                <div class="stat-box"><label>Livraison Thales</label><div class="val amber">J+4 retard</div></div>
+              </div>
+            </div>
+            <div class="sit-grid">
+              <div class="sit-card">
+                <div class="sit-card-title">Éléments suspects relevés</div>
+                <div class="item-row"><span class="item-label">Mail piégé reçu par un compte à privilèges élevés</span><span class="item-val">02/05</span></div>
+                <div class="item-row"><span class="item-label">IP externe 185.220.101.47 sur BX-GATEWAY-07</span><span class="item-val">depuis 09/05</span></div>
+                <div class="item-row"><span class="item-label">Fournisseur passerelles changé sans validation DSI</span><span class="item-val">28/04</span></div>
+                <div class="item-row"><span class="item-label">Comptes admin utilisés hors procédure</span><span class="item-val">à vérifier</span></div>
+                <div class="item-row"><span class="item-label" style="font-weight:700;color:var(--tx)">Statut enquête</span><span class="status-pill pill-blue">EN COURS</span></div>
+              </div>
+              <div class="sit-card">
+                <div class="sit-card-title">État des services</div>
+                <div class="item-row"><span class="item-label">Production</span><span class="status-pill pill-green">OPÉRATIONNELLE</span></div>
+                <div class="item-row"><span class="item-label">Qualité / Contrôle</span><span class="status-pill pill-amber">ANOMALIE LOT S42</span></div>
+                <div class="item-row"><span class="item-label">Thales - Relation client</span><span class="status-pill pill-amber">RETARD J+4</span></div>
+                <div class="item-row"><span class="item-label">Systèmes informatiques</span><span class="status-pill pill-red">SOUS SURVEILLANCE</span></div>
+                <div class="item-row"><span class="item-label">Audit DSI - Enquête</span><span class="status-pill pill-blue">EN COURS</span></div>
+              </div>
+              <div class="sit-card">
+                <div class="sit-card-title">Contacts clés</div>
+                <div class="item-row"><span class="item-label">R. LAMBERT - Direction</span><span class="item-val" style="font-family:var(--mono);font-size:12px">06 12 34 56 78</span></div>
+                <div class="item-row"><span class="item-label">Thales - Ph. BERNARD</span><span class="item-val" style="font-family:var(--mono);font-size:12px">01 57 32 14 67</span></div>
+                <div class="item-row"><span class="item-label">ANSSI (assistance cyber)</span><span class="item-val" style="font-family:var(--mono);font-size:12px">09 00 00 19 87</span></div>
+              </div>
+              <div class="sit-card">
+                <div class="sit-card-title">Notes d'audit</div>
+                <textarea id="situation-notes" placeholder="Notes de l'équipe..." style="width:100%;background:#0a0a0a;border:1px solid var(--bd2);color:var(--tx);padding:10px;font-size:13px;border-radius:5px;resize:none;height:100px;font-family:var(--font);outline:none;line-height:1.6" oninput="saveState()"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAILS -->
+        <div class="panel" id="panel-mails">
+          <div class="mail-subnav">
+            <button class="mail-subnav-btn active" id="subnav-general" onclick="switchMailBox('general')">BOÎTE GÉNÉRALE</button>
+            <button class="mail-subnav-btn" id="subnav-emp" onclick="switchMailBox('emp')">BOÎTES EMPLOYÉS</button>
+          </div>
+          <div class="mail-layout" style="flex:1;min-height:0">
+            <div class="emp-inbox-list" id="emp-inbox-list"></div>
+            <div class="mail-list">
+              <div class="mail-list-head">
+                <span id="mail-list-title">Boîte de réception</span>
+                <span id="unread-label" style="font-size:11px;color:var(--tx3)">...</span>
+              </div>
+              <div class="mail-items" id="mail-items"></div>
+            </div>
+            <div class="mail-body" id="mail-body">
+              <div class="mail-body-empty">
+                <div style="font-size:13px;color:var(--tx3)">Sélectionner un message</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENQUETE -->
+        <div class="panel" id="panel-enquete">
+          <div class="enq-scroll">
+            <div class="enq-header">
+              <div class="enq-ref">Réf. mission <span>AUDIT-ELECARM-2026-0519</span></div>
+              <div class="enq-ref">Source <span>Dossiers RH et audit interne DSI - ELECARM SAS</span></div>
+              <div class="enq-badge">ENQUÊTE EN COURS</div>
+            </div>
+            <div class="suspects-grid" id="suspects-grid"></div>
+          </div>
+        </div>
+
+        <!-- DSI -->
+        <div class="panel" id="panel-dsi">
+          <div class="dsi-wrap">
+            <div class="dsi-bar">
+              <span class="wazuh-brand">Wazuh SIEM</span>
+              <span class="wazuh-meta">Cluster: elecarm-prod</span>
+              <span class="wazuh-meta">Agents: 12/14</span>
+              <div class="dsi-counts">
+                <span class="count-pill" style="background:#3b0000;color:#fca5a5" id="crit-count">-- Critiques</span>
+                <span class="count-pill" style="background:#1a1200;color:#f59e0b" id="alert-count">-- Alertes</span>
+                <span class="count-pill" style="background:#1a1a1a;color:#888" id="suspect-count">-- Suspects</span>
+                <span style="font-size:10px;color:#dc2626;font-weight:600;letter-spacing:.08em">LIVE</span>
+              </div>
+            </div>
+            <div class="log-scroll">
+              <table class="log-table">
+                <thead>
+                  <tr>
+                    <th>Heure</th><th>Machine</th><th>Niveau</th><th>Que s'est-il passé ?</th><th>Réf.</th>
+                  </tr>
+                </thead>
+                <tbody id="log-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- DOCUMENTS -->
+        <div class="panel" id="panel-documents">
+          <div class="docs-scroll">
+            <div style="font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Documents internes ELECARM SAS</div>
+            <div class="docs-grid" id="docs-grid"></div>
+          </div>
+        </div>
+
+        <!-- ENIGMES -->
+        <div class="panel" id="panel-enigmes">
+          <div class="enig-scroll">
+
+            <div class="enig-ref">
+              Deux pistes techniques distinctes concernent les boîtiers BX-4400-A. La première (ci-dessous) porte sur une anomalie de mesure qualité : à vérifier si elle est liée au reste des faits ou s'il s'agit d'un problème de maintenance industrielle indépendant. La seconde porte sur la passerelle de télémaintenance des boîtiers et son changement de fournisseur : voir l'onglet Documents ("Note Achats" et "Journal supervision") et l'onglet DSI / Logs (agent BX-GATEWAY-07).
+            </div>
+
+            <!-- Specs -->
+            <div class="enig-section">
+              <div class="enig-section-title">Spécifications techniques - Série BX-4400-A</div>
+              <table class="data-table">
+                <thead><tr><th>Paramètre</th><th>Valeur nominale</th></tr></thead>
+                <tbody>
+                  <tr><td>Tension entrée</td><td>24 V DC</td></tr>
+                  <tr><td>Intensité nominale</td><td>0,8 A</td></tr>
+                  <tr><td>Puissance moyenne</td><td>19 W</td></tr>
+                  <tr><td>Tolérance fabricant</td><td>+/- 5%</td></tr>
+                  <tr><td>Tolérance interne ELECARM</td><td>+/- 10% (seuil blocage)</td></tr>
+                  <tr><td>Plage intensité acceptable</td><td>0,72 A - 0,88 A</td></tr>
+                  <tr><td>Température de fonctionnement</td><td>10 - 45 °C</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Mesures interactives -->
+            <div class="enig-section">
+              <div class="enig-section-title">Mesures lot S42 - 17 mai 2026 (source : Rapport N. BRUNET)</div>
+              <div style="font-size:11px;color:var(--tx4);margin-bottom:8px;font-family:var(--mono)">Cliquez sur une ligne pour analyser les valeurs</div>
+              <table class="data-table">
+                <thead><tr><th>N° boîtier</th><th>Intensité (A)</th><th>Puissance (W)</th><th>Temp (°C)</th></tr></thead>
+                <tbody id="enig-tbody"></tbody>
+              </table>
+              <div class="enig-detail" id="enig-detail"></div>
+            </div>
+
+            <!-- Contexte -->
+            <div class="enig-section">
+              <div class="enig-section-title">Éléments de contexte recueillis</div>
+              <div class="enig-msgs">
+                <div class="enig-msg">
+                  <div class="enig-msg-label">Yannick FERREIRA - Responsable montage</div>
+                  "On a eu des variations cette semaine avec la chaleur dans l'atelier. Rien d'alarmant selon moi, ça reste dans les clous. Les BX-4400 ont tendance à consommer plus quand il fait chaud."
+                </div>
+                <div class="enig-msg">
+                  <div class="enig-msg-label">Nathalie BRUNET - Responsable qualité</div>
+                  "Les mesures ont été effectuées le 17 mai dans les conditions habituelles. Le lot présente une dispersion globalement cohérente avec les conditions thermiques de l'atelier."
+                </div>
+                <div class="enig-msg">
+                  <div class="enig-msg-label">Note technique BX-4400 (Y. Ferreira - 17/05)</div>
+                  "Les boîtiers BX-4400-A peuvent présenter une augmentation de consommation jusqu'à +15% en environnement chaud (&gt;40 °C), sans impact fonctionnel."
+                </div>
+                <div class="enig-msg">
+                  <div class="enig-msg-label">Email Thales - Ph. BERNARD</div>
+                  "Nous avons été informés d'une anomalie qualité signalée en interne sur ce lot. Dans le contexte actuel, cela nous préoccupe au plus haut point."
+                </div>
+              </div>
+              <div class="enig-ref" style="margin-top:10px">
+                Rappel : le boîtier BX-4216 est destiné au programme classé Diffusion Restreinte - Thales Defence (réf. THA-REF-28471). La conformité qualité est critique avant expédition. À ce stade, rien ne relie cette anomalie de mesure à l'intrusion : vérifiez si elle mérite une préconisation de maintenance à part entière ou si elle détourne l'attention du vrai problème.
+              </div>
+            </div>
+
+            <!-- Analyse -->
+            <div class="enig-section">
+              <div class="enig-section-title">Espace d'analyse - Équipe</div>
+              <textarea id="enig-textarea" placeholder="Notez ici vos calculs et conclusions sur l'anomalie BX-4216..." style="width:100%;background:#0a0a0a;border:1px solid var(--bd2);color:var(--tx);padding:10px;font-size:13px;border-radius:5px;resize:none;height:100px;font-family:var(--font);outline:none;line-height:1.6" oninput="saveState()"></textarea>
+              <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <button onclick="validateAnalysis()" style="background:var(--red2);border:none;color:#fff;padding:7px 16px;font-size:12px;font-weight:600;border-radius:4px;cursor:pointer;font-family:var(--font);letter-spacing:.04em">VALIDER ANALYSE</button>
+                <button onclick="resetEnigme()" style="background:var(--s2);border:1px solid var(--bd);color:var(--tx3);padding:7px 16px;font-size:12px;border-radius:4px;cursor:pointer;font-family:var(--font)">Réinitialiser</button>
+                <span id="enig-status" style="font-size:11px;color:var(--tx4);font-family:var(--mono)"></span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- OSINT -->
+        <div class="panel" id="panel-osint">
+  <div class="enig-scroll">
+    <div style="display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--bd)">
+      <div style="flex:1">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.15em;color:var(--tx4);text-transform:uppercase">OSINT - Sources ouvertes</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-top:3px" id="osint-suspect-name"></div>
+      </div>
+      <div id="osint-risk-badge" style="font-size:10px;font-weight:700;padding:4px 12px;border-radius:3px;letter-spacing:.08em"></div>
+    </div>
+    <div id="osint-nav" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2px"></div>
+    <div id="osint-body"></div>
+        </div>
+        </div>
+
+        <!-- VERDICT -->
+        <div class="panel" id="panel-verdict">
+          <div class="enig-scroll">
+            <div class="enig-section">
+              <div class="enig-section-title">Rendre vos conclusions</div>
+              <div style="font-size:12px;color:var(--tx3);line-height:1.7;margin-bottom:14px">Répondez en équipe, à partir de ce que vous avez trouvé dans Mails, Enquête, DSI/Logs, Documents et OSINT. Une seule soumission : mettez-vous d'accord avant de valider.</div>
+
+              <div class="verdict-q">
+                <div class="verdict-q-title">1. Qui est l'employé dont le compte a facilité l'intrusion ?</div>
+                <div class="verdict-opts" id="vopts-1"></div>
+              </div>
+              <div class="verdict-q">
+                <div class="verdict-q-title">2. Quel a été le vecteur d'entrée initial de l'attaque ?</div>
+                <div class="verdict-opts">
+                  <label class="verdict-opt"><input type="radio" name="v2" value="a"> Un mail se faisant passer pour un recruteur Thales, avec pièce jointe piégée</label>
+                  <label class="verdict-opt"><input type="radio" name="v2" value="b"> Une clé USB piégée laissée dans les locaux</label>
+                  <label class="verdict-opt"><input type="radio" name="v2" value="c"> Un mot de passe faible deviné par force brute</label>
+                  <label class="verdict-opt"><input type="radio" name="v2" value="d"> Une négligence physique du gardien de nuit</label>
+                </div>
+              </div>
+              <div class="verdict-q">
+                <div class="verdict-q-title">3. Quelle adresse IP correspond au canal de communication réellement malveillant ?</div>
+                <div class="verdict-opts">
+                  <label class="verdict-opt"><input type="radio" name="v3" value="10.42.6.11"> 10.42.6.11</label>
+                  <label class="verdict-opt"><input type="radio" name="v3" value="20.42.73.18"> 20.42.73.18</label>
+                  <label class="verdict-opt"><input type="radio" name="v3" value="185.220.101.47"> 185.220.101.47</label>
+                </div>
+              </div>
+              <div class="verdict-q">
+                <div class="verdict-q-title">4. Quelle est la cause organisationnelle racine ayant permis la compromission de la passerelle ?</div>
+                <div class="verdict-opts">
+                  <label class="verdict-opt"><input type="radio" name="v4" value="a"> Un sabotage par le concurrent TechIndus Solutions</label>
+                  <label class="verdict-opt"><input type="radio" name="v4" value="b"> La vengeance d'un ancien salarié licencié</label>
+                  <label class="verdict-opt"><input type="radio" name="v4" value="c"> Le changement de fournisseur des cartes Raspberry Pi sans validation sécurité DSI</label>
+                  <label class="verdict-opt"><input type="radio" name="v4" value="d"> Une anomalie qualité non traitée sur le lot BX-4216</label>
+                </div>
+              </div>
+              <div class="verdict-q">
+                <div class="verdict-q-title">5. Quels leviers de manipulation humaine (VICE) ont été utilisés pour recruter cet employé ? (plusieurs réponses possibles)</div>
+                <div class="verdict-opts">
+                  <label class="verdict-opt"><input type="checkbox" name="v5" value="Vanité"> Vanité</label>
+                  <label class="verdict-opt"><input type="checkbox" name="v5" value="Idéologie"> Idéologie</label>
+                  <label class="verdict-opt"><input type="checkbox" name="v5" value="Contrainte"> Contrainte</label>
+                  <label class="verdict-opt"><input type="checkbox" name="v5" value="Espèces"> Espèces</label>
+                </div>
+              </div>
+
+              <button onclick="submitVerdict()" style="background:var(--red2);border:none;color:#fff;padding:9px 22px;font-size:13px;font-weight:700;border-radius:5px;cursor:pointer;font-family:var(--font);letter-spacing:.04em;margin-top:6px">VALIDER VOS CONCLUSIONS</button>
+              <div id="verdict-result"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-bg" id="doc-modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal-box"><div id="doc-content"></div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <a id="doc-download" class="modal-close" href="#" download style="margin-top:0;text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:var(--s3);border-color:var(--bd2);color:var(--tx)">Télécharger le PDF</a>
+      <button class="modal-close" style="margin-top:0" onclick="document.getElementById('doc-modal').classList.remove('show')">Fermer</button>
+    </div>
+  </div>
+</div>
+<div class="modal-bg" id="suspect-modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal-box"><div id="suspect-content"></div><button class="modal-close" onclick="document.getElementById('suspect-modal').classList.remove('show')">Fermer</button></div>
+</div>
+
+<!-- TOAST -->
+<div id="toast">
+  <div id="toast-icon"></div>
+  <div id="toast-text"><div class="title"></div><div class="body"></div></div>
+  <button id="toast-close" onclick="this.parentElement.classList.remove('show')">X</button>
+</div>
+
+<!-- ANIMATOR -->
+<div id="anim-panel">
+  <div class="anim-panel-title">Panneau animateur <button class="btn-anim-close" onclick="this.closest('#anim-panel').classList.remove('show')">X</button></div>
+
+  <div class="anim-section-label">Chrono de mission</div>
+  <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px">
+    <input type="number" id="anim-duration" value="150" min="5" max="600" style="width:64px;background:#0a0a0a;border:1px solid var(--bd2);color:var(--tx);padding:6px 8px;font-size:12px;border-radius:4px;font-family:var(--font)">
+    <span style="font-size:11px;color:var(--tx3)">minutes</span>
+  </div>
+  <div style="display:flex;gap:6px">
+    <button class="btn-anim-ransom" style="margin-top:0;width:auto;flex:1" onclick="setSessionTimer(parseInt(document.getElementById('anim-duration').value)||150)">Régler</button>
+    <button class="btn-anim-ransom" style="margin-top:0;width:auto;flex:1" onclick="toggleSessionTimer()">Démarrer/Pause</button>
+  </div>
+
+  <div class="anim-section-label">Relance</div>
+  <button class="btn-anim-ransom" onclick="toast('!','Nouvelle alerte DSI','Le volume de données transférées vers l\'adresse externe vient d\'augmenter. La DSI demande une priorisation rapide.')">Injecter une relance (alerte DSI)</button>
+
+  <div class="anim-section-label">Corrigé (usage prof)</div>
+  <button class="btn-anim-ransom" onclick="toggleAnimSolution()">Afficher / masquer la solution</button>
+  <div id="anim-solution" class="anim-solution"></div>
+
+  <div class="anim-section-label">Session</div>
+  <button class="btn-anim-ransom" onclick="resetMission()">Réinitialiser la mission (efface la progression locale)</button>
+
+  <div class="anim-note">Usage exclusif animateur</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+
+const MAILS = [
+  {
+    id:'dir01',from:'R. LAMBERT - Direction',email:'r.lambert@elecarm.fr',
+    to:'equipe@elecarm.fr',subject:'[URGENT] Alerte sécurité DSI - consignes immédiates',
+    time:'07:02',date:'19 mai 2026',unread:false,urgent:false,visible:true,
+    body:`<p>Équipe,</p>
+<p>La DSI a détecté cette nuit un flux de données suspect depuis la passerelle de télémaintenance des boîtiers BX-4400 (BX-GATEWAY-07) vers une adresse IP externe non identifiée. La surveillance est active depuis 08h00 ce matin.</p>
+<p><strong>Consignes immédiates :</strong></p>
+<ul>
+<li>Ne pas éteindre ni redémarrer les postes ou la passerelle concernée</li>
+<li>Tous les accès doivent continuer à être journalisés normalement</li>
+<li>Aucune communication externe sans validation de ma part</li>
+<li>Réunion de crise à 10h00 salle de conférence</li>
+</ul>
+<p>Je suis joignable en permanence au 06 12 34 56 78.</p>
+<p>R. LAMBERT<br>Directeur Général - ELECARM SAS</p>`
+  },
+  {
+    id:'nb01',from:'Nathalie BRUNET',email:'n.brunet@elecarm.fr',
+    to:'direction@elecarm.fr',subject:'Rapport contrôle lot S42 - mesures semaine 42',
+    time:'07:45',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Bonjour,</p>
+<p>Comme convenu je vous transmets le rapport de contrôle complet du lot BX-4400-A (série semaine 42) en vue de l'expédition vers Thales.</p>
+<p>Les mesures ont été effectuées le 17 mai. Voici les données brutes :</p>
+<table class="data-table">
+<thead><tr><th>N° boîtier</th><th>Intensité (A)</th><th>Puissance (W)</th><th>Temp (°C)</th></tr></thead>
+<tbody>
+<tr><td>BX-4211</td><td>0,79</td><td>18,9</td><td>32</td></tr>
+<tr><td>BX-4212</td><td>0,83</td><td>19,9</td><td>34</td></tr>
+<tr><td>BX-4213</td><td>0,88</td><td>21,1</td><td>36</td></tr>
+<tr><td>BX-4214</td><td>0,76</td><td>18,2</td><td>30</td></tr>
+<tr><td>BX-4215</td><td>0,91</td><td>21,8</td><td>41</td></tr>
+<tr><td>BX-4216</td><td>1,12</td><td>26,9</td><td>33</td></tr>
+<tr><td>BX-4217</td><td>0,87</td><td>20,8</td><td>37</td></tr>
+<tr><td>BX-4218</td><td>0,81</td><td>19,4</td><td>35</td></tr>
+<tr><td>BX-4219</td><td>0,93</td><td>22,3</td><td>44</td></tr>
+</tbody>
+</table>
+<p>Valeur nominale : 0,8 A - Tolérance interne : +/- 10% (0,72 à 0,88 A)</p>
+<p>Le lot présente une dispersion globalement cohérente avec les conditions thermiques de l'atelier cette semaine (chaleur inhabituelle). J'attends votre décision sur la suite.</p>
+<p>N. BRUNET<br>Responsable Qualité - ELECARM SAS</p>`
+  },
+  {
+    id:'mont01',from:'Yannick FERREIRA - Montage',email:'y.ferreira@elecarm.fr',
+    to:'n.brunet@elecarm.fr',subject:'Re: mesures lot S42',
+    time:'07:52',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Nathalie,</p>
+<p>On a eu pas mal de variations cette semaine avec la chaleur dans l'atelier. Rien d'alarmant selon moi, ça reste dans les clous.</p>
+<p>Les boîtiers BX-4400 ont tendance à consommer un peu plus quand il fait chaud, c'est connu depuis le lot S38. On avait eu des mesures similaires en août dernier sans conséquence.</p>
+<p>Merci d'éviter les blocages inutiles en contrôle final, on est déjà sous tension côté client.</p>
+<p>Yannick</p>`
+  },
+  {
+    id:'renault01',from:'RENAULT SAS - Achats',email:'commandes@renault-achats.fr',
+    to:'commercial@elecarm.fr',subject:'Commande REN-2026-1847 - suivi livraison',
+    time:'08:05',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Bonjour,</p>
+<p>Nous n'avons toujours pas reçu de confirmation d'expédition pour notre commande REN-2026-1847 (24 coffrets standard 400V, échéance 22 mai).</p>
+<p>Pourriez-vous nous confirmer le statut ? Nos chaînes de production dépendent de cette livraison.</p>
+<p>Cdlt,<br>Service Achats Industriels<br>RENAULT SAS</p>`
+  },
+  {
+    id:'it01',from:'IT-ELECARM [noreply]',email:'it-notifications@elecarm-sys.net',
+    to:'tous@elecarm.fr',subject:'[Action requise] Mise à jour sécurité - cliquez pour valider',
+    time:'08:22',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Bonjour,</p>
+<p>Une mise à jour de sécurité critique est disponible pour vos postes de travail.</p>
+<p>Pour maintenir l'accès aux ressources réseau, veuillez <strong>valider votre identité</strong> en cliquant sur le lien ci-dessous avant 12h00 :</p>
+<p style="text-align:center;margin:16px 0"><span onclick="window.open('portal.html','_blank')" style="background:#1c1c1c;color:#d4d4d4;padding:10px 20px;border-radius:5px;display:inline-block;cursor:pointer;text-decoration:underline;text-underline-offset:3px">Valider mon compte - elecarm-secure-portal.net</span></p>
+<p style="font-size:12px;color:var(--tx3)">Ce message a été envoyé automatiquement par le système de gestion IT. Ne pas répondre directement.</p>
+<div style="margin-top:12px;padding:10px;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:5px;font-size:12px;color:#888">
+&#9888; ATTENTION ANIMATEUR : Ceci est un mail de PHISHING. Le domaine "elecarm-sys.net" est faux (le vrai est elecarm.fr). Le lien "elecarm-secure-portal.net" est un site piège. Les étudiants ne doivent PAS cliquer.
+</div>`
+  },
+  {
+    id:'thales01',from:'Philippe BERNARD - Thales Defence',email:'p.bernard@thalesgroup.com',
+    to:'r.lambert@elecarm.fr',subject:'URGENT - Retard commande THA-REF-28471 - suite requise',
+    time:'12:00',date:'19 mai 2026',unread:true,urgent:true,visible:true,
+    hasAttachment:true,attachmentName:'Recap_Commande_THA-REF-28471_v2.5.xlsx',
+    body:`<p>Monsieur LAMBERT,</p>
+<p>Nous avons été informés de l'alerte de sécurité en cours chez vous. Avant tout, nous espérons que la situation reste maîtrisée de votre côté.</p>
+<p>Néanmoins, nous devons aborder la situation contractuelle avec transparence.</p>
+<p>La commande <strong>THA-REF-28471</strong> (lot BX-4400-A, 24 unités) est attendue pour le <strong>vendredi 23 mai</strong>. Ces composants entrent dans un programme de modernisation de systèmes de guidage classifié Diffusion Restreinte. Tout retard a des conséquences directes sur notre calendrier de livraison DGA.</p>
+<p>Nous avons par ailleurs été informés d'une anomalie qualité signalée en interne sur ce lot. Dans le contexte actuel, cela nous préoccupe au plus haut point.</p>
+<p>Pourriez-vous confirmer :</p>
+<ol>
+<li>Le statut de fabrication du lot avant l'incident</li>
+<li>La date de livraison révisée envisageable</li>
+<li>Le statut du contrôle qualité (conformité ou non)</li>
+</ol>
+<p>Je joins le récapitulatif de commande pour référence.</p>
+<p><strong>Philippe BERNARD</strong><br>Responsable achats industriels<br>Thales Defence Systems - Division Systèmes de guidage<br>T : 01 57 32 14 67</p>`
+  },
+  {
+    id:'julien_norm01',from:'Marc DURAND',email:'m.durand@elecarm.fr',
+    to:'j.moreau@elecarm.fr',subject:'Demande accès VPN - semaine prochaine',
+    time:'14:30',date:'14 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Julien, bonjour.</p>
+<p>La semaine prochaine je dois travailler depuis mon domicile jeudi et vendredi (convocation tribunal pour un litige locatif - rien de grave).</p>
+<p>Tu peux m'ouvrir un accès VPN pour ces 2 jours ? Mes identifiants réseau habituels suffisent ou il faut une config spécifique ?</p>
+<p>Merci d'avance.</p>
+<p>Marc</p>`
+  },
+  {
+    id:'julien_norm02',from:'R. LAMBERT - Direction',email:'r.lambert@elecarm.fr',
+    to:'j.moreau@elecarm.fr',subject:'Rapport disponibilité serveurs - demande Thales avant le 20 mai',
+    time:'11:00',date:'12 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Julien,</p>
+<p>Thales nous demande un rapport de disponibilité sur nos serveurs documentaires pour les 3 derniers mois, avant le 20 mai.</p>
+<p>Pouvez-vous me transmettre :</p>
+<ul>
+<li>Stats de disponibilité (uptime) des serveurs critiques</li>
+<li>Liste des incidents et interventions sur cette période</li>
+<li>Plages de maintenance planifiées pour juin-juillet</li>
+</ul>
+<p>Merci pour votre retour avant vendredi.</p>
+<p>R. LAMBERT<br>Directeur Général - ELECARM SAS</p>`
+  },
+  {
+    id:'julien_norm03',from:'Julien MOREAU (DSI)',email:'j.moreau@elecarm.fr',
+    to:'support@sigma-tech.fr',subject:'Re: Renouvellement licence antivirus - devis 2026',
+    time:'09:00',date:'7 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour,</p>
+<p>Votre devis est bien reçu et semble conforme à notre attente pour le renouvellement.</p>
+<p>Je transmets pour validation budgétaire à la direction. Sous réserve de leur accord, vous pourrez nous adresser la facture proforma directement.</p>
+<p>Je reviendrai vers vous en fin de semaine.</p>
+<p>Cordialement,<br>Julien MOREAU<br>Responsable DSI - ELECARM SAS<br>T : 04 54 21 87 30</p>`
+  },
+  {
+    id:'marc_norm01',from:'Yannick FERREIRA - Montage',email:'y.ferreira@elecarm.fr',
+    to:'m.durand@elecarm.fr',subject:'Ordre Renault - besoin de toi ce soir',
+    time:'08:30',date:'17 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Salut Marc,</p>
+<p>On a un retard sur la commande Renault (REN-2026-1847). Les 24 coffrets doivent partir vendredi au plus tard, on est serrés.</p>
+<p>Est-ce que tu peux passer en heures sup ce soir et finir le câblage sur les 6 derniers ?</p>
+<p>Je te laisse les schémas sur ton établi. Appelle-moi si t'as un doute sur les plans.</p>
+<p>Merci d'avance !</p>
+<p>Yannick</p>`
+  },
+  {
+    id:'marc_norm02',from:'Marc DURAND',email:'m.durand@elecarm.fr',
+    to:'y.ferreira@elecarm.fr',subject:'Re: Ordre Renault - besoin de toi ce soir',
+    time:'09:15',date:'17 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Yannick,</p>
+<p>Pas de souci, je peux rester jusqu'à 22h ce soir.</p>
+<p>Tu me mets les coffrets 19 à 24 sur mon établi ? Et si la direction peut commander des pizzas ça serait sympa.</p>
+<p>À toute.</p>
+<p>Marc</p>`
+  },
+  {
+    id:'mandat01',from:'R. LAMBERT - Direction',email:'r.lambert@elecarm.fr',
+    to:'audit-externe@elecarm.fr',subject:'[MANDAT] Directive Ministère de l\'Intérieur - Rapport sous 15 jours',
+    time:'08:40',date:'19 mai 2026',unread:true,urgent:true,visible:true,
+    body:`<p>Bonjour,</p>
+<p>Suite à la circulaire du Ministère de l'Intérieur (réf. MININT-DGSI-2026-0517) reçue hier soir, tous les sous-traitants de l'industrie de la défense doivent produire sous 15 jours un rapport d'analyse de sécurité complet : diagnostic des vulnérabilités et préconisations correctives. Compte tenu des événements de cette nuit, ELECARM SAS est directement concernée.</p>
+<p>Je mandate votre cabinet, en tant qu'auditeurs externes indépendants, pour mener cette analyse. Vous avez accès à l'ensemble de nos messageries, aux journaux système (Wazuh), aux dossiers du personnel et à la documentation technique. Le service DSI est instruit de coopérer pleinement.</p>
+<p><strong>Échéance : rapport attendu pour le 3 juin 2026 au plus tard.</strong> Le texte intégral de la directive ministérielle est disponible dans l'onglet Documents.</p>
+<p>Je reste à votre disposition.</p>
+<p>R. LAMBERT<br>Directeur Général - ELECARM SAS</p>`
+  },
+  {
+    id:'rh_cv01',from:'S. MARCHAND - RH',email:'s.marchand@elecarm.fr',
+    to:'recrutement@elecarm.fr',subject:'Candidature reçue - poste Technicien maintenance',
+    time:'09:10',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    hasAttachment:true,attachmentName:'CV_Candidat_Dupont_L.pdf',
+    body:`<p>Bonjour,</p>
+<p>Nouvelle candidature reçue ce matin pour le poste de technicien de maintenance ouvert depuis avril. CV en pièce jointe.</p>
+<p>Profil intéressant, 6 ans d'expérience en industrie. À faire suivre au service concerné pour un premier tri.</p>
+<p>S. MARCHAND<br>Service RH - ELECARM SAS</p>`
+  },
+  {
+    id:'qualite_iso01',from:'AFNOR Certification',email:'contact@afnor-certification.fr',
+    to:'n.brunet@elecarm.fr',subject:'Attestation de renouvellement ISO 9001 - 2026',
+    time:'08:15',date:'19 mai 2026',unread:false,urgent:false,visible:true,
+    hasAttachment:true,attachmentName:'Attestation_ISO9001_ELECARM_2026.pdf',
+    body:`<p>Madame BRUNET,</p>
+<p>Veuillez trouver ci-joint votre attestation de renouvellement de certification ISO 9001:2026, suite à l'audit de surveillance réalisé en février.</p>
+<p>Cordialement,<br>AFNOR Certification</p>`
+  },
+  {
+    id:'suspicion_robert01',from:'Yannick FERREIRA - Montage',email:'y.ferreira@elecarm.fr',
+    to:'equipe@elecarm.fr',subject:'Question un peu délicate',
+    time:'09:40',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Bonjour à tous,</p>
+<p>Je sais pas trop si c'est le bon moment ni le bon canal, mais... est-ce que quelqu'un a pensé à Antoine ROBERT ?</p>
+<p>Il est parti très remonté en mars après son licenciement, il en voulait vraiment beaucoup à la direction. Je dis pas que c'est lui, hein, mais avec ce qui se passe ça m'a traversé l'esprit. Je préfère le dire tout haut plutôt que d'y penser tout seul dans mon coin.</p>
+<p>Yannick</p>`
+  },
+  {
+    id:'rh_robert01',from:'S. MARCHAND - RH',email:'s.marchand@elecarm.fr',
+    to:'equipe@elecarm.fr',subject:'Re: Question un peu délicate',
+    time:'10:10',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    hasAttachment:true,attachmentName:'Fiche_Sortie_ROBERT_A_mars2026.pdf',
+    body:`<p>Bonjour Yannick, bonjour à tous,</p>
+<p>Je comprends la question mais je peux vous rassurer sur ce point précis. Le départ de M. ROBERT en mars a effectivement été conflictuel, mais la procédure de sortie standard a été appliquée intégralement le jour même : badge désactivé, compte Active Directory désactivé, accès VPN révoqué. Aucune réactivation depuis, aucun contact de sa part avec la DSI ou les RH.</p>
+<p>Je joins la fiche de sortie signée pour traçabilité.</p>
+<p>Merci de rester factuels sur ce genre de sujet, surtout dans le contexte actuel.</p>
+<p>S. MARCHAND<br>Service RH - ELECARM SAS</p>`
+  },
+  {
+    id:'techindus_rumor01',from:'Nathalie BRUNET',email:'n.brunet@elecarm.fr',
+    to:'equipe@elecarm.fr',subject:'Et si c\'était TechIndus ?',
+    time:'09:05',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Bonjour,</p>
+<p>Question peut-être naïve, mais est-ce que ça pourrait venir de TechIndus Solutions ? Ça fait deux fois qu'on entend parler d'eux ces derniers mois, et on avait reçu une note de vigilance à leur sujet en avril (voir onglet Documents).</p>
+<p>Je me demande si ce ne serait pas plutôt une histoire de concurrence déloyale qu'un truc totalement externe.</p>
+<p>Nathalie</p>`
+  },
+  {
+    id:'nathalie_norm01',from:'Nathalie BRUNET',email:'n.brunet@elecarm.fr',
+    to:'y.ferreira@elecarm.fr',subject:'Re: mesures lot S42 - on se cale quand ?',
+    time:'10:30',date:'15 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Yannick,</p>
+<p>OK pour les mesures samedi matin. Je serai là à 8h30, le temps que l'atelier soit à température normale.</p>
+<p>Tu me laisses les BX-4400 sur la table de contrôle stp ? Et dis à Marc de pas toucher aux branchements avant que j'aie terminé.</p>
+<p>Je ferai un rapport complet pour Thales dans la foulée - ils veulent voir les mesures avant l'expédition.</p>
+<p>À samedi !</p>
+<p>Nathalie</p>`
+  },
+  {
+    id:'nathalie_norm02',from:'Thales Defence - Service Qualité',email:'qualite@thalesgroup.com',
+    to:'n.brunet@elecarm.fr',subject:'Audit qualité programme semaine 21',
+    time:'09:00',date:'14 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Madame BRUNET,</p>
+<p>Suite à nos échanges, nous confirmons la venue de notre équipe qualité pour l'audit du lot BX-4400-A la semaine du 19 mai.</p>
+<p>Notre équipe sera composée de 2 personnes. Merci de préparer :</p>
+<ul>
+<li>Registre de contrôle des 6 derniers mois</li>
+<li>Rapport de mesures électriques lot S42</li>
+<li>Fiche technique BX-4400-A à jour</li>
+</ul>
+<p>N'hésitez pas si vous avez des questions avant notre visite.</p>
+<p>Bien cordialement,<br>Service Qualité Fournisseurs<br>Thales Defence Systems</p>`
+  },
+  {
+    id:'nathalie_norm03',from:'Nathalie BRUNET',email:'n.brunet@elecarm.fr',
+    to:'r.lambert@elecarm.fr',subject:'Connexion tardive le 17 mai - pour info',
+    time:'08:05',date:'19 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour,</p>
+<p>Petite précision suite à la question de l'audit : je me suis reconnectée à la base qualité depuis mon domicile le 17 mai en soirée, vers 22h, via le VPN standard, pour finaliser le rapport de mesures avant l'audit Thales du 19. Rien d'inhabituel de mon côté, juste une soirée chargée.</p>
+<p>Je le mentionne par transparence, vu le contexte.</p>
+<p>Nathalie</p>`
+  },
+  {
+    id:'spearphish01',from:'Marine FONTAINE - Thales Defence RH',email:'m.fontaine@thales-defence.net',
+    to:'j.moreau@elecarm.fr',subject:'[Confidentiel] Mission expertise DSI - Partenaire Thales Defence',
+    time:'09:47',date:'2 mai 2026',unread:true,urgent:false,visible:false,
+    isForensic:true,
+    hasAttachment:true,attachmentName:'Questionnaire_Technique_Thales_SENTINEL7_v1.docm',
+    body:`<div style="background:#0d0d0d;border:1px solid #2a2a2a;border-radius:5px;padding:10px 14px;margin-bottom:18px;display:flex;align-items:flex-start;gap:10px">
+  <div style="font-size:11px;color:#888;line-height:1.6"><strong style="color:#aaa">FORENSIC - Boîte de réception j.moreau@elecarm.fr</strong><br>Email récupéré lors de l'analyse forensic du poste WS-MOREAU-01. Reçu le 02/05/2026 à 09h47. Cet email est le vecteur initial de l'attaque - il n'a jamais été signalé à la direction.</div>
+</div>
+<p>Bonjour Monsieur MOREAU,</p>
+<p>Je me permets de vous contacter suite à la consultation de votre profil professionnel. Dans le cadre d'une mission technique confidentielle pour <strong>Thales Defence Systems</strong>, nous recherchons actuellement un expert DSI disposant d'une expérience concrète en sous-traitance industrielle critique.</p>
+<p>Votre parcours de 5 ans chez <strong>ELECARM SAS</strong> - sous-traitant de confiance Thales sur les systèmes de câblage armement - correspond exactement au profil requis pour notre programme <strong>SENTINEL-7</strong> (évaluation de sécurité des systèmes de contrôle d'accès et de supervision industrielle, sites Région Centre).</p>
+<p><strong>Conditions de la mission :</strong></p>
+<ul>
+<li>Durée : 3 semaines (mai - juin 2026)</li>
+<li>Format : consultant externe, sans impact sur votre poste actuel</li>
+<li>Rémunération nette : <strong style="color:#fff">4 800 EUR / semaine + frais remboursés</strong></li>
+<li>Entretien technique vidéo prévu semaine du 5 mai 2026</li>
+<li>NDA signé avant entretien (procédure standard)</li>
+</ul>
+<p>Afin de valider votre profil technique et planifier l'entretien, merci de consulter et de retourner le questionnaire joint avant le <strong>vendredi 5 mai 2026</strong>.</p>
+<p style="font-size:12px;color:var(--tx3);background:var(--s2);border-left:2px solid var(--bd2);padding:8px 12px;border-radius:3px">Ce document est strictement confidentiel. La procédure de recrutement exige de ne pas en informer votre employeur à ce stade - tout contact prématuré invaliderait votre candidature et pourrait compromettre le programme.</p>
+<p>Je reste disponible pour répondre à vos questions en amont.<br><br>Cordialement,<br><strong>Marine FONTAINE</strong><br>Chargée de recrutement technique - Ops RH<br>Thales Defence Systems<br>T : +33 1 57 32 99 41<br>m.fontaine@thales-defence.net</p>`
+  }
+];
+
+const SUSPECTS = [
+  {photo:'face1.jpg',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',name:'Marc DURAND',role:'Technicien de production',age:'41 ans - 8 ans d\'ancienneté',osintBtn:true,osintId:'durand',
+   access:['Atelier','Magasin pièces','Aucun accès informatique ni administratif'],
+   detail:'Technicien de production sans accès aux systèmes informatiques ni à la passerelle de télémaintenance. Aucune connexion, ticket ou email suspect associé à son compte. Profil écarté tôt dans l\'audit, gardé comme référence de comparaison.'},
+  {photo:'face2.jpg',initials:'KB',bg:'#7f1d1d',tc:'#fca5a5',name:'Karim BENYOUCEF',role:'Magasinier',age:'29 ans - 3 ans d\'ancienneté',osintBtn:true,osintId:'benyoucef',
+   access:['Stocks matériels finis','ERP stocks','Aucun accès informatique ni administratif'],
+   detail:'Dettes personnelles signalées en interne en 2025 (fichier RH). Mais aucun accès informatique, aucune connexion suspecte, aucun ticket ou email associé à son compte : le motif seul ne suffit pas sans accès ni opportunité.'},
+  {photo:'face5.avif',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',name:'Julien MOREAU',role:'Responsable DSI',age:'36 ans - 5 ans d\'ancienneté',osintBtn:true,osintId:'moreau',
+   access:['Admin complet tous systèmes','Accès passerelle télémaintenance BX','VPN admin'],
+   detail:'Accès administrateur sur l\'intégralité des systèmes. A validé des interventions sur la passerelle de télémaintenance des boîtiers BX-4400 le 15 mai, sans ticket de maintenance associé. Son poste (WS-MOREAU-01) est au centre de plusieurs alertes DSI non signalées. Comportement inhabituel ce matin. Messagerie interne au ton ambigu (voir Documents).'},
+  {photo:'face4.jpg',initials:'NB',bg:'#1c1c1c',tc:'#d4d4d4',name:'Nathalie BRUNET',role:'Responsable qualité',age:'44 ans - 11 ans d\'ancienneté',osintBtn:true,osintId:'brunet',
+   access:['Atelier contrôle','Base données qualité','Rapports Thales'],
+   detail:'A signalé et transmis l\'anomalie BX-4216 correctement. Présente depuis 07h30. Coopérante. Historique irréprochable. Sa connexion tardive à la base qualité le 17 mai est expliquée dans sa boîte mail (VPN standard, préparation du rapport avant l\'audit Thales).'},
+  {photo:'face3.jpg',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',name:'Pierre THIERRY',role:'Gardien de nuit',age:'52 ans - 2 ans d\'ancienneté',osintBtn:true,osintId:'thierry',
+   access:['Badge entrée périmètre','Registre des visiteurs','Aucun accès informatique'],
+   detail:'Témoin clé plutôt que suspect direct : il confirme avoir laissé entrer, sans vérification particulière, un "technicien de maintenance" venu remplacer du matériel sur la passerelle de télémaintenance début mai. Il pensait à une intervention planifiée. Aucune trace de cette visite dans le registre officiel des prestataires. Interrogé sur le sujet, il a renvoyé l\'équipe vers le DSI : "je touche pas à ça, demandez au DSI".'},
+  {initials:'CR',bg:'#1c1c1c',tc:'#d4d4d4',name:'Camille ROUSSEAU',role:'Assistante commerciale',age:'27 ans - 2 ans d\'ancienneté',osintBtn:true,osintId:'rousseau',
+   access:['Espace commercial','Messagerie clients','Aucun accès atelier ni systèmes'],
+   detail:'Membre active d\'un collectif militant contre les exportations d\'armement, ce qui a interpellé l\'équipe d\'audit au vu du secteur d\'activité d\'ELECARM. En congé posé depuis le 15 mai (justificatif RH vérifié). Aucun accès technique aux systèmes informatiques.'},
+  {initials:'TV',bg:'#1c1c1c',tc:'#d4d4d4',name:'Thomas VASSEUR',role:'Technicien de maintenance',age:'33 ans - 8 mois d\'ancienneté',osintBtn:true,osintId:'vasseur',
+   access:['Atelier','Local technique','Aucun accès système d\'alarme'],
+   detail:'Recruté en septembre 2025, son CV présente une période non expliquée entre 2023 et 2024. Récemment arrivé, encore peu intégré à l\'équipe. Aucun élément ne le relie directement aux faits : son planning de badge ne montre aucun passage en dehors de ses horaires habituels.'},
+  {initials:'FH',bg:'#1c1c1c',tc:'#d4d4d4',name:'Farid HADDAD',role:'Responsable Achats',age:'48 ans - 9 ans d\'ancienneté',osintBtn:true,osintId:'haddad',
+   access:['ERP Achats','Relations fournisseurs','Aucun accès système d\'alarme ni SI'],
+   detail:'Déplacements professionnels fréquents en Chine (sourcing composants électroniques) et voyages personnels réguliers en Irak où vit une partie de sa famille. Aucun de ces déplacements ne coïncide avec les dates des faits. A validé le changement de fournisseur des passerelles Raspberry Pi (voir note Achats) sans faire remonter le dossier à la DSI pour validation sécurité.'}
+];
+
+const LOGS = [
+  // FAUX POSITIFS
+  {phase:'Activité normale - bruit de fond',phaseColor:'#111',phaseTc:'#444',
+   t:'12/05  09h00',agent:'WS-BRUNET',lv:'INFO',lc:'#111',ltc:'#555',
+   desc:'Mise à jour Windows automatique téléchargée et installée sur le poste de N. BRUNET. Rien d\'anormal - maintenance planifiée.',
+   mitre:[],vis:true},
+  {t:'17/05  14h22',agent:'IMPRIMANTE',lv:'INFO',lc:'#111',ltc:'#555',
+   desc:'Mise à jour automatique du firmware de l\'imprimante HP LaserJet M507. Planifié, rien d\'anormal.',
+   mitre:[],vis:true},
+  {t:'17/05  22h01',agent:'WS-BRUNET',lv:'VIGILANCE',lc:'#1c1c1c',ltc:'#888',
+   desc:'Connexion hors-horaires détectée : N. BRUNET se connecte à la base de données qualité à 22h01 - Session de 47 minutes sur les fichiers lot S42. Justifiée a posteriori : préparation du rapport de contrôle.',
+   mitre:['T1078'],vis:true},
+  {t:'19/05  06h30',agent:'SRV-BACKUP',lv:'INFO',lc:'#111',ltc:'#555',
+   desc:'Sauvegarde automatique du serveur complétée avec succès - 24.3 Go sauvegardées - Durée : 2h14 - Statut OK.',
+   mitre:[],vis:true},
+  {t:'12/05  16h40',agent:'BADGE-ATELIER',lv:'INFO',lc:'#111',ltc:'#555',
+   desc:'Passage badge de T. VASSEUR en dehors de ses horaires habituels (16h40 au lieu de 17h00) - Écart de quelques minutes, cohérent avec les horaires flexibles de l\'atelier. Rien à signaler.',
+   mitre:[],vis:true},
+
+  // PHASE 1 - RECON
+  {phase:'Phase 1 - Reconnaissance du réseau (28-29 avril)',phaseColor:'#161616',phaseTc:'#666',
+   t:'28/04  14h32',agent:'WS-MOREAU',lv:'SUSPECT',lc:'#1a1a1a',ltc:'#888',
+   desc:'Depuis ce poste : commande lancée pour lister TOUTES les machines du réseau interne ELECARM. Quelqu\'un cartographie le réseau depuis l\'intérieur.',
+   mitre:['T1087'],vis:true},
+  {t:'28/04  14h33',agent:'WS-MOREAU',lv:'SUSPECT',lc:'#1a1a1a',ltc:'#888',
+   desc:'Recherches en rafale depuis ce poste : elecarm.fr, profils LinkedIn, annuaires d\'entreprises - 6 requêtes en 2 secondes. Profil de collecte d\'informations sur ELECARM (OSINT).',
+   mitre:['T1591'],vis:true},
+  {t:'29/04  09h14',agent:'WS-MOREAU',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
+   desc:'Script PowerShell caché et encodé exécuté depuis ce poste - Analyse des connexions réseau actives + téléchargement de code depuis un site externe. Comportement malveillant probable.',
+   mitre:['T1059','T1105'],vis:true},
+
+  // PHASE 2 - INITIAL ACCESS
+  {phase:'Phase 2 - Accès initial par email piégé (2 mai)',phaseColor:'#1a0a00',phaseTc:'#dc2626',
+   t:'02/05  16h41',agent:'MESSAGERIE',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
+   desc:'Email suspect reçu et ouvert par j.moreau - Pièce jointe Word avec macro malveillante activée - Expéditeur : m.fontaine@thales-defence.net. Domaine USURPÉ : le vrai domaine Thales est thalesgroup.com.',
+   mitre:['T1566'],vis:true},
+  {t:'02/05  16h43',agent:'WS-MOREAU',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
+   desc:'Word ouvre automatiquement un terminal caché et exécute du code malveillant (dropper PowerShell). Comportement de logiciel malveillant confirmé sur ce poste.',
+   mitre:['T1566','T1059'],vis:true},
+  {t:'02/05  16h44',agent:'WS-MOREAU',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
+   desc:'Connexion établie entre ce poste et un serveur en Roumanie (réseau TOR anonyme). Signal envoyé toutes les 60 secondes : le poste est désormais sous contrôle à distance.',
+   mitre:['T1071','T1573'],vis:true},
+
+  // PHASE 3 - PERSISTANCE + EXFIL
+  {phase:'Phase 3 - Persistance et vol de données (3-18 mai)',phaseColor:'#1a0a00',phaseTc:'#dc2626',
+   t:'03/05  02h17',agent:'WS-MOREAU',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
+   desc:'847 Mo de données transférées vers un serveur externe entre 02h17 et 06h29 (en pleine nuit) - Flux chiffré et camouflé. Exfiltration probable de données confidentielles ELECARM.',
+   mitre:['T1041'],vis:true},
+  {t:'08/05  23h44',agent:'WS-MOREAU',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
+   desc:'Connexion à distance (RDP) depuis ce poste vers le SERVEUR DE SUPERVISION DES PASSERELLES BX - Accès non autorisé, hors périmètre habituel. Quelqu\'un explore la configuration des passerelles de télémaintenance.',
+   mitre:['T1078','T1021'],vis:true},
+  {t:'07/05  04h00',agent:'BX-GATEWAY-07',lv:'VIGILANCE',lc:'#1c1c1c',ltc:'#888',
+   desc:'Connexion sortante vers 20.42.73.18 - Service externe identifié : synchronisation horaire Microsoft Azure NTP, documenté dans la configuration d\'origine. Volume 40 Ko, cohérent avec un usage normal.',
+   mitre:[],vis:true},
+  {t:'09/05  03h12',agent:'BX-GATEWAY-07',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
+   desc:'Connexion sortante depuis la passerelle de télémaintenance des boîtiers BX-4400 vers une adresse IP externe non répertoriée (185.220.101.47). L\'adresse de supervision interne officielle (10.42.6.11) reste également active en parallèle.',
+   mitre:['T1071'],vis:true},
+  {t:'14/05  02h58',agent:'BX-GATEWAY-07',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
+   desc:'528 Mo transférés vers 185.220.101.47 en pleine nuit. Volume anormal pour une passerelle de supervision qui ne remonte habituellement que quelques Mo de télémétrie.',
+   mitre:['T1041'],vis:true},
+  {t:'15/05  23h14',agent:'SRV-DC',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
+   desc:'3 tentatives de connexion VPN depuis un nœud TOR en Roumanie avec le compte jmoreau. Le verrou de compte automatique avait été désactivé - quelqu\'un essaie d\'entrer depuis l\'extérieur.',
+   mitre:['T1133'],vis:true},
+  {t:'18/05  23h01',agent:'WS-MOREAU',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
+   desc:'Outil de vol de mots de passe exécuté sur ce poste - La mémoire du système d\'authentification Windows est extraite. Tous les mots de passe du réseau sont potentiellement compromis.',
+   mitre:['T1003'],vis:true},
+  {t:'18/05  23h40',agent:'BX-GATEWAY-07',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
+   desc:'Nouveau transfert vers 185.220.101.47, le plus volumineux observé à ce jour (601 Mo). La passerelle BX-GATEWAY-07 a été déployée le 2 mai, en même temps que le changement de fournisseur des cartes Raspberry Pi (voir note Achats, onglet Documents).',
+   mitre:['T1071','T1105'],vis:true},
+];
+
+
+const DOCS = [
+  {id:'ministere',icon:'PDF',title:'Directive Ministère de l\'Intérieur - Revue de sécurité',meta:'DGSI - Circulaire MININT-DGSI-2026-0517 - 18 mai 2026',badge:'DIRECTIVE',badgeBg:'#2a0000',badgeTc:'#fca5a5'},
+  {id:'qualite',icon:'XLS',title:'Rapport Contrôle Qualité - Lot BX-4400-A',meta:'N. BRUNET - 18 mai 2026',badge:'ANOMALIE',badgeBg:'#3b0000',badgeTc:'#fca5a5'},
+  {id:'note',icon:'DOC',title:'Note technique interne - BX-4400',meta:'Service Montage - 17 mai 2026',badge:'INTERNE',badgeBg:'#1a1a1a',badgeTc:'#555'},
+  {id:'contrat',icon:'PDF',title:'Commande Thales THA-REF-28471',meta:'Thales Defence - mars 2026',badge:'CONFIDENTIEL',badgeBg:'#2a0000',badgeTc:'#fca5a5'},
+  {id:'chatlog',icon:'DOC',title:'Journal de messagerie interne - Poste WS-MOREAU-01 (Teams)',meta:'Audit messagerie interne - extraction 20 mai 2026',badge:'SENSIBLE',badgeBg:'#2a0000',badgeTc:'#fca5a5'},
+  {id:'raspberry',icon:'DOC',title:'Note Achats - Changement fournisseur passerelles IoT',meta:'Service Achats - 28 avril 2026',badge:'À VÉRIFIER',badgeBg:'#1a1200',badgeTc:'#f59e0b'},
+  {id:'gateway',icon:'LOG',title:'Journal supervision - Passerelle télémaintenance BX',meta:'Export système - BX-GATEWAY-07 - mai 2026',badge:'CRITIQUE',badgeBg:'#3b0000',badgeTc:'#fca5a5'},
+  {id:'techindus',icon:'DOC',title:'Note de vigilance - Concurrence TechIndus Solutions',meta:'Direction - 2 avril 2026',badge:'INTERNE',badgeBg:'#1a1a1a',badgeTc:'#555'},
+];
+
+const DOC_CONTENT = {
+  ministere:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Directive nationale de vigilance - Secteurs sensibles</div>
+<div style="font-size:12px;color:var(--tx3);margin-bottom:16px">Ministère de l'Intérieur - Direction Générale de la Sécurité Intérieure - Circulaire MININT-DGSI-2026-0517 - 18 mai 2026</div>
+<div style="font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:14px">
+Dans le contexte géopolitique actuel et à l'approche des élections présidentielles, le niveau de vigilance des entreprises opérant dans des secteurs sensibles (défense, énergie, santé, infrastructures critiques) est relevé. Plusieurs incidents récents témoignent d'un intérêt accru d'acteurs hostiles pour ces organisations, avec un mode opératoire récurrent : l'exploitation de vulnérabilités humaines plutôt que de failles purement techniques.
+</div>
+<div style="margin:14px 0 6px;font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:.06em">OBLIGATIONS POUR LES SOUS-TRAITANTS DE L'INDUSTRIE DE LA DÉFENSE</div>
+<div style="font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:14px">
+Tout sous-traitant intervenant sur un programme classé Diffusion Restreinte doit transmettre, sous <strong style="color:#fff">15 jours</strong> à compter de la réception de la présente circulaire, un rapport d'analyse de sécurité comportant :<br>
+1. Un diagnostic des vulnérabilités organisationnelles et techniques identifiées<br>
+2. Un plan de préconisations correctives priorisées<br>
+3. Un rappel de sensibilisation du personnel aux techniques de manipulation
+</div>
+<div style="margin:14px 0 6px;font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:.06em">RAPPEL - LES 4 LEVIERS DE MANIPULATION HUMAINE (VICE)</div>
+<table class="data-table"><thead><tr><th>Levier</th><th>Principe</th></tr></thead><tbody>
+<tr><td>Vanité</td><td>Flatter l'ego de la cible, lui proposer un statut ou une reconnaissance qu'elle n'a pas en interne.</td></tr>
+<tr><td>Idéologie</td><td>Faire appel à des convictions personnelles (politiques, militantes) pour justifier une trahison.</td></tr>
+<tr><td>Contrainte</td><td>Faire pression par la menace, le chantage ou l'exploitation d'une faute passée.</td></tr>
+<tr><td>Espèces</td><td>Offrir un avantage financier direct pour compenser une difficulté matérielle ressentie par la cible.</td></tr>
+</tbody></table>
+<div style="margin-top:12px;background:#1a0000;border-left:3px solid #7f1d1d;padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
+<strong style="color:#fca5a5">Rappel :</strong> une cible n'est presque jamais recrutée par un seul levier isolé. C'est généralement la combinaison de plusieurs signaux (pression financière, valorisation personnelle, contexte professionnel) qui crée une fenêtre d'opportunité pour un acteur malveillant.
+</div>`,
+  chatlog:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Extraction messagerie interne - Poste WS-MOREAU-01</div>
+<div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Messages Teams envoyés par J. MOREAU le 19 mai 2026 - retrouvés lors de l'audit des journaux de messagerie</div>
+<div style="background:#0d0d0d;border:1px solid #222;border-radius:5px;padding:14px;font-family:var(--mono);font-size:12px;color:var(--tx2);line-height:2">
+08h09 - C'est le chaos ce matin. Réunion de crise à 10h, la DSI a repéré un truc grave sur la passerelle BX.<br>
+08h17 - J'aurais besoin d'en parler à quelqu'un. En privé.<br>
+09h15 - Y a un truc que j'ai pas dit à l'équipe d'audit. C'est probablement rien... mais ça me ronge.<br>
+10h47 - En fait j'ai validé un accès distant sur la passerelle BX-GATEWAY-07 courant mai. Pour un soi-disant test technique demandé en urgence. Si ça sort sans contexte, ça va très mal se passer pour moi.<br>
+11h55 - Je suis pas à l'origine de tout ça. Mais j'ai peut-être facilité les choses sans le réaliser. J'avais pas compris à quoi ça allait servir.<br>
+12h28 - L'IP externe vient d'être confirmée malveillante par la DSI. Je crois que j'ai vraiment un problème.
+</div>
+<div style="margin-top:12px;font-size:12px;color:var(--tx3);line-height:1.7">Destinataire des messages non identifié dans l'extraction : conversation privée, compte externe au domaine elecarm.fr.</div>`,
+  raspberry:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Note interne - Changement fournisseur passerelles de télémaintenance</div>
+<div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Service Achats - 28 avril 2026</div>
+<div style="font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:12px">
+Les boîtiers BX-4400-A livrés aux clients sont équipés d'une passerelle de télémaintenance (carte Raspberry Pi) permettant à ELECARM de superviser à distance leur fonctionnement et de déployer des mises à jour.
+</div>
+<table class="data-table"><thead><tr><th>Champ</th><th>Valeur</th></tr></thead><tbody>
+<tr><td>Ancien fournisseur</td><td>RS Components (référence homologuée)</td></tr>
+<tr><td>Nouveau fournisseur</td><td>SinoBoard Electronics Ltd (Shenzhen)</td></tr>
+<tr><td>Motif</td><td>Délai de livraison réduit de 6 à 2 semaines, coût unitaire -30%</td></tr>
+<tr><td>Validation sécurité DSI</td><td style="color:#fca5a5;font-weight:600">Non réalisée - urgence commande Thales</td></tr>
+<tr><td>Date de première livraison</td><td>2 mai 2026</td></tr>
+</tbody></table>
+<div style="margin-top:12px;background:#1a1200;border-left:3px solid #92400e;padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
+<strong style="color:#f59e0b">À noter :</strong> le changement de fournisseur a été validé par Y. FERREIRA (Service Montage) sans passage par la procédure habituelle de revue sécurité DSI, pour tenir les délais de la commande THA-REF-28471.
+</div>`,
+  gateway:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Journal de supervision - Passerelle télémaintenance boîtiers BX-4400</div>
+<div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Export système - Passerelle BX-GATEWAY-07 - période du 1er au 19 mai 2026</div>
+<table class="data-table"><thead><tr><th>Date</th><th>Adresse IP destination</th><th>Type</th><th>Volume</th></tr></thead><tbody>
+<tr><td>02/05</td><td>10.42.6.11</td><td>Supervision interne (serveur ELECARM)</td><td>4 Mo</td></tr>
+<tr><td>06/05</td><td>10.42.6.11</td><td>Supervision interne (serveur ELECARM)</td><td>3 Mo</td></tr>
+<tr><td>07/05</td><td>20.42.73.18</td><td>Externe - synchronisation horaire (Microsoft Azure NTP)</td><td>40 Ko</td></tr>
+<tr class="anomaly"><td>09/05</td><td>185.220.101.47</td><td>Adresse externe - non répertoriée</td><td>412 Mo</td></tr>
+<tr><td>11/05</td><td>10.42.6.11</td><td>Supervision interne (serveur ELECARM)</td><td>3 Mo</td></tr>
+<tr class="anomaly"><td>14/05</td><td>185.220.101.47</td><td>Adresse externe - non répertoriée</td><td>528 Mo</td></tr>
+<tr><td>16/05</td><td>20.42.73.18</td><td>Externe - synchronisation horaire (Microsoft Azure NTP)</td><td>38 Ko</td></tr>
+<tr class="anomaly"><td>18/05</td><td>185.220.101.47</td><td>Adresse externe - non répertoriée</td><td>601 Mo</td></tr>
+</tbody></table>
+<div style="margin-top:12px;font-size:13px;color:var(--tx2);line-height:1.75">
+L'adresse <strong style="color:#fff">10.42.6.11</strong> correspond au serveur de supervision interne officiel d'ELECARM. L'adresse <strong style="color:#f59e0b">20.42.73.18</strong> est externe mais légitime : elle correspond à un service de synchronisation horaire Microsoft Azure documenté dans la configuration d'origine de la passerelle, avec un volume constant et négligeable. L'adresse <strong style="color:#fca5a5">185.220.101.47</strong> n'appartient à aucun équipement ELECARM répertorié, n'apparaît dans aucune documentation fournisseur, et transporte un volume incompatible avec de la simple télémétrie.
+</div>`,
+  techindus:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Note de vigilance - Concurrence TechIndus Solutions</div>
+<div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Direction Générale ELECARM SAS - 2 avril 2026 - Diffusion : encadrement et commercial</div>
+<div style="font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:12px">
+Plusieurs entreprises du secteur nous ont rapporté des approches insistantes de la société TechIndus Solutions (Orléans), concurrente directe sur le segment des coffrets et armoires électriques industrielles. Le mode opératoire rapporté : prises de contact sous couvert d'offres d'emploi ou de partenariats commerciaux, avec des questions détaillées sur les clients, les procédés et les certifications des salariés approchés.
+</div>
+<div style="font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:12px">
+Aucun incident de ce type n'a été rapporté à ce jour au sein d'ELECARM SAS. Cette note est diffusée à titre préventif.
+</div>
+<div style="background:var(--s2);border-left:3px solid var(--bd2);padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
+Consigne : toute sollicitation professionnelle inhabituelle, en particulier orientée vers des informations client ou technique, doit être signalée à la Direction.
+</div>`,
+  qualite:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Rapport de Contrôle Qualité</div>
+<div style="font-size:12px;color:var(--tx3);margin-bottom:16px">Nathalie BRUNET - ELECARM SAS - 18 mai 2026</div>
+<table class="data-table"><thead><tr><th>Paramètre</th><th>Valeur nominale</th></tr></thead><tbody>
+<tr><td>Tension entrée</td><td>24 V DC</td></tr>
+<tr><td>Intensité nominale</td><td>0,8 A</td></tr>
+<tr><td>Puissance moyenne</td><td>19 W</td></tr>
+<tr><td>Tolérance intensité</td><td>+/- 5%</td></tr>
+<tr><td>Tolérance test interne</td><td>+/- 10%</td></tr>
+<tr><td>Température fonctionnement</td><td>10 - 45 °C</td></tr>
+</tbody></table>
+<div style="margin:14px 0 6px;font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:.06em">MESURES LOT S42 - SÉRIE BX-4400-A</div>
+<table class="data-table"><thead><tr><th>N° boîtier</th><th>Intensité (A)</th><th>Puissance (W)</th><th>Temp (°C)</th></tr></thead>
+<tbody>
+<tr><td>BX-4211</td><td>0,79</td><td>18,9</td><td>32</td></tr>
+<tr><td>BX-4212</td><td>0,83</td><td>19,9</td><td>34</td></tr>
+<tr><td>BX-4213</td><td>0,88</td><td>21,1</td><td>36</td></tr>
+<tr><td>BX-4214</td><td>0,76</td><td>18,2</td><td>30</td></tr>
+<tr><td>BX-4215</td><td>0,91</td><td>21,8</td><td>41</td></tr>
+<tr class="anomaly"><td>BX-4216</td><td>1,12</td><td>26,9</td><td>33</td></tr>
+<tr><td>BX-4217</td><td>0,87</td><td>20,8</td><td>37</td></tr>
+<tr><td>BX-4218</td><td>0,81</td><td>19,4</td><td>35</td></tr>
+<tr><td>BX-4219</td><td>0,93</td><td>22,3</td><td>44</td></tr>
+</tbody></table>`,
+  note:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Note technique interne - BX-4400</div>
+<div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Service Montage (Y. FERREIRA) - 17 mai 2026</div>
+<div style="font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:12px">Objet : Variations de mesures lot S42</div>
+<div style="background:var(--s2);border-left:3px solid var(--bd2);padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:10px">
+"On a eu pas mal de variations cette semaine avec la chaleur dans l'atelier. Rien d'alarmant selon moi, ça reste dans les clous."
+</div>
+<div style="background:var(--s2);border-left:3px solid var(--bd2);padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
+"Les boîtiers BX-4400-A peuvent présenter une augmentation de consommation jusqu'à +15% en environnement chaud (&gt;40°C), sans impact fonctionnel."
+</div>`,
+  contrat:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Bon de commande - Confidentiel</div>
+<div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Thales Defence Systems vers ELECARM SAS - mars 2026</div>
+<table class="data-table"><thead><tr><th>Champ</th><th>Valeur</th></tr></thead><tbody>
+<tr><td>Référence commande</td><td>THA-REF-28471</td></tr>
+<tr><td>Produits</td><td>Coffrets BX-4400-A (24 unités)</td></tr>
+<tr><td>Valeur totale</td><td>187 200 EUR HT</td></tr>
+<tr><td>Livraison prévue</td><td style="color:#f97316;font-weight:700">23 mai 2026 - URGENT</td></tr>
+<tr><td>Usage final</td><td style="color:#fca5a5;font-weight:600">Programme classé DR - Systèmes guidage</td></tr>
+</tbody></table>
+<div style="margin-top:12px;background:#0f1e00;border-left:3px solid #166534;padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
+<strong style="color:#d4d4d4">Clause pénale :</strong> Retard &gt; 5 jours ouvrés = pénalité 0,5%/jour plafonnée à 10% de la valeur du marché.
+</div>`
+};
+
+const EMP_MAILBOXES = [
+  {id:'julien',name:'Julien MOREAU',role:'DSI',email:'j.moreau@elecarm.fr',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',mails:['julien_norm01','julien_norm02','julien_norm03','spearphish01']},
+  {id:'marc',name:'Marc DURAND',role:'Technicien',email:'m.durand@elecarm.fr',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',mails:['marc_norm01','marc_norm02']},
+  {id:'nathalie',name:'Nathalie BRUNET',role:'Qualite',email:'n.brunet@elecarm.fr',initials:'NB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['nathalie_norm01','nathalie_norm02','nathalie_norm03']}
+];
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let mailBoxMode = 'general';
+let activeEmpContact = null;
+let currentOSINT = 'moreau';
+let sessionSecondsLeft = 150*60;
+let sessionRunning = false;
+let sessionInterval = null;
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+function enterApp(){
+  const s=document.getElementById('splash');
+  s.style.opacity='0';s.style.pointerEvents='none';
+  setTimeout(()=>{
+    s.style.display='none';
+    const b=document.getElementById('briefing');
+    b.classList.add('show');
+    runBriefingAnim();
+  },900);
+}
+
+function runBriefingAnim(){
+  const seq=[
+    [200,'bp1'],[550,'bp2'],
+    [1000,'ba1'],[1400,'ba2'],[1800,'ba3'],
+    [2300,'ba4'],[2500,'ba5'],[2700,'ba6'],
+    [3200,'ba7'],[4000,'ba8'],[4900,'ba9'],
+  ];
+  seq.forEach(([d,id])=>setTimeout(()=>{const e=document.getElementById(id);if(e)e.classList.add('in');},d));
+}
+
+function enterMain(tab){
+  const b=document.getElementById('briefing');
+  b.style.opacity='0';b.style.transition='opacity .5s';b.style.pointerEvents='none';
+  setTimeout(()=>{
+    b.style.display='none';
+    const app=document.getElementById('app');
+    app.style.display='flex';
+    initClock();initSessionTimer();renderMails();renderLogs();renderSuspects();renderDocs();renderEnigmes();renderOSINT();renderVerdict();
+    initTimeline();
+    restoreState(loadSavedState());
+    if(tab){const btn=document.querySelector('[data-tab="'+tab+'"]');if(btn)switchTab(btn);}
+    saveState();
+  },500);
+}
+
+function initTimeline(){
+  const tl=document.getElementById('timeline');
+  const events=[
+    {time:'12:28',color:'#dc2626',badge:'DSI',badgeBg:'#3b0000',badgeTc:'#fca5a5',title:'IP externe confirmée suspecte',desc:'185.220.101.47 ne correspond à aucun équipement ni fournisseur répertorié.'},
+    {time:'12:00',color:'#991b1b',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Thales - URGENT',desc:'Retard commande THA-REF-28471 + anomalie qualité.'},
+    {time:'11:55',color:'#dc2626',badge:'DOC',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Messagerie interne récupérée',desc:'Échange interne au ton ambigu retrouvé dans l\'archive Teams.'},
+    {time:'10:10',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Piste A. ROBERT écartée',desc:'RH confirme : accès révoqués à son départ en mars, aucune réactivation depuis.'},
+    {time:'10:00',color:'#888',badge:'ENQUETE',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Profil interne signalé',desc:'Accès admin et alertes DSI non signalées concentrées sur un même poste.'},
+    {time:'09:05',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Hypothèse TechIndus évoquée',desc:'Concurrent connu pour des approches agressives, mais aucune preuve technique ne le relie aux faits.'},
+    {time:'09:00',color:'#555',badge:'DSI',badgeBg:'#1c1c1c',badgeTc:'#666',title:'Logs SIEM disponibles',desc:'Activités suspectes tracées depuis fin avril sur un poste interne.'},
+    {time:'08:00',color:'#dc2626',badge:'DSI',badgeBg:'#3b0000',badgeTc:'#fca5a5',title:'Alerte passerelle BX-GATEWAY-07',desc:'Flux sortant suspect vers IP externe repéré lors de la revue de vigilance.'},
+  ];
+  tl.innerHTML='';
+  events.forEach(ev=>{
+    const div=document.createElement('div');
+    div.className='tl-event';
+    div.innerHTML=`<div class="tl-dot" style="background:${ev.color};margin-top:5px"></div>
+      <div>
+        <div class="tl-time">${ev.time} <span class="tl-badge" style="background:${ev.badgeBg};color:${ev.badgeTc}">${ev.badge}</span></div>
+        <div class="tl-title">${ev.title}</div>
+        <div class="tl-desc">${ev.desc}</div>
+      </div>`;
+    tl.appendChild(div);
+  });
+}
+
+function initClock(){
+  const tick=()=>{
+    const n=new Date();
+    document.getElementById('clock').textContent=
+      n.getHours().toString().padStart(2,'0')+':'+
+      n.getMinutes().toString().padStart(2,'0')+':'+
+      n.getSeconds().toString().padStart(2,'0');
+  };
+  tick(); setInterval(tick,1000);
+}
+
+// ══════════════════════════════════════════
+// CHRONO DE MISSION
+// ══════════════════════════════════════════
+function renderSessionTimer(){
+  const el=document.getElementById('session-countdown');
+  if(!el)return;
+  const s=Math.max(0,sessionSecondsLeft);
+  const h=Math.floor(s/3600);
+  const m=Math.floor((s%3600)/60);
+  const sec=s%60;
+  el.textContent=h.toString().padStart(2,'0')+':'+m.toString().padStart(2,'0')+':'+sec.toString().padStart(2,'0');
+  const wrap=document.getElementById('session-countdown-wrap');
+  if(wrap)wrap.classList.toggle('warn',s>0&&s<=300);
+}
+function setSessionTimer(minutes){
+  sessionSecondsLeft=Math.max(1,minutes)*60;
+  renderSessionTimer();
+}
+function toggleSessionTimer(){
+  sessionRunning=!sessionRunning;
+  if(sessionRunning){
+    sessionInterval=setInterval(()=>{
+      if(sessionSecondsLeft>0){
+        sessionSecondsLeft--;
+        renderSessionTimer();
+        if(sessionSecondsLeft===0)toast('!','Temps ecoule','Le temps imparti a la mission est termine. Cloturez vos conclusions.');
+      }
+    },1000);
+  } else {
+    clearInterval(sessionInterval);
+  }
+}
+function initSessionTimer(){
+  renderSessionTimer();
+}
+
+// ══════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════
+function switchTab(btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  saveState();
+}
+
+// ══════════════════════════════════════════
+// MAILS
+// ══════════════════════════════════════════
+function renderMails(){
+  if(mailBoxMode==='general') renderGeneralMails();
+  else renderEmpList();
+}
+
+function switchMailBox(mode){
+  mailBoxMode=mode;
+  document.getElementById('subnav-general').classList.toggle('active',mode==='general');
+  document.getElementById('subnav-emp').classList.toggle('active',mode==='emp');
+  const empList=document.getElementById('emp-inbox-list');
+  empList.style.display=mode==='emp'?'flex':'none';
+  document.getElementById('mail-body').innerHTML='<div class="mail-body-empty"><div style="font-size:13px;color:var(--tx3)">Sélectionner un message</div></div>';
+  if(mode==='general'){
+    activeEmpContact=null;
+    document.getElementById('mail-list-title').textContent='Boîte de réception';
+    renderGeneralMails();
+  } else {
+    renderEmpList();
+    if(EMP_MAILBOXES.length>0) openEmpMailbox(EMP_MAILBOXES[0]);
+  }
+}
+
+function renderGeneralMails(){
+  const c=document.getElementById('mail-items');
+  c.innerHTML='';
+  const visible=MAILS.filter(m=>m.visible&&!m.isForensic);
+  const unread=visible.filter(m=>m.unread).length;
+  document.getElementById('unread-label').textContent=unread+' non lu'+(unread>1?'s':'');
+  const b=document.getElementById('mail-badge');
+  if(unread>0){b.textContent=unread;b.style.display='inline'}else{b.style.display='none'}
+  visible.forEach(m=>{
+    const d=document.createElement('div');
+    d.className='mail-item'+(m.unread?' unread':'')+(m.urgent?' urgent':'');
+    d.innerHTML=`
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+        <div class="mail-from ${m.unread?'bold':''}">${m.from}</div>
+        <div class="mail-time">${m.time}</div>
+      </div>
+      <div class="mail-subj ${m.unread?'unread':''}">${m.subject}</div>`;
+    d.onclick=()=>openMail(m,d);
+    c.appendChild(d);
+  });
+}
+
+function renderEmpList(){
+  const empList=document.getElementById('emp-inbox-list');
+  empList.style.display='flex';
+  empList.innerHTML='';
+  EMP_MAILBOXES.forEach(emp=>{
+    const d=document.createElement('div');
+    d.className='emp-inbox-item'+(activeEmpContact===emp.id?' active':'');
+    d.innerHTML=`<div class="emp-inbox-name">${emp.name}</div><div class="emp-inbox-role">${emp.role} - ${emp.email}</div>`;
+    d.onclick=()=>openEmpMailbox(emp);
+    empList.appendChild(d);
+  });
+}
+
+function openEmpMailbox(emp){
+  activeEmpContact=emp.id;
+  renderEmpList();
+  document.getElementById('mail-list-title').textContent=emp.name;
+  const c=document.getElementById('mail-items');
+  c.innerHTML='';
+  const empMails=MAILS.filter(m=>emp.mails.includes(m.id));
+  document.getElementById('unread-label').textContent=empMails.length+' message'+(empMails.length>1?'s':'');
+  empMails.forEach(m=>{
+    const d=document.createElement('div');
+    d.className='mail-item'+(m.isForensic?' forensic':'')+(m.unread?' unread':'');
+    const fromLabel=m.isForensic
+      ?`<span style="font-size:9px;background:#3b0000;color:#fca5a5;padding:1px 5px;border-radius:2px;margin-right:5px;letter-spacing:.06em">FORENSIC</span>${m.from}`
+      :m.from;
+    d.innerHTML=`
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+        <div class="mail-from">${fromLabel}</div>
+        <div class="mail-time">${m.time}</div>
+      </div>
+      <div class="mail-subj">${m.subject}</div>
+      <div style="font-size:10px;color:var(--tx4);margin-top:2px">${m.date}</div>`;
+    d.onclick=()=>openMail(m,d);
+    c.appendChild(d);
+  });
+}
+
+function openMail(m,row){
+  document.querySelectorAll('.mail-item').forEach(r=>r.classList.remove('selected'));
+  row.classList.add('selected');
+  m.unread=false; row.classList.remove('unread');
+  if(mailBoxMode==='general') renderGeneralMails();
+  saveState();
+  let attach='';
+  if(m.hasAttachment){
+    const aClick = m.isForensic
+      ? `toast('','Macro VBA detectee - T1566.001','02/05 16h41 : dropper PowerShell active depuis cette piece jointe - voir onglet DSI / LOGS')`
+      : `toast('','Pièce jointe ouverte','${(m.attachmentName||'').replace(/'/g,"\\'")} - analyse rapide : rien d\\'anormal détecté')`;
+    const aExt = m.isForensic ? 'DOCM' : 'XLSX';
+    const aExtColor = m.isForensic ? '#fca5a5' : '#d4d4d4';
+    const aSize = m.isForensic ? 'Document Word avec macros - 238 Ko' : 'Fichier Excel - 847 Ko';
+    attach=`<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--bd)">
+      <div style="font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Pièce jointe</div>
+      <div class="attachment" onclick="${aClick}">
+        <div class="attachment-icon" style="font-size:11px;font-weight:800;color:${aExtColor};letter-spacing:.08em">${aExt}</div>
+        <div><div class="attachment-name">${m.attachmentName}</div><div class="attachment-size">${aSize}</div></div>
+      </div>
+    </div>`;
+  }
+  document.getElementById('mail-body').innerHTML=`
+    <div class="mail-meta">
+      <div class="mail-subject">${m.subject}</div>
+      <div class="mail-field">De : <span>${m.from} &lt;${m.email}&gt;</span></div>
+      <div class="mail-field">À : <span>${m.to}</span></div>
+      <div class="mail-field">Date : <span>${m.date} à ${m.time}</span></div>
+    </div>
+    <div class="mail-text">${m.body}</div>
+    ${attach}`;
+}
+
+// ══════════════════════════════════════════
+// LOGS
+// ══════════════════════════════════════════
+function renderLogs(){
+  const tb=document.getElementById('log-tbody');
+  tb.innerHTML='';
+  const vis=LOGS.filter(l=>l.vis);
+  let critCount=0,alertCount=0,suspectCount=0;
+  vis.forEach((l,i)=>{
+    if(l.lv==='CRITIQUE')critCount++;
+    else if(l.lv==='ALERTE')alertCount++;
+    else if(l.lv==='SUSPECT')suspectCount++;
+    const lvStyle=
+      l.lv==='CRITIQUE'?'background:#3b0000;color:#fca5a5':
+      l.lv==='ALERTE'?'background:#1a1200;color:#f59e0b':
+      l.lv==='SUSPECT'?'background:#1a1a1a;color:#999':
+      l.lv==='VIGILANCE'?'background:#111;color:#666':
+      'background:#0d0d0d;color:#444';
+    const tr=document.createElement('tr');
+    tr.className='log-row';
+    tr.style.background=i%2===0?'transparent':'rgba(255,255,255,.012)';
+    const mitreHtml=l.mitre.map(m=>`<span class="mitre-tag">${m}</span>`).join('');
+    tr.innerHTML=`
+      <td class="log-time">${l.t}</td>
+      <td class="log-agent"><span style="background:#1c1c1c;color:#888;font-size:10px;padding:1px 6px;border-radius:3px;white-space:nowrap">${l.agent}</span></td>
+      <td><span class="log-lv" style="${lvStyle}">${l.lv}</span></td>
+      <td class="log-desc">${l.desc}</td>
+      <td class="log-mitre">${mitreHtml}</td>`;
+    tb.appendChild(tr);
+  });
+  const cc=document.getElementById('crit-count');if(cc)cc.textContent=critCount+' Critiques';
+  const ac=document.getElementById('alert-count');if(ac)ac.textContent=alertCount+' Alertes';
+  const sc=document.getElementById('suspect-count');if(sc)sc.textContent=suspectCount+' Suspects';
+}
+
+// ══════════════════════════════════════════
+// SUSPECTS
+// ══════════════════════════════════════════
+function renderSuspects(){
+  const g=document.getElementById('suspects-grid');
+  SUSPECTS.forEach((s,i)=>{
+    const d=document.createElement('div');
+    d.className='suspect';
+    const av=s.photo
+      ?`<div class="suspect-photo"><img src="${s.photo}" alt="${s.name}"></div>`
+      :`<div class="suspect-avatar" style="background:${s.bg};color:${s.tc}">${s.initials}</div>`;
+    d.innerHTML=`
+      <div class="suspect-head">
+        ${av}
+        <div>
+          <div class="suspect-name">${s.name}</div>
+          <div class="suspect-role">${s.role}</div>
+          <div class="suspect-age">${s.age}</div>
+        </div>
+      </div>
+      <div class="suspect-body">
+        <div class="suspect-access">Acces</div>
+        ${s.access.map(a=>`<div class="suspect-li">- ${a}</div>`).join('')}
+        <div style="display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap">
+          ${s.osintBtn?`<button class="osint-btn" onclick="event.stopPropagation();switchOSINT('${s.osintId}');document.querySelector('[data-tab=\\'osint\\']').click()">OSINT</button>`:''}
+        </div>
+      </div>`;
+    d.onclick=()=>showSuspect(s);
+    g.appendChild(d);
+  });
+}
+function showSuspect(s){
+  const av=s.photo
+    ?`<div style="width:72px;height:72px;border-radius:9px;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,.1)"><img src="${s.photo}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(10%)"></div>`
+    :`<div style="width:52px;height:52px;border-radius:7px;background:${s.bg};display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:${s.tc};flex-shrink:0">${s.initials}</div>`;
+  document.getElementById('suspect-content').innerHTML=`
+    <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px">
+      ${av}
+      <div>
+        <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:2px">${s.name}</div>
+        <div style="font-size:13px;color:var(--tx3)">${s.role}</div>
+        <div style="font-size:12px;color:var(--tx4);margin-top:2px">${s.age}</div>
+      </div>
+    </div>
+    <div style="background:var(--s2);border-radius:6px;padding:14px;font-size:13px;color:var(--tx2);line-height:1.75">${s.detail}</div>`;
+  document.getElementById('suspect-modal').classList.add('show');
+}
+
+// ══════════════════════════════════════════
+// DOCS
+// ══════════════════════════════════════════
+function renderDocs(){
+  const g=document.getElementById('docs-grid');
+  DOCS.forEach(d=>{
+    const div=document.createElement('div');
+    div.className='doc-card';
+    div.innerHTML=`
+      <div style="font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--tx4);margin-bottom:8px">${d.icon}</div>
+      <div class="doc-title">${d.title}</div>
+      <div class="doc-meta">${d.meta}</div>
+      <span style="background:${d.badgeBg};color:${d.badgeTc};font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px">${d.badge}</span>`;
+    div.onclick=()=>{
+      document.getElementById('doc-content').innerHTML=DOC_CONTENT[d.id]||'';
+      const dl=document.getElementById('doc-download');
+      dl.href='pdfs/'+d.id+'.pdf';
+      dl.setAttribute('download',d.id+'.pdf');
+      document.getElementById('doc-modal').classList.add('show');
+    };
+    g.appendChild(div);
+  });
+}
+
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function toast(icon,title,body){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-icon').innerHTML=icon;
+  document.getElementById('toast-text').querySelector('.title').textContent=title;
+  document.getElementById('toast-text').querySelector('.body').textContent=body;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t=setTimeout(()=>t.classList.remove('show'),5500);
+}
+
+// ══════════════════════════════════════════
+// ENIGMES INTERACTIF
+// ══════════════════════════════════════════
+const ENIG_DATA=[
+  {id:'BX-4211',amp:0.79,w:18.9,temp:32},
+  {id:'BX-4212',amp:0.83,w:19.9,temp:34},
+  {id:'BX-4213',amp:0.88,w:21.1,temp:36},
+  {id:'BX-4214',amp:0.76,w:18.2,temp:30},
+  {id:'BX-4215',amp:0.91,w:21.8,temp:41},
+  {id:'BX-4216',amp:1.12,w:26.9,temp:33,anomaly:true},
+  {id:'BX-4217',amp:0.87,w:20.8,temp:37},
+  {id:'BX-4218',amp:0.81,w:19.4,temp:35},
+  {id:'BX-4219',amp:0.93,w:22.3,temp:44},
+];
+const NOM=0.8,TOL_MIN=0.72,TOL_MAX=0.88;
+
+function renderEnigmes(){
+  const tb=document.getElementById('enig-tbody');
+  if(!tb)return;
+  tb.innerHTML='';
+  ENIG_DATA.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.className='enig-row'+(r.anomaly?' anomaly':'');
+    tr.innerHTML=`<td>${r.id}</td><td>${r.amp.toFixed(2)}</td><td>${r.w.toFixed(1)}</td><td>${r.temp}</td>`;
+    tr.onclick=()=>showEnigDetail(r,tr);
+    tb.appendChild(tr);
+  });
+  setTimeout(()=>{
+    const rows=document.querySelectorAll('#enig-tbody .enig-row');
+    rows.forEach(row=>{if(row.cells[0]&&row.cells[0].textContent==='BX-4216')row.click();});
+  },350);
+}
+
+function showEnigDetail(r,tr){
+  document.querySelectorAll('#enig-tbody .enig-row').forEach(el=>el.classList.remove('selected'));
+  tr.classList.add('selected');
+  const pct=((r.amp-NOM)/NOM*100);
+  const inTol=r.amp>=TOL_MIN&&r.amp<=TOL_MAX;
+  const barPct=Math.min(100,(r.amp/1.5)*100);
+  const barColor=r.anomaly?'#666':inTol?'#444':'#666';
+  const sign=pct>=0?'+':'';
+  const verdict=inTol
+    ?`<div class="enig-verdict ok">Dans la plage de tolérance (+/-10%). Valeur nominale : 0,80 A - Plage acceptable : [0,72 - 0,88 A].</div>`
+    :`<div class="enig-verdict ko">HORS TOLÉRANCE - écart de ${sign}${pct.toFixed(1)}% par rapport au nominal. Seuil blocage ELECARM : +/-10% max. Température : ${r.temp} °C (normale, ne justifie pas l'écart selon la note technique).</div>`;
+  document.getElementById('enig-detail').innerHTML=`
+    <div style="font-weight:700;color:#fff;margin-bottom:8px;font-family:var(--font)">${r.id} - Analyse</div>
+    <div class="enig-bar-wrap">
+      <div style="font-size:10px;color:var(--tx3);width:80px;font-family:var(--font)">Intensité</div>
+      <div class="enig-bar-track"><div class="enig-bar-fill" style="width:${barPct}%;background:${barColor}"></div></div>
+      <div style="font-size:11px;color:${barColor};width:55px">${r.amp.toFixed(2)} A</div>
+    </div>
+    <div class="enig-calc-box">
+      <div class="enig-calc-row"><span class="enig-calc-label">Valeur mesurée :</span><span class="enig-calc-val">${r.amp.toFixed(2)} A</span></div>
+      <div class="enig-calc-row"><span class="enig-calc-label">Valeur nominale :</span><span class="enig-calc-val">${NOM.toFixed(2)} A</span></div>
+      <div class="enig-calc-row"><span class="enig-calc-label">Écart absolu :</span><span class="enig-calc-val ${!inTol?'warn':''}">${sign}${(r.amp-NOM).toFixed(2)} A</span></div>
+      <div class="enig-calc-row"><span class="enig-calc-label">Écart relatif :</span><span class="enig-calc-val ${!inTol?'warn':''}">${sign}${pct.toFixed(1)}%</span></div>
+      <div class="enig-calc-row"><span class="enig-calc-label">Plage acceptable :</span><span class="enig-calc-val">[${TOL_MIN.toFixed(2)} - ${TOL_MAX.toFixed(2)}] A</span></div>
+      <div class="enig-calc-row"><span class="enig-calc-label">Température :</span><span class="enig-calc-val">${r.temp} °C${r.temp>=40?' (chaleur - possible impact)':' (normale)'}</span></div>
+    </div>
+    ${verdict}`;
+  document.getElementById('enig-detail').classList.add('show');
+}
+
+function validateAnalysis(){
+  const txt=document.getElementById('enig-textarea');
+  const s=document.getElementById('enig-status');
+  if(!txt||!txt.value.trim()){s.textContent='Remplissez le champ avant de valider.';return;}
+  s.textContent='Enregistré - '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+}
+
+function resetEnigme(){
+  document.querySelectorAll('#enig-tbody .enig-row').forEach(el=>el.classList.remove('selected'));
+  const d=document.getElementById('enig-detail');
+  if(d){d.classList.remove('show');d.innerHTML='';}
+  const txt=document.getElementById('enig-textarea');
+  if(txt)txt.value='';
+  const s=document.getElementById('enig-status');
+  if(s)s.textContent='';
+}
+
+// ══════════════════════════════════════════
+// OSINT
+// ══════════════════════════════════════════
+const OSINT_DATA = {
+  moreau: {
+    id:'moreau',
+    name:'Julien MOREAU',
+    role:'Responsable DSI',
+    photo:'face5.avif',
+    risk:'EXPOSITION CRITIQUE',
+    riskBg:'#3b0000',riskTc:'#fca5a5',
+    google:[
+      {title:'LinkedIn - Julien Moreau - DSI chez ELECARM SAS',url:'linkedin.com/in/julien-moreau-dsi',snippet:'Julien Moreau - Responsable DSI chez ELECARM SAS. Blois, Centre-Val de Loire. 287 relations.'},
+      {title:'ELECARM SAS - Équipe direction - elecarm.fr',url:'elecarm.fr/equipe',snippet:'...notre responsable des systèmes d\'information, Julien Moreau, supervise l\'ensemble de l\'infrastructure informatique depuis 2019...'},
+      {title:'Forum ITpro.fr - Fuite de données : qui contacter ?',url:'itpro.fr/forum/securite/fuite-donnees-contact',snippet:'...j\'ai contacté le DSI de notre boîte (Julien M.) qui m\'a dit qu\'ils avaient eu un incident similaire chez ELECARM l\'an passé...'},
+    ],
+    linkedin:{
+      connections:287,
+      headline:'Responsable DSI | Infrastructure & Sécurité | ELECARM SAS',
+      location:'Blois, Centre-Val de Loire',
+      about:'Responsable des systèmes d\'information chez ELECARM SAS depuis 5 ans. Spécialisé en infrastructure réseau, sécurité des SI et gestion de projets IT. Certifié ITIL v4.',
+      experience:[
+        {title:'Responsable DSI','company':'ELECARM SAS','period':'2019 - présent','desc':'Gestion de l\'infrastructure IT, politique de sécurité, administration des serveurs et des accès.'},
+        {title:'Administrateur systèmes','company':'Société Générale','period':'2014 - 2019','desc':'Administration Active Directory, GPO, supervision réseau.'},
+      ],
+      skills:['Active Directory','VPN','Firewall Fortinet','PowerShell','ITIL v4','Windows Server'],
+      education:[
+        {school:'IUT de Blois',degree:'BTS Informatique Industrielle',year:'2014'},
+        {school:'AXELOS Certification',degree:'ITIL v4 Foundation',year:'2021'},
+      ],
+      posts:[
+        {date:'14 mai 2026','text':'La sécurité des accès distants est devenue incontournable. Nous venons de finaliser le déploiement de notre nouveau VPN Zero Trust chez ELECARM. Un beau chantier.','likes':34,'comments':7},
+        {date:'2 mars 2026','text':'Je cherche des missions freelance en parallèle de mon poste actuel. Disponible le soir et le week-end. Administration systèmes, audit de sécurité. Me contacter en MP.','likes':8,'comments':12,'flag':true},
+        {date:'5 janvier 2026','text':'Nouvelle année. Je réfléchis sérieusement à diversifier mes activités en dehors de mon poste actuel. Le secteur défense et sécurité industrielle m\'intéresse particulièrement. Des contacts dans ce milieu ? Disponible en MP.','likes':5,'comments':3,'flag':true},
+      ],
+    },
+    facebook:{
+      privacy:'Profil semi-public - amis d\'amis',
+      friends:127,
+      location:'Blois, Centre-Val de Loire',
+      posts:[
+        {date:'10 mai 2026','text':'Match de foot ce soir avec les potes. On gagne 3-1, belle soirée !','visibility':'Amis'},
+        {date:'22 avril 2026','text':'Enfin je regarde Mr Robot en entier. Série incroyable. Certaines scènes font vraiment réfléchir sur ce qu\'on peut faire avec un accès admin...','visibility':'Public','flag':true},
+        {date:'17 mars 2026','text':'Vu un reportage sur des consultants IT indépendants. Des missions de 3 semaines à 12-15k euros nets... moi qui galère à payer mon crédit auto depuis 2 ans. On fait vraiment les mauvais choix dans la vie.','visibility':'Amis','flag':true},
+        {date:'5 mars 2026','text':'Les factures s\'accumulent... Si quelqu\'un connaît des opportunités sérieuses en dehors des heures de boulot n\'hésitez pas.','visibility':'Amis','flag':true},
+      ],
+    },
+    analysis:[
+      {label:'Présence publique',value:'Très élevée - nom complet + employeur indexé',level:'danger'},
+      {label:'Signal d\'alerte #1',value:'Post LinkedIn 02/03 : recherche missions freelance (besoin financier)',level:'danger'},
+      {label:'Signal d\'alerte #2',value:'Post Facebook 22/04 : référence explicite aux accès admin (Mr Robot)',level:'danger'},
+      {label:'Signal d\'alerte #3',value:'Post Facebook 05/03 : difficultés financières déclarées publiquement',level:'danger'},
+      {label:'Compétences exposées',value:'Maîtrise VPN, AD, PowerShell - profil technique critique',level:'warn'},
+      {label:'Conclusion',value:'Profil OSINT cohérent avec un initié sous pression financière ayant les moyens techniques de commettre l\'attaque',level:'danger'},
+    ],
+  },
+  durand: {
+    id:'durand',
+    name:'Marc DURAND',
+    role:'Technicien de production',
+    photo:'face1.jpg',
+    risk:'EXPOSITION FAIBLE',
+    riskBg:'#1c1c1c',riskTc:'#888',
+    google:[
+      {title:'LinkedIn - Marc Durand - Technicien chez ELECARM SAS',url:'linkedin.com/in/marc-durand-41',snippet:'Marc Durand - Technicien de production chez ELECARM SAS. Blois. 112 relations.'},
+      {title:'Annuaire Pages Blanches - Marc Durand - Blois (41)',url:'pagesjaunes.fr/annuaire/marc-durand-blois',snippet:'Marc DURAND - 41000 Blois - Tel : 02 54 XX XX XX'},
+    ],
+    linkedin:{
+      connections:112,
+      headline:'Technicien de production | ELECARM SAS',
+      location:'Blois, Loir-et-Cher',
+      about:'Technicien depuis plus de 8 ans chez ELECARM SAS. Maintenance et production des équipements électriques industriels.',
+      experience:[
+        {title:'Technicien de production','company':'ELECARM SAS','period':'2016 - présent','desc':'Maintenance des lignes de production, gestion de l\'atelier.'},
+        {title:'Opérateur de production','company':'Legrand','period':'2012 - 2016','desc':'Assemblage et contrôle qualité.'},
+      ],
+      skills:['Maintenance industrielle','Électricité','Habilitation B2V','Contrôle qualité'],
+      education:[
+        {school:'Lycée Pro Ronsard - Blois',degree:'BAC Pro SEN - Systèmes Électroniques Numériques',year:'2015'},
+      ],
+      posts:[
+        {date:'15 février 2026','text':'8 ans de maison et je rempile pour une belle année. L\'équipe montage est au top. Heureux de faire partie de l\'aventure ELECARM.','likes':28,'comments':6},
+        {date:'20 novembre 2025','text':'Vient d\'obtenir mon habilitation électrique BR. Une formation dense mais vraiment utile sur le terrain.','likes':19,'comments':4},
+      ],
+    },
+    facebook:null,
+    analysis:[
+      {label:'Présence publique',value:'Faible - profil LinkedIn minimal, aucune activité récente',level:'ok'},
+      {label:'Réseaux sociaux',value:'Aucun compte Facebook ou autre réseau détecté',level:'ok'},
+      {label:'Informations sensibles exposées',value:'Aucune - poste et employeur connus mais sans détail opérationnel',level:'ok'},
+      {label:'Ancienneté',value:'8 ans dans le même poste - aucune recherche d\'emploi active visible',level:'ok'},
+      {label:'Conclusion',value:'Empreinte numérique quasi nulle. Aucun signal d\'alerte OSINT identifié. Profil stable et sans indicateur de compromission.',level:'ok'},
+    ],
+  },
+  benyoucef: {
+    id:'benyoucef',
+    name:'Karim BENYOUCEF',
+    role:'Magasinier',
+    photo:'face2.jpg',
+    risk:'EXPOSITION FAIBLE',
+    riskBg:'#1c1c1c',riskTc:'#888',
+    google:[
+      {title:'LinkedIn - Karim Benyoucef - Magasinier ELECARM SAS',url:'linkedin.com/in/karim-benyoucef',snippet:'Karim Benyoucef - Magasinier chez ELECARM SAS. 67 relations.'},
+    ],
+    linkedin:{
+      connections:67,
+      headline:'Magasinier - Logistique | ELECARM SAS',
+      location:'Blois, Loir-et-Cher',
+      about:'',
+      experience:[
+        {title:'Magasinier','company':'ELECARM SAS','period':'2021 - présent','desc':'Gestion des stocks matériels finis, réception et expédition.'},
+        {title:'Cariste','company':'Amazon Logistique','period':'2019 - 2021','desc':'Préparation de commandes, CACES 3.'},
+      ],
+      skills:['Gestion de stock','CACES 3','ERP','Logistique'],
+      education:[
+        {school:'CFA de Blois',degree:'BEP Logistique et Gestion de Stocks',year:'2019'},
+      ],
+      posts:[
+        {date:'12 janvier 2026','text':'3 ans de CDI chez ELECARM. Content de faire partie de l\'équipe.','likes':41,'comments':5},
+        {date:'3 août 2025','text':'Grosse journée au magasin. 3 palettes de composants critiques expédiées avant 17h. Pas le droit à l\'erreur avec les clients qu\'on a - Thales, Schneider, Renault. Ça représente pas mal de valeur entre les mains.','likes':15,'comments':2},
+      ],
+    },
+    facebook:null,
+    analysis:[
+      {label:'Présence publique',value:'Très faible - profil LinkedIn basique, un seul post',level:'ok'},
+      {label:'Réseaux sociaux',value:'Aucun compte Facebook ou autre réseau détecté publiquement',level:'ok'},
+      {label:'Informations sensibles',value:'Accès ERP stocks + clients stratégiques (Thales, Schneider, Renault) mentionnés publiquement',level:'warn'},
+      {label:'Conclusion',value:'Empreinte numérique limitée. Deux signaux mineurs : accès ERP mentionné + clients stratégiques rendus publics. Aucun indicateur comportemental de compromission.',level:'ok'},
+    ],
+  },
+  brunet: {
+    id:'brunet',
+    name:'Nathalie BRUNET',
+    role:'Responsable qualité',
+    photo:'face4.jpg',
+    risk:'EXPOSITION MODEREE',
+    riskBg:'#1a1200',riskTc:'#f59e0b',
+    google:[
+      {title:'LinkedIn - Nathalie Brunet - Responsable Qualité ELECARM',url:'linkedin.com/in/nathalie-brunet-qualite',snippet:'Nathalie Brunet - Responsable Qualité chez ELECARM SAS. 342 relations. Certifiée ISO 9001.'},
+      {title:'AFNOR Forum Qualité - intervention de N. Brunet',url:'afnor.org/forum/qualite-industrielle/2024',snippet:'...intervention de Nathalie Brunet (ELECARM SAS) sur la traçabilité des lots dans la production électrique - conférence novembre 2024...'},
+    ],
+    linkedin:{
+      connections:342,
+      headline:'Responsable Qualité | Certification ISO 9001 | ELECARM SAS',
+      location:'Blois, Centre-Val de Loire',
+      about:'11 ans d\'expérience en qualité industrielle. Pilote la politique qualité d\'ELECARM SAS et les relations avec les donneurs d\'ordre (Thales, Schneider). Auditrice interne ISO 9001:2015.',
+      experience:[
+        {title:'Responsable Qualité','company':'ELECARM SAS','period':'2013 - présent','desc':'Mise en place et suivi du SMQ, audits internes, traitement des non-conformités, interface client Thales.'},
+        {title:'Technicienne qualité','company':'Valeo','period':'2008 - 2013','desc':'Contrôle qualité, 8D, AMDEC.'},
+      ],
+      skills:['ISO 9001','AMDEC','8D','Audit interne','Thales','Schneider','SAP QM'],
+      education:[
+        {school:'Université de Tours',degree:'Licence Qualité - Production Industrielle',year:'2011'},
+        {school:'CNAM Blois',degree:'Expert QHSE - Bac+5',year:'2013'},
+      ],
+      posts:[
+        {date:'8 mai 2026','text':'Excellente journée de formation à l\'AFNOR sur les évolutions ISO 9001:2026. La qualité est l\'affaire de tous.','likes':67,'comments':14},
+        {date:'3 février 2026','text':'Fière d\'annoncer le renouvellement de notre certification ISO 9001 pour ELECARM SAS. Un beau travail d\'équipe.','likes':112,'comments':22},
+        {date:'12 décembre 2025','text':'Retour de l\'audit de surveillance ISO 9001. Zéro écart majeur. C\'est la récompense d\'une rigueur de tous les jours. Merci à l\'équipe qualité d\'ELECARM.','likes':89,'comments':18},
+      ],
+    },
+    facebook:null,
+    analysis:[
+      {label:'Présence publique',value:'Modérée - profil professionnel actif, nom + employeur + clients exposés',level:'warn'},
+      {label:'Donneurs d\'ordre exposés',value:'Relation Thales et Schneider mentionnée publiquement sur LinkedIn',level:'warn'},
+      {label:'Réseaux sociaux',value:'Aucun compte Facebook détecté - présence uniquement professionnelle',level:'ok'},
+      {label:'Activité récente',value:'Dernière publication le 08/05 - profil actif et visible',level:'warn'},
+      {label:'Conclusion',value:'Exposition professionnelle significative. Les relations avec Thales/Schneider sont publiques, ce qui peut faciliter des attaques par usurpation d\'identité (spear phishing). Aucun signal comportemental alarmant.',level:'warn'},
+    ],
+  },
+  thierry: {
+    id:'thierry',
+    name:'Pierre THIERRY',
+    role:'Gardien de nuit',
+    photo:'face3.jpg',
+    risk:'EXPOSITION NULLE',
+    riskBg:'#111',riskTc:'#555',
+    google:[
+      {title:'Pages Blanches - Pierre Thierry - Blois',url:'pagesjaunes.fr/annuaire/pierre-thierry-blois',snippet:'Pierre THIERRY - 41000 Blois - Aucune information supplémentaire disponible.'},
+      {title:'Club pétanque La Boule Bloisoise - anciens membres',url:'petanque-bloisoise.fr/membres/archives',snippet:'...Pierre Thierry - membre inscrit 2022-2023 - adhésion non renouvelée. Section loisirs. Rue des Acacias, Blois...'},
+    ],
+    linkedin:null,
+    facebook:null,
+    analysis:[
+      {label:'Présence publique',value:'Quasi nulle - Pages Blanches + trace club pétanque (adhésion non renouvelée 2023)',level:'ok'},
+      {label:'Réseaux sociaux',value:'Aucun compte LinkedIn, Facebook ou autre réseau détecté',level:'ok'},
+      {label:'Informations sensibles',value:'Aucune information professionnelle ou personnelle indexée',level:'ok'},
+      {label:'Profil numérique',value:'Individu volontairement absent du numérique - atypique pour 2026',level:'warn'},
+      {label:'Conclusion',value:'Empreinte OSINT inexistante. Absence totale de trace numérique : inhabituel. Ne permet pas de confirmer ni d\'infirmer son implication. La discrétion numérique peut elle-même constituer un signal.',level:'warn'},
+    ],
+  },
+  rousseau: {
+    id:'rousseau',
+    name:'Camille ROUSSEAU',
+    role:'Assistante commerciale',
+    risk:'A VERIFIER',
+    riskBg:'#1a1200',riskTc:'#f59e0b',
+    google:[
+      {title:'LinkedIn - Camille Rousseau - ELECARM SAS',url:'linkedin.com/in/camille-rousseau-com',snippet:'Camille Rousseau - Assistante commerciale chez ELECARM SAS. Blois. 94 relations.'},
+      {title:'Collectif Objecteurs - stop aux exportations d\'armement',url:'collectif-objecteurs.fr/nos-membres',snippet:'...parmi nos membres actifs région Centre : Camille R., mobilisée depuis 2023 sur les campagnes de sensibilisation...'},
+    ],
+    linkedin:{
+      connections:94,
+      headline:'Assistante commerciale | ELECARM SAS',
+      location:'Blois, Centre-Val de Loire',
+      about:'Assistante commerciale depuis 2 ans. Gestion des commandes clients et du suivi administratif.',
+      experience:[
+        {title:'Assistante commerciale','company':'ELECARM SAS','period':'2024 - présent','desc':'Suivi de commandes, relation clients, support administratif.'},
+      ],
+      skills:['Gestion commerciale','SAP SD','Relation client'],
+      education:[
+        {school:'IUT de Tours',degree:'BUT Techniques de Commercialisation',year:'2023'},
+      ],
+      posts:[],
+    },
+    facebook:{
+      privacy:'Profil public',
+      friends:203,
+      location:'Blois, Centre-Val de Loire',
+      posts:[
+        {date:'1 mai 2026','text':'Manifestation ce matin contre le salon de l\'armement. On ne lâchera rien.','visibility':'Public','flag':true},
+        {date:'20 février 2026','text':'Fière de militer au sein du collectif depuis 3 ans maintenant. Chaque voix compte.','visibility':'Public','flag':true},
+      ],
+    },
+    analysis:[
+      {label:'Présence publique',value:'Élevée - militantisme assumé et documenté publiquement',level:'warn'},
+      {label:'Motif idéologique apparent',value:'Membre active d\'un collectif anti-armement, potentiellement en tension avec l\'activité d\'ELECARM',level:'warn'},
+      {label:'Accès technique',value:'Aucun accès atelier, alarme ou système informatique dans sa fiche de poste',level:'ok'},
+      {label:'Alibi',value:'Absente de la région la nuit des faits (congé validé par les RH)',level:'ok'},
+      {label:'Conclusion',value:'Un motif idéologique visible ne suffit pas à établir une implication : sans accès ni opportunité, ce profil doit être écarté dès lors que l\'alibi est vérifié. À signaler comme risque de biais si l\'enquête s\'y attarde trop longtemps.',level:'ok'},
+    ],
+  },
+  vasseur: {
+    id:'vasseur',
+    name:'Thomas VASSEUR',
+    role:'Technicien de maintenance',
+    risk:'A VERIFIER',
+    riskBg:'#1a1200',riskTc:'#f59e0b',
+    google:[
+      {title:'LinkedIn - Thomas Vasseur - ELECARM SAS',url:'linkedin.com/in/thomas-vasseur-maintenance',snippet:'Thomas Vasseur - Technicien de maintenance chez ELECARM SAS. 8 mois. Blois.'},
+    ],
+    linkedin:{
+      connections:41,
+      headline:'Technicien de maintenance | ELECARM SAS',
+      location:'Blois, Loir-et-Cher',
+      about:'Technicien de maintenance industrielle.',
+      experience:[
+        {title:'Technicien de maintenance','company':'ELECARM SAS','period':'sept. 2025 - présent','desc':'Maintenance préventive et curative des lignes de production.'},
+        {title:'Période non renseignée','company':'','period':'2023 - 2024','desc':'Aucune activité documentée sur le profil pour cette période.'},
+        {title:'Technicien maintenance','company':'Fonderie Loiret','period':'2019 - 2023','desc':'Maintenance électromécanique.'},
+      ],
+      skills:['Maintenance industrielle','Automatismes','Habilitation électrique'],
+      education:[
+        {school:'Lycée Pro - Orléans',degree:'BAC Pro MEI',year:'2013'},
+      ],
+      posts:[],
+    },
+    facebook:null,
+    analysis:[
+      {label:'Présence publique',value:'Faible - profil récent, peu d\'activité',level:'ok'},
+      {label:'Anomalie de parcours',value:'Trou de près d\'un an entre 2023 et 2024 sur le CV, non expliqué publiquement',level:'warn'},
+      {label:'Ancienneté dans l\'entreprise',value:'8 mois seulement - arrivé après le début de plusieurs événements suspects',level:'warn'},
+      {label:'Accès technique',value:'Pas d\'accès au système d\'alarme. Badge atelier uniquement, horaires habituels respectés',level:'ok'},
+      {label:'Conclusion',value:'Un trou de CV appelle une vérification factuelle (RH, références) et non une accusation. Aucun élément matériel - badge, accès, horaires - ne le relie aux faits.',level:'ok'},
+    ],
+  },
+  haddad: {
+    id:'haddad',
+    name:'Farid HADDAD',
+    role:'Responsable Achats',
+    risk:'A VERIFIER',
+    riskBg:'#1a1200',riskTc:'#f59e0b',
+    google:[
+      {title:'LinkedIn - Farid Haddad - Responsable Achats ELECARM',url:'linkedin.com/in/farid-haddad-achats',snippet:'Farid Haddad - Responsable Achats chez ELECARM SAS. 312 relations. 9 ans d\'ancienneté.'},
+      {title:'Salon Electronica Shenzhen 2026 - liste des visiteurs professionnels',url:'electronica-shenzhen.com/visiteurs-2026',snippet:'...délégation française incluant F. Haddad (ELECARM SAS, France) - sourcing composants...'},
+    ],
+    linkedin:{
+      connections:312,
+      headline:'Responsable Achats | Sourcing international | ELECARM SAS',
+      location:'Blois, Centre-Val de Loire',
+      about:'Responsable Achats depuis 9 ans. Sourcing fournisseurs Europe et Asie, négociation contrats.',
+      experience:[
+        {title:'Responsable Achats','company':'ELECARM SAS','period':'2017 - présent','desc':'Sourcing fournisseurs, négociation, gestion des risques fournisseurs.'},
+      ],
+      skills:['Sourcing international','Négociation','Gestion fournisseurs','Mandarin (notions)'],
+      education:[
+        {school:'ESC Tours',degree:'Master Achats et Logistique',year:'2016'},
+      ],
+      posts:[
+        {date:'5 mai 2026','text':'De retour de Shenzhen après une semaine de visites fournisseurs. Marché des composants électroniques toujours aussi dynamique.','likes':22,'comments':4},
+      ],
+    },
+    facebook:{
+      privacy:'Profil semi-public',
+      friends:340,
+      location:'Blois, Centre-Val de Loire',
+      posts:[
+        {date:'10 avril 2026','text':'De retour de Bagdad, content d\'avoir revu la famille après deux ans.','visibility':'Amis','flag':true},
+      ],
+    },
+    analysis:[
+      {label:'Présence publique',value:'Élevée - profil professionnel actif, déplacements documentés',level:'warn'},
+      {label:'Déplacements internationaux',value:'Voyages professionnels réguliers en Chine (sourcing) et voyages familiaux en Irak',level:'warn'},
+      {label:'Lien avec le dossier fournisseur',value:'A validé le changement de fournisseur des passerelles Raspberry Pi (SinoBoard, Shenzhen) - voir note Achats',level:'warn'},
+      {label:'Accès technique',value:'Aucun accès au système d\'alarme ni aux systèmes informatiques sensibles',level:'ok'},
+      {label:'Conclusion',value:'Les déplacements à l\'étranger ne constituent pas une preuve : ils correspondent à son rôle professionnel et à sa situation familiale. Le point réellement à creuser n\'est pas le voyage, c\'est l\'absence de validation sécurité sur le changement de fournisseur qu\'il a approuvé.',level:'warn'},
+    ],
+  },
+};
+
+function renderOSINT(){
+  switchOSINT(currentOSINT);
+}
+
+function switchOSINT(id){
+  currentOSINT=id;
+  const d=OSINT_DATA[id];
+  if(!d)return;
+  // header
+  document.getElementById('osint-suspect-name').textContent=d.name+' - '+d.role;
+  const badge=document.getElementById('osint-risk-badge');
+  badge.textContent=d.risk;
+  badge.style.background=d.riskBg;
+  badge.style.color=d.riskTc;
+  // suspect nav
+  const nav=document.getElementById('osint-nav');
+  nav.innerHTML='';
+  const suspects=[
+    {id:'moreau',label:'MOREAU'},
+    {id:'durand',label:'DURAND'},
+    {id:'benyoucef',label:'BENYOUCEF'},
+    {id:'brunet',label:'BRUNET'},
+    {id:'thierry',label:'THIERRY'},
+    {id:'rousseau',label:'ROUSSEAU'},
+    {id:'vasseur',label:'VASSEUR'},
+    {id:'haddad',label:'HADDAD'},
+  ];
+  suspects.forEach(s=>{
+    const btn=document.createElement('button');
+    btn.className='osint-stab'+(s.id===id?' active':'');
+    btn.textContent=s.label;
+    btn.onclick=()=>switchOSINT(s.id);
+    nav.appendChild(btn);
+  });
+  // body
+  document.getElementById('osint-body').innerHTML=buildOSINTBody(d);
+}
+
+function buildOSINTBody(d){
+  let html='';
+
+  // ── Google ──────────────────────────────
+  html+=`<div style="margin-top:14px;margin-bottom:18px">
+    <div style="font-size:10px;color:var(--tx4);margin-bottom:10px">Environ ${d.google.length} résultat(s) pour "<span style="color:var(--tx2)">${d.name}</span>"</div>`;
+  d.google.forEach(g=>{
+    html+=`<div style="margin-bottom:13px">
+      <div style="font-size:12px;font-weight:500;color:#7ab0d8">${g.title}</div>
+      <div style="font-size:11px;color:#3a7a3a;margin:1px 0 3px">${g.url}</div>
+      <div style="font-size:12px;color:var(--tx3);line-height:1.6">${g.snippet}</div>
+    </div>`;
+  });
+  html+=`</div>`;
+
+  // ── LinkedIn + Facebook côte à côte ─────
+  const liHtml = buildLinkedIn(d);
+  const fbHtml = buildFacebook(d);
+  html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px">
+    ${liHtml}
+    ${fbHtml}
+  </div>`;
+
+  return html;
+}
+
+function buildLinkedIn(d){
+  if(!d.linkedin){
+    return `<div style="background:#1d2226;border:1px solid #38434f;border-radius:6px;padding:16px;font-size:11px;color:#5a7a8a;font-style:italic">Aucun profil LinkedIn détecté.</div>`;
+  }
+  const li=d.linkedin;
+  return `<div style="background:#1d2226;border:1px solid #38434f;border-radius:6px;overflow:hidden;font-family:var(--font)">
+    <div style="height:56px;background:linear-gradient(135deg,#004471 0%,#00335a 100%)"></div>
+    <div style="padding:0 14px 0;margin-top:-28px">
+      <div style="width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid #1d2226;margin-bottom:8px">
+        <img src="${d.photo}" alt="${d.name}" style="width:100%;height:100%;object-fit:cover">
+      </div>
+      <div style="font-size:13px;font-weight:700;color:#e7e9ea;margin-bottom:2px">${d.name}</div>
+      <div style="font-size:10px;color:#a8a8a8;line-height:1.55;margin-bottom:6px">${li.headline}</div>
+      <div style="font-size:10px;color:#70b5f9;margin-bottom:12px">${li.location} · <span style="color:#a8a8a8">${li.connections} relations</span></div>
+    </div>
+    ${li.about?`<div style="padding:10px 14px;border-top:1px solid #38434f;font-size:11px;color:#a8a8a8;line-height:1.65">${li.about}</div>`:''}
+    <div style="padding:10px 14px;border-top:1px solid #38434f">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#70b5f9;text-transform:uppercase;margin-bottom:7px">Expériences</div>
+      ${li.experience.map(e=>`<div style="margin-bottom:9px">
+        <div style="font-size:11px;font-weight:600;color:#e7e9ea">${e.title}</div>
+        <div style="font-size:10px;color:#a8a8a8">${e.company} · ${e.period}</div>
+        <div style="font-size:10px;color:#6a8a9a;margin-top:2px;line-height:1.5">${e.desc}</div>
+      </div>`).join('')}
+    </div>
+    <div style="padding:10px 14px;border-top:1px solid #38434f">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#70b5f9;text-transform:uppercase;margin-bottom:7px">Compétences</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">
+        ${li.skills.map(sk=>`<span style="background:#283039;border:1px solid #38434f;color:#a8c8e0;font-size:10px;padding:2px 7px;border-radius:3px">${sk}</span>`).join('')}
+      </div>
+    </div>
+    ${li.education&&li.education.length?`<div style="padding:10px 14px;border-top:1px solid #38434f">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#70b5f9;text-transform:uppercase;margin-bottom:7px">Formation</div>
+      ${li.education.map(e=>`<div style="margin-bottom:8px">
+        <div style="font-size:11px;font-weight:600;color:#e7e9ea">${e.degree}</div>
+        <div style="font-size:10px;color:#a8a8a8">${e.school} · ${e.year}</div>
+      </div>`).join('')}
+    </div>`:''}
+    ${li.posts&&li.posts.length?`<div style="padding:10px 14px;border-top:1px solid #38434f">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#70b5f9;text-transform:uppercase;margin-bottom:8px">Activité</div>
+      ${li.posts.map(p=>`<div style="background:#283039;border:1px solid #38434f;border-radius:4px;padding:10px 11px;margin-bottom:6px">
+        <div style="font-size:10px;color:#6a8a9a;margin-bottom:5px">${p.date}</div>
+        <div style="font-size:11px;color:#a8a8a8;line-height:1.65">${p.text}</div>
+        <div style="font-size:10px;color:#4a6a7a;margin-top:7px">${p.likes} J\'aime · ${p.comments} commentaires</div>
+      </div>`).join('')}
+    </div>`:''}
+  </div>`;
+}
+
+function buildFacebook(d){
+  if(!d.facebook){
+    return `<div style="background:#242526;border:1px solid #3a3b3c;border-radius:6px;padding:16px;font-size:11px;color:#6a6b6c;font-style:italic">Aucun compte Facebook détecté.</div>`;
+  }
+  const fb=d.facebook;
+  return `<div style="background:#242526;border:1px solid #3a3b3c;border-radius:6px;overflow:hidden;font-family:var(--font)">
+    <div style="height:80px;background:#3a3b3c"></div>
+    <div style="padding:0 14px 12px;margin-top:-36px;border-bottom:1px solid #3a3b3c">
+      <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:8px">
+        <div style="width:64px;height:64px;border-radius:50%;overflow:hidden;border:3px solid #242526;flex-shrink:0">
+          <img src="${d.photo}" alt="${d.name}" style="width:100%;height:100%;object-fit:cover">
+        </div>
+        <div style="padding-bottom:6px">
+          <div style="font-size:14px;font-weight:700;color:#e4e6eb">${d.name}</div>
+          ${fb.location?`<div style="font-size:10px;color:#b0b3b8">${fb.location}</div>`:''}
+          <div style="font-size:10px;color:#b0b3b8">${fb.privacy}${fb.friends?' · '+fb.friends+' amis':''}</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:10px 14px">
+      ${fb.posts.map(p=>`<div style="background:#18191a;border:1px solid #3a3b3c;border-radius:8px;padding:11px 13px;margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0">
+            <img src="${d.photo}" alt="" style="width:100%;height:100%;object-fit:cover">
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:#e4e6eb">${d.name}</div>
+            <div style="font-size:10px;color:#b0b3b8">${p.date} · ${p.visibility}</div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:#e4e6eb;line-height:1.65">${p.text}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════
+// VERDICT
+// ══════════════════════════════════════════
+function renderVerdict(){
+  const wrap=document.getElementById('vopts-1');
+  if(!wrap||wrap.children.length)return;
+  wrap.innerHTML=SUSPECTS.map(s=>`<label class="verdict-opt"><input type="radio" name="v1" value="${s.name}"> ${s.name} - ${s.role}</label>`).join('');
+}
+
+const VERDICT_KEY_B64='eyJhbnN3ZXJzIjp7InYxIjoiSnVsaWVuIE1PUkVBVSIsInYyIjoiYSIsInYzIjoiMTg1LjIyMC4xMDEuNDciLCJ2NCI6ImMiLCJ2NSI6WyJWYW5pdMOpIiwiRXNww6hjZXMiXX0sImV4cGxhaW4iOnsidjEiOiJKdWxpZW4gTU9SRUFVIChEU0kpIGVzdCBsZSBjb21wdGUgY29tcHJvbWlzIDogYWNjw6hzIGFkbWluLCBwb3N0ZSBhdSBjZW50cmUgZGVzIGFsZXJ0ZXMgRFNJLCBtZXNzYWdlcmllIGludGVybmUgYW1iaWd1w6ssIGF1Y3VuIGF1dHJlIHN1c3BlY3QgbidhIMOgIGxhIGZvaXMgbGUgbW90aWYgZXQgbCdhY2PDqHMgdGVjaG5pcXVlLiIsInYyIjoiTGUgbWFpbCBkdSBmYXV4IHJlY3J1dGV1ciBUaGFsZXMgKHNwZWFycGhpc2hpbmcpIGF2ZWMgcGnDqGNlIGpvaW50ZSAuZG9jbSBlc3QgbGUgdmVjdGV1ciBpbml0aWFsIGNvbmZpcm3DqSBwYXIgbGVzIGxvZ3MgKDAyLzA1LCBwaGFzZSAyKS4iLCJ2MyI6IjE4NS4yMjAuMTAxLjQ3IGVzdCBsJ0lQIHNhbnMgcHJvcHJpw6l0YWlyZSBjb25udSBldCBhdSB2b2x1bWUgaW5jb21wYXRpYmxlIGF2ZWMgZGUgbGEgdMOpbMOpbcOpdHJpZS4gMTAuNDIuNi4xMSBlc3QgbGUgc2VydmV1ciBpbnRlcm5lIGzDqWdpdGltZSwgMjAuNDIuNzMuMTggdW4gc2VydmljZSBBenVyZSBOVFAgbMOpZ2l0aW1lLiIsInY0IjoiTGUgY2hhbmdlbWVudCBkZSBmb3Vybmlzc2V1ciBkZXMgcGFzc2VyZWxsZXMgUmFzcGJlcnJ5IFBpIChTaW5vQm9hcmQpIHNhbnMgdmFsaWRhdGlvbiBzw6ljdXJpdMOpIERTSSBlc3QgbGEgZmFpbGxlIG9yZ2FuaXNhdGlvbm5lbGxlIHF1aSBhIHBlcm1pcyBsYSBjb21wcm9taXNzaW9uIG1hdMOpcmllbGxlIC0gYydlc3QgbGUgY8WTdXIgZHUgZGlhZ25vc3RpYyBhdHRlbmR1IGRhbnMgdm90cmUgcmFwcG9ydC4iLCJ2NSI6IlZhbml0w6kgKG1pc3Npb24gZmxhdHRldXNlLCBleGNsdXNpdmUpIGV0IEVzcMOoY2VzIChyw6ltdW7DqXJhdGlvbiBhdHRyYWN0aXZlIGZhY2Ugw6AgZGVzIGRpZmZpY3VsdMOpcyBmaW5hbmNpw6hyZXMgcsOpZWxsZXMpIHNvbnQgbGVzIGRldXggbGV2aWVycyBkb2N1bWVudMOpcy4gQXVjdW5lIHRyYWNlIGQnaWTDqW9sb2dpZSBvdSBkZSBjb250cmFpbnRlL2NoYW50YWdlIGRhbnMgbGUgZG9zc2llci4ifX0=';
+function getVerdictKey(){
+  return JSON.parse(decodeURIComponent(escape(atob(VERDICT_KEY_B64))));
+}
+
+const ANIM_SOLUTION_B64='PHN0cm9uZz5Db3VwYWJsZSA6PC9zdHJvbmc+IEp1bGllbiBNT1JFQVUgKERTSSksIHJlY3J1dMOpIHBhciBpbmfDqW5pZXJpZSBzb2NpYWxlIChwcmVzc2lvbiBmaW5hbmNpw6hyZSArIGZsYXR0ZXJpZSAtIGxldmllcnMgRXNww6hjZXMgZXQgVmFuaXTDqSkuPGJyPgogICAgPHN0cm9uZz5WZWN0ZXVyIGluaXRpYWwgOjwvc3Ryb25nPiBtYWlsIHNwZWFycGhpc2hpbmcgKGZhdXggcmVjcnV0ZXVyIFRoYWxlcyksIHBpw6hjZSBqb2ludGUgLmRvY20gcGnDqWfDqWUuPGJyPgogICAgPHN0cm9uZz5DYW5hbCBkZSBzb3J0aWUgOjwvc3Ryb25nPiBwYXNzZXJlbGxlIEJYLUdBVEVXQVktMDcgdmVycyBsJ0lQIDE4NS4yMjAuMTAxLjQ3ICjDoCBkaXN0aW5ndWVyIGRlIDEwLjQyLjYuMTEgPSBpbnRlcm5lIGzDqWdpdGltZSBldCAyMC40Mi43My4xOCA9IEF6dXJlIE5UUCBsw6lnaXRpbWUpLjxicj4KICAgIDxzdHJvbmc+Q2F1c2UgcmFjaW5lIG9yZ2FuaXNhdGlvbm5lbGxlIDo8L3N0cm9uZz4gY2hhbmdlbWVudCBkZSBmb3Vybmlzc2V1ciBkZXMgY2FydGVzIFJhc3BiZXJyeSBQaSAoU2lub0JvYXJkKSBzYW5zIHZhbGlkYXRpb24gc8OpY3VyaXTDqSBEU0kuPGJyPgogICAgPHN0cm9uZz5GYXVzc2VzIHBpc3RlcyDDoCDDqWNhcnRlciA6PC9zdHJvbmc+IEthcmltIEJFTllPVUNFRiAobW90aWYgZmluYW5jaWVyIG1haXMgYXVjdW4gYWNjw6hzKSwgQ2FtaWxsZSBST1VTU0VBVSAoaWTDqW9sb2dpZSBtYWlzIGF1Y3VuIGFjY8OocywgYWxpYmkpLCBUaG9tYXMgVkFTU0VVUiAodHJvdSBkZSBDViBtYWlzIGF1Y3VuZSBwcmV1dmUpLCBGYXJpZCBIQUREQUQgKHZveWFnZXMgbWFpcyBhdWN1biBsaWVuKSwgYW5vbWFsaWUgcXVhbGl0w6kgQlgtNDIxNiAocHJvYmzDqG1lIGluZMOpcGVuZGFudCksIEFudG9pbmUgUk9CRVJUIChhY2PDqHMgcsOpdm9xdcOpcyDDoCBzb24gZMOpcGFydCksIFRlY2hJbmR1cyBTb2x1dGlvbnMgKGF1Y3VuZSBwcmV1dmUgdGVjaG5pcXVlKS4=';
+function toggleAnimSolution(){
+  const el=document.getElementById('anim-solution');
+  if(!el.innerHTML.trim()){
+    el.innerHTML=decodeURIComponent(escape(atob(ANIM_SOLUTION_B64)));
+  }
+  el.classList.toggle('show');
+}
+
+function submitVerdict(){
+  const v1=document.querySelector('input[name="v1"]:checked');
+  const v2=document.querySelector('input[name="v2"]:checked');
+  const v3=document.querySelector('input[name="v3"]:checked');
+  const v4=document.querySelector('input[name="v4"]:checked');
+  const v5=[...document.querySelectorAll('input[name="v5"]:checked')].map(i=>i.value);
+
+  if(!v1||!v2||!v3||!v4||v5.length===0){
+    toast('!','Reponses incompletes','Repondez a toutes les questions avant de valider.');
+    return;
+  }
+
+  const key=getVerdictKey();
+  const checks=[
+    {q:'v1',ok:v1.value===key.answers.v1,label:'Question 1 - Employé compromis'},
+    {q:'v2',ok:v2.value===key.answers.v2,label:'Question 2 - Vecteur d\'entrée'},
+    {q:'v3',ok:v3.value===key.answers.v3,label:'Question 3 - IP malveillante'},
+    {q:'v4',ok:v4.value===key.answers.v4,label:'Question 4 - Cause organisationnelle'},
+    {q:'v5',ok:v5.length===key.answers.v5.length&&v5.every(x=>key.answers.v5.includes(x)),label:'Question 5 - Leviers VICE'},
+  ];
+  const score=checks.filter(c=>c.ok).length;
+
+  let tier;
+  if(score===5)tier='Excellent travail - diagnostic complet et exact.';
+  else if(score>=3)tier='Bon travail - l\'essentiel est là, quelques points à affiner.';
+  else tier='Des éléments clés manquent encore - reprenez les onglets Mails, DSI/Logs et Documents.';
+
+  const linesHtml=checks.map(c=>`
+    <div class="verdict-line">
+      <div class="verdict-icon ${c.ok?'ok':'ko'}">${c.ok?'OK':'X'}</div>
+      <div class="verdict-line-text"><strong>${c.label}</strong><br>${key.explain[c.q]}</div>
+    </div>`).join('');
+
+  document.getElementById('verdict-result').innerHTML=`
+    <div class="verdict-result">
+      <div class="verdict-score">${score} / 5</div>
+      <div class="verdict-score-label">${tier}</div>
+      ${linesHtml}
+      <div class="verdict-recap">
+        Pour le rapport de la séance 3, structurez-vous autour des 3 éléments demandés par la directive ministérielle (onglet Documents) : diagnostic des vulnérabilités, plan de préconisations priorisées, rappel de sensibilisation VICE. Le vrai sujet du diagnostic n'est pas seulement "qui" mais surtout "comment l'organisation a laissé la faille s'installer" - achats, validation sécurité, sensibilisation du personnel.
+      </div>
+    </div>`;
+  saveState();
+}
+
+// ══════════════════════════════════════════
+// PERSISTANCE LOCALE (localStorage)
+// ══════════════════════════════════════════
+const STORAGE_KEY='elecarm_mission_state_v1';
+
+function saveState(){
+  try{
+    const activeTabBtn=document.querySelector('.tab.active');
+    const v1=document.querySelector('input[name="v1"]:checked');
+    const v2=document.querySelector('input[name="v2"]:checked');
+    const v3=document.querySelector('input[name="v3"]:checked');
+    const v4=document.querySelector('input[name="v4"]:checked');
+    const v5=[...document.querySelectorAll('input[name="v5"]:checked')].map(i=>i.value);
+    const state={
+      entered:true,
+      activeTab: activeTabBtn ? activeTabBtn.dataset.tab : 'situation',
+      readMails: MAILS.filter(m=>!m.unread).map(m=>m.id),
+      situationNotes:(document.getElementById('situation-notes')||{}).value||'',
+      enigNotes:(document.getElementById('enig-textarea')||{}).value||'',
+      verdictPicks:{v1:v1?v1.value:null,v2:v2?v2.value:null,v3:v3?v3.value:null,v4:v4?v4.value:null,v5:v5},
+      verdictSubmitted: !!document.querySelector('#verdict-result .verdict-score'),
+      sessionSecondsLeft: sessionSecondsLeft,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){}
+}
+
+function loadSavedState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    return raw?JSON.parse(raw):null;
+  }catch(e){ return null; }
+}
+
+function resetMission(){
+  if(!confirm('Reinitialiser la mission ? Toute la progression sera effacee sur cet appareil.'))return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+function restoreState(st){
+  if(!st) return;
+  if(st.readMails){ MAILS.forEach(m=>{ if(st.readMails.includes(m.id)) m.unread=false; }); renderMails(); }
+  if(typeof st.sessionSecondsLeft==='number'){ sessionSecondsLeft=st.sessionSecondsLeft; renderSessionTimer(); }
+  if(st.situationNotes){ const el=document.getElementById('situation-notes'); if(el)el.value=st.situationNotes; }
+  if(st.enigNotes){ const el=document.getElementById('enig-textarea'); if(el)el.value=st.enigNotes; }
+  if(st.verdictPicks){
+    const p=st.verdictPicks;
+    if(p.v1){ const el=document.querySelector('input[name="v1"][value="'+CSS.escape(p.v1)+'"]'); if(el)el.checked=true; }
+    ['v2','v3','v4'].forEach(k=>{ if(p[k]){ const el=document.querySelector('input[name="'+k+'"][value="'+CSS.escape(p[k])+'"]'); if(el)el.checked=true; } });
+    if(Array.isArray(p.v5)) p.v5.forEach(v=>{ const el=document.querySelector('input[name="v5"][value="'+CSS.escape(v)+'"]'); if(el)el.checked=true; });
+  }
+  if(st.verdictSubmitted) submitVerdict();
+}
+
+(function(){
+  const vp=document.getElementById('panel-verdict');
+  if(vp) vp.addEventListener('change', saveState);
+})();
+
+</script>
+</body>
+</html>
