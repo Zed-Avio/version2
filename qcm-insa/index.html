@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCM Cybersecurite - INSA CVL</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    color: #111;
+  }
+
+  img { height: 50px; display: block; margin-bottom: 36px; }
+
+  .progress { height: 3px; background: #eee; margin-bottom: 28px; }
+  .progress-fill { height: 3px; background: #111; transition: width .4s; }
+
+  .badge { font-size: 11px; font-weight: bold; letter-spacing: .1em; text-transform: uppercase; color: #888; margin-bottom: 6px; }
+  .qnum  { font-size: 12px; color: #bbb; margin-bottom: 10px; }
+  .qtext { font-size: 16px; font-weight: bold; line-height: 1.5; margin-bottom: 24px; }
+
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    color: #222;
+  }
+  .choice:hover:not(:disabled) { border-color: #999; }
+  .choice:disabled { cursor: default; }
+  .choice .letter {
+    font-weight: bold;
+    font-size: 13px;
+    color: #888;
+    min-width: 18px;
+    margin-top: 1px;
+  }
+  .choice.correct { border-color: #111; background: #f5f5f5; }
+  .choice.correct .letter { color: #111; }
+  .choice.wrong   { border-color: #bbb; color: #bbb; }
+  .choice.wrong   .letter { color: #bbb; }
+  .choice.dim     { color: #ccc; border-color: #eee; }
+  .choice.dim     .letter { color: #ccc; }
+
+  .suspense { display: none; padding: 24px 0; text-align: center; }
+  .suspense.on { display: block; }
+  .dots span {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: #ccc; margin: 0 3px;
+    animation: bonce .8s infinite;
+  }
+  .dots span:nth-child(2) { animation-delay: .15s; }
+  .dots span:nth-child(3) { animation-delay: .3s; }
+  @keyframes bonce { 0%,80%,100%{transform:scale(.6);opacity:.4} 40%{transform:scale(1);opacity:1} }
+  .susp-txt { font-size: 12px; color: #bbb; margin-top: 10px; }
+
+  .feedback {
+    display: none;
+    font-size: 13px;
+    color: #555;
+    border-left: 2px solid #ccc;
+    padding-left: 12px;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .feedback.on { display: block; }
+
+  .next-btn {
+    display: none;
+    margin-top: 20px;
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+  }
+  .next-btn:hover { background: #333; }
+  .next-btn.on { display: block; }
+
+  .score { display: none; text-align: center; padding: 20px 0; }
+  .score.on { display: block; }
+  .score-num { font-size: 52px; font-weight: bold; margin-bottom: 6px; }
+  .score-sub { font-size: 13px; color: #999; margin-bottom: 14px; }
+  .score-msg { font-size: 15px; color: #444; margin-bottom: 28px; }
+  .restart {
+    border: 1px solid #111;
+    background: #fff;
+    padding: 11px 24px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .restart:hover { background: #f5f5f5; }
+</style>
+</head>
+<body>
+
+<img src="insa-cvl.webp" alt="INSA CVL">
+
+<div class="progress"><div class="progress-fill" id="bar" style="width:0%"></div></div>
+
+<div id="quiz">
+  <div class="badge" id="badge"></div>
+  <div class="qnum"  id="qnum"></div>
+  <div class="qtext" id="qtext"></div>
+
+  <div class="suspense" id="suspense">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <div class="susp-txt" id="susp-txt"></div>
+  </div>
+
+  <div id="choices"></div>
+
+  <div class="feedback" id="feedback"></div>
+  <button class="next-btn" id="next-btn" onclick="goNext()"></button>
+</div>
+
+<div class="score" id="score">
+  <div class="score-num" id="s-num"></div>
+  <div class="score-sub">sur 6</div>
+  <div class="score-msg" id="s-msg"></div>
+  <button class="restart" onclick="restart()">Recommencer</button>
+</div>
+
+<script>
+const Q = [
+  {
+    badge: "OSINT",
+    q: "Un enqueteur veut trouver des infos sur un suspect sans pirater aucun systeme. Quelle technique utilise-t-il ?",
+    choices: [
+      "L'OSINT : collecter des informations depuis des sources publiques accessibles a tous (Google, LinkedIn, reseaux sociaux, forums...)",
+      "Le bruteforce : essayer toutes les combinaisons de mots de passe possibles jusqu'a trouver le bon"
+    ],
+    ok: 0,
+    why: "Exact. L'OSINT (Open Source Intelligence) = trouver de l'information legalement, sans intrusion. Tout ce qui est public peut etre exploite."
+  },
+  {
+    badge: "PHISHING",
+    q: "Des milliers de personnes recoivent un email imitant leur banque et demandant leurs identifiants. Comment appelle-t-on cette attaque ?",
+    choices: [
+      "Un ransomware : un logiciel qui chiffre les fichiers de la banque et reclame une rancon",
+      "Du phishing : un faux email envoye en masse pour voler les identifiants d'un maximum de victimes"
+    ],
+    ok: 1,
+    why: "Exact. Le phishing = filet lance en masse. L'attaquant imite une marque connue et espere que quelqu'un morde a l'hamecon."
+  },
+  {
+    badge: "SPEAR-PHISHING",
+    q: "Un attaquant a etudie sa cible pendant des semaines : son prenom, son employeur, ses problemes financiers. Il envoie un email ultra-personnalise. C'est quoi ?",
+    choices: [
+      "Du spear-phishing : un phishing sur-mesure qui cible une seule personne avec precision",
+      "Du phishing classique : c'est la meme technique, le resultat est identique"
+    ],
+    ok: 0,
+    why: "Exact. Spear = lance (pas filet). L'attaquant vise une seule cible avec une precision chirurgicale. Beaucoup plus dangereux que le phishing de masse."
+  },
+  {
+    badge: "RANSOMWARE",
+    q: "Un message apparait : 'Vos fichiers sont chiffres. Payez 50 000 EUR en Bitcoin pour recuperer vos donnees.' C'est quoi ?",
+    choices: [
+      "Un ransomware : logiciel malveillant qui chiffre les donnees et rend le systeme inutilisable jusqu'au paiement",
+      "Un keylogger : logiciel qui enregistre les frappes clavier a l'insu de la victime"
+    ],
+    ok: 0,
+    why: "Exact. Ransomware = rancon + logiciel. Il chiffre les fichiers et rend tout inutilisable. Et meme apres paiement, rien n'est garanti."
+  },
+  {
+    badge: "INGENIERIE SOCIALE",
+    q: "Un attaquant appelle un employe, se fait passer pour le support IT et le convainc de lui donner son mot de passe. C'est quoi ?",
+    choices: [
+      "Un exploit zero-day : il exploite une faille technique inconnue dans le logiciel",
+      "De l'ingenierie sociale : manipuler un humain plutot qu'attaquer une machine"
+    ],
+    ok: 1,
+    why: "Exact. L'ingenierie sociale exploite la psychologie : confiance, peur, urgence, autorite. L'humain est souvent le maillon le plus faible d'un systeme de securite."
+  },
+  {
+    badge: "SIEM",
+    q: "Un analyste voit en temps reel tous les evenements de securite de l'entreprise depuis un seul ecran. Quel outil utilise-t-il ?",
+    choices: [
+      "Un SIEM (ex: Wazuh) : centralise et correle tous les logs de securite pour detecter les comportements suspects",
+      "Un firewall : filtre le trafic reseau entrant et sortant de l'entreprise"
+    ],
+    ok: 0,
+    why: "Exact. SIEM = Security Information and Event Management. Il agregge les logs de toutes les machines et alerte quand une attaque est detectee."
+  }
+];
+
+const SUSPTXTS = ["Analyse en cours...","Verification...","Traitement...","Comparaison...","Authentification...","Calcul du score..."];
+let cur = 0, score = 0, locked = false;
+
+function render() {
+  const q = Q[cur];
+  document.getElementById('badge').textContent = q.badge;
+  document.getElementById('qnum').textContent = 'Question ' + (cur + 1) + ' / ' + Q.length;
+  document.getElementById('qtext').textContent = q.q;
+  document.getElementById('bar').style.width = (cur / Q.length * 100) + '%';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('next-btn').className = 'next-btn';
+  document.getElementById('suspense').className = 'suspense';
+
+  const wrap = document.getElementById('choices');
+  wrap.innerHTML = '';
+  wrap.style.opacity = '1';
+  q.choices.forEach((txt, i) => {
+    const b = document.createElement('button');
+    b.className = 'choice';
+    b.innerHTML = `<span class="letter">${String.fromCharCode(65+i)}.</span><span>${txt}</span>`;
+    b.onclick = () => pick(i);
+    wrap.appendChild(b);
+  });
+  locked = false;
+}
+
+function pick(idx) {
+  if (locked) return;
+  locked = true;
+  const btns = document.querySelectorAll('.choice');
+  btns.forEach(b => b.disabled = true);
+  document.getElementById('choices').style.opacity = '.2';
+  document.getElementById('susp-txt').textContent = SUSPTXTS[cur];
+  document.getElementById('suspense').className = 'suspense on';
+
+  setTimeout(() => {
+    document.getElementById('suspense').className = 'suspense';
+    document.getElementById('choices').style.opacity = '1';
+    const q = Q[cur];
+    const good = idx === q.ok;
+    if (good) score++;
+    btns.forEach((b, i) => {
+      if (i === q.ok) b.classList.add('correct');
+      else if (i === idx) b.classList.add('wrong');
+      else b.classList.add('dim');
+    });
+    const fb = document.getElementById('feedback');
+    fb.textContent = (good ? 'Correct. ' : 'Incorrect. ') + q.why;
+    fb.className = 'feedback on';
+    const nb = document.getElementById('next-btn');
+    nb.textContent = cur < Q.length - 1 ? 'Question suivante' : 'Voir mon score';
+    nb.className = 'next-btn on';
+  }, 1300);
+}
+
+function goNext() {
+  cur++;
+  if (cur >= Q.length) end(); else render();
+}
+
+function end() {
+  document.getElementById('bar').style.width = '100%';
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('s-num').textContent = score + '/6';
+  const msgs = ["A retravailler avant l'exercice.", "Quelques notions a revoir.", "Bonne base, vous etes prets.", "Parfait, score maximal."];
+  document.getElementById('s-msg').textContent = score <= 2 ? msgs[0] : score <= 3 ? msgs[1] : score <= 5 ? msgs[2] : msgs[3];
+  document.getElementById('score').className = 'score on';
+}
+
+function restart() {
+  cur = 0; score = 0;
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('score').className = 'score';
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
