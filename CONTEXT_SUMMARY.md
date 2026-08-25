@@ -44,7 +44,7 @@ Enseignant qui anime un cours d'introduction au management/gestion, construit de
 
 ## Le scenario actuel (histoire complete)
 
-**Cadre narratif** : les joueurs sont un cabinet d'audit externe mandate par la DSI d'ELECARM (fabricant de composants electroniques, sous-traitant Thales Defence, Blois), suite a une directive du Ministere de l'Interieur (tensions geopolitiques/elections, rapport de securite sous 15 jours pour les sous-traitants defense). Codename operation : "Silent Gateway".
+**Cadre narratif** : les joueurs sont un cabinet d'audit externe par la Direction d'ELECARM (fabricant de composants electroniques, sous-traitant Thales Defence, Blois), suite a une directive du Ministere de l'Interieur (tensions geopolitiques/elections, rapport de securite sous 15 jours pour les sous-traitants defense). Codename operation : "Silent Gateway".
 
 **La chaine reelle des faits** :
 1. Julien MOREAU (Responsable DSI, pression financiere) recoit un faux mail de recruteur Thales (spearphishing, piece jointe `.docm` piegee) -> poste WS-MOREAU-01 compromis
