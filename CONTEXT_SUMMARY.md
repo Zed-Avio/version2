@@ -52,6 +52,7 @@ Enseignant qui anime un cours d'introduction au management/gestion, construit de
 3. Faille organisationnelle racine : changement de fournisseur des cartes Raspberry Pi de la passerelle de telemaintenance BX-GATEWAY-07 (vers SinoBoard) **sans validation securite DSI**, c'est le diagnostic central attendu dans le rapport
 4. Detection : pas de vol physique ni de ransomware (retires du scenario des le round 2, sur instruction explicite et emphatique de l'utilisateur, ne jamais les reintroduire), la DSI repere elle-meme un flux sortant suspect vers IP externe (**185.220.101.47**) le 19 mai a 8h, lors d'une revue de vigilance declenchee par la directive ministerielle
 
+N'est pas la dernière version,
 **Fausses pistes integrees** (pour forcer une vraie investigation plutot qu'un reflexe) :
 - Camille ROUSSEAU (activiste anti-armement)
 - Thomas VASSEUR (trou de CV)
@@ -74,7 +75,7 @@ Enseignant qui anime un cours d'introduction au management/gestion, construit de
 ## Principes de design etablis
 
 - **Pas de fuite dans l'UI ambiante/passive** : aucun nom du coupable dans les elements toujours visibles (sidebar/timeline, vue d'ensemble Situation), seul le contenu investigue activement (mails ouverts, dossiers suspects consultes) peut etre specifique. Avant d'ajouter un element d'UI, se demander s'il est passif (doit rester generique) ou actif/investigatif (peut etre precis).
-- **Pas de design "IA generique" / AI-slop** : palette sombre sobre deja etablie (rouge en petites touches uniquement, jamais en grande banniere d'alerte), pas de cliches visuels d'alerte criards. Ce principe s'applique a tout nouvel element visuel ajoute au projet, y compris si on touche un jour a `qcm-insa` (voir section dediee), eviter tout ce qui a un look generique/template IA plutot que quelque chose de concu specifiquement pour ce contexte.
+
 - **L'ecran d'intro (splash -> briefing) ne doit JAMAIS etre saute**, meme avec la sauvegarde locale (localStorage), une regression sur ce point a deja ete corrigee une fois apres une reaction vive de l'utilisateur, ne pas la reintroduire sous quelque forme que ce soit (y compris via une nouvelle fonctionnalite de reprise de session).
 - Reponses Verdict + solution animateur encodees en base64 (dissuasion basique contre le Ctrl+F/vue source, explicitement PAS une vraie securite, le code source reste lisible par n'importe qui via devtools en executant `atob()`, limite assumee et expliquee a l'utilisateur).
 - Workflow de verification systematique avant tout deploiement : `node --check` sur le JS extrait des balises `<script>` (node ne sait pas parser du `.html` directement, il faut extraire les blocs `<script>` d'abord), test Playwright headless (rendu de tous les onglets avec verification de bounding box non nulle, zero erreur console/page), puis `vercel deploy --prod --yes`, puis verification `curl`/Playwright sur l'URL live en production. Ce pattern approfondi (grep pour references residuelles + verification licensing + test headless complet) a ete explicitement valide et appreme par l'utilisateur, a reproduire systematiquement.
