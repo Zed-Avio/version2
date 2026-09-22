@@ -1858,7 +1858,7 @@ function showApp(tab){
   const b=document.getElementById('briefing'); if(b){b.classList.remove('show');b.style.display='none';}
   const app=document.getElementById('app');
   app.style.display='flex';
-  initClock();initSessionTimer();renderMails();renderLogs();renderSuspects();renderDocs();renderEnigmes();renderOSINT();renderVerdict();
+  initClock();initSessionTimer();initMissionSync();renderMails();renderLogs();renderSuspects();renderDocs();renderEnigmes();renderOSINT();renderVerdict();
   initTimeline();
   restoreState(loadSavedState());
   let start=tab;
@@ -1951,6 +1951,21 @@ function toggleSessionTimer(){
 }
 function initSessionTimer(){
   renderSessionTimer();
+}
+
+// Synchronise le minuteur de mission avec la console animateur (/api/session).
+let missionSyncTimer=null;
+async function initMissionSync(){
+  try{
+    const r=await fetch('/api/session?ts='+Date.now(),{cache:'no-store'});
+    if(!r.ok) return;
+    const st=await r.json();
+    if(st && st.status==='running' && st.endAt){
+      if(missionSyncTimer) clearInterval(missionSyncTimer);
+      const tick=()=>{ sessionSecondsLeft=Math.max(0,Math.round((st.endAt-Date.now())/1000)); renderSessionTimer(); };
+      tick(); missionSyncTimer=setInterval(tick,1000);
+    }
+  }catch(e){}
 }
 
 // ══════════════════════════════════════════

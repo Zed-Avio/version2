@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ELECARM SAS - Salle d'attente</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--mono:'JetBrains Mono',monospace}
+html,body{height:100%;min-height:100vh;background:#070809;color:#d4d4d4;font-family:Inter,system-ui,sans-serif;display:flex;align-items:center;justify-content:center}
+.wrap{width:100%;max-width:640px;padding:28px;text-align:center}
+.logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:34px}
+.logo-mark{width:34px;height:34px;background:#7f1d1d;border-radius:5px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:19px;height:19px;fill:#fff}
+.logo-txt{font-size:14px;font-weight:800;letter-spacing:.14em;color:#fff;text-transform:uppercase}
+.logo-sub{font-size:10px;color:#555;letter-spacing:.08em;text-transform:uppercase;margin-top:2px;text-align:left}
+.tag{font-size:11px;font-weight:700;letter-spacing:.16em;color:#8a5a5a;text-transform:uppercase;margin-bottom:16px}
+.status{font-size:22px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:14px}
+.hint{font-size:14px;color:#8a8a8a;line-height:1.7;max-width:460px;margin:0 auto}
+.count{font-family:var(--mono);font-size:64px;font-weight:700;color:#fff;letter-spacing:.04em;margin:10px 0}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#3a3a3a;margin-right:8px;vertical-align:middle}
+.dot.live{background:#dc2626;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.flash{font-size:26px;font-weight:800;letter-spacing:.14em;color:#dc2626;text-transform:uppercase;animation:pulse 1s infinite}
+.foot{margin-top:40px;font-size:11px;color:#2f2f2f;letter-spacing:.05em}
+.spin{width:34px;height:34px;border:3px solid #1c1c1c;border-top-color:#7f1d1d;border-radius:50%;margin:0 auto 20px;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zM12 4.5l7 3.5v8.5l-7 3.5-7-3.5V8l7-3.5z"/></svg></div>
+    <div>
+      <div class="logo-txt">ELECARM SAS</div>
+      <div class="logo-sub">Operation Silent Gateway</div>
+    </div>
+  </div>
+  <div id="view"></div>
+  <div class="foot"><span id="statedot" class="dot"></span><span id="statelabel">Connexion...</span></div>
+</div>
+<script>
+var POLL=2000, done=false;
+var view=document.getElementById('view');
+var dot=document.getElementById('statedot'), label=document.getElementById('statelabel');
+
+function fmt(ms){
+  var s=Math.max(0,Math.floor(ms/1000));
+  var h=Math.floor(s/3600), m=Math.floor((s%3600)/60), x=s%60;
+  var p=function(n){return (n<10?'0':'')+n;};
+  return (h>0?p(h)+':':'')+p(m)+':'+p(x);
+}
+function renderWaiting(){
+  view.innerHTML='<div class="tag">Dossier confidentiel - usage restreint</div>'+
+    '<div class="spin"></div>'+
+    '<div class="status">En attente du lancement</div>'+
+    '<div class="hint">Gardez cette page ouverte. L\'exercice s\'ouvrira automatiquement des que l\'enseignant le lancera.</div>';
+}
+function renderIdle(){
+  view.innerHTML='<div class="tag">Dossier confidentiel - usage restreint</div>'+
+    '<div class="status">Session non ouverte</div>'+
+    '<div class="hint">La session n\'a pas encore ete ouverte par l\'enseignant. Gardez cette page ouverte, elle se mettra a jour toute seule.</div>';
+}
+function launch(){
+  if(done) return; done=true;
+  view.innerHTML='<div class="spin"></div><div class="flash">Ouverture du dossier...</div>';
+  setTimeout(function(){ window.location.href='/exercice'; }, 1400);
+}
+function setFoot(state){
+  if(state==='running'){ dot.className='dot live'; label.textContent='Session lancee'; }
+  else if(state==='waiting'){ dot.className='dot live'; label.textContent='Salle d\'attente active'; }
+  else{ dot.className='dot'; label.textContent='En veille'; }
+}
+async function poll(){
+  try{
+    var r=await fetch('/api/session?ts='+Date.now(),{cache:'no-store'});
+    if(r.ok){
+      var st=await r.json();
+      setFoot(st.status);
+      if(st.status==='running'){ launch(); return; }
+      else if(st.status==='waiting'){ renderWaiting(); }
+      else { renderIdle(); }
+    }
+  }catch(e){}
+  if(!done) setTimeout(poll, POLL);
+}
+renderIdle(); poll();
+</script>
+</body>
+</html>

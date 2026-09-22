@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ELECARM - Console animateur</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--mono:'JetBrains Mono',monospace;--bd:#1e2024}
+html,body{min-height:100vh;background:#0a0b0c;color:#d4d4d4;font-family:Inter,system-ui,sans-serif;font-size:14px}
+.wrap{max-width:960px;margin:0 auto;padding:26px 20px 60px}
+.head{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+.mark{width:30px;height:30px;background:#7f1d1d;border-radius:5px;display:flex;align-items:center;justify-content:center}
+.mark svg{width:17px;height:17px;fill:#fff}
+.h-title{font-size:15px;font-weight:800;letter-spacing:.1em;color:#fff;text-transform:uppercase}
+.h-sub{font-size:11px;color:#555;letter-spacing:.06em;text-transform:uppercase}
+.subtitle{font-size:12px;color:#6f6f6f;margin:0 0 22px 41px}
+.card{background:#101113;border:1px solid var(--bd);border-radius:9px;padding:20px;margin-bottom:16px}
+.card h2{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8a8a8a;margin-bottom:14px}
+label{display:block;font-size:11px;font-weight:600;color:#777;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+input{width:100%;background:#08090a;border:1px solid #26292d;color:#e6e6e6;padding:10px 12px;font-size:14px;border-radius:6px;outline:none;font-family:inherit}
+input:focus{border-color:#4a4f55}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.row>div{flex:1;min-width:150px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+button{border:none;border-radius:7px;padding:12px 18px;font-size:13px;font-weight:700;letter-spacing:.03em;cursor:pointer;font-family:inherit;transition:filter .12s,background .12s}
+button:hover{filter:brightness(1.12)}
+button:disabled{opacity:.4;cursor:not-allowed;filter:none}
+.b-wait{background:#1a2740;color:#9dc0f0;border:1px solid #2a3a5c}
+.b-go{background:#166534;color:#eafff0}
+.b-reset{background:#1a1c1f;color:#b06a6a;border:1px solid #3a2020}
+.state{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px}
+.pill{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+.pill.idle{background:#1a1a1a;color:#888}
+.pill.waiting{background:#1a2740;color:#9dc0f0}
+.pill.running{background:#0f2a16;color:#5fd48a}
+.clock{font-family:var(--mono);font-size:26px;font-weight:700;color:#fff}
+.linkbox{display:flex;gap:8px;align-items:center;margin-top:8px}
+.linkbox code{flex:1;background:#08090a;border:1px solid #26292d;border-radius:6px;padding:9px 12px;font-family:var(--mono);font-size:13px;color:#8ab0d8;overflow:auto;white-space:nowrap}
+.mini{font-size:11px;color:#666;line-height:1.6;margin-top:8px}
+.msg{font-size:12px;margin-top:10px;min-height:16px}
+.msg.err{color:#fca5a5}.msg.ok{color:#5fd48a}
+iframe{width:100%;height:340px;border:1px solid var(--bd);border-radius:8px;background:#000}
+.gate{max-width:380px;margin:80px auto}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="mark"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zM12 4.5l7 3.5v8.5l-7 3.5-7-3.5V8l7-3.5z"/></svg></div>
+    <div><div class="h-title">Console animateur</div><div class="h-sub">ELECARM Crisis2</div></div>
+  </div>
+  <div class="subtitle">Reserve a l'enseignant. Pilote la salle d'attente et le lancement de l'exercice.</div>
+
+  <div id="gate" class="card gate">
+    <h2>Acces anime</h2>
+    <label>Mot de passe animateur</label>
+    <input type="password" id="pass" placeholder="Mot de passe" autocomplete="off">
+    <div class="btns"><button class="b-go" style="width:100%" onclick="unlock()">Entrer</button></div>
+    <div id="gatemsg" class="msg"></div>
+  </div>
+
+  <div id="panel" class="hidden">
+    <div class="card">
+      <h2>Etat de la session</h2>
+      <div class="state">
+        <span id="pill" class="pill idle">--</span>
+        <span id="clock" class="clock"></span>
+        <span id="statehint" style="color:#777"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Reglages et lancement</h2>
+      <div class="row">
+        <div>
+          <label>Duree de la mission (minutes)</label>
+          <input type="number" id="dur" value="90" min="1" max="600">
+        </div>
+      </div>
+      <div class="btns">
+        <button class="b-wait" onclick="send('waiting')">Ouvrir la salle d'attente</button>
+        <button class="b-go" onclick="send('start')">Commence maintenant</button>
+        <button class="b-reset" onclick="send('reset')">Reinitialiser</button>
+      </div>
+      <div id="msg" class="msg"></div>
+      <div class="mini">Ouvrir la salle d'attente : les eleves voient l'ecran d'attente. Commence maintenant : l'exercice s'ouvre en direct sur tous les ecrans, avec le minuteur choisi. Reinitialiser : remet en veille.</div>
+    </div>
+
+    <div class="card">
+      <h2>Lien a donner aux eleves</h2>
+      <div class="linkbox"><code id="slink"></code><button class="b-wait" onclick="copyLink()">Copier</button></div>
+      <div class="mini">Chaque equipe ouvre ce lien sur son poste et le garde ouvert. Tout se declenche depuis cette console.</div>
+    </div>
+
+    <div class="card">
+      <h2>Apercu (ce que voient les eleves)</h2>
+      <iframe src="/salle" title="apercu salle"></iframe>
+    </div>
+  </div>
+</div>
+<script>
+var pass='';
+var pill=document.getElementById('pill'), clock=document.getElementById('clock'), statehint=document.getElementById('statehint');
+document.getElementById('slink').textContent=location.origin+'/salle';
+
+try{ var sv=localStorage.getItem('elecarm_anim_pass'); if(sv){ document.getElementById('pass').value=sv; } }catch(e){}
+
+function unlock(){
+  pass=document.getElementById('pass').value.trim();
+  if(!pass){ gmsg('Entrez le mot de passe.',true); return; }
+  // test via un POST neutre (waiting garde l'etat coherent) -> on valide juste l'auth avec une action inoffensive: on lit d'abord
+  fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass,action:'noop'})})
+    .then(function(r){
+      if(r.status===401){ gmsg('Mot de passe incorrect.',true); return; }
+      // 400 (bad action) = mot de passe OK
+      try{ localStorage.setItem('elecarm_anim_pass',pass); }catch(e){}
+      document.getElementById('gate').classList.add('hidden');
+      document.getElementById('panel').classList.remove('hidden');
+      poll();
+    }).catch(function(){ gmsg('Erreur reseau.',true); });
+}
+function gmsg(t,err){ var e=document.getElementById('gatemsg'); e.textContent=t; e.className='msg '+(err?'err':'ok'); }
+function msg(t,err){ var e=document.getElementById('msg'); e.textContent=t; e.className='msg '+(err?'err':'ok'); }
+
+function send(action){
+  var dur=parseInt(document.getElementById('dur').value,10)||90;
+  fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass,action:action,durationMin:dur})})
+    .then(function(r){ return r.json().then(function(j){return {ok:r.ok,j:j};}); })
+    .then(function(o){
+      if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue')+(o.j.detail?' ('+o.j.detail+')':''),true); return; }
+      if(action==='start') msg('Exercice lance. Les ecrans eleves basculent.',false);
+      else if(action==='waiting') msg('Salle d\'attente ouverte.',false);
+      else msg('Session reinitialisee.',false);
+      render(o.j);
+    }).catch(function(){ msg('Erreur reseau.',true); });
+}
+function render(st){
+  pill.className='pill '+st.status;
+  pill.textContent = st.status==='running'?'En cours':(st.status==='waiting'?'Salle d\'attente':'En veille');
+  if(st.status==='running' && st.endAt){
+    var left=st.endAt-Date.now();
+    clock.textContent=fmt(left);
+    statehint.textContent=left>0?'fin dans':'temps ecoule';
+  } else { clock.textContent=''; statehint.textContent=st.status==='waiting'?'eleves en attente':''; }
+}
+function fmt(ms){var s=Math.max(0,Math.floor(ms/1000));var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=s%60;var p=function(n){return(n<10?'0':'')+n;};return p(h)+':'+p(m)+':'+p(x);}
+function poll(){
+  fetch('/api/session?ts='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(st){render(st);}).catch(function(){});
+  setTimeout(poll,1000);
+}
+function copyLink(){ var t=location.origin+'/salle'; navigator.clipboard&&navigator.clipboard.writeText(t); msg('Lien copie.',false); }
+</script>
+</body>
+</html>
