@@ -14,7 +14,7 @@
 \usepackage{ragged2e}
 \usepackage{helvet}
 
-% ---- Palette ----
+% - Palette -
 \definecolor{ink}{HTML}{111111}
 \definecolor{brand}{HTML}{7F1D1D}
 \definecolor{sub}{HTML}{555555}
@@ -36,7 +36,7 @@
 \setlength{\parindent}{0pt}
 \linespread{1.12}
 
-% ---- En-têtes (letterheads) ----
+% - En-têtes (letterheads) -
 \newcommand{\lhrule}{\par\vspace{4pt}\noindent\textcolor{ink}{\rule{\linewidth}{1.4pt}}\par\vspace{14pt}}
 
 \newcommand{\lhGouv}{%
@@ -45,7 +45,7 @@
   \textcolor{ruleline}{\rule{0.24\linewidth}{5pt}}%
   \textcolor{gouvred}{\rule{0.24\linewidth}{5pt}}\par\vspace{8pt}%
   {\sffamily\footnotesize\bfseries RÉPUBLIQUE FRANÇAISE}\\[1pt]%
-  {\sffamily\scriptsize\itshape\textcolor{sub}{Liberté --- Égalité --- Fraternité}}\\[4pt]%
+  {\sffamily\scriptsize\itshape\textcolor{sub}{Liberté - Égalité - Fraternité}}\\[4pt]%
   {\sffamily\normalsize\bfseries MINISTÈRE DE L'INTÉRIEUR}\\[1pt]%
   {\sffamily\footnotesize\textcolor{sub}{Direction Générale de la Sécurité Intérieure}}%
   \lhrule
@@ -55,41 +55,41 @@
   \noindent\colorbox{brand}{\makebox[14pt][c]{\rule{0pt}{12pt}}}\hspace{8pt}%
   \raisebox{2pt}{\parbox[b]{0.8\linewidth}{%
     {\sffamily\normalsize\bfseries ELECARM SAS}\\[1pt]%
-    {\sffamily\footnotesize\textcolor{sub}{ZI Les Charmes --- 41000 Blois --- contact@elecarm.fr}}}}%
+    {\sffamily\footnotesize\textcolor{sub}{ZI Les Charmes - 41000 Blois - contact@elecarm.fr}}}}%
   \lhrule
 }
 
 \newcommand{\lhThales}{%
   \noindent{\sffamily\normalsize\bfseries THALES DEFENCE SYSTEMS}\\[1pt]%
-  {\sffamily\footnotesize\textcolor{sub}{Division Systèmes de guidage --- Diffusion Restreinte}}%
+  {\sffamily\footnotesize\textcolor{sub}{Division Systèmes de guidage - Diffusion Restreinte}}%
   \lhrule
 }
 
-% ---- Titre + méta ----
+% - Titre + méta -
 \newcommand{\doctitle}[2]{%
   {\sffamily\LARGE\bfseries #1\par}\vspace{3pt}%
   {\sffamily\small\textcolor{sub}{#2}\par}%
   \vspace{6pt}\noindent\textcolor{ruleline}{\rule{\linewidth}{0.6pt}}\par\vspace{10pt}%
 }
 
-% ---- Section ----
+% - Section -
 \newcommand{\docsec}[1]{\par\vspace{8pt}{\sffamily\small\bfseries\textcolor{brand}{\MakeUppercase{#1}}}\par\vspace{4pt}}
 
-% ---- Encadrés ----
+% - Encadrés -
 \newtcolorbox{notebox}{colback=notebg,colframe=noteborder,boxrule=0pt,leftrule=3pt,arc=1pt,left=10pt,right=10pt,top=8pt,bottom=8pt,boxsep=1pt}
 \newtcolorbox{quotebox}{colback=quotebg,colframe=quoteborder,boxrule=0pt,leftrule=3pt,arc=0pt,left=10pt,right=10pt,top=8pt,bottom=8pt,boxsep=1pt}
 \newtcolorbox{warnbox}{colback=warnbg,colframe=warnborder,boxrule=0pt,leftrule=3pt,arc=1pt,left=10pt,right=10pt,top=8pt,bottom=8pt,boxsep=1pt}
 \newtcolorbox{okbox}{colback=okbg,colframe=okborder,boxrule=0pt,leftrule=3pt,arc=1pt,left=10pt,right=10pt,top=8pt,bottom=8pt,boxsep=1pt}
 \newtcolorbox{monobox}{colback=quotebg,colframe=quoteborder,boxrule=0.4pt,arc=1pt,left=10pt,right=10pt,top=8pt,bottom=8pt,boxsep=1pt}
 
-% ---- Tables ----
+% - Tables -
 \renewcommand{\arraystretch}{1.3}
 \newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
 \newcommand{\thd}[1]{{\sffamily\scriptsize\bfseries\textcolor{sub}{\MakeUppercase{#1}}}}
 \newcommand{\anrow}{\rowcolor{anomalybg}}
 
-% ---- Pied de page ----
+% - Pied de page -
 \newcommand{\docfooter}{%
   \par\vspace{18pt}\noindent\textcolor{ruleline}{\rule{\linewidth}{0.4pt}}\par\vspace{3pt}%
-  {\sffamily\scriptsize\textcolor{sub}{Document produit dans le cadre de l'exercice pédagogique ELECARM SAS --- Opération Silent Gateway --- usage interne exclusivement.}}%
+  {\sffamily\scriptsize\textcolor{sub}{Document produit dans le cadre de l'exercice pédagogique ELECARM SAS - Opération Silent Gateway - usage interne exclusivement.}}%
 }

