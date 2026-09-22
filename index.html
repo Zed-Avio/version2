@@ -1876,8 +1876,17 @@ function enterMain(tab){
 }
 
 // Au chargement : "/exercice" -> on entre directement dans l'exercice ; "/" -> on laisse l'intro (splash).
-function initRoute(){
-  if(isExerciseRoute()) showApp();
+async function initRoute(){
+  if(!isExerciseRoute()) return;
+  // Verrou salle d'attente : si l'animateur a ouvert la salle (statut waiting), l'acces direct
+  // a l'exercice est bloque et renvoie vers /salle. running/idle/erreur -> acces autorise (non bloquant).
+  try{
+    const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),2500);
+    const r=await fetch('/api/session?ts='+Date.now(),{cache:'no-store',signal:ctrl.signal});
+    clearTimeout(to);
+    if(r.ok){ const st=await r.json(); if(st && st.status==='waiting'){ location.replace('/salle'); return; } }
+  }catch(e){}
+  showApp();
 }
 
 function initTimeline(){
