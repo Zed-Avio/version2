@@ -239,12 +239,12 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 }
 .tab{
   padding:11px 15px;font-size:12px;font-weight:600;letter-spacing:.04em;
-  color:#a85454;border:none;background:none;cursor:pointer;
+  color:var(--tx);border:none;background:none;cursor:pointer;
   border-bottom:2px solid var(--red);white-space:nowrap;font-family:var(--font);
   transition:color .12s,border-color .12s;
 }
-.tab:hover{color:#c47a7a;border-color:#8f4a4a}
-.tab.active{color:#d98a8a;border-color:#a85454}
+.tab:hover{color:#fff;border-color:#8f4a4a}
+.tab.active{color:#fff;border-color:#a85454}
 .tab-badge{
   background:var(--red2);color:#fff;font-size:9px;font-weight:700;
   padding:1px 6px;border-radius:10px;margin-left:5px;
@@ -397,7 +397,9 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
   padding:14px;cursor:pointer;transition:background .12s,border-color .12s;
 }
 .doc-card:hover{background:var(--s2);border-color:#333}
-.doc-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px}
+.doc-card-foot{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:2px}
+.doc-sec-title{font-size:11px;font-weight:700;color:var(--tx2);letter-spacing:.1em;text-transform:uppercase;margin:18px 0 9px;padding-bottom:5px;border-bottom:1px solid var(--bd)}
+#docs-grid > .doc-sec-title:first-child{margin-top:2px}
 .doc-dl{font-size:10px;font-weight:600;color:var(--red4);text-decoration:none;border:1px solid var(--red-dim);padding:3px 9px;border-radius:4px;white-space:nowrap;transition:background .12s,color .12s;flex-shrink:0}
 .doc-dl:hover{background:var(--red-dim);color:#fca5a5}
 .doc-icon{font-size:26px;margin-bottom:8px}
@@ -900,7 +902,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <div class="panel" id="panel-documents">
           <div class="docs-scroll">
             <div style="font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Documents internes ELECARM SAS</div>
-            <div class="docs-grid" id="docs-grid"></div>
+            <div id="docs-grid"></div>
           </div>
         </div>
 
@@ -1703,7 +1705,7 @@ function initRoute(){
 function initTimeline(){
   const tl=document.getElementById('timeline');
   const events=[
-    {time:'12:28',color:'#dc2626',badge:'DSI',badgeBg:'#3b0000',badgeTc:'#fca5a5',title:'IP externe confirmée suspecte',desc:'185.220.101.47 ne correspond à aucun équipement ni fournisseur répertorié.'},
+    {time:'12:28',color:'#dc2626',badge:'DSI',badgeBg:'#3b0000',badgeTc:'#fca5a5',title:'IP externe confirmée suspecte',desc:'L\'adresse externe ne correspond à aucun équipement ni fournisseur répertorié.'},
     {time:'12:00',color:'#991b1b',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Thales - URGENT',desc:'Retard commande THA-REF-28471 + anomalie qualité.'},
     {time:'11:55',color:'#dc2626',badge:'DOC',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Messagerie interne récupérée',desc:'Échange interne au ton ambigu retrouvé dans l\'archive Teams.'},
     {time:'10:10',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Piste A. ROBERT écartée',desc:'RH confirme : accès révoqués à son départ en mars, aucune réactivation depuis.'},
@@ -1994,7 +1996,17 @@ function showSuspect(s){
 // ══════════════════════════════════════════
 function renderDocs(){
   const g=document.getElementById('docs-grid');
-  DOCS.forEach(d=>{
+  g.innerHTML='';
+  const DOC_SECTIONS=[
+    {title:'Directive', ids:['ministere']},
+    {title:'Confidentiel', ids:['contrat']},
+    {title:'Critique', ids:['gateway']},
+    {title:'Sensible', ids:['chatlog']},
+    {title:'Anomalie', ids:['qualite','note','conformite']},
+    {title:'Interne', ids:['raspberry','techindus']},
+  ];
+  const byId={}; DOCS.forEach(d=>{ byId[d.id]=d; });
+  function makeDocCard(d){
     const div=document.createElement('div');
     div.className='doc-card';
     div.innerHTML=`
@@ -2002,7 +2014,6 @@ function renderDocs(){
       <div class="doc-title">${d.title}</div>
       <div class="doc-meta">${d.meta}</div>
       <div class="doc-card-foot">
-        <span style="background:${d.badgeBg};color:${d.badgeTc};font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px">${d.badge}</span>
         <a class="doc-dl" href="pdfs/${d.id}.pdf" download="${d.id}.pdf" onclick="event.stopPropagation()" title="Télécharger le PDF">↓ Télécharger</a>
       </div>`;
     div.onclick=()=>{
@@ -2012,7 +2023,16 @@ function renderDocs(){
       dl.setAttribute('download',d.id+'.pdf');
       document.getElementById('doc-modal').classList.add('show');
     };
-    g.appendChild(div);
+    return div;
+  }
+  DOC_SECTIONS.forEach(sec=>{
+    const ds=sec.ids.map(id=>byId[id]).filter(Boolean);
+    if(!ds.length)return;
+    const h=document.createElement('div'); h.className='doc-sec-title'; h.textContent=sec.title;
+    g.appendChild(h);
+    const grid=document.createElement('div'); grid.className='docs-grid';
+    ds.forEach(d=>grid.appendChild(makeDocCard(d)));
+    g.appendChild(grid);
   });
 }
 
