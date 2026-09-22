@@ -38,6 +38,7 @@ async function writeState(state) {
 
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if (req.method === 'GET') {
     const st = await readState();

@@ -18,7 +18,7 @@ html,body{height:100%;min-height:100vh;background:#070809;color:#d4d4d4;font-fam
 .tag{font-size:11px;font-weight:700;letter-spacing:.16em;color:#8a5a5a;text-transform:uppercase;margin-bottom:16px}
 .status{font-size:22px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:14px}
 .hint{font-size:14px;color:#8a8a8a;line-height:1.7;max-width:460px;margin:0 auto}
-.count{font-family:var(--mono);font-size:64px;font-weight:700;color:#fff;letter-spacing:.04em;margin:10px 0}
+.count{font-family:var(--mono);font-size:68px;font-weight:700;color:#fff;letter-spacing:.04em;margin:10px 0 16px}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#3a3a3a;margin-right:8px;vertical-align:middle}
 .dot.live{background:#dc2626;animation:pulse 1.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
@@ -41,9 +41,16 @@ html,body{height:100%;min-height:100vh;background:#070809;color:#d4d4d4;font-fam
   <div class="foot"><span id="statedot" class="dot"></span><span id="statelabel">Connexion...</span></div>
 </div>
 <script>
-var POLL=2000, done=false;
-var view=document.getElementById('view');
-var dot=document.getElementById('statedot'), label=document.getElementById('statelabel');
+// URL de l'API et de l'exercice (memes valeurs si heberge sur le meme domaine ;
+// si la salle est sur un domaine separe, mettre ici l'URL du site de l'exercice).
+var API = '/api/session';
+var EXO = '/exercice';
+
+var POLL = 2000;           // frequence d'interrogation de l'etat
+var cur = { status: 'idle', endAt: null };
+var launched = false;
+var view = document.getElementById('view');
+var dot = document.getElementById('statedot'), label = document.getElementById('statelabel');
 
 function fmt(ms){
   var s=Math.max(0,Math.floor(ms/1000));
@@ -51,41 +58,53 @@ function fmt(ms){
   var p=function(n){return (n<10?'0':'')+n;};
   return (h>0?p(h)+':':'')+p(m)+':'+p(x);
 }
-function renderWaiting(){
-  view.innerHTML='<div class="tag">Dossier confidentiel - usage restreint</div>'+
-    '<div class="spin"></div>'+
-    '<div class="status">En attente du lancement</div>'+
-    '<div class="hint">Gardez cette page ouverte. L\'exercice s\'ouvrira automatiquement des que l\'enseignant le lancera.</div>';
-}
-function renderIdle(){
-  view.innerHTML='<div class="tag">Dossier confidentiel - usage restreint</div>'+
-    '<div class="status">Session non ouverte</div>'+
-    '<div class="hint">La session n\'a pas encore ete ouverte par l\'enseignant. Gardez cette page ouverte, elle se mettra a jour toute seule.</div>';
-}
-function launch(){
-  if(done) return; done=true;
-  view.innerHTML='<div class="spin"></div><div class="flash">Ouverture du dossier...</div>';
-  setTimeout(function(){ window.location.href='/exercice'; }, 1400);
-}
 function setFoot(state){
-  if(state==='running'){ dot.className='dot live'; label.textContent='Session lancee'; }
+  if(state==='running'){ dot.className='dot live'; label.textContent='Lancement en cours'; }
   else if(state==='waiting'){ dot.className='dot live'; label.textContent='Salle d\'attente active'; }
   else{ dot.className='dot'; label.textContent='En veille'; }
 }
+function launch(){
+  if(launched) return; launched=true;
+  view.innerHTML='<div class="spin"></div><div class="flash">Ouverture du dossier...</div>';
+  setTimeout(function(){ window.location.href=EXO; }, 1300);
+}
+
+// Boucle d'affichage rapide (fluide pour le decompte)
+function tick(){
+  if(launched) return;
+  setFoot(cur.status);
+  if(cur.status==='running' && cur.endAt){
+    var left = cur.endAt - Date.now();
+    if(left<=0){ launch(); return; }
+    view.innerHTML =
+      '<div class="tag">Lancement en cours</div>'+
+      '<div class="status">L\'exercice ouvre dans</div>'+
+      '<div class="count">'+fmt(left)+'</div>'+
+      '<div class="hint">Restez sur cette page. L\'ouverture est automatique et synchronisee pour toutes les equipes.</div>';
+  } else if(cur.status==='waiting'){
+    view.innerHTML =
+      '<div class="tag">Dossier confidentiel - usage restreint</div>'+
+      '<div class="spin"></div>'+
+      '<div class="status">En attente du lancement</div>'+
+      '<div class="hint">Gardez cette page ouverte. Le compte a rebours demarrera des que l\'enseignant lancera la session.</div>';
+  } else {
+    view.innerHTML =
+      '<div class="tag">Dossier confidentiel - usage restreint</div>'+
+      '<div class="status">Session non ouverte</div>'+
+      '<div class="hint">La session n\'a pas encore ete ouverte par l\'enseignant. Cette page se met a jour toute seule.</div>';
+  }
+  setTimeout(tick, 250);
+}
+
+// Boucle d'interrogation de l'etat partage
 async function poll(){
   try{
-    var r=await fetch('/api/session?ts='+Date.now(),{cache:'no-store'});
-    if(r.ok){
-      var st=await r.json();
-      setFoot(st.status);
-      if(st.status==='running'){ launch(); return; }
-      else if(st.status==='waiting'){ renderWaiting(); }
-      else { renderIdle(); }
-    }
+    var r=await fetch(API+'?ts='+Date.now(),{cache:'no-store'});
+    if(r.ok){ cur = await r.json(); }
   }catch(e){}
-  if(!done) setTimeout(poll, POLL);
+  if(!launched) setTimeout(poll, POLL);
 }
-renderIdle(); poll();
+tick(); poll();
 </script>
 </body>
 </html>

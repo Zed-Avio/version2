@@ -1858,7 +1858,7 @@ function showApp(tab){
   const b=document.getElementById('briefing'); if(b){b.classList.remove('show');b.style.display='none';}
   const app=document.getElementById('app');
   app.style.display='flex';
-  initClock();initSessionTimer();initMissionSync();renderMails();renderLogs();renderSuspects();renderDocs();renderEnigmes();renderOSINT();renderVerdict();
+  initClock();initSessionTimer();renderMails();renderLogs();renderSuspects();renderDocs();renderEnigmes();renderOSINT();renderVerdict();
   initTimeline();
   restoreState(loadSavedState());
   let start=tab;
@@ -1884,7 +1884,8 @@ async function initRoute(){
     const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),2500);
     const r=await fetch('/api/session?ts='+Date.now(),{cache:'no-store',signal:ctrl.signal});
     clearTimeout(to);
-    if(r.ok){ const st=await r.json(); if(st && st.status==='waiting'){ location.replace('/salle'); return; } }
+    if(r.ok){ const st=await r.json(); const now=Date.now();
+      if(st && (st.status==='waiting' || (st.status==='running' && st.endAt && now < st.endAt - 3000))){ location.replace('/salle'); return; } }
   }catch(e){}
   showApp();
 }

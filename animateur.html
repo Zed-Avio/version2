@@ -76,7 +76,7 @@ iframe{width:100%;height:340px;border:1px solid var(--bd);border-radius:8px;back
       <h2>Reglages et lancement</h2>
       <div class="row">
         <div>
-          <label>Duree de la mission (minutes)</label>
+          <label>Compte a rebours avant ouverture (minutes)</label>
           <input type="number" id="dur" value="90" min="1" max="600">
         </div>
       </div>
@@ -86,7 +86,7 @@ iframe{width:100%;height:340px;border:1px solid var(--bd);border-radius:8px;back
         <button class="b-reset" onclick="send('reset')">Reinitialiser</button>
       </div>
       <div id="msg" class="msg"></div>
-      <div class="mini">Ouvrir la salle d'attente : les eleves voient l'ecran d'attente. Commence maintenant : l'exercice s'ouvre en direct sur tous les ecrans, avec le minuteur choisi. Reinitialiser : remet en veille.</div>
+      <div class="mini">Ouvrir la salle d'attente : les eleves voient l'ecran d'attente. Commence maintenant : un compte a rebours synchronise demarre sur tous les ecrans eleves ; a la fin, l'exercice s'ouvre pour tout le monde en meme temps. Reinitialiser : remet en veille.</div>
     </div>
 
     <div class="card">
