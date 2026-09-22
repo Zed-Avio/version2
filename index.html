@@ -239,12 +239,12 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 }
 .tab{
   padding:11px 15px;font-size:12px;font-weight:600;letter-spacing:.04em;
-  color:var(--red4);border:none;background:none;cursor:pointer;
+  color:#a85454;border:none;background:none;cursor:pointer;
   border-bottom:2px solid var(--red);white-space:nowrap;font-family:var(--font);
   transition:color .12s,border-color .12s;
 }
-.tab:hover{color:#f87171;border-color:var(--red3)}
-.tab.active{color:#fca5a5;border-color:var(--red4)}
+.tab:hover{color:#c47a7a;border-color:#8f4a4a}
+.tab.active{color:#d98a8a;border-color:#a85454}
 .tab-badge{
   background:var(--red2);color:#fff;font-size:9px;font-weight:700;
   padding:1px 6px;border-radius:10px;margin-left:5px;
@@ -1665,13 +1665,14 @@ function runBriefingAnim(){
   seq.forEach(([d,id])=>setTimeout(()=>{const e=document.getElementById(id);if(e)e.classList.add('in');},d));
 }
 
-const VALID_TABS=['situation','mails','enquete','dsi','programmation','documents','enigmes','osint','verdict'];
-function tabFromHash(){
-  const h=(location.hash||'').replace('#','');
-  return VALID_TABS.indexOf(h)>=0?h:null;
+// Deux URL : "/" = introduction (splash + briefing) ; "/exercice" = l'exercice.
+// Sur Vercel, /exercice est reecrit vers index.html (voir vercel.json). #exercice accepte en secours (dev local).
+function isExerciseRoute(){
+  const p=(location.pathname||'');
+  return /(^|\/)exercice(\.html)?\/?$/i.test(p) || location.hash==='#exercice';
 }
 
-// Affiche l'interface sur un onglet donne. Facteur commun : entree depuis le briefing OU reprise au reload.
+// Affiche l'interface de l'exercice (masque l'intro). L'onglet de depart vient du choix fait sur le briefing.
 function showApp(tab){
   const sp=document.getElementById('splash'); if(sp){sp.style.display='none';}
   const b=document.getElementById('briefing'); if(b){b.classList.remove('show');b.style.display='none';}
@@ -1680,34 +1681,24 @@ function showApp(tab){
   initClock();initSessionTimer();renderMails();renderLogs();renderSuspects();renderDocs();renderEnigmes();renderOSINT();renderVerdict();
   initTimeline();
   restoreState(loadSavedState());
-  const t=(tab && document.querySelector('[data-tab="'+tab+'"]'))?tab:'situation';
+  let start=tab;
+  if(!start){ try{ start=sessionStorage.getItem('elecarm_start_tab'); }catch(e){} }
+  try{ sessionStorage.removeItem('elecarm_start_tab'); }catch(e){}
+  const t=(start && document.querySelector('[data-tab="'+start+'"]'))?start:'situation';
   const btn=document.querySelector('[data-tab="'+t+'"]'); if(btn)switchTab(btn);
   saveState();
 }
 
+// Depuis l'intro (briefing) : on memorise l'onglet de depart choisi puis on navigue vers l'URL de l'exercice.
 function enterMain(tab){
-  const b=document.getElementById('briefing');
-  b.style.opacity='0';b.style.transition='opacity .5s';b.style.pointerEvents='none';
-  setTimeout(()=>{ showApp(tab); },500);
+  try{ if(tab) sessionStorage.setItem('elecarm_start_tab', tab); }catch(e){}
+  window.location.href='/exercice';
 }
 
-// Reprise directe au chargement si une partie est deja commencee (sinon : splash comme d'habitude).
-// L'onglet ouvert vient de l'URL (#section), sinon du dernier onglet sauvegarde.
-function bootstrapResume(){
-  let st=null; try{ st=loadSavedState(); }catch(e){}
-  if(st && st.entered){
-    showApp(tabFromHash() || st.activeTab || 'situation');
-  }
+// Au chargement : "/exercice" -> on entre directement dans l'exercice ; "/" -> on laisse l'intro (splash).
+function initRoute(){
+  if(isExerciseRoute()) showApp();
 }
-
-// Navigation via l'URL : changer de #section (lien, historique) bascule l'onglet quand l'app est ouverte.
-window.addEventListener('hashchange',function(){
-  const app=document.getElementById('app');
-  if(app && app.style.display!=='none'){
-    const t=tabFromHash();
-    if(t){ const btn=document.querySelector('[data-tab="'+t+'"]'); if(btn && !btn.classList.contains('active')) switchTab(btn); }
-  }
-});
 
 function initTimeline(){
   const tl=document.getElementById('timeline');
@@ -1795,7 +1786,6 @@ function switchTab(btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
-  try{ if(location.hash.slice(1)!==btn.dataset.tab) history.replaceState(null,'','#'+btn.dataset.tab); }catch(e){}
   saveState();
 }
 
@@ -2710,8 +2700,7 @@ function loadSavedState(){
 function resetMission(){
   if(!confirm('Reinitialiser la mission ? Toute la progression sera effacee sur cet appareil.'))return;
   localStorage.removeItem(STORAGE_KEY);
-  try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
-  location.reload();
+  window.location.href='/';
 }
 
 function restoreState(st){
@@ -2742,8 +2731,8 @@ function restoreState(st){
   if(vp) vp.addEventListener('change', saveState);
 })();
 
-// Reprise de session au chargement (apres definition de toutes les fonctions).
-bootstrapResume();
+// Routage au chargement (apres definition de toutes les fonctions).
+initRoute();
 
 // ══════════════════════════════════════════
 // DISSUASION CONSULTATION CODE SOURCE
