@@ -1,0 +1,23 @@
+\documentclass[11pt]{article}
+\input{preamble.tex}
+\begin{document}
+\lhElecarm
+\doctitle{Journal de supervision --- Passerelle télémaintenance boîtiers BX-4400}{Export système --- Passerelle BX-GATEWAY-07 --- période du 1er au 19 mai 2026}
+
+\begin{tabularx}{\linewidth}{@{}p{1.6cm} p{3cm} Y p{1.8cm}@{}}
+\thd{Date} & \thd{IP destination} & \thd{Type} & \thd{Volume}\\[2pt]
+\hline
+02/05 & 10.42.6.11 & Supervision interne (serveur ELECARM) & 4 Mo\\
+06/05 & 10.42.6.11 & Supervision interne (serveur ELECARM) & 3 Mo\\
+07/05 & 20.42.73.18 & Externe --- synchro horaire (Microsoft Azure NTP) & 40 Ko\\
+\anrow 09/05 & \textbf{185.220.101.47} & \textbf{Adresse externe --- non répertoriée} & \textbf{412 Mo}\\
+11/05 & 10.42.6.11 & Supervision interne (serveur ELECARM) & 3 Mo\\
+\anrow 14/05 & \textbf{185.220.101.47} & \textbf{Adresse externe --- non répertoriée} & \textbf{528 Mo}\\
+16/05 & 20.42.73.18 & Externe --- synchro horaire (Microsoft Azure NTP) & 38 Ko\\
+\anrow 18/05 & \textbf{185.220.101.47} & \textbf{Adresse externe --- non répertoriée} & \textbf{601 Mo}\\
+\end{tabularx}
+
+\vspace{10pt}
+L'adresse \textbf{10.42.6.11} correspond au serveur de supervision interne officiel d'ELECARM. L'adresse \textcolor{warnborder}{\textbf{20.42.73.18}} est externe mais légitime : elle correspond à un service de synchronisation horaire Microsoft Azure documenté dans la configuration d'origine de la passerelle, avec un volume constant et négligeable. L'adresse \textcolor{brand}{\textbf{185.220.101.47}} n'appartient à aucun équipement ELECARM répertorié, n'apparaît dans aucune documentation fournisseur, et transporte un volume incompatible avec de la simple télémétrie.
+\docfooter
+\end{document}

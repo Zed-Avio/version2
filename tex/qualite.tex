@@ -1,0 +1,36 @@
+\documentclass[11pt]{article}
+\input{preamble.tex}
+\begin{document}
+\lhElecarm
+\doctitle{Rapport de Contrôle Qualité --- Lot BX-4400-A}{N. BRUNET --- Responsable Qualité --- 18 mai 2026}
+
+\begin{tabularx}{\linewidth}{@{}p{6cm}Y@{}}
+\thd{Paramètre} & \thd{Valeur nominale}\\[2pt]
+\hline
+Tension entrée & 24 V DC\\
+Intensité nominale & 0,8 A\\
+Puissance moyenne & 19 W\\
+Tolérance intensité & +/- 5\%\\
+Tolérance test interne & +/- 10\%\\
+Température fonctionnement & 10 --- 45\,°C\\
+\end{tabularx}
+
+\docsec{Mesures lot S42 --- Série BX-4400-A}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\thd{N° boîtier} & \thd{Intensité (A)} & \thd{Puissance (W)} & \thd{Temp (°C)}\\[2pt]
+\hline
+BX-4211 & 0,79 & 18,9 & 32\\
+BX-4212 & 0,83 & 19,9 & 34\\
+BX-4213 & 0,88 & 21,1 & 36\\
+BX-4214 & 0,76 & 18,2 & 30\\
+BX-4215 & 0,91 & 21,8 & 41\\
+\anrow \textbf{BX-4216} & \textbf{1,12} & \textbf{26,9} & \textbf{33}\\
+BX-4217 & 0,87 & 20,8 & 37\\
+BX-4218 & 0,81 & 19,4 & 35\\
+BX-4219 & 0,93 & 22,3 & 44\\
+\end{tabularx}
+
+\vspace{10pt}
+Valeur nominale : 0,80 A --- Tolérance interne : +/- 10\% (0,72 à 0,88 A). Le lot présente une dispersion globalement cohérente avec les conditions thermiques de l'atelier cette semaine, à l'exception du boîtier BX-4216 dont la consommation sort de la plage attendue.
+\docfooter
+\end{document}

