@@ -2848,7 +2848,6 @@ const OSINT_DATA = {
         {date:'2 mars 2026',text:'Je cherche des missions freelance en parallèle de mon poste actuel. Disponible le soir et le week-end. Administration systèmes, audit de sécurité. Me contacter en MP.',likes:8,comments:12},
         {date:'5 janvier 2026',text:'Nouvelle année. Je réfléchis sérieusement à diversifier mes activités en dehors de mon poste actuel. Le secteur défense et sécurité industrielle m\'intéresse particulièrement. Des contacts dans ce milieu ? Disponible en MP.',likes:5,comments:3},
       ],
-      url:'linkedin.com/in/julien-moreau-dsi',
     },
     facebook:{
       privacy:'Profil semi-public - amis d\'amis',
@@ -2860,7 +2859,6 @@ const OSINT_DATA = {
         {date:'17 mars 2026',text:'Vu un reportage sur des consultants IT indépendants. Des missions de 3 semaines à 12-15k euros nets... moi qui galère à payer mon crédit auto depuis 2 ans. On fait vraiment les mauvais choix dans la vie.',visibility:'Amis'},
         {date:'5 mars 2026',text:'Les factures s\'accumulent... Si quelqu\'un connaît des opportunités sérieuses en dehors des heures de boulot n\'hésitez pas.',visibility:'Amis'},
       ],
-      url:'facebook.com/julien.moreau.blois',
       about:['Travaille chez ELECARM SAS','Habite à Blois','A étudié à IUT de Blois'],
     },
   },
@@ -2886,10 +2884,8 @@ const OSINT_DATA = {
         {date:'15 février 2026',text:'8 ans de maison et je rempile pour une belle année. L\'équipe montage est au top. Heureux de faire partie de l\'aventure ELECARM.',likes:28,comments:6},
         {date:'20 novembre 2025',text:'Vient d\'obtenir mon habilitation électrique BR. Une formation dense mais vraiment utile sur le terrain.',likes:19,comments:4},
       ],
-      url:'linkedin.com/in/marc-durand-41',
     },
     facebook:{
-      url:'facebook.com/marc.durand.blois',
       privacy:'Profil public',
       friends:186,
       location:'Blois, Centre-Val de Loire',
@@ -2922,10 +2918,8 @@ const OSINT_DATA = {
         {date:'12 janvier 2026',text:'3 ans de CDI chez ELECARM. Content de faire partie de l\'équipe.',likes:41,comments:5},
         {date:'3 août 2025',text:'Grosse journée au magasin. 3 palettes de composants critiques expédiées avant 17h. Pas le droit à l\'erreur avec les clients qu\'on a - Thales, Schneider, Renault. Ça représente pas mal de valeur entre les mains.',likes:15,comments:2},
       ],
-      url:'linkedin.com/in/karim-benyoucef',
     },
     facebook:{
-      url:'facebook.com/karim.benyoucef.41',
       privacy:'Profil public',
       friends:231,
       location:'Blois, Centre-Val de Loire',
@@ -2960,10 +2954,8 @@ const OSINT_DATA = {
         {date:'3 février 2026',text:'Fière d\'annoncer le renouvellement de notre certification ISO 9001 pour ELECARM SAS. Un beau travail d\'équipe.',likes:112,comments:22},
         {date:'12 décembre 2025',text:'Retour de l\'audit de surveillance ISO 9001. Zéro écart majeur. C\'est la récompense d\'une rigueur de tous les jours. Merci à l\'équipe qualité d\'ELECARM.',likes:89,comments:18},
       ],
-      url:'linkedin.com/in/nathalie-brunet-qualite',
     },
     facebook:{
-      url:'facebook.com/nathalie.brunet.vendome',
       private:true,
       privacy:'Profil privé',
       location:'Blois, Centre-Val de Loire',
@@ -2978,7 +2970,6 @@ const OSINT_DATA = {
     photo:'face3.jpg',
     linkedin:null,
     facebook:{
-      url:'facebook.com/pierre.thierry.1974',
       privacy:'Profil public',
       friends:58,
       location:'Blois, Centre-Val de Loire',
@@ -3006,7 +2997,6 @@ const OSINT_DATA = {
         {school:'IUT de Tours',degree:'BUT Techniques de Commercialisation',year:'2023'},
       ],
       posts:[],
-      url:'linkedin.com/in/camille-rousseau-com',
     },
     facebook:{
       privacy:'Profil public',
@@ -3016,7 +3006,6 @@ const OSINT_DATA = {
         {date:'1 mai 2026',text:'Manifestation ce matin contre le salon de l\'armement. On ne lâchera rien.',visibility:'Public'},
         {date:'20 février 2026',text:'Fière de militer au sein du collectif depuis 3 ans maintenant. Chaque voix compte.',visibility:'Public'},
       ],
-      url:'facebook.com/camille.rousseau.tours',
       about:['Assistante commerciale chez ELECARM SAS','Membre du Collectif Objecteurs (stop aux exportations d\'armement)','Habite à Blois, originaire de Tours'],
     },
   },
@@ -3040,10 +3029,8 @@ const OSINT_DATA = {
         {school:'Lycée Pro - Orléans',degree:'BAC Pro MEI',year:'2013'},
       ],
       posts:[],
-      url:'linkedin.com/in/thomas-vasseur-maintenance',
     },
     facebook:{
-      url:'facebook.com/thomas.vasseur.45',
       private:true,
       privacy:'Profil privé',
       location:'Orléans, Centre-Val de Loire',
@@ -3071,7 +3058,6 @@ const OSINT_DATA = {
       posts:[
         {date:'5 mai 2026',text:'De retour de Shenzhen après une semaine de visites fournisseurs. Marché des composants électroniques toujours aussi dynamique.',likes:22,comments:4},
       ],
-      url:'linkedin.com/in/farid-haddad-achats',
     },
     facebook:{
       privacy:'Profil semi-public',
@@ -3080,7 +3066,6 @@ const OSINT_DATA = {
       posts:[
         {date:'10 avril 2026',text:'De retour de Bagdad, content d\'avoir revu la famille après deux ans.',visibility:'Amis'},
       ],
-      url:'facebook.com/farid.haddad.78',
       about:['Responsable Achats chez ELECARM SAS','Habite à Blois','Né à Lyon'],
     },
   },
@@ -3116,14 +3101,14 @@ function renderOSINTMain(){
   document.getElementById('ox-query').textContent='"'+d.name+'" ELECARM';
   const li=d.linkedin, fb=d.facebook, posts=oxPosts(id);
   const fv=oxVis(fb), loc=(li&&li.location)||(fb&&fb.location)||'';
-  const acct=(logo,bg,name,url,pill,lines)=>`<div class="ox-acct"><div class="ox-logo-s" style="background:${bg}">${logo}</div><div style="min-width:0"><div class="ox-acct-n">${name}</div>
+  const acct=(logo,bg,name,pill,lines)=>`<div class="ox-acct"><div class="ox-logo-s" style="background:${bg}">${logo}</div><div style="min-width:0"><div class="ox-acct-n">${name}</div>
 <div class="ox-acct-s">${pill}${lines}</div></div></div>`;
   let h=`<div class="ox-id">${oxAv(d)}<div><div class="ox-id-n">${d.name}</div><div class="ox-id-m"><span>${d.role}, ELECARM SAS</span>${loc?`<span>${loc}</span>`:''}<span>${posts.length} publication${posts.length>1?'s':''} collectée${posts.length>1?'s':''}</span></div></div></div>
     <div class="ox-accts">
-      ${li?acct('in','#0a66c2','LinkedIn','https://'+li.url,'<span class="ox-pill pub">Public</span>',`${li.connections} relations · ${(li.posts||[]).length} publication${(li.posts||[]).length>1?'s':''}`)
-          :acct('in','#262c3a','LinkedIn','','<span class="ox-pill none">Aucun compte</span>','Aucun profil correspondant trouvé.')}
-      ${fb?acct('f','#1877f2','Facebook','https://'+fb.url,`<span class="ox-pill ${fv[0]}">${fv[1]}</span>`,fb.private?'Seules la photo et la ville sont visibles.':`${fb.friends} amis · ${(fb.posts||[]).length} publication${(fb.posts||[]).length>1?'s':''} visible${(fb.posts||[]).length>1?'s':''}`)
-          :acct('f','#262c3a','Facebook','','<span class="ox-pill none">Aucun compte</span>','Aucun profil correspondant trouvé.')}
+      ${li?acct('in','#0a66c2','LinkedIn','<span class="ox-pill pub">Public</span>',`${li.connections} relations · ${(li.posts||[]).length} publication${(li.posts||[]).length>1?'s':''}`)
+          :acct('in','#262c3a','LinkedIn','<span class="ox-pill none">Aucun compte</span>','Aucun profil correspondant trouvé.')}
+      ${fb?acct('f','#1877f2','Facebook',`<span class="ox-pill ${fv[0]}">${fv[1]}</span>`,fb.private?'Seules la photo et la ville sont visibles.':`${fb.friends} amis · ${(fb.posts||[]).length} publication${(fb.posts||[]).length>1?'s':''} visible${(fb.posts||[]).length>1?'s':''}`)
+          :acct('f','#262c3a','Facebook','<span class="ox-pill none">Aucun compte</span>','Aucun profil correspondant trouvé.')}
     </div>`;
   const tabs=[['linkedin','LinkedIn'],['facebook','Facebook']];
   h+=`<div class="ox-tabs">${tabs.map(t=>`<button class="ox-tab${osintView===t[0]?' on':''}" onclick="setOsintView('${t[0]}')">${t[1]}</button>`).join('')}</div>`;
