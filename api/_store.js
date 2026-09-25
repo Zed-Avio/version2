@@ -11,7 +11,7 @@ const READ_TTL_MS = 5000;
 let cache = null; // { state, etag, at }
 
 function defaultState() {
-  return { v: 1, session: { status: 'idle', endAt: null, durationMin: 10, missionMin: 160, missionEndAt: null, missionLeftMs: null, updatedAt: 0 }, teams: {} };
+  return { v: 1, session: { status: 'idle', endAt: null, durationMin: 10, missionMin: 240, missionEndAt: null, missionLeftMs: null, updatedAt: 0 }, teams: {} };
 }
 
 function blob() { return require('@vercel/blob'); }

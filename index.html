@@ -442,7 +442,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 
 /* ── TOAST ── */
 #toast{
-  display:none;position:fixed;bottom:20px;right:20px;z-index:900;
+  display:none;position:fixed;bottom:74px;right:20px;z-index:900;
   background:var(--s1);border:1px solid var(--bd2);border-radius:8px;
   padding:12px 16px;max-width:300px;box-shadow:0 8px 30px rgba(0,0,0,.7);
   animation:slideR .3s ease-out;
@@ -452,6 +452,30 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 #toast-text .title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
 #toast-text .body{font-size:12px;color:var(--tx3);line-height:1.4}
 #toast-close{margin-left:auto;background:none;border:none;color:var(--tx4);cursor:pointer;font-size:16px;flex-shrink:0;padding:0}
+
+/* ── DISCUSSION AVEC L'ANIMATEUR ── */
+#chat-btn{position:fixed;right:20px;bottom:20px;z-index:950;display:none;align-items:center;gap:8px;background:#7f1d1d;color:#fff;border:none;border-radius:22px;padding:10px 16px;font-size:12.5px;font-weight:700;font-family:var(--font);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.6)}
+#chat-btn:hover{filter:brightness(1.15)}
+#chat-btn svg{width:16px;height:16px;fill:#fff}
+#chat-badge{display:none;min-width:18px;height:18px;border-radius:9px;background:#fff;color:#7f1d1d;font-size:11px;font-weight:800;align-items:center;justify-content:center;padding:0 5px}
+#chat-panel{position:fixed;right:20px;bottom:70px;z-index:960;width:360px;max-width:calc(100vw - 32px);height:470px;max-height:calc(100vh - 110px);display:none;flex-direction:column;background:var(--s1);border:1px solid var(--bd2);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.75);overflow:hidden}
+#chat-panel.open{display:flex}
+.chat-h{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--bd);background:#0d0d0d}
+.chat-h b{font-size:13px;color:#fff}
+.chat-h span{font-size:11px;color:var(--tx3)}
+.chat-h button{margin-left:auto;background:none;border:none;color:var(--tx3);font-size:18px;cursor:pointer}
+.chat-list{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.chat-empty{margin:auto;text-align:center;font-size:12px;color:var(--tx3);line-height:1.6;padding:0 16px}
+.chat-m{max-width:82%;padding:8px 11px;border-radius:10px;font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.chat-m .meta{display:block;font-size:10px;margin-bottom:2px;opacity:.75}
+.chat-m.team{align-self:flex-end;background:#3a1414;color:#f3dede;border-bottom-right-radius:3px}
+.chat-m.anim{align-self:flex-start;background:#1c1c1c;color:#e6e6e6;border:1px solid #2a2a2a;border-bottom-left-radius:3px}
+.chat-m.all{border-color:#5c4a1f;background:#1e1a10}
+.chat-f{display:flex;gap:8px;padding:10px;border-top:1px solid var(--bd)}
+.chat-f textarea{flex:1;resize:none;height:42px;background:#0b0b0b;border:1px solid var(--bd2);border-radius:6px;color:var(--tx);font-family:var(--font);font-size:13px;padding:8px 10px;outline:none}
+.chat-f textarea:focus{border-color:#555}
+.chat-f button{background:#7f1d1d;color:#fff;border:none;border-radius:6px;padding:0 14px;font-weight:700;font-size:12px;cursor:pointer;font-family:var(--font)}
+.chat-f button:disabled{opacity:.5;cursor:default}
 
 /* ── ANIMATOR PANEL ── */
 #anim-panel{
@@ -854,7 +878,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
             <div class="sit-overview">
               <div class="sit-overview-tag">Vue d'ensemble - dossier ouvert le 19 mai 2026</div>
               <div class="sit-overview-title">Flux de données suspect sur la passerelle BX-GATEWAY-07</div>
-              <div class="sit-overview-body">Flux sortant suspect repéré depuis la passerelle de télémaintenance des boîtiers BX-4400 vers une adresse IP externe non identifiée. Audit externe mandaté par la DSI en réponse à la directive du Ministère de l'Intérieur.</div>
+              <div class="sit-overview-body">Flux sortant suspect repéré depuis la passerelle de télémaintenance des boîtiers BX-4400 vers une adresse IP externe non identifiée. Audit externe mandaté par la Direction en réponse à la directive du Ministère de l'Intérieur.</div>
               <div class="alert-stats">
                 <div class="stat-box"><label>Volume suspect</label><div class="val">600+ Mo</div></div>
                 <div class="stat-box"><label>Référence mandat</label><div class="val mono" style="font-size:12px;margin-top:3px">MININT-DGSI-2026-0517</div></div>
@@ -1231,6 +1255,12 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 </div>
 
 <!-- TOAST -->
+<button id="chat-btn" onclick="toggleChat()"><svg viewBox="0 0 24 24"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>Écrire à l'animateur<span id="chat-badge"></span></button>
+<div id="chat-panel">
+  <div class="chat-h"><div><b>Animateur</b><br><span id="chat-sub">Discussion de votre équipe</span></div><button onclick="toggleChat()" title="Fermer">&times;</button></div>
+  <div class="chat-list" id="chat-list"></div>
+  <div class="chat-f"><textarea id="chat-input" maxlength="500" placeholder="Votre message (Entrée pour envoyer)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea><button id="chat-send" onclick="sendChat()">Envoyer</button></div>
+</div>
 <div id="toast">
   <div id="toast-icon"></div>
   <div id="toast-text"><div class="title"></div><div class="body"></div></div>
@@ -2102,7 +2132,7 @@ function showApp(tab){
   initClock();initSessionTimer();renderMails();renderLogs();renderSuspects();renderDocs();renderEnigmes();renderOSINT();renderVerdict();
   initTimeline();
   restoreState(loadSavedState());
-  setTeamChip();renderVerdict();startLiveSync();applyServerMission(window.__elecarmSession);
+  setTeamChip();renderVerdict();renderChat(true);startLiveSync();applyServerMission(window.__elecarmSession);
   let start=tab;
   if(!start){ try{ start=sessionStorage.getItem('elecarm_start_tab'); }catch(e){} }
   try{ sessionStorage.removeItem('elecarm_start_tab'); }catch(e){}
@@ -3167,6 +3197,50 @@ async function submitSupposition(){
   renderVerdict();
 }
 
+// ── Discussion équipe <-> animateur (messages stockés sur le serveur, visibles par toute l'équipe) ──
+const CHAT_SEEN_KEY='elecarm_chat_seen';
+let chatOpen=false, chatSig='';
+function chatSeen(){ try{ return +localStorage.getItem(CHAT_SEEN_KEY)||0; }catch(e){ return 0; } }
+function markChatSeen(){ const ms=(teamView&&teamView.messages)||[]; const last=ms.length?ms[ms.length-1].at:0; try{ localStorage.setItem(CHAT_SEEN_KEY,String(Math.max(last,chatSeen()))); }catch(e){} }
+function fmtHM(t){ const d=new Date(t); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function renderChat(notify){
+  const btn=document.getElementById('chat-btn'); if(!btn) return;
+  if(!teamView){ btn.style.display='none'; document.getElementById('chat-panel').classList.remove('open'); return; }
+  btn.style.display='flex';
+  const ms=teamView.messages||[];
+  document.getElementById('chat-sub').textContent='Discussion de l\'équipe '+teamView.team.name;
+  const seen=chatSeen();
+  const unread=ms.filter(m=>m.from==='anim'&&m.at>seen);
+  if(chatOpen){ markChatSeen(); }
+  const badge=document.getElementById('chat-badge');
+  const n=chatOpen?0:unread.length;
+  badge.style.display=n?'inline-flex':'none'; badge.textContent=n;
+  if(notify && !chatOpen && unread.length){ const m=unread[unread.length-1]; toast('!',m.all?'Message de l\'animateur (toutes les équipes)':'Message de l\'animateur',m.text.length>110?m.text.slice(0,110)+'...':m.text); }
+  const sig=JSON.stringify(ms); if(sig===chatSig) return; chatSig=sig;
+  const list=document.getElementById('chat-list');
+  list.innerHTML=ms.length?ms.map(m=>`<div class="chat-m ${m.from==='anim'?'anim':'team'}${m.all?' all':''}"><span class="meta">${m.from==='anim'?(m.all?'Animateur, à toutes les équipes':'Animateur'):escHtml(m.by)} · ${fmtHM(m.at)}</span>${escHtml(m.text)}</div>`).join('')
+    :'<div class="chat-empty">Une question, un blocage, un souci technique ?<br>Écrivez à l\'animateur. Toute votre équipe voit cette discussion.</div>';
+  list.scrollTop=list.scrollHeight;
+}
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open',chatOpen);
+  if(chatOpen){ chatSig=''; renderChat(); setTimeout(()=>document.getElementById('chat-input').focus(),50); refreshSoon(); }
+  else renderChat();
+}
+async function sendChat(){
+  const inp=document.getElementById('chat-input'), btn=document.getElementById('chat-send');
+  const text=inp.value.trim(); if(!text||!myTeam) return;
+  btn.disabled=true;
+  try{
+    const r=await fetch('/api/team',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'message',teamId:myTeam.teamId,memberId:myTeam.memberId,text})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok) toast('!','Message non envoyé',j.message||'Réessayez dans un instant.');
+    else { inp.value=''; if(j.view&&j.view.me){ teamView=j.view.me; renderChat(); } }
+  }catch(e){ toast('!','Message non envoyé','Serveur injoignable, réessayez dans un instant.'); }
+  btn.disabled=false; inp.focus();
+}
+
 // ── Accès : l'exercice n'est ouvert qu'aux équipes inscrites, quand l'animateur l'a lancé ──
 function loadMyTeam(){ try{ const t=JSON.parse(localStorage.getItem('elecarm_team')||'null'); return t&&t.teamId&&t.memberId?t:null; }catch(e){ return null; } }
 async function fetchSession(timeoutMs,withQuestions){
@@ -3197,10 +3271,13 @@ function setTeamChip(){
   const c=document.getElementById('team-chip'); if(!c) return;
   if(teamView){ c.textContent='Équipe '+teamView.team.name; c.title=teamView.team.members.join(', '); c.style.display='block'; } else c.style.display='none';
 }
-// Suivi en cours de partie : fermeture par l'animateur, tentatives faites depuis les autres postes de l'équipe.
+// Suivi en cours de partie : fermeture par l'animateur, tentatives et messages des autres postes de l'équipe.
+// Toutes les 20 s, toutes les 6 s quand la discussion est ouverte.
+let liveTimer=null, liveTick=null;
+function refreshSoon(){ if(liveTick){ clearTimeout(liveTimer); liveTimer=setTimeout(liveTick,300); } }
 function startLiveSync(){
   const ov=document.getElementById('closed-overlay');
-  const tick=async()=>{
+  const tick=liveTick=async()=>{
     const st=await fetchSession(5000);
     if(st){
       apiOnline=true;
@@ -3215,12 +3292,12 @@ function startLiveSync(){
         ov.classList.add('show');
       } else {
         ov.classList.remove('show');
-        if(st.me){ const changed=JSON.stringify(st.me)!==JSON.stringify(teamView); teamView=st.me; if(changed){ setTeamChip(); renderVerdict(); } }
+        if(st.me){ const changed=JSON.stringify(st.me)!==JSON.stringify(teamView); teamView=st.me; if(changed){ setTeamChip(); renderVerdict(); renderChat(true); } }
       }
     }
-    setTimeout(tick,20000);
+    clearTimeout(liveTimer); liveTimer=setTimeout(tick,chatOpen?6000:20000);
   };
-  setTimeout(tick,20000);
+  liveTimer=setTimeout(tick,chatOpen?6000:20000);
 }
 
 // ══════════════════════════════════════════

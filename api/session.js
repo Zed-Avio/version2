@@ -2,9 +2,9 @@
 // GET  /api/session[?team=&member=]  -> etat public (salle d'attente, equipes, et tentatives de SON equipe)
 // POST /api/session {password, action, ...} -> console animateur (protege par ANIM_PASSWORD)
 //   actions : waiting | start | open | close | reset | setTimer | addTime | state
-//             deleteTeam | removeMember | resetAttempts | wipeTeams
+//             deleteTeam | removeMember | resetAttempts | wipeTeams | reply | broadcast
 const store = require('./_store');
-const { parseBody, clean, publicView } = require('./_util');
+const { parseBody, clean, cleanText, newId, publicView, pushMessage } = require('./_util');
 const { publicQuestions } = require('./_grade');
 
 function clampMin(v, fallback) {
@@ -45,13 +45,13 @@ module.exports = async (req, res) => {
       res.status(200).json({ ...st, serverNow: Date.now() });
       return;
     }
-    const known = ['waiting', 'start', 'open', 'close', 'reset', 'setTimer', 'addTime', 'deleteTeam', 'removeMember', 'resetAttempts', 'wipeTeams'];
+    const known = ['waiting', 'start', 'open', 'close', 'reset', 'setTimer', 'addTime', 'deleteTeam', 'removeMember', 'resetAttempts', 'wipeTeams', 'reply', 'broadcast'];
     if (!known.includes(action)) { res.status(400).json({ error: 'bad action' }); return; }
 
     const result = await store.mutate(st => {
       const s = st.session, now = Date.now();
       const d = clampMin(body.durationMin, s.durationMin);             // compte a rebours avant ouverture
-      const M = clampMin(body.missionMin, s.missionMin || 160);         // minuteur de l'exercice
+      const M = clampMin(body.missionMin, s.missionMin || 240);         // minuteur de l'exercice
       const base = { durationMin: d, missionMin: M, updatedAt: now };
       // Minuteur : missionEndAt quand l'exercice tourne, missionLeftMs quand il est en pause (ferme).
       if (action === 'waiting') st.session = { ...base, status: 'waiting', endAt: null, missionEndAt: null, missionLeftMs: null };
@@ -76,12 +76,20 @@ module.exports = async (req, res) => {
         } else return { error: 'Le minuteur ne se règle que pendant l\'exercice.' };
         s.missionMin = M; s.updatedAt = now;
       }
-      else if (action === 'wipeTeams') st.teams = {};
+      else if (action === 'wipeTeams') { st.teams = {}; st.broadcasts = []; }
+      else if (action === 'broadcast') {
+        const text = cleanText(body.text); if (!text) return { error: 'Message vide.' };
+        st.broadcasts = st.broadcasts || []; pushMessage(st.broadcasts, { id: newId(), text, at: now });
+      }
       else {
         const t = st.teams[clean(body.teamId, 40)];
         if (!t) return { error: 'team not found' };
         if (action === 'deleteTeam') delete st.teams[t.id];
         else if (action === 'resetAttempts') { t.attempts = []; t.success = false; }
+        else if (action === 'reply') {
+          const text = cleanText(body.text); if (!text) return { error: 'Message vide.' };
+          t.messages = t.messages || []; pushMessage(t.messages, { id: newId(), from: 'anim', text, at: now });
+        }
         else if (action === 'removeMember') t.members = t.members.filter(m => m.id !== clean(body.memberId, 40));
       }
       return {};

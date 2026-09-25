@@ -54,6 +54,29 @@ button.big{font-size:15px;padding:13px 22px}
 .m-s{font-size:11px;color:#666}
 .m-b{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
 .mini code{font-family:var(--mono);color:#8ab0d8}
+.addc{display:inline-flex;gap:6px;align-items:center}
+.addc input{width:76px;padding:5px 8px;font-size:12px}
+/* Messages */
+.chat{display:flex;gap:12px;min-height:340px}
+.chat-teams{width:230px;flex-shrink:0;display:flex;flex-direction:column;gap:4px;max-height:420px;overflow-y:auto}
+.ct{display:flex;align-items:center;gap:8px;background:#0c0d0f;border:1px solid var(--bd);border-radius:7px;padding:9px 10px;cursor:pointer;text-align:left}
+.ct:hover{border-color:#34383d}
+.ct.on{border-color:#5c1f1f;background:#160e0e}
+.ct-n{font-size:13px;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ct-l{font-size:11px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ct-b{margin-left:auto;background:#dc2626;color:#fff;font-size:11px;font-weight:800;border-radius:9px;min-width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px}
+.chat-main{flex:1;display:flex;flex-direction:column;border:1px solid var(--bd);border-radius:8px;background:#0c0d0f;min-width:0}
+.chat-list{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;max-height:360px}
+.cm{max-width:80%;padding:8px 11px;border-radius:10px;font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.cm .meta{display:block;font-size:10px;opacity:.7;margin-bottom:2px}
+.cm.team{align-self:flex-start;background:#17191c;border:1px solid #23262a;color:#e6e6e6}
+.cm.anim{align-self:flex-end;background:#3a1414;color:#f3dede}
+.cm.all{background:#2a2310;color:#f0e2b8}
+.chat-f{display:flex;gap:8px;padding:10px;border-top:1px solid var(--bd)}
+.chat-f textarea{flex:1;resize:none;height:44px;background:#08090a;border:1px solid #26292d;border-radius:6px;color:#e6e6e6;font-family:inherit;font-size:13px;padding:8px 10px;outline:none}
+.bcast{display:flex;gap:8px;margin-top:12px}
+.bcast input{flex:1}
+@media (max-width:700px){.chat{flex-direction:column}.chat-teams{width:auto;max-height:160px}}
 .hidden{display:none}
 .team{border:1px solid var(--bd);border-radius:8px;margin-bottom:10px;background:#0c0d0f}
 .team-h{display:flex;align-items:center;gap:12px;padding:12px 14px;flex-wrap:wrap}
@@ -114,11 +137,12 @@ button.big{font-size:15px;padding:13px 22px}
           <button class="b-reset sm" onclick="timer('addTime',-5)">- 5 min</button>
           <button class="b-reset sm" onclick="timer('addTime',5)">+ 5 min</button>
           <button class="b-reset sm" onclick="timer('addTime',15)">+ 15 min</button>
+          <span class="addc"><input type="number" id="addmin" value="30" min="-600" max="600" title="Minutes à ajouter (négatif pour retirer)"><button class="b-go sm" onclick="timer('addCustom')">Ajouter ces minutes</button></span>
           <button class="b-reset sm" onclick="timer('setTimer')">Repartir de la durée choisie</button>
         </div>
       </div>
       <div class="fields">
-        <div><label>Durée de l'exercice, minuteur (minutes)</label><input type="number" id="mdur" value="160" min="1" max="600"></div>
+        <div><label>Durée de l'exercice, minuteur (minutes)</label><input type="number" id="mdur" value="240" min="1" max="600"></div>
         <div><label>Compte à rebours avant ouverture (minutes)</label><input type="number" id="dur" value="10" min="1" max="600"></div>
       </div>
       <div class="btns">
@@ -132,6 +156,18 @@ button.big{font-size:15px;padding:13px 22px}
       <div class="mini">
         <b>Commencer maintenant</b> : l'exercice s'ouvre tout de suite et le minuteur démarre. Les élèves passent par le lien <code>/salle</code> pour rejoindre leur équipe, puis entrent directement. <b>Compte à rebours</b> : décompte synchronisé, l'exercice et le minuteur démarrent à zéro. <b>Salle d'attente</b> : inscriptions des équipes avant de commencer. <b>Fermer</b> : bloque l'exercice sur tous les postes et met le minuteur en pause ; « Commencer maintenant » le rouvre et le minuteur reprend où il s'était arrêté. <b>Veille</b> : site fermé. Le minuteur s'affiche en haut de l'écran des élèves (MISSION) ; à zéro, un message « Temps écoulé » s'affiche mais l'exercice continue. Un réglage met jusqu'à 20 secondes à leur parvenir.
       </div>
+    </div>
+
+    <div class="card" id="chatcard">
+      <h2>Messages des équipes <span class="r" id="chatcount"></span></h2>
+      <div class="chat">
+        <div class="chat-teams" id="chat-teams"></div>
+        <div class="chat-main">
+          <div class="chat-list" id="chat-list"><div class="empty" style="margin:auto">Sélectionnez une équipe.</div></div>
+          <div class="chat-f"><textarea id="reply" maxlength="500" placeholder="Répondre à l'équipe sélectionnée (Entrée pour envoyer)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();reply();}"></textarea><button class="b-go" onclick="reply()">Envoyer</button></div>
+        </div>
+      </div>
+      <div class="bcast"><input id="bcast" maxlength="500" placeholder="Message à TOUTES les équipes (ex. : plus que 30 minutes !)" onkeydown="if(event.key==='Enter'){broadcast();}"><button class="b-wait" onclick="broadcast()">Envoyer à toutes les équipes</button></div>
     </div>
 
     <div class="card">
@@ -181,14 +217,15 @@ function send(action){
   if(live && (action==='open'||action==='start') && !confirm('Un exercice est déjà en cours. Le relancer remet le minuteur à zéro sur tous les postes. Continuer ?')) return;
   if(live && (action==='waiting'||action==='reset') && !confirm('Un exercice est en cours : cette action renvoie tous les élèves vers la salle d\'attente. Continuer ?')) return;
   var dur=parseInt(document.getElementById('dur').value,10)||10;
-  var mdur=parseInt(document.getElementById('mdur').value,10)||160;
+  var mdur=parseInt(document.getElementById('mdur').value,10)||240;
   api({action:action,durationMin:dur,missionMin:mdur}).then(function(o){
     if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue')+(o.j.detail?' ('+o.j.detail+')':''),true); return; }
     msg(LABELS[action]||'OK',false); apply(o.j);
   }).catch(function(){ msg('Erreur réseau.',true); });
 }
 function timer(action,delta){
-  var mdur=parseInt(document.getElementById('mdur').value,10)||160;
+  var mdur=parseInt(document.getElementById('mdur').value,10)||240;
+  if(action==='addCustom'){ delta=parseInt(document.getElementById('addmin').value,10); if(!delta){ msg('Indiquez un nombre de minutes à ajouter.',true); return; } action='addTime'; }
   if(action==='setTimer' && !confirm('Remettre le minuteur à '+mdur+' minutes sur tous les postes ?')) return;
   api({action:action,deltaMin:delta,missionMin:mdur}).then(function(o){
     if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; }
@@ -210,11 +247,64 @@ function teamAction(action,teamId,memberId){
 function wipe(){ teamAction('wipeTeams',null,null); }
 
 var filled=false;
+// ── Messages ──
+var chatTeam=null, chatListSig='', chatThreadSig='', knownMsgs=null;
+function seenMap(){ try{ return JSON.parse(localStorage.getItem('elecarm_anim_seen')||'{}'); }catch(e){ return {}; } }
+function setSeen(id,t){ var m=seenMap(); m[id]=Math.max(m[id]||0,t); try{ localStorage.setItem('elecarm_anim_seen',JSON.stringify(m)); }catch(e){} }
+function teamMsgs(t){ return (t.messages||[]).concat(((st&&st.broadcasts)||[]).map(function(b){ return {id:b.id,from:'anim',all:true,text:b.text,at:b.at}; })).sort(function(a,b){return a.at-b.at;}); }
+function beep(){ try{ var c=new (window.AudioContext||window.webkitAudioContext)(), o=c.createOscillator(), g=c.createGain(); o.frequency.value=880; g.gain.value=0.05; o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+0.15); }catch(e){} }
+function renderChat(){
+  var teams=Object.values(st.teams||{}).sort(function(a,b){return a.createdAt-b.createdAt;});
+  var seen=seenMap(), totalUnread=0;
+  // nouveaux messages d'equipe depuis le dernier passage -> son
+  var ids={}; teams.forEach(function(t){ (t.messages||[]).forEach(function(m){ if(m.from==='team') ids[m.id]=1; }); });
+  if(knownMsgs){ var fresh=Object.keys(ids).filter(function(k){return !knownMsgs[k];}); if(fresh.length) beep(); }
+  knownMsgs=ids;
+  if(chatTeam && !st.teams[chatTeam]) chatTeam=null;
+  if(chatTeam){ var ct=st.teams[chatTeam]; var lastT=(ct.messages||[]).filter(function(m){return m.from==='team';}).slice(-1)[0]; if(lastT) setSeen(chatTeam,lastT.at); seen=seenMap(); }
+  var rows=teams.map(function(t){
+    var ms=t.messages||[], unread=ms.filter(function(m){return m.from==='team'&&m.at>(seen[t.id]||0);}).length; totalUnread+=unread;
+    var last=ms[ms.length-1];
+    return {t:t,unread:unread,last:last};
+  });
+  document.title=(totalUnread?'('+totalUnread+') ':'')+'ELECARM - Console animateur';
+  document.getElementById('chatcount').textContent=totalUnread?totalUnread+' non lu'+(totalUnread>1?'s':''):'';
+  var sig=JSON.stringify(rows.map(function(r){return [r.t.id,r.t.name,r.unread,r.last&&r.last.id];}))+chatTeam;
+  if(sig!==chatListSig){
+    chatListSig=sig;
+    document.getElementById('chat-teams').innerHTML=rows.length?rows.map(function(r){
+      return '<div class="ct'+(r.t.id===chatTeam?' on':'')+'" onclick="openChat(\''+r.t.id+'\')"><div style="min-width:0"><div class="ct-n">'+esc(r.t.name)+'</div><div class="ct-l">'+(r.last?esc((r.last.from==='team'?r.last.by+' : ':'Vous : ')+r.last.text):'Aucun message')+'</div></div>'+(r.unread?'<span class="ct-b">'+r.unread+'</span>':'')+'</div>';
+    }).join(''):'<div class="empty">Aucune équipe.</div>';
+  }
+  var list=document.getElementById('chat-list');
+  var t=chatTeam&&st.teams[chatTeam];
+  var ms=t?teamMsgs(t):[];
+  var tsig=chatTeam+JSON.stringify(ms);
+  if(tsig===chatThreadSig) return; chatThreadSig=tsig;
+  if(!t){ list.innerHTML='<div class="empty" style="margin:auto">Sélectionnez une équipe.</div>'; return; }
+  list.innerHTML=ms.length?ms.map(function(m){
+    return '<div class="cm '+(m.from==='anim'?'anim':'team')+(m.all?' all':'')+'"><span class="meta">'+(m.from==='anim'?(m.all?'Vous, à toutes les équipes':'Vous'):esc(m.by))+' · '+hhmm(m.at)+'</span>'+esc(m.text)+'</div>';
+  }).join(''):'<div class="empty" style="margin:auto">Aucun message avec cette équipe.</div>';
+  list.scrollTop=list.scrollHeight;
+}
+function openChat(id){ chatTeam=id; chatListSig=''; chatThreadSig=''; renderChat(); document.getElementById('reply').focus(); }
+function reply(){
+  var el=document.getElementById('reply'), text=el.value.trim();
+  if(!chatTeam){ msg('Sélectionnez d\'abord une équipe dans Messages.',true); return; }
+  if(!text) return;
+  api({action:'reply',teamId:chatTeam,text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; apply(o.j); });
+}
+function broadcast(){
+  var el=document.getElementById('bcast'), text=el.value.trim(); if(!text) return;
+  if(!confirm('Envoyer ce message à toutes les équipes ?\n\n'+text)) return;
+  api({action:'broadcast',text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; msg('Message envoyé à toutes les équipes.',false); apply(o.j); });
+}
+
 function apply(j){
   if(!j || !j.session) return;
-  if(!filled){ filled=true; if(j.session.missionMin) document.getElementById('mdur').value=j.session.missionMin; if(j.session.durationMin) document.getElementById('dur').value=j.session.durationMin; }
+  if(!filled){ filled=true; if(j.session.durationMin) document.getElementById('dur').value=j.session.durationMin; }
   st=j; if(j.serverNow) offset=j.serverNow-Date.now();
-  renderState(); renderTeams();
+  renderState(); renderTeams(); renderChat();
 }
 function renderState(){
   if(!st) return;

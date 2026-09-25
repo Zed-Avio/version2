@@ -2,9 +2,10 @@
 // POST /api/team {action:'join', memberName, teamName | teamId}  -> rejoindre ou creer une equipe (8 places max)
 // POST /api/team {action:'leave', teamId, memberId}
 // POST /api/team {action:'submit', teamId, memberId, answers}     -> une supposition (5 tentatives par equipe)
+// POST /api/team {action:'message', teamId, memberId, text}       -> message a l'animateur
 const store = require('./_store');
 const { grade, tier, parseAnswers, FIELDS, MAX_ATTEMPTS, norm } = require('./_grade');
-const { parseBody, clean, newId, isOpen, publicView, MAX_MEMBERS, MAX_TEAMS } = require('./_util');
+const { parseBody, clean, cleanText, newId, isOpen, publicView, pushMessage, MAX_MEMBERS, MAX_TEAMS } = require('./_util');
 
 const ERR = {
   name: 'Indiquez votre prénom.',
@@ -17,6 +18,8 @@ const ERR = {
   locked: 'Votre équipe a utilisé toutes ses tentatives.',
   incomplete: 'Répondez aux 5 questions avant d\'envoyer (au moins un levier pour la question 5).',
   noTeam: 'Équipe introuvable.',
+  emptyMsg: 'Message vide.',
+  tooFast: 'Doucement : attendez quelques secondes entre deux messages.',
 };
 
 module.exports = async (req, res) => {
@@ -59,6 +62,16 @@ module.exports = async (req, res) => {
         return { ok: true };
       }
 
+      if (b.action === 'message') {
+        const text = cleanText(b.text);
+        if (!text) return { error: 'emptyMsg' };
+        t.messages = t.messages || [];
+        const last = t.messages.filter(x => x.from === 'team').slice(-1)[0];
+        if (last && Date.now() - last.at < 1500) return { error: 'tooFast' };
+        pushMessage(t.messages, { id: newId(), from: 'team', by: m.name, text, at: Date.now() });
+        return { ok: true };
+      }
+
       if (b.action === 'submit') {
         if (!isOpen(s)) return { error: 'notOpen' };
         if (t.success || t.attempts.length >= MAX_ATTEMPTS) return { error: 'locked' };
@@ -79,7 +92,7 @@ module.exports = async (req, res) => {
       res.status(result.error === 'notMember' ? 403 : 400).json({ error: result.error, message: ERR[result.error] || result.error });
       return;
     }
-    if (b.action === 'submit' || b.action === 'join') {
+    if (b.action === 'submit' || b.action === 'join' || b.action === 'message') {
       const st = await store.read();
       result.view = publicView(st, result.teamId || b.teamId, result.memberId || b.memberId);
     }

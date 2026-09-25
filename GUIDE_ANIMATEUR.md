@@ -13,18 +13,27 @@
 1. **Avant l'arrivée des élèves** : ouvrez `/animateur`, entrez le mot de passe. Si des équipes d'une séance précédente apparaissent, cliquez sur **Effacer toutes les équipes**.
 2. **Ouvrir la salle d'attente.** Donnez le lien `/salle` aux élèves.
 3. **Inscriptions** : chaque élève saisit son prénom, puis crée son équipe ou rejoint une équipe existante (8 personnes maximum par équipe). Les équipes s'affichent en direct dans votre console.
-4. **Réglez la durée de l'exercice** (champ « Durée de l'exercice, minuteur », par exemple 160 minutes).
+4. **Durée de l'exercice** : le minuteur est réglé sur **4 heures (240 minutes)** par défaut. Changez le champ « Durée de l'exercice, minuteur » avant de lancer si besoin.
 5. **Lancez** :
    - **Commencer maintenant** : l'exercice s'ouvre tout de suite et le minuteur démarre ;
    - ou **Lancer avec compte à rebours** : un décompte synchronisé s'affiche chez tous les élèves, l'exercice s'ouvre à zéro.
 6. **Pendant l'exercice**, vous pouvez :
-   - ajuster le minuteur (**- 5 min**, **+ 5 min**, **+ 15 min**, **Repartir de la durée choisie**) ;
+   - ajuster le minuteur : **- 5 min**, **+ 5 min**, **+ 15 min**, ou n'importe quelle durée avec le champ **Ajouter ces minutes** (un nombre négatif retire du temps), ou **Repartir de la durée choisie** ;
+   - échanger avec les équipes dans **Messages des équipes** (voir plus bas) ;
    - **Fermer (pause)** : l'exercice se bloque sur tous les postes et le minuteur s'arrête. **Rouvrir** : tout reprend là où c'était ;
    - suivre les suppositions de chaque équipe (auteur, heure, note sur 5, réponses choisies).
 7. **Quand le minuteur arrive à zéro**, les élèves voient « Temps écoulé », mais **l'exercice continue** : c'est vous qui décidez quand fermer.
 8. **Fin de séance** : **Fermer (pause)** ou **Mettre en veille**.
 
 Un réglage (fermeture, ajout de temps) met jusqu'à 20 secondes à arriver sur les postes des élèves.
+
+## Messages avec les équipes
+
+- Côté élèves : bouton **Écrire à l'animateur** en bas à droite de l'exercice. Toute l'équipe voit la même discussion, sur tous ses postes.
+- Côté console, carte **Messages des équipes** : une discussion par équipe, avec un compteur de messages non lus. Le titre de l'onglet du navigateur affiche aussi ce nombre, et un petit son signale chaque nouveau message.
+- Cliquez sur une équipe pour lire et répondre (Entrée pour envoyer).
+- **Envoyer à toutes les équipes** : pour une annonce générale (« plus que 30 minutes », « pensez à l'onglet Documents »...). Elle apparaît dans la discussion de chaque équipe.
+- Délais : une réponse arrive en quelques secondes si l'équipe a la discussion ouverte, en 20 secondes au plus sinon (avec une notification).
 
 ## Les suppositions (onglet SUPPOSITIONS)
 
