@@ -1,4 +1,4 @@
-// Génère les PDF des Documents d'ELECARM Crisis2 à partir des sources LaTeX (tex/*.tex).
+// Génère les PDF des Documents et des pièces jointes de mails d'ELECARM Crisis2 à partir des sources LaTeX (tex/*.tex).
 // Moteur : tectonic (binaire autonome, aucune dépendance système). Sortie : pdfs/<id>.pdf
 // Usage : node gen_pdfs.js
 const { execFileSync } = require('child_process');
@@ -18,7 +18,9 @@ function tectonicBin() {
   throw new Error("tectonic introuvable. Installez-le : curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh");
 }
 
-const DOCS = ['ministere', 'qualite', 'note', 'contrat', 'chatlog', 'raspberry', 'gateway', 'techindus', 'conformite'];
+const DOCS = ['ministere', 'qualite', 'note', 'contrat', 'chatlog', 'raspberry', 'gateway', 'techindus', 'conformite',
+  // Pièces jointes des mails (boîte générale)
+  'pj_cv_dupont', 'pj_iso9001', 'pj_fiche_sortie_robert'];
 
 (function main() {
   const bin = tectonicBin();

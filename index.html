@@ -348,39 +348,64 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .osint-stab:hover{background:var(--s2);color:var(--tx2)}
 .osint-stab.active{background:#0d1929;border-color:#2a3a5c;color:#8ab0d8}
 
-/* ── DSI ── */
-.dsi-wrap{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
-.dsi-bar{
-  padding:8px 14px;background:#090909;border-bottom:1px solid var(--bd);
-  display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap;
-}
-.wazuh-brand{font-size:12px;font-weight:700;color:#fff;letter-spacing:.03em}
-.wazuh-meta{font-size:11px;color:var(--tx3)}
-.dsi-counts{display:flex;gap:6px;margin-left:auto}
-.count-pill{font-size:10px;font-weight:700;padding:2px 9px;border-radius:3px}
-.log-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px}
-.log-table thead{position:sticky;top:0;background:#090909;z-index:5}
-.log-table th{
-  padding:7px 10px;text-align:left;font-size:9px;font-weight:700;
-  color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;
-  border-bottom:1px solid var(--bd);
-}
-.log-table td{padding:7px 10px;border-bottom:1px solid #111;vertical-align:top;line-height:1.55;color:#cccccc}
+/* ── DSI : interface type Wazuh (Threat Hunting > Events) ── */
+.dsi-wrap{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;background:#0b0d10;font-family:var(--font)}
+.wz-top{display:flex;align-items:center;gap:14px;padding:0 16px;height:44px;background:#11141a;border-bottom:1px solid #1f242c;flex-shrink:0}
+.wz-logo{font-size:17px;font-weight:800;color:#fff;letter-spacing:-.02em}
+.wz-logo i{font-style:normal;color:#3595f9}
+.wz-crumb{font-size:12px;color:#8b95a5}
+.wz-crumb b{color:#dfe5ee;font-weight:600}
+.wz-top-r{margin-left:auto;display:flex;gap:14px;font-size:11px;color:#6b7686}
+.wz-top-r span b{color:#b8c2d0;font-weight:600}
+.wz-body{flex:1;min-height:0;overflow-y:auto;padding:14px 16px 24px}
+.wz-query{display:flex;gap:8px;align-items:stretch;margin-bottom:8px}
+.wz-dql{font-size:10px;font-weight:700;color:#3595f9;background:#0f1a2b;border:1px solid #1f3552;border-radius:4px 0 0 4px;padding:0 9px;display:flex;align-items:center;margin-right:-8px}
+.wz-search{flex:1;background:#0e1116;border:1px solid #262d38;color:#dfe5ee;font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:0 4px 4px 0;outline:none}
+.wz-search:focus{border-color:#3595f9}
+.wz-date{display:flex;align-items:center;gap:8px;background:#0e1116;border:1px solid #262d38;border-radius:4px;padding:0 12px;font-size:11.5px;color:#b8c2d0;white-space:nowrap}
+.wz-date svg{width:13px;height:13px;fill:#3595f9}
+.wz-btn{background:#3595f9;color:#fff;border:none;border-radius:4px;padding:0 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.wz-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.wz-pill{font-size:11px;font-family:var(--mono);background:#161b23;border:1px solid #262d38;color:#b8c2d0;border-radius:3px;padding:3px 8px}
+.wz-pill.lv{cursor:pointer;user-select:none}
+.wz-pill.lv.on{background:#0f1a2b;border-color:#3595f9;color:#dfe5ee}
+.wz-card{background:#11141a;border:1px solid #1f242c;border-radius:6px;margin-bottom:12px}
+.wz-card-h{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid #1f242c;font-size:12px;color:#dfe5ee;font-weight:600}
+.log-table{width:100%;border-collapse:collapse;font-size:12px}
+.log-table th{padding:8px 10px;text-align:left;font-size:11px;font-weight:600;color:#8b95a5;border-bottom:1px solid #262d38;white-space:nowrap;font-family:var(--mono)}
+.log-table td{padding:8px 10px;border-bottom:1px solid #181d25;vertical-align:top;line-height:1.55;color:#cfd6e0}
 .log-row{cursor:pointer;transition:background .08s}
-.log-row:hover td{background:rgba(255,255,255,.025)}
-.log-time{color:var(--tx3);white-space:nowrap;font-size:10px}
-.log-agent{font-size:10px}
-.log-lv{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;text-align:center}
-.log-desc{color:var(--tx2);max-width:480px;word-break:break-word}
-.log-desc .kw{color:#fff}
-.log-desc .alert{color:#dc2626}
-.log-desc .path{color:#aaa}
-.log-desc .ip{color:var(--tx2)}
-.log-desc .hash{color:var(--tx3);font-size:10px}
-.log-mitre{white-space:nowrap}
-.mitre-tag{font-size:9px;background:#1c1c1c;color:#666;padding:1px 5px;border-radius:3px;margin:1px 1px 1px 0;display:inline-block}
-.log-scroll{overflow-y:auto;flex:1}
-
+.log-row:hover td{background:#141922}
+.log-row.open td{background:#131a25}
+.log-desc{color:#dfe5ee;word-break:break-word}
+.log-doc td{background:#0e1218!important;padding:0 10px 12px 34px;cursor:default}
+.wz-doc{border:1px solid #1f242c;border-radius:4px;overflow:hidden}
+.wz-doc-h{font-size:11px;color:#8b95a5;padding:6px 10px;background:#11141a;border-bottom:1px solid #1f242c}
+.wz-doc table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px}
+.wz-doc td{padding:4px 10px;border-bottom:1px solid #161b23;background:transparent!important;vertical-align:top}
+.wz-doc td:first-child{color:#8b95a5;width:210px;white-space:nowrap}
+.wz-doc td:last-child{color:#dfe5ee;word-break:break-word}
+.wz-empty{padding:26px;text-align:center;color:#6b7686;font-size:12px}
+.wz-sum{margin-left:auto;font-size:11.5px;color:#8b95a5}
+.wz-sum b{color:#dfe5ee}
+.wz-help{font-size:12px;color:#8b95a5;margin-bottom:12px;line-height:1.6}
+.log-phase td{background:#0e1218!important;color:#dfe5ee;font-weight:700;font-size:12px;padding:9px 12px;border-bottom:1px solid #262d38;cursor:default}
+.log-phase td span{font-weight:400;color:#6b7686;margin-left:6px}
+.log-when{white-space:nowrap;color:#b8c2d0;font-size:12px}
+.log-when b{display:block;color:#dfe5ee;font-weight:600}
+.log-mach b{display:block;font-family:var(--mono);font-size:11.5px;color:#3595f9;font-weight:600}
+.log-mach span{font-size:11px;color:#8b95a5}
+.sev{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;white-space:nowrap}
+.sev.crit{background:#3b1410;color:#ff8a73}
+.sev.alert{background:#33260d;color:#f0b44c}
+.sev.susp{background:#2c2a12;color:#e0d27a}
+.sev.vig{background:#16202c;color:#8fb4dd}
+.sev.info{background:#15201b;color:#6fbf98}
+.log-desc{font-size:13px;line-height:1.6}
+.log-desc b.hl{color:#fff;font-weight:700}
+.log-row.normal td{opacity:.62}
+.log-row.normal:hover td{opacity:.9}
+@media (max-width:900px){.wz-top-r{display:none}}
 
 /* ── DOCUMENTS ── */
 .docs-scroll{overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
@@ -589,6 +614,27 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .verdict-opt:hover{background:var(--s2)}
 .verdict-opt input{accent-color:#991b1b}
 .verdict-result{margin-top:18px}
+.sup-team{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--s2);border:1px solid var(--bd2);border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--tx2)}
+.sup-team b{color:#fff}
+.sup-team .sup-left{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--tx3)}
+.sup-field{width:100%;background:#0b0b0b;border:1px solid var(--bd2);color:var(--tx);border-radius:5px;padding:9px 11px;font-size:13px;font-family:var(--font);line-height:1.6;resize:vertical;outline:none}
+.sup-field:focus{border-color:#555}
+.sup-field:disabled{opacity:.55}
+.sup-hint{font-size:11px;color:var(--tx3);margin-top:4px}
+.sup-hist{margin-top:22px}
+.sup-hist-title{font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.sup-att{border:1px solid var(--bd);border-radius:5px;margin-bottom:6px;background:#0b0b0b}
+.sup-att summary{cursor:pointer;padding:8px 12px;font-size:12px;color:var(--tx2);list-style:none}
+.sup-att summary::-webkit-details-marker{display:none}
+.sup-att summary b{color:#fff}
+.sup-att-body{padding:0 12px 10px;font-size:12px;color:var(--tx3);line-height:1.7}
+.sup-att-body span{color:var(--tx2)}
+.team-chip{font-size:10px;font-weight:700;letter-spacing:.06em;color:#d4d4d4;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:4px;padding:3px 9px;text-transform:uppercase;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#closed-overlay{position:fixed;inset:0;z-index:9999;background:rgba(5,5,6,.96);display:none;align-items:center;justify-content:center;text-align:center;padding:24px}
+#closed-overlay.show{display:flex}
+#closed-overlay .co-t{font-size:22px;font-weight:800;color:#fff;margin-bottom:10px}
+#closed-overlay .co-d{font-size:14px;color:#8a8a8a;line-height:1.7;max-width:460px;margin:0 auto}
+#closed-overlay a{color:#fca5a5}
 .verdict-score{font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
 .verdict-score-label{font-size:11px;color:var(--tx3);margin-bottom:14px}
 .verdict-line{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--bd);font-size:12px;line-height:1.6}
@@ -609,6 +655,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 </style>
 </head>
 <body>
+<div id="closed-overlay"><div><div class="co-t" id="co-t">Exercice fermé</div><div class="co-d" id="co-d">L'animateur a fermé l'exercice. Restez sur cette page : elle se rouvrira automatiquement.</div></div></div>
 
 <!-- ═══ SPLASH ═══ -->
 <div id="splash">
@@ -712,7 +759,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
     <!-- Mission -->
     <div class="brief-mission brief-anim" id="ba8">
       <div class="brief-mission-tag">Votre mission</div>
-      <div class="brief-mission-text">Vous formez un <strong style="color:#fff">cabinet d'audit externe mandaté par la DSI d'ELECARM SAS</strong> pour répondre à cette directive. Établir <strong style="color:#fff">comment l'intrusion a été rendue possible</strong>, identifier la faille humaine et technique, et proposer des mesures correctives. Votre rapport est attendu par la direction et transmis au Ministère. L'enquête commence maintenant.</div>
+      <div class="brief-mission-text">Vous formez un <strong style="color:#fff">cabinet d'audit externe mandaté par la Direction d'ELECARM SAS</strong> pour répondre à cette directive. Établir <strong style="color:#fff">comment l'intrusion a été rendue possible</strong>, identifier la faille humaine et technique, et proposer des mesures correctives. Votre rapport est attendu par la direction et transmis au Ministère. L'enquête commence maintenant.</div>
     </div>
 
     <!-- Navigation 5 onglets -->
@@ -728,7 +775,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
           <div class="brief-nav-desc">Boîte de réception interne</div>
         </div>
         <div class="brief-nav-card" onclick="enterMain('enquete')">
-          <div class="brief-nav-name">ENQUETE</div>
+          <div class="brief-nav-name">ENQUÊTE</div>
           <div class="brief-nav-desc">Dossier personnel (8)</div>
         </div>
         <div class="brief-nav-card" onclick="enterMain('dsi')">
@@ -753,6 +800,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
     <div class="topbar-brand">ELECARM SAS</div>
     <div class="topbar-op">Operation Silent Gateway</div>
     <div class="topbar-right">
+      <div class="team-chip" id="team-chip" style="display:none"></div>
       <div class="topbar-countdown" id="session-countdown-wrap" title="Temps restant de la mission">
         <span class="topbar-countdown-label">MISSION</span>
         <span class="topbar-countdown-val" id="session-countdown">--:--:--</span>
@@ -790,13 +838,13 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
       <div class="tabs">
         <button class="tab active" data-tab="situation" onclick="switchTab(this)">SITUATION</button>
         <button class="tab" data-tab="mails" onclick="switchTab(this)">MAILS <span class="tab-badge" id="mail-badge" style="display:none">0</span></button>
-        <button class="tab" data-tab="enquete" onclick="switchTab(this)">ENQUETE</button>
+        <button class="tab" data-tab="enquete" onclick="switchTab(this)">ENQUÊTE</button>
         <button class="tab" data-tab="dsi" onclick="switchTab(this)">JOURNAUX / LOGS</button>
         <button class="tab" data-tab="programmation" onclick="switchTab(this)">PROGRAMMATION</button>
         <button class="tab" data-tab="documents" onclick="switchTab(this)">DOCUMENTS</button>
-        <button class="tab" data-tab="enigmes" onclick="switchTab(this)">ENIGMES</button>
+        <button class="tab" data-tab="enigmes" onclick="switchTab(this)">BOÎTIER BX</button>
         <button class="tab" data-tab="osint" onclick="switchTab(this)">OSINT</button>
-        <button class="tab" data-tab="verdict" onclick="switchTab(this)">QCM</button>
+        <button class="tab" data-tab="verdict" onclick="switchTab(this)">SUPPOSITIONS</button>
       </div>
       <div class="panels">
 
@@ -884,26 +932,31 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <!-- DSI -->
         <div class="panel" id="panel-dsi">
           <div class="dsi-wrap">
-            <div class="dsi-bar">
-              <span class="wazuh-brand">Wazuh SIEM</span>
-              <span class="wazuh-meta">Cluster: elecarm-prod</span>
-              <span class="wazuh-meta">Agents: 12/14</span>
-              <div class="dsi-counts">
-                <span class="count-pill" style="background:#3b0000;color:#fca5a5" id="crit-count">-- Critiques</span>
-                <span class="count-pill" style="background:#1a1200;color:#f59e0b" id="alert-count">-- Alertes</span>
-                <span class="count-pill" style="background:#1a1a1a;color:#888" id="suspect-count">-- Suspects</span>
-                <span style="font-size:10px;color:#dc2626;font-weight:600;letter-spacing:.08em">LIVE</span>
-              </div>
+            <div class="wz-top">
+              <div class="wz-logo">wazuh<i>.</i></div>
+              <div class="wz-crumb">Threat Hunting / <b>Events</b></div>
+              <div class="wz-top-r"><span>Cluster <b>elecarm-prod</b></span><span>Agents actifs <b>12 / 14</b></span><span>Index <b>wazuh-alerts-*</b></span></div>
             </div>
-            <div class="log-scroll">
-              <table class="log-table">
-                <thead>
-                  <tr>
-                    <th>Heure</th><th>Machine</th><th>Niveau</th><th>Que s'est-il passé ?</th><th>Réf.</th>
-                  </tr>
-                </thead>
-                <tbody id="log-tbody"></tbody>
-              </table>
+            <div class="wz-body">
+              <div class="wz-query">
+                <span class="wz-dql">DQL</span>
+                <input class="wz-search" id="wz-search" placeholder="Rechercher (ex. SRV-BACKUP, T1078, connexion, Mo...)" oninput="renderLogs()">
+                <div class="wz-date"><svg viewBox="0 0 16 16"><path d="M4 0h1v2h6V0h1v2h3v14H1V2h3V0Zm10 6H2v9h12V6Z"/></svg>28 avr. 2026 @ 00:00 &rarr; 19 mai 2026 @ 12:30</div>
+                <button class="wz-btn" onclick="renderLogs()">Actualiser</button>
+              </div>
+              <div class="wz-filters">
+                <span class="wz-pill lv on" data-min="0" onclick="setLogLevel(this)">Tout afficher</span>
+                <span class="wz-pill lv" data-min="7" onclick="setLogLevel(this)">Masquer l'activité normale</span>
+                <span class="wz-pill lv" data-min="12" onclick="setLogLevel(this)">Critiques seulement</span>
+                <span class="wz-sum" id="wz-sum"></span>
+              </div>
+              <div class="wz-help">Chaque ligne est un événement repéré par la supervision. Lisez de haut en bas, dans l'ordre chronologique. Cliquez sur une ligne pour voir ses détails techniques.</div>
+              <div class="wz-card">
+                <table class="log-table">
+                  <thead><tr><th style="width:120px">Quand</th><th style="width:220px">Machine</th><th style="width:96px">Gravité</th><th>Que s'est-il passé ?</th></tr></thead>
+                  <tbody id="log-tbody"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -1144,54 +1197,16 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <div class="panel" id="panel-verdict">
           <div class="enig-scroll">
             <div class="enig-section">
-              <div class="enig-section-title">Rendre vos conclusions</div>
-              <div style="font-size:12px;color:var(--tx3);line-height:1.7;margin-bottom:14px">Répondez en équipe, à partir de ce que vous avez trouvé dans Mails, Enquête, Journaux/Logs, Programmation, Documents et OSINT. Une seule soumission : mettez-vous d'accord avant de valider.</div>
-
-              <div class="verdict-q">
-                <div class="verdict-q-title">1. Qui est l'employé dont le compte a facilité l'intrusion ?</div>
-                <div class="verdict-opts" id="vopts-1"></div>
-              </div>
-              <div class="verdict-q">
-                <div class="verdict-q-title">2. Quel a été le vecteur d'entrée initial de l'attaque ?</div>
-                <div class="verdict-opts">
-                  <label class="verdict-opt"><input type="radio" name="v2" value="a"> Un mail se faisant passer pour un recruteur Thales, avec pièce jointe piégée</label>
-                  <label class="verdict-opt"><input type="radio" name="v2" value="b"> Une clé USB piégée laissée dans les locaux</label>
-                  <label class="verdict-opt"><input type="radio" name="v2" value="c"> Un mot de passe faible deviné par force brute</label>
-                  <label class="verdict-opt"><input type="radio" name="v2" value="d"> Une négligence physique du gardien de nuit</label>
-                </div>
-              </div>
-              <div class="verdict-q">
-                <div class="verdict-q-title">3. Quelle adresse IP correspond au canal de communication réellement malveillant ?</div>
-                <div class="verdict-opts">
-                  <label class="verdict-opt"><input type="radio" name="v3" value="10.42.6.11"> 10.42.6.11</label>
-                  <label class="verdict-opt"><input type="radio" name="v3" value="20.42.73.18"> 20.42.73.18</label>
-                  <label class="verdict-opt"><input type="radio" name="v3" value="185.220.101.47"> 185.220.101.47</label>
-                </div>
-              </div>
-              <div class="verdict-q">
-                <div class="verdict-q-title">4. Quelle est la cause organisationnelle racine ayant permis la compromission de la passerelle ?</div>
-                <div class="verdict-opts">
-                  <label class="verdict-opt"><input type="radio" name="v4" value="a"> Un sabotage par le concurrent TechIndus Solutions</label>
-                  <label class="verdict-opt"><input type="radio" name="v4" value="b"> La vengeance d'un ancien salarié licencié</label>
-                  <label class="verdict-opt"><input type="radio" name="v4" value="c"> Une modification non autorisée introduite dans le code du programme de supervision, sans revue ni contrôle des changements</label>
-                  <label class="verdict-opt"><input type="radio" name="v4" value="d"> Une anomalie qualité non traitée sur le lot S42</label>
-                </div>
-              </div>
-              <div class="verdict-q">
-                <div class="verdict-q-title">5. Quels leviers de manipulation humaine (VICE) ont été utilisés pour recruter cet employé ? (plusieurs réponses possibles)</div>
-                <div class="verdict-opts">
-                  <label class="verdict-opt"><input type="checkbox" name="v5" value="Vanité"> Vanité</label>
-                  <label class="verdict-opt"><input type="checkbox" name="v5" value="Idéologie"> Idéologie</label>
-                  <label class="verdict-opt"><input type="checkbox" name="v5" value="Contrainte"> Contrainte</label>
-                  <label class="verdict-opt"><input type="checkbox" name="v5" value="Espèces"> Espèces</label>
-                </div>
-              </div>
-
+              <div class="enig-section-title">Vos suppositions</div>
+              <div style="font-size:12px;color:var(--tx3);line-height:1.7;margin-bottom:14px">Choisissez vos réponses en équipe, à partir de ce que vous avez trouvé dans Mails, Enquête, Journaux / Logs, Programmation, Documents, Boîtier BX et OSINT. Attention, toutes les propositions viennent du dossier : certaines sont de fausses pistes. L'équipe dispose de <b style="color:#fff">5 tentatives au total</b>, partagées entre tous ses membres et tous ses postes : mettez-vous d'accord avant d'envoyer.</div>
+              <div class="sup-team" id="sup-team">Connexion au serveur...</div>
+              <div id="sup-questions"></div>
               <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:6px">
-                <button onclick="submitVerdict()" style="background:var(--red2);border:none;color:#fff;padding:9px 22px;font-size:13px;font-weight:700;border-radius:5px;cursor:pointer;font-family:var(--font);letter-spacing:.04em">VALIDER VOS CONCLUSIONS</button>
+                <button id="sup-send" onclick="submitSupposition()" style="background:var(--red2);border:none;color:#fff;padding:9px 22px;font-size:13px;font-weight:700;border-radius:5px;cursor:pointer;font-family:var(--font);letter-spacing:.04em">ENVOYER NOTRE SUPPOSITION</button>
                 <span id="verdict-attempts-label" style="font-size:11px;color:var(--tx3);font-family:var(--mono)"></span>
               </div>
               <div id="verdict-result"></div>
+              <div class="sup-hist" id="sup-hist"></div>
             </div>
           </div>
         </div>
@@ -1257,11 +1272,11 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 const MAILS = [
   {
     id:'karim01',from:'Karim BENYOUCEF - Magasin',email:'k.benyoucef@elecarm.fr',
-    to:'y.ferreira@elecarm.fr',subject:'Reappro composants lot BX-4400',
+    to:'y.ferreira@elecarm.fr',subject:'Réappro composants lot BX-4400',
     time:'08:41',date:'16 mai 2026',unread:true,urgent:false,visible:true,
     body:`<p>Yannick,</p>
-<p>On arrive a court de connecteurs pour la serie BX-4400. J'ai passe une commande de reappro, livraison prevue lundi. Rien de bloquant pour le lot en cours.</p>
-<p>Je te confirme au passage que je n'ai aucun acces aux systemes informatiques ni a la passerelle, donc si on te pose la question, ce n'est pas de mon cote.</p>
+<p>On arrive à court de connecteurs pour la série BX-4400. J'ai passé une commande de réappro, livraison prévue lundi. Rien de bloquant pour le lot en cours.</p>
+<p>Je te confirme au passage que je n'ai aucun accès aux systèmes informatiques ni à la passerelle, donc si on te pose la question, ce n'est pas de mon côté.</p>
 <p>Karim</p>`
   },
   {
@@ -1269,8 +1284,8 @@ const MAILS = [
     to:'direction@elecarm.fr',subject:'Dossier SinoBoard, point de situation',
     time:'11:20',date:'15 mai 2026',unread:false,urgent:false,visible:true,
     body:`<p>Bonjour,</p>
-<p>Pour faire suite a votre question sur le fournisseur de cartes Raspberry Pi : le dossier SinoBoard est toujours a l'etude. Aucune commande n'a ete passee, aucune carte n'a ete livree ni deployee.</p>
-<p>La revue de securite DSI, habituellement requise avant tout changement sur les passerelles, n'a pas encore ete ouverte puisque aucune decision n'est prise. Je reviens vers vous apres l'arbitrage prevu en septembre.</p>
+<p>Pour faire suite à votre question sur le fournisseur de cartes Raspberry Pi : le dossier SinoBoard est toujours à l'étude. Aucune commande n'a été passée, aucune carte n'a été livrée ni déployée.</p>
+<p>La revue de sécurité DSI, habituellement requise avant tout changement sur les passerelles, n'a pas encore été ouverte puisque aucune décision n'est prise. Je reviens vers vous après l'arbitrage prévu en septembre.</p>
 <p>Cordialement,<br>Farid HADDAD</p>`
   },
   {
@@ -1278,16 +1293,16 @@ const MAILS = [
     to:'securite@elecarm.fr',subject:'Passage technicien maintenance, semaine du 5 mai',
     time:'19:55',date:'14 mai 2026',unread:true,urgent:false,visible:true,
     body:`<p>Bonjour,</p>
-<p>Comme demande, je consigne le passage d'un technicien de maintenance en soiree la semaine du 5 mai, pour une intervention sur la baie telemaintenance. Il s'est presente avec un badge visiteur mais je n'ai pas retrouve de ticket d'intervention associe dans le registre.</p>
-<p>Je prefere le signaler, on ne sait jamais.</p>
+<p>Comme demandé, je consigne le passage d'un technicien de maintenance en soirée la semaine du 5 mai, pour une intervention sur la baie de télémaintenance. Il s'est présenté avec un badge visiteur mais je n'ai pas retrouvé de ticket d'intervention associé dans le registre.</p>
+<p>Je préfère le signaler, on ne sait jamais.</p>
 <p>P. Thierry</p>`
   },
   {
     id:'rousseau01',from:'Camille ROUSSEAU - Commercial',email:'c.rousseau@elecarm.fr',
-    to:'commercial@elecarm.fr',subject:'Salon professionnel, retour a chaud',
+    to:'commercial@elecarm.fr',subject:'Salon professionnel, retour à chaud',
     time:'17:10',date:'13 mai 2026',unread:false,urgent:false,visible:true,
-    body:`<p>Bonjour a tous,</p>
-<p>Retour tres positif du salon. Beaucoup d'interet pour la gamme BX. Je fais suivre les contacts qualifies cette semaine.</p>
+    body:`<p>Bonjour à tous,</p>
+<p>Retour très positif du salon. Beaucoup d'intérêt pour la gamme BX. Je fais suivre les contacts qualifiés cette semaine.</p>
 <p>Camille</p>`
   },
   {
@@ -1453,7 +1468,7 @@ const MAILS = [
     id:'rh_cv01',from:'S. MARCHAND - RH',email:'s.marchand@elecarm.fr',
     to:'recrutement@elecarm.fr',subject:'Candidature reçue - poste Technicien maintenance',
     time:'09:10',date:'19 mai 2026',unread:true,urgent:false,visible:true,
-    hasAttachment:true,attachmentName:'CV_Candidat_Dupont_L.pdf',
+    hasAttachment:true,attachmentName:'CV_Candidat_Dupont_L.pdf',attachmentPdf:'pdfs/pj_cv_dupont.pdf',attachmentSize:'Document PDF - 26 Ko',
     body:`<p>Bonjour,</p>
 <p>Nouvelle candidature reçue ce matin pour le poste de technicien de maintenance ouvert depuis avril. CV en pièce jointe.</p>
 <p>Profil intéressant, 6 ans d'expérience en industrie. À faire suivre au service concerné pour un premier tri.</p>
@@ -1463,7 +1478,7 @@ const MAILS = [
     id:'qualite_iso01',from:'AFNOR Certification',email:'contact@afnor-certification.fr',
     to:'n.brunet@elecarm.fr',subject:'Attestation de renouvellement ISO 9001 - 2026',
     time:'08:15',date:'19 mai 2026',unread:false,urgent:false,visible:true,
-    hasAttachment:true,attachmentName:'Attestation_ISO9001_ELECARM_2026.pdf',
+    hasAttachment:true,attachmentName:'Attestation_ISO9001_ELECARM_2026.pdf',attachmentPdf:'pdfs/pj_iso9001.pdf',attachmentSize:'Document PDF - 25 Ko',
     body:`<p>Madame BRUNET,</p>
 <p>Veuillez trouver ci-joint votre attestation de renouvellement de certification ISO 9001:2026, suite à l'audit de surveillance réalisé en février.</p>
 <p>Cordialement,<br>AFNOR Certification</p>`
@@ -1481,7 +1496,7 @@ const MAILS = [
     id:'rh_robert01',from:'S. MARCHAND - RH',email:'s.marchand@elecarm.fr',
     to:'equipe@elecarm.fr',subject:'Re: Question un peu délicate',
     time:'10:10',date:'19 mai 2026',unread:true,urgent:false,visible:true,
-    hasAttachment:true,attachmentName:'Fiche_Sortie_ROBERT_A_mars2026.pdf',
+    hasAttachment:true,attachmentName:'Fiche_Sortie_ROBERT_A_mars2026.pdf',attachmentPdf:'pdfs/pj_fiche_sortie_robert.pdf',attachmentSize:'Document PDF - 25 Ko',
     body:`<p>Bonjour Yannick, bonjour à tous,</p>
 <p>Je comprends la question mais je peux vous rassurer sur ce point précis. Le départ de M. ROBERT en mars a effectivement été conflictuel, mais la procédure de sortie standard a été appliquée intégralement le jour même : badge désactivé, compte Active Directory désactivé, accès VPN révoqué. Aucune réactivation depuis, aucun contact de sa part avec la DSI ou les RH.</p>
 <p>Je joins la fiche de sortie signée pour traçabilité.</p>
@@ -1502,10 +1517,10 @@ const MAILS = [
     to:'y.ferreira@elecarm.fr',subject:'Re: mesures lot S42 - on se cale quand ?',
     time:'10:30',date:'15 mai 2026',unread:false,urgent:false,visible:false,
     body:`<p>Yannick,</p>
-<p>OK pour les mesures samedi matin. Je serai là à 8h30, le temps que l'atelier soit à température normale.</p>
+<p>OK pour les mesures dimanche matin, exceptionnellement vu l'urgence Thales. Je serai là à 8h30, le temps que l'atelier soit à température normale.</p>
 <p>Tu me laisses les BX-4400 sur la table de contrôle stp ? Et dis à Marc de pas toucher aux branchements avant que j'aie terminé.</p>
 <p>Je ferai un rapport complet pour Thales dans la foulée - ils veulent voir les mesures avant l'expédition.</p>
-<p>À samedi !</p>
+<p>À dimanche !</p>
 <p>Nathalie</p>`
   },
   {
@@ -1531,6 +1546,226 @@ const MAILS = [
 <p>Petite précision suite à la question de l'audit : je me suis reconnectée à la base qualité depuis mon domicile le 17 mai en soirée, vers 22h, via le VPN standard, pour finaliser le rapport de mesures avant l'audit Thales du 19. Rien d'inhabituel de mon côté, juste une soirée chargée.</p>
 <p>Je le mentionne par transparence, vu le contexte.</p>
 <p>Nathalie</p>`
+  },
+  // ── Boîtes des fausses pistes : peu de mails, cohérents avec leur profil ──
+  {
+    id:'karim_norm01',from:'Banque du Val de Loire - Votre conseiller',email:'conseiller.blois@bvdl-banque.fr',
+    to:'k.benyoucef@elecarm.fr',subject:'Votre demande de rééchelonnement de prêt',
+    time:'10:40',date:'12 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Monsieur BENYOUCEF,</p>
+<p>Suite à notre rendez-vous, votre demande de rééchelonnement de votre prêt personnel a été acceptée. Vos nouvelles mensualités prendront effet au 5 juin.</p>
+<p>Je vous invite à passer en agence signer l'avenant au contrat à votre convenance.</p>
+<p>Bien cordialement,<br>Votre conseiller, agence de Blois centre</p>`
+  },
+  {
+    id:'karim_norm02',from:'Yannick FERREIRA - Montage',email:'y.ferreira@elecarm.fr',
+    to:'k.benyoucef@elecarm.fr',subject:'Inventaire tournant de fin de mois',
+    time:'16:20',date:'14 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Karim,</p>
+<p>On fait l'inventaire tournant du magasin le vendredi 29 mai à partir de 14h. Tu peux préparer les étiquettes des allées B et C d'ici là ?</p>
+<p>Yannick</p>`
+  },
+  {
+    id:'haddad_norm01',from:'Kevin LIU - SinoBoard Sales',email:'k.liu@sinoboard-tech.com',
+    to:'f.haddad@elecarm.fr',subject:'Re: Offre cartes SB-Pi4 industrial - relance',
+    time:'03:12',date:'13 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Dear Mr HADDAD,</p>
+<p>Following up on our quotation for 40 units of SB-Pi4 industrial boards. The price is valid until end of June.</p>
+<p>We understand the decision is planned for September. Please let us know if you need samples in the meantime.</p>
+<p>Best regards,<br>Kevin LIU<br>Sales Manager Europe, SinoBoard Technology</p>`
+  },
+  {
+    id:'haddad_norm02',from:'Agence Voyages Pro Centre',email:'reservations@voyagespro-centre.fr',
+    to:'f.haddad@elecarm.fr',subject:'Confirmation de réservation - Paris / Shenzhen du 8 au 12 juin',
+    time:'11:05',date:'6 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Monsieur HADDAD,</p>
+<p>Nous vous confirmons votre déplacement professionnel :</p>
+<ul>
+<li>Aller : lundi 8 juin, Paris CDG vers Shenzhen</li>
+<li>Retour : vendredi 12 juin, Shenzhen vers Paris CDG</li>
+<li>Hôtel : 4 nuits, centre de congrès de Shenzhen</li>
+</ul>
+<p>Motif indiqué : salon Electronica China, sourcing composants. Facturation au compte ELECARM SAS.</p>
+<p>L'équipe Voyages Pro Centre</p>`
+  },
+  {
+    id:'thierry_norm01',from:'R. LAMBERT - Direction',email:'r.lambert@elecarm.fr',
+    to:'p.thierry@elecarm.fr',subject:'Planning des rondes de nuit - mai',
+    time:'09:30',date:'30 avril 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Monsieur THIERRY,</p>
+<p>Voici le planning des rondes de nuit pour le mois de mai : du lundi au vendredi, 20h00 à 6h00, avec deux rondes complètes du site (22h et 2h).</p>
+<p>Rappel : toute personne extérieure présente sur site en dehors des horaires doit être inscrite au registre des visiteurs avec la référence de son intervention.</p>
+<p>R. LAMBERT</p>`
+  },
+  {
+    id:'rousseau_norm01',from:'S. MARCHAND - RH',email:'s.marchand@elecarm.fr',
+    to:'c.rousseau@elecarm.fr',subject:'Validation de vos congés du 15 au 29 mai',
+    time:'11:50',date:'4 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Camille,</p>
+<p>Ta demande de congés payés du vendredi 15 mai au vendredi 29 mai inclus est validée par ton responsable. Pense à mettre en place ton message d'absence.</p>
+<p>Bonnes vacances !<br>S. MARCHAND<br>Service RH - ELECARM SAS</p>`
+  },
+  {
+    id:'rousseau_norm02',from:'Collectif Paix et Désarmement 41',email:'contact@paix-desarmement41.org',
+    to:'c.rousseau@elecarm.fr',subject:'Réunion mensuelle du collectif - jeudi 21 mai',
+    time:'20:15',date:'10 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour à toutes et à tous,</p>
+<p>Notre prochaine réunion mensuelle aura lieu le jeudi 21 mai à 19h, salle des associations de Blois. Au programme : bilan du stand du marché de mai et préparation de la conférence-débat de juin.</p>
+<p>Pensez à renouveler votre adhésion si ce n'est pas encore fait.</p>
+<p>Le bureau du collectif</p>`
+  },
+  {
+    id:'vasseur_norm01',from:'S. MARCHAND - RH',email:'s.marchand@elecarm.fr',
+    to:'t.vasseur@elecarm.fr',subject:'Convocation formation habilitation électrique (recyclage)',
+    time:'14:10',date:'11 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Thomas,</p>
+<p>Tu es inscrit au recyclage habilitation électrique B1V/BR les 2 et 3 juin, au centre de formation APAVE de Blois, de 8h30 à 17h.</p>
+<p>Le transport est à ta charge, les frais de repas seront remboursés sur note de frais.</p>
+<p>S. MARCHAND<br>Service RH - ELECARM SAS</p>`
+  },
+  {
+    id:'vasseur_norm02',from:'Thomas VASSEUR',email:'t.vasseur@elecarm.fr',
+    to:'y.ferreira@elecarm.fr',subject:'Compresseur atelier : bruit anormal',
+    time:'07:35',date:'18 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Yannick,</p>
+<p>Le compresseur de l'atelier fait un bruit de claquement depuis ce matin au démarrage. J'ai vérifié la pression et les purges, rien d'anormal. Je propose de l'arrêter à midi pour regarder la courroie, si ça te va.</p>
+<p>Thomas</p>`
+  },
+  // ── Boîtes employés : courrier de routine (réalisme, aucun indice nouveau) ──
+  {
+    id:'julien_norm04',from:'Camille ROUSSEAU - Commercial',email:'c.rousseau@elecarm.fr',
+    to:'j.moreau@elecarm.fr',subject:'Imprimante du service commercial bloquée',
+    time:'10:12',date:'6 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Julien,</p>
+<p>L'imprimante du plateau commercial affiche « Bourrage papier bac 2 » depuis ce matin, mais il n'y a rien dans le bac. On a éteint et rallumé, sans effet.</p>
+<p>On doit imprimer les devis pour le salon de la semaine prochaine, est-ce que quelqu'un peut passer dans la journée ?</p>
+<p>Merci !<br>Camille</p>`
+  },
+  {
+    id:'julien_norm05',from:'SRV-BACKUP [noreply]',email:'backup-report@elecarm.fr',
+    to:'dsi@elecarm.fr',subject:'[SRV-BACKUP] Rapport hebdomadaire des sauvegardes - statut OK',
+    time:'06:45',date:'11 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Rapport automatique des sauvegardes, semaine 19.</p>
+<table class="data-table">
+<thead><tr><th>Tâche</th><th>Dernière exécution</th><th>Volume</th><th>Statut</th></tr></thead>
+<tbody>
+<tr><td>Serveur de fichiers</td><td>11/05 04h10</td><td>18,7 Go</td><td>OK</td></tr>
+<tr><td>ERP (base SQL)</td><td>11/05 02h30</td><td>4,1 Go</td><td>OK</td></tr>
+<tr><td>Messagerie</td><td>11/05 03h15</td><td>1,3 Go</td><td>OK</td></tr>
+<tr><td>Base qualité</td><td>11/05 01h50</td><td>0,4 Go</td><td>OK</td></tr>
+</tbody>
+</table>
+<p style="font-size:12px;color:var(--tx3)">Message généré automatiquement, ne pas répondre.</p>`
+  },
+  {
+    id:'julien_norm06',from:'S. MARCHAND - RH',email:'s.marchand@elecarm.fr',
+    to:'j.moreau@elecarm.fr',subject:'Arrivée d\'une stagiaire le 1er juin - création de compte',
+    time:'15:20',date:'13 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Julien,</p>
+<p>Nous accueillons Léa GIRARD, stagiaire en BTS Assistance technique d'ingénieur, du 1er juin au 25 juillet au service Qualité (tutrice : Nathalie BRUNET).</p>
+<p>Peux-tu prévoir :</p>
+<ul>
+<li>un compte réseau et une adresse mail</li>
+<li>un poste de travail (un portable de prêt suffira)</li>
+<li>un accès en lecture seule à la base qualité, à valider avec Nathalie</li>
+</ul>
+<p>La convention de stage est signée, je te transmets la fiche d'arrivée la semaine prochaine.</p>
+<p>Merci,<br>S. MARCHAND<br>Service RH - ELECARM SAS</p>`
+  },
+  {
+    id:'julien_norm07',from:'Karim BENYOUCEF - Magasin',email:'k.benyoucef@elecarm.fr',
+    to:'j.moreau@elecarm.fr',subject:'Douchette du magasin HS',
+    time:'07:58',date:'15 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Salut Julien,</p>
+<p>La douchette code-barres du magasin ne répond plus depuis ce matin (voyant rouge fixe). Du coup je saisis les sorties de stock à la main dans l'ERP, ça prend un temps fou.</p>
+<p>Il en reste une de rechange quelque part chez vous ?</p>
+<p>Karim</p>`
+  },
+  {
+    id:'julien_norm08',from:'R. LAMBERT - Direction',email:'r.lambert@elecarm.fr',
+    to:'codir@elecarm.fr',subject:'CODIR du lundi 18 mai - ordre du jour',
+    time:'17:30',date:'15 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour à tous,</p>
+<p>Ordre du jour du comité de direction de lundi, 9h00, salle de conférence :</p>
+<ol>
+<li>Point commandes : Thales THA-REF-28471 et Renault REN-2026-1847</li>
+<li>Préparation de l'audit qualité Thales (N. BRUNET)</li>
+<li>Budget informatique 2026 : renouvellement antivirus (J. MOREAU)</li>
+<li>Recrutement technicien de maintenance (S. MARCHAND)</li>
+<li>Questions diverses</li>
+</ol>
+<p>Merci d'être à l'heure, nous avons beaucoup de points.</p>
+<p>R. LAMBERT<br>Directeur Général - ELECARM SAS</p>`
+  },
+  {
+    id:'paie01',from:'Service Paie - ELECARM',email:'paie@elecarm.fr',
+    to:'m.durand@elecarm.fr',subject:'Votre bulletin de paie d\'avril 2026 est disponible',
+    time:'09:00',date:'5 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour,</p>
+<p>Votre bulletin de paie du mois d'avril 2026 est disponible dans votre coffre-fort numérique salarié.</p>
+<p>Pour toute question sur votre bulletin, contactez le service RH (poste 214).</p>
+<p style="font-size:12px;color:var(--tx3)">Message automatique, merci de ne pas répondre.</p>`
+  },
+  {
+    id:'cse01',from:'CSE ELECARM',email:'cse@elecarm.fr',
+    to:'tous@elecarm.fr',subject:'Billetterie CSE : sortie Futuroscope et tarifs cinéma',
+    time:'12:15',date:'11 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour à toutes et à tous,</p>
+<p>Le CSE organise une sortie familiale au Futuroscope le <strong>samedi 20 juin</strong>. Transport en car depuis le site, départ 7h30. Participation : 15 EUR par adulte, 8 EUR par enfant.</p>
+<p>Inscriptions auprès de Sandrine à l'accueil avant le 5 juin.</p>
+<p>Rappel : les places de cinéma à tarif réduit (CGR Blois) sont toujours disponibles au local CSE, le mardi et le jeudi midi.</p>
+<p>Le bureau du CSE</p>`
+  },
+  {
+    id:'marc_norm03',from:'Marc DURAND',email:'m.durand@elecarm.fr',
+    to:'k.benyoucef@elecarm.fr',subject:'Gaines thermo manquantes au poste 3',
+    time:'13:40',date:'13 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Karim,</p>
+<p>Il n'y a plus de gaines thermorétractables 6 mm au poste 3, et il me reste 10 coffrets à câbler cette semaine.</p>
+<p>Tu peux m'en sortir deux bobines ? Je passe au magasin vers 15h.</p>
+<p>Marc</p>`
+  },
+  {
+    id:'marc_norm04',from:'Yannick FERREIRA - Montage',email:'y.ferreira@elecarm.fr',
+    to:'atelier@elecarm.fr',subject:'Planning atelier semaine 21',
+    time:'16:05',date:'15 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Salut l'équipe,</p>
+<p>Planning de la semaine prochaine :</p>
+<ul>
+<li>Lundi : fin de câblage Renault (REN-2026-1847), priorité absolue</li>
+<li>Mardi : audit qualité Thales sur site, atelier rangé pour 9h, merci de ne rien débrancher sur la table de contrôle</li>
+<li>Mercredi et jeudi : préparation de l'expédition Thales (lot BX-4400-A)</li>
+<li>Vendredi : expédition Renault</li>
+</ul>
+<p>Pensez à badger en sortant, la RH a relevé plusieurs oublis le mois dernier.</p>
+<p>Yannick</p>`
+  },
+  {
+    id:'nathalie_norm04',from:'Yannick FERREIRA - Montage',email:'y.ferreira@elecarm.fr',
+    to:'n.brunet@elecarm.fr',subject:'Étalonnage des multimètres fait',
+    time:'11:25',date:'7 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Nathalie,</p>
+<p>Le prestataire de métrologie est passé ce matin. Les 4 multimètres et la pince ampèremétrique de la table de contrôle sont étalonnés, tous conformes.</p>
+<p>J'ai rangé les certificats dans le classeur métrologie, et je te les scanne pour le dossier d'audit Thales.</p>
+<p>Yannick</p>`
+  },
+  {
+    id:'nathalie_norm05',from:'S. MARCHAND - RH',email:'s.marchand@elecarm.fr',
+    to:'n.brunet@elecarm.fr',subject:'Entretiens annuels du service Qualité - créneaux',
+    time:'14:00',date:'12 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Nathalie,</p>
+<p>Les entretiens annuels doivent être réalisés avant le 30 juin. Pour ton service, je te propose de les caler sur la semaine du 8 juin, une fois l'audit Thales passé.</p>
+<p>Les supports d'entretien sont sur l'intranet RH. Pense aussi à la tutelle de Léa GIRARD, stagiaire qui arrive le 1er juin dans ton équipe.</p>
+<p>Bonne journée,<br>S. MARCHAND<br>Service RH - ELECARM SAS</p>`
+  },
+  {
+    id:'nathalie_norm06',from:'R. LAMBERT - Direction',email:'r.lambert@elecarm.fr',
+    to:'n.brunet@elecarm.fr',subject:'Audit Thales - point de préparation jeudi',
+    time:'18:10',date:'13 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Nathalie,</p>
+<p>Pouvons-nous faire un point de préparation jeudi à 14h dans mon bureau ? J'aimerais qu'on passe en revue ensemble la liste des documents demandés par Thales et le déroulé de la journée d'audit.</p>
+<p>Prévoyez aussi un mot sur le renouvellement ISO 9001, ils y seront sensibles.</p>
+<p>R. LAMBERT</p>`
   },
   {
     id:'spearphish01',from:'Marine FONTAINE - Thales Defence RH',email:'m.fontaine@thales-defence.net',
@@ -1803,9 +2038,14 @@ Suite à l'anomalie de mesure relevée par le Service Qualité sur le lot S42 (v
 };
 
 const EMP_MAILBOXES = [
-  {id:'julien',name:'Julien MOREAU',role:'DSI',email:'j.moreau@elecarm.fr',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',mails:['julien_norm01','julien_norm02','julien_norm03','spearphish01']},
-  {id:'marc',name:'Marc DURAND',role:'Technicien',email:'m.durand@elecarm.fr',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',mails:['marc_norm01','marc_norm02']},
-  {id:'nathalie',name:'Nathalie BRUNET',role:'Qualite',email:'n.brunet@elecarm.fr',initials:'NB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['nathalie_norm01','nathalie_norm02','nathalie_norm03']}
+  {id:'julien',name:'Julien MOREAU',role:'DSI',email:'j.moreau@elecarm.fr',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',mails:['julien_norm01','julien_norm02','julien_norm03','julien_norm04','julien_norm05','julien_norm06','julien_norm07','julien_norm08','cse01','spearphish01']},
+  {id:'marc',name:'Marc DURAND',role:'Technicien',email:'m.durand@elecarm.fr',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',mails:['marc_norm01','marc_norm02','marc_norm03','marc_norm04','paie01','cse01']},
+  {id:'nathalie',name:'Nathalie BRUNET',role:'Qualité',email:'n.brunet@elecarm.fr',initials:'NB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['nathalie_norm01','nathalie_norm02','nathalie_norm03','nathalie_norm04','nathalie_norm05','nathalie_norm06','qualite_iso01','cse01']},
+  {id:'karim',name:'Karim BENYOUCEF',role:'Magasin',email:'k.benyoucef@elecarm.fr',initials:'KB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['karim_norm01','karim_norm02','karim01','julien_norm07']},
+  {id:'farid',name:'Farid HADDAD',role:'Achats',email:'f.haddad@elecarm.fr',initials:'FH',bg:'#1c1c1c',tc:'#d4d4d4',mails:['haddad_norm01','haddad_norm02','haddad01']},
+  {id:'pierre',name:'Pierre THIERRY',role:'Gardiennage',email:'p.thierry@elecarm.fr',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',mails:['thierry_norm01','thierry01']},
+  {id:'camille',name:'Camille ROUSSEAU',role:'Commercial',email:'c.rousseau@elecarm.fr',initials:'CR',bg:'#1c1c1c',tc:'#d4d4d4',mails:['rousseau_norm01','rousseau_norm02','rousseau01','julien_norm04']},
+  {id:'thomas',name:'Thomas VASSEUR',role:'Maintenance',email:'t.vasseur@elecarm.fr',initials:'TV',bg:'#1c1c1c',tc:'#d4d4d4',mails:['vasseur_norm01','vasseur_norm02','marc_norm04']}
 ];
 
 // ══════════════════════════════════════════
@@ -1817,9 +2057,10 @@ let currentOSINT = 'moreau';
 let sessionSecondsLeft = 150*60;
 let sessionRunning = false;
 let sessionInterval = null;
-let verdictAttempts = 0;
-let verdictLocked = false;
-let verdictSuccess = false;
+// Equipe de ce poste (inscrite dans la salle d'attente) et dernier etat serveur connu.
+let myTeam = null;      // {teamId, memberId, teamName, memberName}
+let teamView = null;    // bloc "me" renvoye par /api/session
+let apiOnline = false;
 
 // ══════════════════════════════════════════
 // INIT
@@ -1861,6 +2102,7 @@ function showApp(tab){
   initClock();initSessionTimer();renderMails();renderLogs();renderSuspects();renderDocs();renderEnigmes();renderOSINT();renderVerdict();
   initTimeline();
   restoreState(loadSavedState());
+  setTeamChip();renderVerdict();startLiveSync();applyServerMission(window.__elecarmSession);
   let start=tab;
   if(!start){ try{ start=sessionStorage.getItem('elecarm_start_tab'); }catch(e){} }
   try{ sessionStorage.removeItem('elecarm_start_tab'); }catch(e){}
@@ -1875,25 +2117,19 @@ function enterMain(tab){
   window.location.href='/exercice';
 }
 
-// Au chargement : "/exercice" -> on entre directement dans l'exercice ; "/" -> on laisse l'intro (splash).
+// Au chargement : l'intro "/" comme l'exercice "/exercice" ne sont accessibles qu'une fois l'exercice lancé
+// par l'animateur, et depuis un poste inscrit dans une équipe (sinon : retour à la salle d'attente /salle).
 async function initRoute(){
-  if(!isExerciseRoute()) return;
-  // Verrou salle d'attente : si l'animateur a ouvert la salle (statut waiting), l'acces direct
-  // a l'exercice est bloque et renvoie vers /salle. running/idle/erreur -> acces autorise (non bloquant).
-  try{
-    const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),2500);
-    const r=await fetch('/api/session?ts='+Date.now(),{cache:'no-store',signal:ctrl.signal});
-    clearTimeout(to);
-    if(r.ok){ const st=await r.json(); const now=Date.now();
-      if(st && (st.status==='waiting' || (st.status==='running' && st.endAt && now < st.endAt - 3000))){ location.replace('/salle'); return; } }
-  }catch(e){}
+  const ok=await accessGate();
+  if(!ok) return;
+  if(!isExerciseRoute()) return;   // "/" : on laisse l'intro (splash + briefing), jamais sautée
   showApp();
 }
 
 function initTimeline(){
   const tl=document.getElementById('timeline');
   const events=[
-    {time:'12:28',color:'#dc2626',badge:'DSI',badgeBg:'#3b0000',badgeTc:'#fca5a5',title:'IP externe confirmée suspecte',desc:'L\'adresse externe ne correspond à aucun équipement ni fournisseur répertorié.'},
+    {time:'12:28',color:'#dc2626',badge:'DSI',badgeBg:'#3b0000',badgeTc:'#fca5a5',title:'IP externe suspecte',desc:'L\'adresse externe ne correspond à aucun équipement ni fournisseur répertorié.'},
     {time:'12:00',color:'#991b1b',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Thales - URGENT',desc:'Retard commande THA-REF-28471 + anomalie qualité.'},
     {time:'11:55',color:'#dc2626',badge:'DOC',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Messagerie interne récupérée',desc:'Échange interne au ton ambigu retrouvé dans l\'archive Teams.'},
     {time:'10:10',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Piste A. ROBERT écartée',desc:'RH confirme : accès révoqués à son départ en mars, aucune réactivation depuis.'},
@@ -1942,17 +2178,19 @@ function renderSessionTimer(){
   if(wrap)wrap.classList.toggle('warn',s>0&&s<=300);
 }
 function setSessionTimer(minutes){
+  if(serverMission){ toast('!','Minuteur','Le minuteur est piloté depuis la console animateur (/animateur).'); return; }
   sessionSecondsLeft=Math.max(1,minutes)*60;
   renderSessionTimer();
 }
 function toggleSessionTimer(){
+  if(serverMission){ toast('!','Minuteur','Le minuteur est piloté depuis la console animateur (/animateur).'); return; }
   sessionRunning=!sessionRunning;
   if(sessionRunning){
     sessionInterval=setInterval(()=>{
       if(sessionSecondsLeft>0){
         sessionSecondsLeft--;
         renderSessionTimer();
-        if(sessionSecondsLeft===0)toast('!','Temps ecoule','Le temps imparti a la mission est termine. Cloturez vos conclusions.');
+        if(sessionSecondsLeft===0)toast('!','Temps écoulé','Le temps prévu est écoulé. Finalisez vos suppositions et suivez les consignes de l\'enseignant.');
       }
     },1000);
   } else {
@@ -1963,19 +2201,25 @@ function initSessionTimer(){
   renderSessionTimer();
 }
 
-// Synchronise le minuteur de mission avec la console animateur (/api/session).
-let missionSyncTimer=null;
-async function initMissionSync(){
-  try{
-    const r=await fetch('/api/session?ts='+Date.now(),{cache:'no-store'});
-    if(!r.ok) return;
-    const st=await r.json();
-    if(st && st.status==='running' && st.endAt){
-      if(missionSyncTimer) clearInterval(missionSyncTimer);
-      const tick=()=>{ sessionSecondsLeft=Math.max(0,Math.round((st.endAt-Date.now())/1000)); renderSessionTimer(); };
-      tick(); missionSyncTimer=setInterval(tick,1000);
+// Minuteur de mission piloté par la console animateur (/api/session) : même temps sur tous les postes.
+// missionEndAt = exercice en cours ; missionLeftMs = exercice fermé (minuteur en pause).
+let serverMission=null, serverOffset=0, missionTimeUpShown=false, missionTicker=null;
+function applyServerMission(st){
+  if(!st || (st.missionEndAt==null && st.missionLeftMs==null)) return;
+  if(st.serverNow) serverOffset=st.serverNow-Date.now();
+  serverMission={endAt:st.missionEndAt, leftMs:st.missionLeftMs};
+  if(sessionRunning){ clearInterval(sessionInterval); sessionRunning=false; }
+  const tick=()=>{
+    const ms=serverMission.endAt!=null ? serverMission.endAt-(Date.now()+serverOffset) : serverMission.leftMs;
+    sessionSecondsLeft=Math.max(0,Math.ceil(ms/1000)); renderSessionTimer();
+    if(sessionSecondsLeft===0 && serverMission.endAt!=null && !missionTimeUpShown){
+      // Minuteur à zéro : simple information, l'exercice continue (seul l'animateur peut le fermer).
+      missionTimeUpShown=true;
+      toast('!','Temps écoulé','Le temps prévu est écoulé. Finalisez vos suppositions et suivez les consignes de l\'enseignant.');
     }
-  }catch(e){}
+    if(sessionSecondsLeft>0) missionTimeUpShown=false;
+  };
+  tick(); if(!missionTicker) missionTicker=setInterval(tick,1000);
 }
 
 // ══════════════════════════════════════════
@@ -2055,7 +2299,10 @@ function openEmpMailbox(emp){
   document.getElementById('mail-list-title').textContent=emp.name;
   const c=document.getElementById('mail-items');
   c.innerHTML='';
-  const empMails=MAILS.filter(m=>emp.mails.includes(m.id));
+  // Tri du plus récent au plus ancien (date "16 mai 2026" + heure "08:41").
+  const MOIS={janvier:0,'février':1,mars:2,avril:3,mai:4,juin:5,juillet:6,'août':7,septembre:8,octobre:9,novembre:10,'décembre':11};
+  const ts=m=>{ const [j,mo,a]=(m.date||'').split(' '); const [h,mi]=(m.time||'0:0').split(':'); return new Date(+a,MOIS[mo]||0,+j,+h,+mi).getTime(); };
+  const empMails=MAILS.filter(m=>emp.mails.includes(m.id)).sort((x,y)=>ts(y)-ts(x));
   document.getElementById('unread-label').textContent=empMails.length+' message'+(empMails.length>1?'s':'');
   empMails.forEach(m=>{
     const d=document.createElement('div');
@@ -2082,17 +2329,24 @@ function openMail(m,row){
   let attach='';
   if(m.hasAttachment){
     const aClick = m.isForensic
-      ? `toast('','Macro VBA detectee - T1566.001','02/05 16h41 : dropper PowerShell active depuis cette piece jointe - voir onglet Journaux / Logs')`
+      ? `toast('','Macro VBA détectée - T1566.001','02/05 16h41 : programme malveillant (dropper PowerShell) lancé depuis cette pièce jointe - voir onglet Journaux / Logs')`
       : `toast('','Pièce jointe ouverte','${(m.attachmentName||'').replace(/'/g,"\\'")} - analyse rapide : rien d\\'anormal détecté')`;
     const aExt = m.isForensic ? 'DOCM' : 'XLSX';
     const aExtColor = m.isForensic ? '#fca5a5' : '#d4d4d4';
     const aSize = m.isForensic ? 'Document Word avec macros - 238 Ko' : 'Fichier Excel - 847 Ko';
+    // Pièce jointe PDF réelle (pdfs/) : téléchargeable, comme les documents de l'onglet Documents.
+    const aInner = m.attachmentPdf
+      ? `<div class="attachment-icon" style="font-size:11px;font-weight:800;color:#d4d4d4;letter-spacing:.08em">PDF</div>
+        <div><div class="attachment-name">${m.attachmentName}</div><div class="attachment-size">${m.attachmentSize||'Document PDF'}</div></div>
+        <div class="doc-dl" style="margin-left:auto">↓ Télécharger</div>`
+      : `<div class="attachment-icon" style="font-size:11px;font-weight:800;color:${aExtColor};letter-spacing:.08em">${aExt}</div>
+        <div><div class="attachment-name">${m.attachmentName}</div><div class="attachment-size">${aSize}</div></div>`;
+    const aBox = m.attachmentPdf
+      ? `<a class="attachment" href="${m.attachmentPdf}" download="${m.attachmentName}" style="text-decoration:none">${aInner}</a>`
+      : `<div class="attachment" onclick="${aClick}">${aInner}</div>`;
     attach=`<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--bd)">
       <div style="font-size:10px;font-weight:700;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Pièce jointe</div>
-      <div class="attachment" onclick="${aClick}">
-        <div class="attachment-icon" style="font-size:11px;font-weight:800;color:${aExtColor};letter-spacing:.08em">${aExt}</div>
-        <div><div class="attachment-name">${m.attachmentName}</div><div class="attachment-size">${aSize}</div></div>
-      </div>
+      ${aBox}
     </div>`;
   }
   document.getElementById('mail-body').innerHTML=`
@@ -2109,36 +2363,74 @@ function openMail(m,row){
 // ══════════════════════════════════════════
 // LOGS
 // ══════════════════════════════════════════
+// Interface type Wazuh : niveaux, identifiants de règle et agents dérivés des entrées de LOGS.
+const WZ_LEVEL={CRITIQUE:13,ALERTE:10,SUSPECT:7,VIGILANCE:5,INFO:3};
+const WZ_AGENTS={'WS-MOREAU':['004','10.42.2.31'],'WS-BRUNET':['007','10.42.2.44'],'BX-GATEWAY-07':['011','10.42.6.27'],
+  'SRV-DC':['001','10.42.1.10'],'SRV-BACKUP':['002','10.42.1.12'],'MESSAGERIE':['003','10.42.1.15'],'IMPRIMANTE':['013','10.42.3.50'],'BADGE-ATELIER':['014','10.42.5.8']};
+const WZ_MITRE={T1087:'Account Discovery',T1591:'Gather Victim Org Information',T1059:'Command and Scripting Interpreter',T1105:'Ingress Tool Transfer',
+  T1566:'Phishing',T1071:'Application Layer Protocol',T1573:'Encrypted Channel',T1041:'Exfiltration Over C2 Channel',T1078:'Valid Accounts',
+  T1021:'Remote Services',T1554:'Compromise Host Software Binary',T1133:'External Remote Services',T1003:'OS Credential Dumping'};
+const WZ_MOIS=['janv.','févr.','mars','avr.','mai','juin'];
+let wzMinLevel=0, wzOpen=-1;
+function wzParse(t){ const m=t.match(/(\d+)\/(\d+)\s+(\d+)h(\d+)/); return m?{d:+m[1],mo:+m[2],h:+m[3],mi:+m[4]}:{d:0,mo:0,h:0,mi:0}; }
+function wzRuleId(l){
+  if(l.mitre.includes('T1554')) return '550';
+  if(l.agent==='BADGE-ATELIER') return '81620';
+  if(l.lv==='INFO') return l.agent==='SRV-BACKUP'?'61104':'2902';
+  const base={T1087:'92031',T1591:'92213',T1059:'91816',T1566:'87105',T1071:'87701',T1041:'87712',T1078:'60122',T1021:'92653',T1133:'60204',T1003:'92900'};
+  return base[l.mitre[0]]||'100210';
+}
+function setLogLevel(el){
+  document.querySelectorAll('.wz-pill.lv').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on'); wzMinLevel=+el.dataset.min; wzOpen=-1; renderLogs();
+}
+const WZ_MACHINES={'WS-MOREAU':'Poste de travail de J. MOREAU (DSI)','WS-BRUNET':'Poste de travail de N. BRUNET (Qualité)',
+  'BX-GATEWAY-07':'Passerelle de télémaintenance des boîtiers BX','SRV-DC':'Serveur des comptes et du VPN','SRV-BACKUP':'Serveur de sauvegarde',
+  'MESSAGERIE':'Serveur de messagerie','IMPRIMANTE':'Imprimante réseau','BADGE-ATELIER':'Badgeuse de l\'atelier'};
+const WZ_SEV={CRITIQUE:['crit','Critique'],ALERTE:['alert','Alerte'],SUSPECT:['susp','Suspect'],VIGILANCE:['vig','À vérifier'],INFO:['info','Normal']};
+function wzHighlight(t){
+  return t.replace(/\b(\d{1,3}(?:\.\d{1,3}){3})\b/g,'<b class="hl">$1</b>').replace(/\b(\d+(?:[.,]\d+)?\s?(?:Mo|Go|Ko))\b/g,'<b class="hl">$1</b>');
+}
 function renderLogs(){
   const tb=document.getElementById('log-tbody');
+  if(!tb) return;
+  const q=((document.getElementById('wz-search')||{}).value||'').trim().toLowerCase();
+  // Groupes dans l'ordre du scénario (activité normale, puis phases), entrées triées par date dans chaque groupe.
+  const groups=[]; let g=null;
+  LOGS.forEach((l,idx)=>{ if(!l.vis) return; if(l.phase||!g){ g={title:l.phase||'Événements',items:[]}; groups.push(g); }
+    const p=wzParse(l.t); g.items.push({l,idx,p,level:WZ_LEVEL[l.lv]||3,rid:wzRuleId(l),sort:((p.mo*100+p.d)*100+p.h)*100+p.mi}); });
+  groups.forEach(gr=>gr.items.sort((a,b)=>a.sort-b.sort));
+  const match=e=>e.level>=wzMinLevel && (!q || (e.l.agent+' '+(WZ_MACHINES[e.l.agent]||'')+' '+e.l.desc+' '+e.l.mitre.join(' ')).toLowerCase().includes(q));
+  const vis=[].concat(...groups.map(gr=>gr.items.filter(match)));
+  const crit=vis.filter(e=>e.level>=12).length, alrt=vis.filter(e=>e.level>=7&&e.level<12).length;
+  document.getElementById('wz-sum').innerHTML=`<b>${vis.length}</b> événement${vis.length>1?'s':''} · <b style="color:#ff8a73">${crit}</b> critique${crit>1?'s':''} · <b style="color:#f0b44c">${alrt}</b> alerte${alrt>1?'s':''} ou suspect${alrt>1?'s':''}`;
   tb.innerHTML='';
-  const vis=LOGS.filter(l=>l.vis);
-  let critCount=0,alertCount=0,suspectCount=0;
-  vis.forEach((l,i)=>{
-    if(l.lv==='CRITIQUE')critCount++;
-    else if(l.lv==='ALERTE')alertCount++;
-    else if(l.lv==='SUSPECT')suspectCount++;
-    const lvStyle=
-      l.lv==='CRITIQUE'?'background:#3b0000;color:#fca5a5':
-      l.lv==='ALERTE'?'background:#1a1200;color:#f59e0b':
-      l.lv==='SUSPECT'?'background:#1a1a1a;color:#999':
-      l.lv==='VIGILANCE'?'background:#111;color:#666':
-      'background:#0d0d0d;color:#444';
-    const tr=document.createElement('tr');
-    tr.className='log-row';
-    tr.style.background=i%2===0?'transparent':'rgba(255,255,255,.012)';
-    const mitreHtml=l.mitre.map(m=>`<span class="mitre-tag">${m}</span>`).join('');
-    tr.innerHTML=`
-      <td class="log-time">${l.t}</td>
-      <td class="log-agent"><span style="background:#1c1c1c;color:#888;font-size:10px;padding:1px 6px;border-radius:3px;white-space:nowrap">${l.agent}</span></td>
-      <td><span class="log-lv" style="${lvStyle}">${l.lv}</span></td>
-      <td class="log-desc">${l.desc}</td>
-      <td class="log-mitre">${mitreHtml}</td>`;
-    tb.appendChild(tr);
+  if(!vis.length){ tb.innerHTML='<tr><td colspan="4" class="wz-empty">Aucun événement pour cette recherche.</td></tr>'; return; }
+  groups.forEach(gr=>{
+    const items=gr.items.filter(match); if(!items.length) return;
+    const h=document.createElement('tr'); h.className='log-phase';
+    h.innerHTML=`<td colspan="4">${gr.title}<span>${items.length} événement${items.length>1?'s':''}</span></td>`; tb.appendChild(h);
+    items.forEach(e=>{
+      const l=e.l, open=wzOpen===e.idx, sev=WZ_SEV[l.lv]||WZ_SEV.INFO;
+      const tr=document.createElement('tr');
+      tr.className='log-row'+(open?' open':'')+(l.lv==='INFO'?' normal':'');
+      tr.innerHTML=`<td class="log-when"><b>${e.p.d} ${WZ_MOIS[e.p.mo-1]||''}</b>${String(e.p.h).padStart(2,'0')}h${String(e.p.mi).padStart(2,'0')}</td>
+        <td class="log-mach"><b>${l.agent}</b><span>${WZ_MACHINES[l.agent]||''}</span></td>
+        <td><span class="sev ${sev[0]}">${sev[1]}</span></td>
+        <td class="log-desc">${wzHighlight(l.desc)}</td>`;
+      tr.onclick=()=>{ wzOpen=(wzOpen===e.idx)?-1:e.idx; renderLogs(); };
+      tb.appendChild(tr);
+      if(open){
+        const ag=WZ_AGENTS[l.agent]||['000','-'], pad=n=>String(n).padStart(2,'0');
+        const rows=[['@timestamp',`${e.p.d} ${WZ_MOIS[e.p.mo-1]} 2026 @ ${pad(e.p.h)}:${pad(e.p.mi)}:00.000`],['agent.id',ag[0]],['agent.name',l.agent],['agent.ip',ag[1]],
+          ['rule.id',e.rid],['rule.level',e.level],['rule.mitre.id',l.mitre.join(', ')||'-'],['rule.mitre.technique',l.mitre.map(m=>WZ_MITRE[m]||m).join(', ')||'-'],
+          ['decoder.name',l.mitre.includes('T1554')?'syscheck_integrity_changed':(l.agent.startsWith('WS-')?'windows_eventchannel':'json')]];
+        const d=document.createElement('tr'); d.className='log-doc';
+        d.innerHTML=`<td colspan="4"><div class="wz-doc"><div class="wz-doc-h">Détails techniques (Wazuh)</div><table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div></td>`;
+        tb.appendChild(d);
+      }
+    });
   });
-  const cc=document.getElementById('crit-count');if(cc)cc.textContent=critCount+' Critiques';
-  const ac=document.getElementById('alert-count');if(ac)ac.textContent=alertCount+' Alertes';
-  const sc=document.getElementById('suspect-count');if(sc)sc.textContent=suspectCount+' Suspects';
 }
 
 // ══════════════════════════════════════════
@@ -2789,26 +3081,6 @@ function buildFacebook(d){
 // ══════════════════════════════════════════
 // VERDICT
 // ══════════════════════════════════════════
-function renderVerdict(){
-  const wrap=document.getElementById('vopts-1');
-  if(wrap&&!wrap.children.length){
-    wrap.innerHTML=SUSPECTS.map(s=>`<label class="verdict-opt"><input type="radio" name="v1" value="${s.name}"> ${s.name} - ${s.role}</label>`).join('');
-  }
-  updateVerdictAttemptsLabel();
-}
-
-function updateVerdictAttemptsLabel(){
-  const el=document.getElementById('verdict-attempts-label');
-  if(!el)return;
-  if(verdictLocked){ el.textContent=''; return; }
-  el.textContent='Tentative '+verdictAttempts+' / 5';
-}
-
-const VERDICT_KEY_B64='eyJhbnN3ZXJzIjp7InYxIjoiSnVsaWVuIE1PUkVBVSIsInYyIjoiYSIsInYzIjoiMTg1LjIyMC4xMDEuNDciLCJ2NCI6ImMiLCJ2NSI6WyJWYW5pdMOpIiwiRXNww6hjZXMiXX0sImV4cGxhaW4iOnsidjEiOiJKdWxpZW4gTU9SRUFVIChEU0kpIGVzdCBsZSBjb21wdGUgY29tcHJvbWlzIDogYWNjw6hzIGFkbWluLCBwb3N0ZSBhdSBjZW50cmUgZGVzIGFsZXJ0ZXMgRFNJLCBtZXNzYWdlcmllIGludGVybmUgYW1iaWd1w6ssIGF1Y3VuIGF1dHJlIHN1c3BlY3QgbidhIMOgIGxhIGZvaXMgbGUgbW90aWYgZXQgbCdhY2PDqHMgdGVjaG5pcXVlLiIsInYyIjoiTGUgbWFpbCBkdSBmYXV4IHJlY3J1dGV1ciBUaGFsZXMgKHNwZWFycGhpc2hpbmcpIGF2ZWMgcGnDqGNlIGpvaW50ZSAuZG9jbSBlc3QgbGUgdmVjdGV1ciBpbml0aWFsIGNvbmZpcm3DqSBwYXIgbGVzIGxvZ3MgKDAyLzA1LCBwaGFzZSAyKS4iLCJ2MyI6IjE4NS4yMjAuMTAxLjQ3IGVzdCBsJ0lQIHNhbnMgcHJvcHJpw6l0YWlyZSBjb25udSBldCBhdSB2b2x1bWUgaW5jb21wYXRpYmxlIGF2ZWMgZGUgbGEgdMOpbMOpbcOpdHJpZS4gMTAuNDIuNi4xMSBlc3QgbGUgc2VydmV1ciBpbnRlcm5lIGzDqWdpdGltZSwgMjAuNDIuNzMuMTggdW4gc2VydmljZSBBenVyZSBOVFAgbMOpZ2l0aW1lLiIsInY0IjoiTCdhYnNlbmNlIGRlIHJldnVlIGRlIGNvZGUgZXQgZGUgY29udHLDtGxlIGRlcyBjaGFuZ2VtZW50cyBzdXIgbGUgcHJvZ3JhbW1lIGRlIHN1cGVydmlzaW9uIGTDqXBsb3nDqSBzdXIgbGEgcGFzc2VyZWxsZSBhIHBlcm1pcyBsJ2ludHJvZHVjdGlvbiBkJ3VuZSBwb3J0ZSBkw6lyb2LDqWUgcGFyIHVuZSBzaW1wbGUgbW9kaWZpY2F0aW9uIGRlIGNvZGUsIHBvdXNzw6llIHNhbnMgdGlja2V0IGxlIDkgbWFpICh2b2lyIG9uZ2xldCBQcm9ncmFtbWF0aW9uKSBldCBkw6l0ZWN0w6llIHBhciBsZSBjb250csO0bGUgZCdpbnTDqWdyaXTDqSBXYXp1aCBGSU0gLSBjJ2VzdCBsZSBjxZN1ciBkdSBkaWFnbm9zdGljIGF0dGVuZHUgZGFucyB2b3RyZSByYXBwb3J0LiIsInY1IjoiVmFuaXTDqSAobWlzc2lvbiBmbGF0dGV1c2UsIGV4Y2x1c2l2ZSkgZXQgRXNww6hjZXMgKHLDqW11bsOpcmF0aW9uIGF0dHJhY3RpdmUgZmFjZSDDoCBkZXMgZGlmZmljdWx0w6lzIGZpbmFuY2nDqHJlcyByw6llbGxlcykgc29udCBsZXMgZGV1eCBsZXZpZXJzIGRvY3VtZW50w6lzLiBBdWN1bmUgdHJhY2UgZCdpZMOpb2xvZ2llIG91IGRlIGNvbnRyYWludGUvY2hhbnRhZ2UgZGFucyBsZSBkb3NzaWVyLiJ9fQ==';
-function getVerdictKey(){
-  return JSON.parse(decodeURIComponent(escape(atob(VERDICT_KEY_B64))));
-}
-
 const ANIM_SOLUTION_B64='PHN0cm9uZz5Db3VwYWJsZSA6PC9zdHJvbmc+IEp1bGllbiBNT1JFQVUgKERTSSksIHJlY3J1dMOpIHBhciBpbmfDqW5pZXJpZSBzb2NpYWxlIChwcmVzc2lvbiBmaW5hbmNpw6hyZSArIGZsYXR0ZXJpZSAtIGxldmllcnMgRXNww6hjZXMgZXQgVmFuaXTDqSkuPGJyPgogICAgPHN0cm9uZz5WZWN0ZXVyIGluaXRpYWwgOjwvc3Ryb25nPiBtYWlsIHNwZWFycGhpc2hpbmcgKGZhdXggcmVjcnV0ZXVyIFRoYWxlcyksIHBpw6hjZSBqb2ludGUgLmRvY20gcGnDqWfDqWUuPGJyPgogICAgPHN0cm9uZz5DYW5hbCBkZSBzb3J0aWUgOjwvc3Ryb25nPiBwYXNzZXJlbGxlIEJYLUdBVEVXQVktMDcgdmVycyBsJ0lQIDE4NS4yMjAuMTAxLjQ3ICjDoCBkaXN0aW5ndWVyIGRlIDEwLjQyLjYuMTEgPSBpbnRlcm5lIGzDqWdpdGltZSBldCAyMC40Mi43My4xOCA9IEF6dXJlIE5UUCBsw6lnaXRpbWUpLjxicj4KICAgIDxzdHJvbmc+Q2F1c2UgcmFjaW5lIG9yZ2FuaXNhdGlvbm5lbGxlIDo8L3N0cm9uZz4gYWJzZW5jZSBkZSByZXZ1ZSBkZSBjb2RlIGV0IGRlIGNvbnRyw7RsZSBkZXMgY2hhbmdlbWVudHMgc3VyIGxlIHByb2dyYW1tZSBkZSBzdXBlcnZpc2lvbiBkZSBsYSBwYXNzZXJlbGxlIEJYLUdBVEVXQVktMDcsIGF5YW50IHBlcm1pcyBsJ2ludHJvZHVjdGlvbiBkJ3VuZSBwb3J0ZSBkw6lyb2LDqWUgcGFyIG1vZGlmaWNhdGlvbiBkJ3VuZSBsaWduZSBkZSBjb2RlIGxlIDkgbWFpICh2b2lyIG9uZ2xldCBQcm9ncmFtbWF0aW9uKSwgZMOpdGVjdMOpZSBwYXIgbGUgY29udHLDtGxlIGQnaW50w6lncml0w6kgV2F6dWggRklNLjxicj4KICAgIDxzdHJvbmc+RmF1c3NlcyBwaXN0ZXMgw6Agw6ljYXJ0ZXIgOjwvc3Ryb25nPiBLYXJpbSBCRU5ZT1VDRUYgKG1vdGlmIGZpbmFuY2llciBtYWlzIGF1Y3VuIGFjY8OocyksIENhbWlsbGUgUk9VU1NFQVUgKGlkw6lvbG9naWUgbWFpcyBhdWN1biBhY2PDqHMsIGFsaWJpKSwgVGhvbWFzIFZBU1NFVVIgKHRyb3UgZGUgQ1YgbWFpcyBhdWN1bmUgcHJldXZlKSwgRmFyaWQgSEFEREFEICh2b3lhZ2VzIG1haXMgYXVjdW4gbGllbiwgZG9zc2llciBmb3Vybmlzc2V1ciBqYW1haXMgdmFsaWTDqSBuaSBkw6lwbG95w6kpLCBhbm9tYWxpZSBxdWFsaXTDqSBCWC00MjE2IChwcm9ibMOobWUgaW5kw6lwZW5kYW50LCBjb25maXJtw6kgY29uZm9ybWUpLCBBbnRvaW5lIFJPQkVSVCAoYWNjw6hzIHLDqXZvcXXDqXMgw6Agc29uIGTDqXBhcnQpLCBUZWNoSW5kdXMgU29sdXRpb25zIChhdWN1bmUgcHJldXZlIHRlY2huaXF1ZSku';
 function toggleAnimSolution(){
   const el=document.getElementById('anim-solution');
@@ -2818,65 +3090,137 @@ function toggleAnimSolution(){
   el.classList.toggle('show');
 }
 
-function computeVerdictScore(){
-  const v1=document.querySelector('input[name="v1"]:checked');
-  const v2=document.querySelector('input[name="v2"]:checked');
-  const v3=document.querySelector('input[name="v3"]:checked');
-  const v4=document.querySelector('input[name="v4"]:checked');
-  const v5=[...document.querySelectorAll('input[name="v5"]:checked')].map(i=>i.value);
-  if(!v1||!v2||!v3||!v4||v5.length===0) return null;
-  const key=getVerdictKey();
-  let score=0;
-  if(v1.value===key.answers.v1)score++;
-  if(v2.value===key.answers.v2)score++;
-  if(v3.value===key.answers.v3)score++;
-  if(v4.value===key.answers.v4)score++;
-  if(v5.length===key.answers.v5.length&&v5.every(x=>key.answers.v5.includes(x)))score++;
-  return score;
+// ── Suppositions : envoyées au serveur, corrigées côté serveur, 5 tentatives par équipe ──
+// Questions et propositions fournies par le serveur (la bonne réponse n'est jamais envoyée au navigateur).
+let SUP_QUESTIONS=[];
+const SUP_DRAFT_KEY='elecarm_sup_draft_v2';
+function escHtml(t){ return String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function getSupChoices(){
+  const a={};
+  SUP_QUESTIONS.forEach(q=>{
+    const sel=[...document.querySelectorAll('input[name="sup-'+q.id+'"]:checked')].map(i=>i.value);
+    a[q.id]=q.multi?sel:(sel[0]||'');
+  });
+  return a;
+}
+function saveSupDraft(){ try{ localStorage.setItem(SUP_DRAFT_KEY,JSON.stringify(getSupChoices())); }catch(e){} }
+function renderSupQuestions(){
+  const box=document.getElementById('sup-questions');
+  if(!box || box.dataset.ready || !SUP_QUESTIONS.length) return;
+  let draft={}; try{ draft=JSON.parse(localStorage.getItem(SUP_DRAFT_KEY)||'{}'); }catch(e){}
+  box.innerHTML=SUP_QUESTIONS.map((q,n)=>`<div class="verdict-q">
+    <div class="verdict-q-title">${n+1}. ${escHtml(q.title)}</div>
+    <div class="verdict-opts">${q.options.map(o=>{
+      const d=draft[q.id]; const on=q.multi?(Array.isArray(d)&&d.includes(o.id)):d===o.id;
+      return `<label class="verdict-opt"><input type="${q.multi?'checkbox':'radio'}" name="sup-${q.id}" value="${escHtml(o.id)}"${on?' checked':''} onchange="saveSupDraft()"> ${escHtml(o.label)}</label>`;
+    }).join('')}</div></div>`).join('');
+  box.dataset.ready='1';
+}
+function renderVerdict(){
+  renderSupQuestions();
+  const head=document.getElementById('sup-team');
+  const btn=document.getElementById('sup-send');
+  const label=document.getElementById('verdict-attempts-label');
+  const res=document.getElementById('verdict-result');
+  const hist=document.getElementById('sup-hist');
+  if(!head) return;
+  const v=teamView;
+  if(!v){
+    head.innerHTML=apiOnline
+      ? 'Ce poste n\'est inscrit dans aucune équipe. Passez par la <a href="/salle" style="color:#fca5a5">salle d\'attente</a> pour rejoindre votre équipe.'
+      : 'Serveur de l\'exercice injoignable : les suppositions ne peuvent pas être envoyées pour le moment.';
+    btn.disabled=true; btn.style.opacity='.5'; label.textContent=''; hist.innerHTML=''; return;
+  }
+  const used=v.attempts.length;
+  head.innerHTML=`Équipe <b>${escHtml(v.team.name)}</b> <span style="color:var(--tx3)">(${v.team.members.map(escHtml).join(', ')})</span><span class="sup-left">Tentatives : ${used} / 5</span>`;
+  label.textContent=v.locked?'':`Il reste ${v.left} tentative${v.left>1?'s':''} à l'équipe`;
+  document.querySelectorAll('#sup-questions input').forEach(el=>{ el.disabled=v.locked; });
+  btn.disabled=v.locked; btn.style.opacity=v.locked?'.5':'1'; btn.style.cursor=v.locked?'not-allowed':'pointer';
+  const last=v.attempts[used-1];
+  if(last){
+    res.innerHTML=`<div class="verdict-result"><div class="verdict-score" style="font-size:16px">${escHtml(last.tier)}</div>
+      <div class="verdict-recap">${v.locked
+        ? 'Pour le rapport de la séance 3, structurez-vous autour des 3 éléments demandés par la directive ministérielle (onglet Documents) : diagnostic des vulnérabilités, plan de préconisations priorisées, rappel de sensibilisation VICE.'
+        : 'Revoyez vos sources (Mails, Enquête, Journaux / Logs, Programmation, Documents, Boîtier BX, OSINT) avant de renvoyer une supposition.'}</div></div>`;
+  } else res.innerHTML='';
+  hist.innerHTML=used?`<div class="sup-hist-title">Suppositions déjà envoyées par l'équipe</div>`+v.attempts.slice().reverse().map(a=>{
+    const h=new Date(a.at); const hh=String(h.getHours()).padStart(2,'0')+':'+String(h.getMinutes()).padStart(2,'0');
+    return `<details class="sup-att"><summary><b>#${a.n}</b> · ${escHtml(a.by)} · ${hh} · ${escHtml(a.tier)}</summary>
+      <div class="sup-att-body">${SUP_QUESTIONS.map((q,n)=>`${n+1}. <span>${escHtml(a.answers&&a.answers[q.id])}</span>`).join('<br>')}</div></details>`;
+  }).join(''):'';
+}
+function updateVerdictAttemptsLabel(){ renderVerdict(); }
+
+async function submitSupposition(){
+  if(!teamView||teamView.locked||!myTeam) return;
+  const answers=getSupChoices();
+  if(!SUP_QUESTIONS.length || SUP_QUESTIONS.some(q=>q.multi?!answers[q.id].length:!answers[q.id])){ toast('!','Suppositions incomplètes','Répondez aux 5 questions avant d\'envoyer.'); return; }
+  if(!confirm('Envoyer cette supposition ? Elle compte pour une des 5 tentatives de toute l\'équipe.')) return;
+  const btn=document.getElementById('sup-send'); btn.disabled=true; btn.style.opacity='.5';
+  try{
+    const r=await fetch('/api/team',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'submit',teamId:myTeam.teamId,memberId:myTeam.memberId,answers})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){ toast('!','Envoi impossible',j.message||'Réessayez dans un instant.'); }
+    else { if(j.view&&j.view.me) teamView=j.view.me; toast('','Supposition envoyée',j.tier||''); }
+  }catch(e){ toast('!','Envoi impossible','Serveur injoignable, réessayez dans un instant.'); }
+  renderVerdict();
 }
 
-function renderVerdictOutcome(score){
-  updateVerdictAttemptsLabel();
-  if(verdictLocked){
-    document.querySelectorAll('#panel-verdict input').forEach(i=>i.disabled=true);
-    const btn=document.querySelector('#panel-verdict button[onclick="submitVerdict()"]');
-    if(btn){btn.disabled=true;btn.style.opacity='.5';btn.style.cursor='not-allowed';}
-    const tier = verdictSuccess
-      ? 'Vous êtes dans la bonne voie.'
-      : 'Tentatives épuisées. Voyez ça avec votre enseignant avant la séance 3.';
-    document.getElementById('verdict-result').innerHTML=`
-      <div class="verdict-result">
-        <div class="verdict-score-label">${tier}</div>
-        <div class="verdict-recap">
-          Pour le rapport de la séance 3, structurez-vous autour des 3 éléments demandés par la directive ministérielle (onglet Documents) : diagnostic des vulnérabilités, plan de préconisations priorisées, rappel de sensibilisation VICE.
-        </div>
-      </div>`;
-  } else {
-    let tier;
-    if(score===4)tier='Vous y êtes presque.';
-    else if(score>=2)tier='Vous vous rapprochez, mais il reste des zones d\'ombre.';
-    else tier='Vous êtes encore loin du compte, retournez enquêter.';
-    const remaining=5-verdictAttempts;
-    document.getElementById('verdict-result').innerHTML=`
-      <div class="verdict-result">
-        <div class="verdict-score-label">${tier}</div>
-        <div class="verdict-recap">Il vous reste ${remaining} tentative${remaining>1?'s':''}. Revoyez vos sources (Mails, Enquête, Journaux/Logs, Programmation, Documents, OSINT) avant de revalider.</div>
-      </div>`;
-  }
+// ── Accès : l'exercice n'est ouvert qu'aux équipes inscrites, quand l'animateur l'a lancé ──
+function loadMyTeam(){ try{ const t=JSON.parse(localStorage.getItem('elecarm_team')||'null'); return t&&t.teamId&&t.memberId?t:null; }catch(e){ return null; } }
+async function fetchSession(timeoutMs,withQuestions){
+  const t=loadMyTeam();
+  const q=(t?('&team='+encodeURIComponent(t.teamId)+'&member='+encodeURIComponent(t.memberId)):'')+(withQuestions?'&withQuestions=1':'');
+  const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),timeoutMs||4000);
+  try{
+    const r=await fetch('/api/session?ts='+Date.now()+q,{cache:'no-store',signal:ctrl.signal});
+    clearTimeout(to);
+    if(!r.ok) return null;
+    const st=await r.json();
+    return (st && typeof st.status==='string') ? st : null;
+  }catch(e){ clearTimeout(to); return null; }
 }
-
-function submitVerdict(){
-  if(verdictLocked) return;
-  const score=computeVerdictScore();
-  if(score===null){
-    toast('!','Reponses incompletes','Repondez a toutes les questions avant de valider.');
-    return;
-  }
-  verdictAttempts++;
-  verdictSuccess = score===5;
-  verdictLocked = verdictSuccess || verdictAttempts>=5;
-  renderVerdictOutcome(score);
-  saveState();
+// true = accès autorisé. Serveur injoignable = accès autorisé (l'exercice reste jouable, sans suppositions).
+async function accessGate(){
+  const st=await fetchSession(2500,isExerciseRoute());
+  if(!st){ apiOnline=false; return true; }
+  if(st.questions) SUP_QUESTIONS=st.questions;
+  apiOnline=true;
+  myTeam=loadMyTeam();
+  if(!st.open || !myTeam || !st.me){ location.replace('/salle'); return false; }
+  teamView=st.me;
+  window.__elecarmSession=st;
+  return true;
+}
+function setTeamChip(){
+  const c=document.getElementById('team-chip'); if(!c) return;
+  if(teamView){ c.textContent='Équipe '+teamView.team.name; c.title=teamView.team.members.join(', '); c.style.display='block'; } else c.style.display='none';
+}
+// Suivi en cours de partie : fermeture par l'animateur, tentatives faites depuis les autres postes de l'équipe.
+function startLiveSync(){
+  const ov=document.getElementById('closed-overlay');
+  const tick=async()=>{
+    const st=await fetchSession(5000);
+    if(st){
+      apiOnline=true;
+      applyServerMission(st);
+      if(st.me===null){
+        document.getElementById('co-t').textContent='Vous ne faites plus partie d\'une équipe';
+        document.getElementById('co-d').innerHTML='Repassez par la <a href="/salle">salle d\'attente</a> pour rejoindre votre équipe.';
+        ov.classList.add('show');
+      } else if(!st.open){
+        document.getElementById('co-t').textContent='Exercice fermé';
+        document.getElementById('co-d').textContent='L\'animateur a fermé l\'exercice. Restez sur cette page : elle se rouvrira automatiquement.';
+        ov.classList.add('show');
+      } else {
+        ov.classList.remove('show');
+        if(st.me){ const changed=JSON.stringify(st.me)!==JSON.stringify(teamView); teamView=st.me; if(changed){ setTeamChip(); renderVerdict(); } }
+      }
+    }
+    setTimeout(tick,20000);
+  };
+  setTimeout(tick,20000);
 }
 
 // ══════════════════════════════════════════
@@ -2887,21 +3231,12 @@ const STORAGE_KEY='elecarm_mission_state_v1';
 function saveState(){
   try{
     const activeTabBtn=document.querySelector('.tab.active');
-    const v1=document.querySelector('input[name="v1"]:checked');
-    const v2=document.querySelector('input[name="v2"]:checked');
-    const v3=document.querySelector('input[name="v3"]:checked');
-    const v4=document.querySelector('input[name="v4"]:checked');
-    const v5=[...document.querySelectorAll('input[name="v5"]:checked')].map(i=>i.value);
     const state={
       entered:true,
       activeTab: activeTabBtn ? activeTabBtn.dataset.tab : 'situation',
       readMails: MAILS.filter(m=>!m.unread).map(m=>m.id),
       situationNotes:(document.getElementById('situation-notes')||{}).value||'',
       enigNotes:(document.getElementById('enig-textarea')||{}).value||'',
-      verdictPicks:{v1:v1?v1.value:null,v2:v2?v2.value:null,v3:v3?v3.value:null,v4:v4?v4.value:null,v5:v5},
-      verdictAttempts: verdictAttempts,
-      verdictLocked: verdictLocked,
-      verdictSuccess: verdictSuccess,
       sessionSecondsLeft: sessionSecondsLeft,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -2916,7 +3251,7 @@ function loadSavedState(){
 }
 
 function resetMission(){
-  if(!confirm('Reinitialiser la mission ? Toute la progression sera effacee sur cet appareil.'))return;
+  if(!confirm('Réinitialiser la mission ? Toute la progression sera effacée sur cet appareil.'))return;
   localStorage.removeItem(STORAGE_KEY);
   window.location.href='/';
 }
@@ -2927,27 +3262,9 @@ function restoreState(st){
   if(typeof st.sessionSecondsLeft==='number'){ sessionSecondsLeft=st.sessionSecondsLeft; renderSessionTimer(); }
   if(st.situationNotes){ const el=document.getElementById('situation-notes'); if(el)el.value=st.situationNotes; }
   if(st.enigNotes){ const el=document.getElementById('enig-textarea'); if(el)el.value=st.enigNotes; }
-  if(st.verdictPicks){
-    const p=st.verdictPicks;
-    if(p.v1){ const el=document.querySelector('input[name="v1"][value="'+CSS.escape(p.v1)+'"]'); if(el)el.checked=true; }
-    ['v2','v3','v4'].forEach(k=>{ if(p[k]){ const el=document.querySelector('input[name="'+k+'"][value="'+CSS.escape(p[k])+'"]'); if(el)el.checked=true; } });
-    if(Array.isArray(p.v5)) p.v5.forEach(v=>{ const el=document.querySelector('input[name="v5"][value="'+CSS.escape(v)+'"]'); if(el)el.checked=true; });
-  }
-  if(typeof st.verdictAttempts==='number') verdictAttempts=st.verdictAttempts;
-  if(st.verdictLocked) verdictLocked=true;
-  if(st.verdictSuccess) verdictSuccess=true;
-  if(verdictAttempts>0){
-    const score=computeVerdictScore();
-    if(score!==null) renderVerdictOutcome(score);
-  } else {
-    updateVerdictAttemptsLabel();
-  }
 }
 
-(function(){
-  const vp=document.getElementById('panel-verdict');
-  if(vp) vp.addEventListener('change', saveState);
-})();
+
 
 // Routage au chargement (apres definition de toutes les fonctions).
 initRoute();

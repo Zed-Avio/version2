@@ -33,7 +33,7 @@ Enseignant qui anime un cours d'introduction au management/gestion, construit de
 
 ## Fichiers du site elecarm-crisis2 (racine du projet)
 
-- `index.html` (~168 Ko), le jeu principal, 8 onglets : SITUATION, MAILS, ENQUETE (8 suspects), DSI/LOGS, DOCUMENTS (8 docs + PDF telechargeables), ENIGMES, OSINT, VERDICT
+- `index.html`, le jeu principal, 9 onglets : SITUATION, MAILS (boîte générale + 8 boîtes employés), ENQUÊTE (8 suspects), JOURNAUX / LOGS (interface type Wazuh), PROGRAMMATION, DOCUMENTS (PDF téléchargeables), BOÎTIER BX (ex-Énigmes), OSINT, SUPPOSITIONS
 - `portal.html`, fausse page de login interne (decor phishing)
 - `starterGame.html`, page de salle d'attente/compte a rebours envoyee aux eleves (voir section dediee)
 - `lobbyControl.html`, page de controle du chrono, reservee a l'enseignant, jamais liee nulle part dans le site
@@ -103,3 +103,14 @@ Outil separe, deploye a `https://qcm-insa.vercel.app/`, **pas de dossier local c
 - PDF telechargeables pour les pieces jointes secondaires des mails (CV, attestation ISO, fiche de sortie), actuellement de simples interactions "toast", contrairement aux 8 documents principaux qui ont de vrais PDF
 - Template de rapport seance 3 fourni par le ministere, jamais verifie si ca existe
 - Diaporama de la seance 1, construit separement par l'utilisateur, hors perimetre de ce travail
+
+## Système d'équipes, suppositions et console animateur (septembre 2026)
+
+- **Lien unique élèves : `/salle`**. L'élève s'inscrit (prénom + équipe, 8 places max par équipe, création libre), attend, voit le compte à rebours synchronisé (horloge serveur), puis bascule sur l'intro `/` (jamais sautée) puis `/exercice`.
+- **Accès verrouillé** : `/` et `/exercice` renvoient vers `/salle` tant que l'exercice n'est pas ouvert ou que le poste n'est inscrit dans aucune équipe. En partie, chaque poste interroge l'API toutes les 20 s : si l'animateur ferme, un écran "Exercice fermé" bloque le jeu (sans perte de progression) et disparaît à la réouverture. Si l'API est injoignable, le jeu reste accessible (mais les suppositions ne peuvent pas être envoyées).
+- **Onglet SUPPOSITIONS** (remplace le QCM) : 5 questions à choix (listes servies par l'API, distracteurs tirés du scénario), corrigées **côté serveur** (`api/_grade.js`, clé jamais envoyée au navigateur). **5 tentatives par équipe**, partagées entre tous les postes, stockées sur le serveur (recharger la page ne remet rien à zéro). Retour aux élèves : "loin / se rapprochent / presque / bonne voie", jamais le détail par question.
+- **Minuteur de l'exercice** : réglé et lancé depuis la console (Commencer maintenant, ou compte à rebours), affiché sur tous les postes (MISSION), ajustable (+/- 5 min), mis en pause quand l'animateur ferme. **À zéro, l'exercice continue** (simple message « Temps écoulé ») : seul l'animateur ferme.
+- Guide d'utilisation pour l'enseignant : `GUIDE_ANIMATEUR.md`.
+- **Console `/animateur`** (mot de passe `ANIM_PASSWORD`) : salle d'attente, compte à rebours, ouvrir maintenant, fermer, veille ; liste des équipes et membres (retirer un membre, supprimer une équipe, remettre les tentatives à zéro) ; toutes les suppositions envoyées avec auteur, heure et note sur 5.
+- **Stockage** : un seul fichier privé `state.json` dans Vercel Blob (store privé, `@vercel/blob` v2), écritures en concurrence optimiste (ETag). **Quota Hobby : 10 000 lectures et 2 000 écritures par mois, Blob bloqué 30 jours en cas de dépassement** : lectures mises en cache 5 s par instance, sondages espacés (salle 3 s, jeu 20 s, console 4 s). Estimation : quelques milliers de lectures et ~200 écritures par séance. Si les séances se multiplient, passer à Upstash Redis (marketplace Vercel) serait plus confortable.
+- Test local : `LOCAL_STATE_FILE=/chemin/state.json ANIM_PASSWORD=... node devserver.js` (petit serveur imitant Vercel, non versionné) ; l'API bascule alors sur un fichier JSON local.

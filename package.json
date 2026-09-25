@@ -2,6 +2,6 @@
   "name": "elecarm-crisis2",
   "private": true,
   "dependencies": {
-    "@vercel/blob": "^0.27.0"
+    "@vercel/blob": "^2.8.0"
   }
 }
