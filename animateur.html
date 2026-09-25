@@ -99,6 +99,11 @@ button.big{font-size:15px;padding:13px 22px}
 .att-g .v{color:#d4d4d4;word-break:break-word}
 .empty{font-size:13px;color:#555;padding:6px 0}
 @media (max-width:640px){.att-g{grid-template-columns:1fr}.att-g .k{margin-top:6px}}
+#cfm{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px}
+#cfm.show{display:flex}
+#cfm .box{background:#131518;border:1px solid #2a2d31;border-radius:10px;max-width:440px;width:100%;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+#cfm-t{font-size:14px;color:#e6e6e6;line-height:1.6;white-space:pre-wrap;margin-bottom:16px}
+#cfm .row2{display:flex;gap:10px;justify-content:flex-end}
 </style>
 </head>
 <body>
@@ -177,7 +182,17 @@ button.big{font-size:15px;padding:13px 22px}
     </div>
   </div>
 </div>
+<div id="cfm"><div class="box"><div id="cfm-t"></div><div class="row2"><button class="b-reset" id="cfm-no">Annuler</button><button class="b-go" id="cfm-ok">Confirmer</button></div></div></div>
 <script>
+// Confirmation dans la page (et non confirm() du navigateur, que l'on peut bloquer par une case à cocher).
+function ask(text, then){
+  var box=document.getElementById('cfm'), ok=document.getElementById('cfm-ok'), no=document.getElementById('cfm-no');
+  document.getElementById('cfm-t').textContent=text; box.classList.add('show'); ok.focus();
+  function close(v){ box.classList.remove('show'); ok.onclick=no.onclick=box.onclick=document.onkeydown=null; if(v) then(); }
+  ok.onclick=function(){ close(true); }; no.onclick=function(){ close(false); };
+  box.onclick=function(e){ if(e.target===box) close(false); };
+  document.onkeydown=function(e){ if(e.key==='Escape') close(false); if(e.key==='Enter'){ e.preventDefault(); close(true); } };
+}
 var pass='';
 var st=null, offset=0, lastTeamsSig='';
 var SUP_LABELS={coupable:'1. Employé',vecteur:'2. Vecteur d\'entrée',ip:'3. Adresse IP',cause:'4. Faille organisationnelle',vice:'5. Leviers VICE'};
@@ -211,11 +226,14 @@ function unlock(){
 
 var LABELS={waiting:'Salle d\'attente ouverte.',start:'Compte à rebours lancé.',open:'Exercice ouvert, minuteur démarré.',close:'Exercice fermé, minuteur en pause.',reset:'Site en veille.',addTime:'Minuteur ajusté.',setTimer:'Minuteur réglé.'};
 function send(action){
-  if(action==='close' && !confirm('Fermer l\'exercice sur tous les postes ? Le minuteur sera mis en pause.')) return;
-  var ss=st&&st.session, now=Date.now()+offset;
-  var live=ss && ss.status==='running';
-  if(live && (action==='open'||action==='start') && !confirm('Un exercice est déjà en cours. Le relancer remet le minuteur à zéro sur tous les postes. Continuer ?')) return;
-  if(live && (action==='waiting'||action==='reset') && !confirm('Un exercice est en cours : cette action renvoie tous les élèves vers la salle d\'attente. Continuer ?')) return;
+  var ss=st&&st.session, live=ss && ss.status==='running';
+  var q = action==='close' ? 'Fermer l\'exercice sur tous les postes ? Le minuteur sera mis en pause.'
+    : live && (action==='open'||action==='start') ? 'Un exercice est déjà en cours. Le relancer remet le minuteur à zéro sur tous les postes. Continuer ?'
+    : live && (action==='waiting'||action==='reset') ? 'Un exercice est en cours : cette action renvoie tous les élèves vers la salle d\'attente. Continuer ?' : null;
+  if(q) ask(q,function(){ doSend(action); }); else doSend(action);
+}
+function doSend(action){
+  msg('Envoi en cours...',false);
   var dur=parseInt(document.getElementById('dur').value,10)||10;
   var mdur=parseInt(document.getElementById('mdur').value,10)||240;
   api({action:action,durationMin:dur,missionMin:mdur}).then(function(o){
@@ -226,7 +244,8 @@ function send(action){
 function timer(action,delta){
   var mdur=parseInt(document.getElementById('mdur').value,10)||240;
   if(action==='addCustom'){ delta=parseInt(document.getElementById('addmin').value,10); if(!delta){ msg('Indiquez un nombre de minutes à ajouter.',true); return; } action='addTime'; }
-  if(action==='setTimer' && !confirm('Remettre le minuteur à '+mdur+' minutes sur tous les postes ?')) return;
+  if(action==='setTimer' && !timer.ok){ ask('Remettre le minuteur à '+mdur+' minutes sur tous les postes ?',function(){ timer.ok=1; timer('setTimer'); timer.ok=0; }); return; }
+  msg('Envoi en cours...',false);
   api({action:action,deltaMin:delta,missionMin:mdur}).then(function(o){
     if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; }
     msg(LABELS[action],false); apply(o.j);
@@ -238,11 +257,14 @@ function teamAction(action,teamId,memberId){
     deleteTeam:'Supprimer l\'équipe « '+(t&&t.name)+' » et ses suppositions ?',
     removeMember:'Retirer '+(m&&m.name)+' de l\'équipe « '+(t&&t.name)+' » ?',
     wipeTeams:'Effacer TOUTES les équipes, leurs membres et leurs suppositions ?'}[action];
-  if(q && !confirm(q)) return;
+  if(q) ask(q,function(){ doTeamAction(action,teamId,memberId); }); else doTeamAction(action,teamId,memberId);
+}
+function doTeamAction(action,teamId,memberId){
+  msg('Envoi en cours...',false);
   api({action:action,teamId:teamId,memberId:memberId}).then(function(o){
     if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; }
-    apply(o.j);
-  });
+    msg('Fait.',false); apply(o.j);
+  }).catch(function(){ msg('Erreur réseau.',true); });
 }
 function wipe(){ teamAction('wipeTeams',null,null); }
 
@@ -292,12 +314,15 @@ function reply(){
   var el=document.getElementById('reply'), text=el.value.trim();
   if(!chatTeam){ msg('Sélectionnez d\'abord une équipe dans Messages.',true); return; }
   if(!text) return;
-  api({action:'reply',teamId:chatTeam,text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; apply(o.j); });
+  msg('Envoi en cours...',false);
+  api({action:'reply',teamId:chatTeam,text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; msg('Réponse envoyée.',false); apply(o.j); }).catch(function(){ msg('Erreur réseau.',true); });
 }
 function broadcast(){
   var el=document.getElementById('bcast'), text=el.value.trim(); if(!text) return;
-  if(!confirm('Envoyer ce message à toutes les équipes ?\n\n'+text)) return;
-  api({action:'broadcast',text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; msg('Message envoyé à toutes les équipes.',false); apply(o.j); });
+  ask('Envoyer ce message à toutes les équipes ?\n\n'+text,function(){
+  msg('Envoi en cours...',false);
+  api({action:'broadcast',text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; msg('Message envoyé à toutes les équipes.',false); apply(o.j); }).catch(function(){ msg('Erreur réseau.',true); });
+  });
 }
 
 function apply(j){

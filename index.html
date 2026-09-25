@@ -365,7 +365,6 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .ox-src{display:flex;gap:3px;margin-left:auto;flex-shrink:0}
 .ox-src i{width:16px;height:16px;border-radius:3px;font-style:normal;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff}
 .ox-src i.li{background:#0a66c2}.ox-src i.fb{background:#1877f2}.ox-src i.off{background:#262c3a;color:#555d6e}
-.ox-pinc{font-size:10px;color:#f5b942;margin-top:2px}
 .ox-main{flex:1;min-width:0;overflow-y:auto;padding:18px 22px 30px}
 .ox-id{display:flex;gap:16px;align-items:center;margin-bottom:16px}
 .ox-id .ox-av{width:64px;height:64px;font-size:20px}
@@ -375,7 +374,6 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .ox-acct{background:#0e1118;border:1px solid #1d2230;border-radius:8px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start}
 .ox-logo-s{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
 .ox-acct-n{font-size:12.5px;font-weight:700;color:#e6e9ef}
-.ox-acct-u{font-family:var(--mono);font-size:11px;color:#7aa7ff;margin-top:2px;word-break:break-all}
 .ox-acct-s{font-size:11px;color:#8b93a7;margin-top:5px;line-height:1.55}
 .ox-pill{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;margin-right:4px}
 .ox-pill.pub{background:#10291b;color:#4ade80}.ox-pill.semi{background:#2a2410;color:#f5b942}.ox-pill.priv{background:#2a1515;color:#f87171}.ox-pill.none{background:#1d2230;color:#6b7385}
@@ -383,24 +381,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .ox-tab{background:none;border:none;border-bottom:2px solid transparent;color:#8b93a7;font-size:12.5px;font-weight:600;padding:8px 14px;cursor:pointer;font-family:var(--font)}
 .ox-tab:hover{color:#e6e9ef}
 .ox-tab.on{color:#fff;border-bottom-color:#22c55e}
-.ox-tab span{font-size:10.5px;color:#6b7385;margin-left:4px}
-.ox-flt{display:flex;gap:6px;margin-bottom:12px}
-.ox-flt button{background:#0e1118;border:1px solid #262c3a;color:#8b93a7;font-size:11px;padding:4px 10px;border-radius:14px;cursor:pointer;font-family:var(--font)}
-.ox-flt button.on{border-color:#22c55e;color:#e6e9ef}
-.ox-post{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #161a24}
-.ox-post-l{width:92px;flex-shrink:0;font-size:11px;color:#8b93a7}
-.ox-post-l b{display:block;color:#c9d1e0;font-weight:600;margin-bottom:4px}
-.ox-post-b{flex:1;min-width:0}
-.ox-post-h{display:flex;align-items:center;gap:7px;font-size:11px;color:#6b7385;margin-bottom:5px}
-.ox-post-t{font-size:13px;color:#dfe4ec;line-height:1.65}
-.ox-post-f{font-size:11px;color:#6b7385;margin-top:5px}
-.ox-pin{flex-shrink:0;align-self:flex-start;background:none;border:1px solid #262c3a;color:#8b93a7;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:var(--font);white-space:nowrap}
-.ox-pin:hover{border-color:#f5b942;color:#f5b942}
-.ox-pin.on{background:#2a2410;border-color:#f5b942;color:#f5b942}
 .ox-empty{padding:28px;text-align:center;color:#6b7385;font-size:12.5px;line-height:1.7;border:1px dashed #262c3a;border-radius:8px}
-.ox-notes textarea{width:100%;min-height:140px;background:#0e1118;border:1px solid #262c3a;border-radius:8px;color:#dfe4ec;font-family:var(--font);font-size:13px;line-height:1.6;padding:11px 13px;outline:none;resize:vertical}
-.ox-notes textarea:focus{border-color:#3b4660}
-.ox-h{font-size:10.5px;font-weight:700;letter-spacing:.12em;color:#6b7385;text-transform:uppercase;margin:16px 0 8px}
 /* Vue LinkedIn */
 .li{background:#1b1f23;border:1px solid #2f3439;border-radius:10px;overflow:hidden;max-width:760px}
 .li-cover{height:90px;background:linear-gradient(120deg,#0a3d62,#0a66c2)}
@@ -565,6 +546,14 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 #toast-text .body{font-size:12px;color:var(--tx3);line-height:1.4}
 #toast-close{margin-left:auto;background:none;border:none;color:var(--tx4);cursor:pointer;font-size:16px;flex-shrink:0;padding:0}
 
+#cfm{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px}
+#cfm.show{display:flex}
+#cfm .cfm-box{background:#131313;border:1px solid #2a2a2a;border-radius:10px;max-width:440px;width:100%;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.7);text-align:left}
+#cfm-t{font-size:14px;color:#e6e6e6;line-height:1.6;white-space:pre-wrap;margin-bottom:16px}
+#cfm .cfm-row{display:flex;gap:10px;justify-content:flex-end}
+#cfm button{border:none;border-radius:6px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+#cfm-no{background:#1c1c1c;color:#aaa;border:1px solid #2a2a2a!important}
+#cfm-ok{background:#7f1d1d;color:#fff}
 /* ── DISCUSSION AVEC L'ANIMATEUR ── */
 #chat-btn{position:fixed;right:20px;bottom:20px;z-index:950;display:none;align-items:center;gap:8px;background:#7f1d1d;color:#fff;border:none;border-radius:22px;padding:10px 16px;font-size:12.5px;font-weight:700;font-family:var(--font);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.6)}
 #chat-btn:hover{filter:brightness(1.15)}
@@ -1414,6 +1403,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 </div>
 
 <!-- TOAST -->
+<div id="cfm"><div class="cfm-box"><div id="cfm-t"></div><div class="cfm-row"><button id="cfm-no">Annuler</button><button id="cfm-ok">Confirmer</button></div></div></div>
 <button id="chat-btn" onclick="toggleChat()"><svg viewBox="0 0 24 24"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>Écrire à l'animateur<span id="chat-badge"></span></button>
 <div id="chat-panel">
   <div class="chat-h"><div><b>Animateur</b><br><span id="chat-sub">Discussion de votre équipe</span></div><button onclick="toggleChat()" title="Fermer">&times;</button></div>
@@ -3099,10 +3089,7 @@ const OSINT_DATA = {
 // ── OSINT : plateforme de recherche en sources ouvertes (LinkedIn et Facebook uniquement) ──
 // Aucune conclusion automatique : la plateforme collecte, l'équipe analyse (épingles + notes).
 const OSINT_ORDER=['moreau','durand','benyoucef','brunet','thierry','rousseau','vasseur','haddad'];
-let osintView='timeline', osintFilter='all';
-function oxLoad(k){ try{ return JSON.parse(localStorage.getItem(k)||'{}'); }catch(e){ return {}; } }
-function oxSave(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
-const OX_PINS='elecarm_osint_pins', OX_NOTES='elecarm_osint_notes';
+let osintView='linkedin';
 function oxInitials(n){ return n.split(' ').map(w=>w[0]).join('').slice(0,2); }
 function oxAv(d,cls){ const z=d.photo==='face4.jpg'?' style="transform:scale(1.32)"':''; return `<div class="${cls||'ox-av'}">${d.photo?`<img src="${d.photo}" alt=""${z}>`:oxInitials(d.name)}</div>`; }
 const OX_MOIS={janvier:0,'février':1,mars:2,avril:3,mai:4,juin:5,juillet:6,'août':7,septembre:8,octobre:9,novembre:10,'décembre':11};
@@ -3116,30 +3103,21 @@ function oxPosts(id){
 function oxVis(fb){ if(!fb) return ['none','Aucun compte']; if(fb.private) return ['priv','Privé']; return /semi/i.test(fb.privacy)?['semi','Semi-public']:['pub','Public']; }
 function renderOSINT(){
   const nav=document.getElementById('osint-nav');
-  const pins=oxLoad(OX_PINS);
   document.getElementById('ox-count').textContent='('+OSINT_ORDER.length+')';
-  nav.innerHTML=OSINT_ORDER.map(id=>{ const d=OSINT_DATA[id]; const np=Object.keys(pins).filter(k=>k.startsWith(id+':')).length;
-    return `<button class="ox-t${id===currentOSINT?' active':''}" onclick="switchOSINT('${id}')">${oxAv(d)}<div style="min-width:0"><div class="ox-tn">${d.name}</div><div class="ox-tr">${d.role}</div>${np?`<div class="ox-pinc">${np} élément${np>1?'s':''} épinglé${np>1?'s':''}</div>`:''}</div>
+  nav.innerHTML=OSINT_ORDER.map(id=>{ const d=OSINT_DATA[id];
+    return `<button class="ox-t${id===currentOSINT?' active':''}" onclick="switchOSINT('${id}')">${oxAv(d)}<div style="min-width:0"><div class="ox-tn">${d.name}</div><div class="ox-tr">${d.role}</div></div>
       <div class="ox-src"><i class="${d.linkedin?'li':'off'}">in</i><i class="${d.facebook?'fb':'off'}">f</i></div></button>`; }).join('');
   renderOSINTMain();
 }
-function switchOSINT(id){ if(!OSINT_DATA[id]) return; currentOSINT=id; osintFilter='all'; renderOSINT(); const m=document.getElementById('osint-body'); if(m) m.scrollTop=0; }
+function switchOSINT(id){ if(!OSINT_DATA[id]) return; currentOSINT=id; renderOSINT(); const m=document.getElementById('osint-body'); if(m) m.scrollTop=0; }
 function setOsintView(v){ osintView=v; renderOSINTMain(); }
-function setOsintFilter(f){ osintFilter=f; renderOSINTMain(); }
-function toggleOsintPin(key){ const p=oxLoad(OX_PINS); if(p[key]) delete p[key]; else p[key]=1; oxSave(OX_PINS,p); renderOSINT(); }
-function saveOsintNote(id,v){ const n=oxLoad(OX_NOTES); n[id]=v; oxSave(OX_NOTES,n); }
-function oxPostHtml(p,pins){
-  return `<div class="ox-post"><div class="ox-post-l"><b>${p.date}</b>${p.src==='li'?'<span style="color:#71b7fb">LinkedIn</span>':'<span style="color:#6ea8ff">Facebook</span>'}</div>
-    <div class="ox-post-b"><div class="ox-post-h">Visibilité : ${p.vis}</div><div class="ox-post-t">${p.text}</div>${p.foot?`<div class="ox-post-f">${p.foot}</div>`:''}</div>
-    <button class="ox-pin${pins[p.key]?' on':''}" onclick="toggleOsintPin('${p.key}')">${pins[p.key]?'Épinglé':'Épingler'}</button></div>`;
-}
 function renderOSINTMain(){
   const id=currentOSINT, d=OSINT_DATA[id], box=document.getElementById('osint-body'); if(!d||!box) return;
   document.getElementById('ox-query').textContent='"'+d.name+'" ELECARM';
-  const li=d.linkedin, fb=d.facebook, pins=oxLoad(OX_PINS), posts=oxPosts(id);
+  const li=d.linkedin, fb=d.facebook, posts=oxPosts(id);
   const fv=oxVis(fb), loc=(li&&li.location)||(fb&&fb.location)||'';
   const acct=(logo,bg,name,url,pill,lines)=>`<div class="ox-acct"><div class="ox-logo-s" style="background:${bg}">${logo}</div><div style="min-width:0"><div class="ox-acct-n">${name}</div>
-    ${url?`<div class="ox-acct-u">${url}</div>`:''}<div class="ox-acct-s">${pill}${lines}</div></div></div>`;
+<div class="ox-acct-s">${pill}${lines}</div></div></div>`;
   let h=`<div class="ox-id">${oxAv(d)}<div><div class="ox-id-n">${d.name}</div><div class="ox-id-m"><span>${d.role}, ELECARM SAS</span>${loc?`<span>${loc}</span>`:''}<span>${posts.length} publication${posts.length>1?'s':''} collectée${posts.length>1?'s':''}</span></div></div></div>
     <div class="ox-accts">
       ${li?acct('in','#0a66c2','LinkedIn','https://'+li.url,'<span class="ox-pill pub">Public</span>',`${li.connections} relations · ${(li.posts||[]).length} publication${(li.posts||[]).length>1?'s':''}`)
@@ -3147,14 +3125,9 @@ function renderOSINTMain(){
       ${fb?acct('f','#1877f2','Facebook','https://'+fb.url,`<span class="ox-pill ${fv[0]}">${fv[1]}</span>`,fb.private?'Seules la photo et la ville sont visibles.':`${fb.friends} amis · ${(fb.posts||[]).length} publication${(fb.posts||[]).length>1?'s':''} visible${(fb.posts||[]).length>1?'s':''}`)
           :acct('f','#262c3a','Facebook','','<span class="ox-pill none">Aucun compte</span>','Aucun profil correspondant trouvé.')}
     </div>`;
-  const nPins=posts.filter(p=>pins[p.key]).length;
-  const tabs=[['timeline','Chronologie',posts.length],['linkedin','LinkedIn',''],['facebook','Facebook',''],['notes','Notes d\'analyse',nPins||'']];
-  h+=`<div class="ox-tabs">${tabs.map(t=>`<button class="ox-tab${osintView===t[0]?' on':''}" onclick="setOsintView('${t[0]}')">${t[1]}${t[2]!==''?`<span>${t[2]}</span>`:''}</button>`).join('')}</div>`;
-  if(osintView==='timeline'){
-    const list=posts.filter(p=>osintFilter==='all'||p.src===osintFilter);
-    h+=`<div class="ox-flt">${[['all','Toutes les sources'],['li','LinkedIn'],['fb','Facebook']].map(f=>`<button class="${osintFilter===f[0]?'on':''}" onclick="setOsintFilter('${f[0]}')">${f[1]}</button>`).join('')}</div>`;
-    h+=list.length?list.map(p=>oxPostHtml(p,pins)).join(''):`<div class="ox-empty">Aucune publication publique collectée pour cette source.</div>`;
-  } else if(osintView==='linkedin'){
+  const tabs=[['linkedin','LinkedIn'],['facebook','Facebook']];
+  h+=`<div class="ox-tabs">${tabs.map(t=>`<button class="ox-tab${osintView===t[0]?' on':''}" onclick="setOsintView('${t[0]}')">${t[1]}</button>`).join('')}</div>`;
+  if(osintView==='linkedin'){
     h+=li?`<div class="li"><div class="li-cover"></div><div class="li-head">${oxAv(d,'li-av')}<div class="li-n">${d.name}</div><div class="li-hl">${li.headline}</div>
         <div class="li-loc">${li.location} · <b>${li.connections} relations</b></div></div>
       ${li.about?`<div class="li-sec"><div class="li-st">Infos</div><div style="font-size:13px;color:#e0e0e0;line-height:1.6">${li.about}</div></div>`:''}
@@ -3169,13 +3142,6 @@ function renderOSINTMain(){
       ${fb.private?`<div class="fbv-priv"><b>Ce profil est privé</b>Seules la photo de profil et la ville (${fb.location}) sont visibles.<br>Les publications et la liste d'amis ne sont pas accessibles.</div>`
       :`<div class="fbv-cols"><div><div class="fbv-box"><h4>Intro</h4><ul>${(fb.about||[]).map(a=>`<li>${a}</li>`).join('')}<li>${fb.privacy}</li></ul></div></div>
         <div>${(fb.posts||[]).length?fb.posts.map(p=>`<div class="fbv-post"><div class="fbv-ph">${oxAv(d,'fbv-av')}<div><b>${d.name}</b><small>${p.date} · ${p.visibility}</small></div></div><p>${p.text}</p></div>`).join(''):'<div class="fbv-post"><p>Aucune publication visible.</p></div>'}</div></div>`}</div>`;
-  } else {
-    const n=oxLoad(OX_NOTES)[id]||'';
-    const pinned=posts.filter(p=>pins[p.key]);
-    h+=`<div class="ox-notes"><div class="ox-h" style="margin-top:0">Éléments épinglés (${pinned.length})</div>
-      ${pinned.length?pinned.map(p=>oxPostHtml(p,pins)).join(''):`<div class="ox-empty">Aucun élément épinglé. Dans la chronologie, épinglez les publications qui vous semblent utiles à l'enquête.</div>`}
-      <div class="ox-h">Notes de l'équipe sur ${d.name}</div>
-      <textarea placeholder="Ce que vous retenez de ce profil, ce qu'il faut vérifier ailleurs..." oninput="saveOsintNote('${id}',this.value)">${escHtml(n)}</textarea></div>`;
   }
   box.innerHTML=h;
 }
@@ -3192,6 +3158,16 @@ function toggleAnimSolution(){
   el.classList.toggle('show');
 }
 
+// Confirmation dans la page (et non confirm() du navigateur, que l'on peut bloquer par une case à cocher).
+function ask(text, then){
+  var box=document.getElementById('cfm'), ok=document.getElementById('cfm-ok'), no=document.getElementById('cfm-no');
+  document.getElementById('cfm-t').textContent=text; box.classList.add('show'); ok.focus();
+  function close(v){ box.classList.remove('show'); ok.onclick=no.onclick=box.onclick=null; document.removeEventListener('keydown',key); if(v) then(); }
+  function key(e){ if(e.key==='Escape') close(false); if(e.key==='Enter'){ e.preventDefault(); close(true); } }
+  ok.onclick=function(){ close(true); }; no.onclick=function(){ close(false); };
+  box.onclick=function(e){ if(e.target===box) close(false); };
+  document.addEventListener('keydown',key);
+}
 // ── Suppositions : envoyées au serveur, corrigées côté serveur, 5 tentatives par équipe ──
 // Questions et propositions fournies par le serveur (la bonne réponse n'est jamais envoyée au navigateur).
 let SUP_QUESTIONS=[];
@@ -3257,7 +3233,7 @@ async function submitSupposition(){
   if(!teamView||teamView.locked||!myTeam) return;
   const answers=getSupChoices();
   if(!SUP_QUESTIONS.length || SUP_QUESTIONS.some(q=>q.multi?!answers[q.id].length:!answers[q.id])){ toast('!','Suppositions incomplètes','Répondez aux 5 questions avant d\'envoyer.'); return; }
-  if(!confirm('Envoyer cette supposition ? Elle compte pour une des 5 tentatives de toute l\'équipe.')) return;
+  if(!submitSupposition.ok){ ask('Envoyer cette supposition ? Elle compte pour une des 5 tentatives de toute l\'équipe.',()=>{ submitSupposition.ok=1; submitSupposition().finally(()=>{ submitSupposition.ok=0; }); }); return; }
   const btn=document.getElementById('sup-send'); btn.disabled=true; btn.style.opacity='.5'; btn.textContent='ENVOI EN COURS...';
   try{
     const r=await fetch('/api/team',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -3408,7 +3384,7 @@ function loadSavedState(){
 }
 
 function resetMission(){
-  if(!confirm('Réinitialiser la mission ? Toute la progression sera effacée sur cet appareil.'))return;
+  if(!resetMission.ok){ ask('Réinitialiser la mission ? Toute la progression sera effacée sur cet appareil.',()=>{ resetMission.ok=1; resetMission(); }); return; }
   localStorage.removeItem(STORAGE_KEY);
   window.location.href='/';
 }

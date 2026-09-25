@@ -48,6 +48,14 @@ button.ghost{background:transparent;border:1px solid #2a2d31;color:#9a9a9a;font-
 .me{font-size:14px;color:#9a9a9a;line-height:1.7}
 .me b{color:#fff}
 .empty{font-size:12px;color:#555;padding:6px 0}
+#cfm{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px}
+#cfm.show{display:flex}
+#cfm .cfm-box{background:#131313;border:1px solid #2a2a2a;border-radius:10px;max-width:440px;width:100%;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.7);text-align:left}
+#cfm-t{font-size:14px;color:#e6e6e6;line-height:1.6;white-space:pre-wrap;margin-bottom:16px}
+#cfm .cfm-row{display:flex;gap:10px;justify-content:flex-end}
+#cfm button{border:none;border-radius:6px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+#cfm-no{background:#1c1c1c;color:#aaa;border:1px solid #2a2a2a!important}
+#cfm-ok{background:#7f1d1d;color:#fff}
 </style>
 </head>
 <body>
@@ -83,7 +91,18 @@ button.ghost{background:transparent;border:1px solid #2a2d31;color:#9a9a9a;font-
   <div id="view"></div>
   <div class="foot"><span id="statedot" class="dot"></span><span id="statelabel">Connexion...</span></div>
 </div>
+<div id="cfm"><div class="cfm-box"><div id="cfm-t"></div><div class="cfm-row"><button id="cfm-no">Annuler</button><button id="cfm-ok">Confirmer</button></div></div></div>
 <script>
+// Confirmation dans la page (et non confirm() du navigateur, que l'on peut bloquer par une case à cocher).
+function ask(text, then){
+  var box=document.getElementById('cfm'), ok=document.getElementById('cfm-ok'), no=document.getElementById('cfm-no');
+  document.getElementById('cfm-t').textContent=text; box.classList.add('show'); ok.focus();
+  function close(v){ box.classList.remove('show'); ok.onclick=no.onclick=box.onclick=null; document.removeEventListener('keydown',key); if(v) then(); }
+  function key(e){ if(e.key==='Escape') close(false); if(e.key==='Enter'){ e.preventDefault(); close(true); } }
+  ok.onclick=function(){ close(true); }; no.onclick=function(){ close(false); };
+  box.onclick=function(e){ if(e.target===box) close(false); };
+  document.addEventListener('keydown',key);
+}
 // Lien unique donne aux eleves : inscription d'equipe, salle d'attente, compte a rebours,
 // puis ouverture de l'exercice (intro "/" puis "/exercice") pour tout le monde en meme temps.
 var API = '/api/session';
@@ -164,10 +183,11 @@ function join(teamId){
 
 function leave(){
   var t=loadTeam(); if(!t) return;
-  if(!confirm('Quitter l\'équipe '+t.teamName+' ?')) return;
+  ask('Quitter l\'équipe '+t.teamName+' ?',function(){
   fetch(TEAM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'leave',teamId:t.teamId,memberId:t.memberId})})
     .then(function(){ saveTeam(null); if(cur) cur.me=undefined; lastSig=''; poll(true); })
     .catch(function(){});
+  });
 }
 
 function setFoot(){
