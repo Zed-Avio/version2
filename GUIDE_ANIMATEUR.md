@@ -20,6 +20,7 @@
 6. **Pendant l'exercice**, vous pouvez :
    - ajuster le minuteur : **- 5 min**, **+ 5 min**, **+ 15 min**, ou n'importe quelle durée avec le champ **Ajouter ces minutes** (un nombre négatif retire du temps), ou **Repartir de la durée choisie** ;
    - échanger avec les équipes dans **Messages des équipes** (voir plus bas) ;
+   - **Relance** : envoyer une alerte (par exemple « Nouvelle alerte DSI ») qui s'affiche en notification sur l'écran de toutes les équipes ;
    - **Fermer (pause)** : l'exercice se bloque sur tous les postes et le minuteur s'arrête. **Rouvrir** : tout reprend là où c'était ;
    - suivre les suppositions de chaque équipe (auteur, heure, note sur 5, réponses choisies).
 7. **Quand le minuteur arrive à zéro**, les élèves voient « Temps écoulé », mais **l'exercice continue** : c'est vous qui décidez quand fermer.
@@ -53,7 +54,7 @@ Un réglage (fermeture, ajout de temps) met jusqu'à 20 secondes à arriver sur 
 | Faille organisationnelle | Modification du code du programme de supervision sans revue ni contrôle des changements |
 | Leviers VICE | Vanité + Espèces |
 
-La même solution, avec les fausses pistes à écarter, est aussi visible dans l'exercice via le bouton **ANIM** en haut à droite.
+Le corrigé complet (avec les fausses pistes à écarter) est dans la console, carte **Corrigé**. Il est aussi accessible dans l'exercice via le bouton **ANIM** en haut à droite, **uniquement avec le mot de passe animateur** : le corrigé n'est jamais présent dans les pages des élèves.
 
 ## En cas de problème
 

@@ -2,10 +2,11 @@
 // GET  /api/session[?team=&member=]  -> etat public (salle d'attente, equipes, et tentatives de SON equipe)
 // POST /api/session {password, action, ...} -> console animateur (protege par ANIM_PASSWORD)
 //   actions : waiting | start | open | close | reset | setTimer | addTime | state
-//             deleteTeam | removeMember | resetAttempts | wipeTeams | reply | broadcast
+//             deleteTeam | removeMember | resetAttempts | wipeTeams | reply | broadcast | alert | solution
 const store = require('./_store');
 const { parseBody, clean, cleanText, newId, publicView, pushMessage } = require('./_util');
 const { publicQuestions } = require('./_grade');
+const SOLUTION = require('./_solution');
 
 function clampMin(v, fallback) {
   v = parseInt(v, 10);
@@ -44,12 +45,13 @@ module.exports = async (req, res) => {
 
   const action = body.action;
   try {
+    if (action === 'solution') { res.status(200).json({ html: SOLUTION }); return; }
     if (action === 'state' || action === 'noop') {
       const st = await store.read(false, parseInt(body.minRev, 10) || 0);
       res.status(200).json({ ...st, serverNow: Date.now() });
       return;
     }
-    const known = ['waiting', 'start', 'open', 'close', 'reset', 'setTimer', 'addTime', 'deleteTeam', 'removeMember', 'resetAttempts', 'wipeTeams', 'reply', 'broadcast'];
+    const known = ['waiting', 'start', 'open', 'close', 'reset', 'setTimer', 'addTime', 'deleteTeam', 'removeMember', 'resetAttempts', 'wipeTeams', 'reply', 'broadcast', 'alert'];
     if (!known.includes(action)) { res.status(400).json({ error: 'bad action' }); return; }
 
     const result = await store.mutate(st => {
@@ -80,7 +82,12 @@ module.exports = async (req, res) => {
         } else return { error: 'Le minuteur ne se règle que pendant l\'exercice.' };
         s.missionMin = M; s.updatedAt = now;
       }
-      else if (action === 'wipeTeams') { st.teams = {}; st.broadcasts = []; }
+      else if (action === 'wipeTeams') { st.teams = {}; st.broadcasts = []; st.alerts = []; }
+      else if (action === 'alert') {
+        // Relance : notification affichée sur tous les postes (et non un message de discussion)
+        const text = cleanText(body.text); if (!text) return { error: 'Message vide.' };
+        st.alerts = st.alerts || []; pushMessage(st.alerts, { id: newId(), title: cleanText(body.title).slice(0, 80) || 'Nouvelle alerte DSI', text, at: now });
+      }
       else if (action === 'broadcast') {
         const text = cleanText(body.text); if (!text) return { error: 'Message vide.' };
         st.broadcasts = st.broadcasts || []; pushMessage(st.broadcasts, { id: newId(), text, at: now });

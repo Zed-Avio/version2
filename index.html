@@ -1419,28 +1419,20 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 <!-- ANIMATOR -->
 <div id="anim-panel">
   <div class="anim-panel-title">Panneau animateur <button class="btn-anim-close" onclick="this.closest('#anim-panel').classList.remove('show')">X</button></div>
-
-  <div class="anim-section-label">Chrono de mission</div>
-  <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px">
-    <input type="number" id="anim-duration" value="150" min="5" max="600" style="width:64px;background:#0a0a0a;border:1px solid var(--bd2);color:var(--tx);padding:6px 8px;font-size:12px;border-radius:4px;font-family:var(--font)">
-    <span style="font-size:11px;color:var(--tx3)">minutes</span>
+  <div id="anim-lock">
+    <div class="anim-section-label">Accès réservé à l'animateur</div>
+    <input type="password" id="anim-pass" placeholder="Mot de passe animateur" autocomplete="off" onkeydown="if(event.key==='Enter')unlockAnimPanel()" style="width:100%;background:#0a0a0a;border:1px solid var(--bd2);color:var(--tx);padding:8px 10px;font-size:12px;border-radius:4px;font-family:var(--font);outline:none">
+    <button class="btn-anim-ransom" onclick="unlockAnimPanel()">Déverrouiller</button>
+    <div id="anim-lock-msg" style="font-size:11px;color:#fca5a5;margin-top:6px;min-height:14px"></div>
   </div>
-  <div style="display:flex;gap:6px">
-    <button class="btn-anim-ransom" style="margin-top:0;width:auto;flex:1" onclick="setSessionTimer(parseInt(document.getElementById('anim-duration').value)||150)">Régler</button>
-    <button class="btn-anim-ransom" style="margin-top:0;width:auto;flex:1" onclick="toggleSessionTimer()">Démarrer/Pause</button>
+  <div id="anim-unlocked" style="display:none">
+    <div class="anim-section-label">Corrigé</div>
+    <div id="anim-solution" class="anim-solution show"></div>
+    <div class="anim-section-label">Session</div>
+    <button class="btn-anim-ransom" onclick="resetMission()">Réinitialiser la mission (efface la progression de ce poste)</button>
+    <button class="btn-anim-ransom" onclick="lockAnimPanel()">Verrouiller le panneau</button>
   </div>
-
-  <div class="anim-section-label">Relance</div>
-  <button class="btn-anim-ransom" onclick="toast('!','Nouvelle alerte DSI','Le volume de données transférées vers l\'adresse externe vient d\'augmenter. La DSI demande une priorisation rapide.')">Injecter une relance (alerte DSI)</button>
-
-  <div class="anim-section-label">Corrigé (usage prof)</div>
-  <button class="btn-anim-ransom" onclick="toggleAnimSolution()">Afficher / masquer la solution</button>
-  <div id="anim-solution" class="anim-solution"></div>
-
-  <div class="anim-section-label">Session</div>
-  <button class="btn-anim-ransom" onclick="resetMission()">Réinitialiser la mission (efface la progression locale)</button>
-
-  <div class="anim-note">Usage exclusif animateur</div>
+  <div class="anim-note">Minuteur, relances et messages : console /animateur</div>
 </div>
 
 <script>
@@ -2356,26 +2348,6 @@ function renderSessionTimer(){
   const wrap=document.getElementById('session-countdown-wrap');
   if(wrap)wrap.classList.toggle('warn',s>0&&s<=300);
 }
-function setSessionTimer(minutes){
-  if(serverMission){ toast('!','Minuteur','Le minuteur est piloté depuis la console animateur (/animateur).'); return; }
-  sessionSecondsLeft=Math.max(1,minutes)*60;
-  renderSessionTimer();
-}
-function toggleSessionTimer(){
-  if(serverMission){ toast('!','Minuteur','Le minuteur est piloté depuis la console animateur (/animateur).'); return; }
-  sessionRunning=!sessionRunning;
-  if(sessionRunning){
-    sessionInterval=setInterval(()=>{
-      if(sessionSecondsLeft>0){
-        sessionSecondsLeft--;
-        renderSessionTimer();
-        if(sessionSecondsLeft===0)toast('!','Temps écoulé','Le temps prévu est écoulé. Finalisez vos suppositions et suivez les consignes de l\'enseignant.');
-      }
-    },1000);
-  } else {
-    clearInterval(sessionInterval);
-  }
-}
 function initSessionTimer(){
   renderSessionTimer();
 }
@@ -3134,13 +3106,33 @@ function renderOSINTMain(){
 // ══════════════════════════════════════════
 // VERDICT
 // ══════════════════════════════════════════
-const ANIM_SOLUTION_B64='PHN0cm9uZz5Db3VwYWJsZSA6PC9zdHJvbmc+IEp1bGllbiBNT1JFQVUgKERTSSksIHJlY3J1dMOpIHBhciBpbmfDqW5pZXJpZSBzb2NpYWxlIChwcmVzc2lvbiBmaW5hbmNpw6hyZSArIGZsYXR0ZXJpZSAtIGxldmllcnMgRXNww6hjZXMgZXQgVmFuaXTDqSkuPGJyPgogICAgPHN0cm9uZz5WZWN0ZXVyIGluaXRpYWwgOjwvc3Ryb25nPiBtYWlsIHNwZWFycGhpc2hpbmcgKGZhdXggcmVjcnV0ZXVyIFRoYWxlcyksIHBpw6hjZSBqb2ludGUgLmRvY20gcGnDqWfDqWUuPGJyPgogICAgPHN0cm9uZz5DYW5hbCBkZSBzb3J0aWUgOjwvc3Ryb25nPiBwYXNzZXJlbGxlIEJYLUdBVEVXQVktMDcgdmVycyBsJ0lQIDE4NS4yMjAuMTAxLjQ3ICjDoCBkaXN0aW5ndWVyIGRlIDEwLjQyLjYuMTEgPSBpbnRlcm5lIGzDqWdpdGltZSBldCAyMC40Mi43My4xOCA9IEF6dXJlIE5UUCBsw6lnaXRpbWUpLjxicj4KICAgIDxzdHJvbmc+Q2F1c2UgcmFjaW5lIG9yZ2FuaXNhdGlvbm5lbGxlIDo8L3N0cm9uZz4gYWJzZW5jZSBkZSByZXZ1ZSBkZSBjb2RlIGV0IGRlIGNvbnRyw7RsZSBkZXMgY2hhbmdlbWVudHMgc3VyIGxlIHByb2dyYW1tZSBkZSBzdXBlcnZpc2lvbiBkZSBsYSBwYXNzZXJlbGxlIEJYLUdBVEVXQVktMDcsIGF5YW50IHBlcm1pcyBsJ2ludHJvZHVjdGlvbiBkJ3VuZSBwb3J0ZSBkw6lyb2LDqWUgcGFyIG1vZGlmaWNhdGlvbiBkJ3VuZSBsaWduZSBkZSBjb2RlIGxlIDkgbWFpICh2b2lyIG9uZ2xldCBQcm9ncmFtbWF0aW9uKSwgZMOpdGVjdMOpZSBwYXIgbGUgY29udHLDtGxlIGQnaW50w6lncml0w6kgV2F6dWggRklNLjxicj4KICAgIDxzdHJvbmc+RmF1c3NlcyBwaXN0ZXMgw6Agw6ljYXJ0ZXIgOjwvc3Ryb25nPiBLYXJpbSBCRU5ZT1VDRUYgKG1vdGlmIGZpbmFuY2llciBtYWlzIGF1Y3VuIGFjY8OocyksIENhbWlsbGUgUk9VU1NFQVUgKGlkw6lvbG9naWUgbWFpcyBhdWN1biBhY2PDqHMsIGFsaWJpKSwgVGhvbWFzIFZBU1NFVVIgKHRyb3UgZGUgQ1YgbWFpcyBhdWN1bmUgcHJldXZlKSwgRmFyaWQgSEFEREFEICh2b3lhZ2VzIG1haXMgYXVjdW4gbGllbiwgZG9zc2llciBmb3Vybmlzc2V1ciBqYW1haXMgdmFsaWTDqSBuaSBkw6lwbG95w6kpLCBhbm9tYWxpZSBxdWFsaXTDqSBCWC00MjE2IChwcm9ibMOobWUgaW5kw6lwZW5kYW50LCBjb25maXJtw6kgY29uZm9ybWUpLCBBbnRvaW5lIFJPQkVSVCAoYWNjw6hzIHLDqXZvcXXDqXMgw6Agc29uIGTDqXBhcnQpLCBUZWNoSW5kdXMgU29sdXRpb25zIChhdWN1bmUgcHJldXZlIHRlY2huaXF1ZSku';
-function toggleAnimSolution(){
-  const el=document.getElementById('anim-solution');
-  if(!el.innerHTML.trim()){
-    el.innerHTML=decodeURIComponent(escape(atob(ANIM_SOLUTION_B64)));
-  }
-  el.classList.toggle('show');
+// Panneau animateur dans l'exercice : verrouillé par le mot de passe animateur, vérifié par le serveur,
+// qui renvoie alors le corrigé (le corrigé n'est jamais présent dans la page).
+async function unlockAnimPanel(){
+  const pass=document.getElementById('anim-pass').value.trim(), m=document.getElementById('anim-lock-msg');
+  if(!pass){ m.textContent='Entrez le mot de passe.'; return; }
+  m.textContent='Vérification...';
+  try{
+    const r=await fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass,action:'solution'})});
+    if(r.status===401){ m.textContent='Mot de passe incorrect.'; return; }
+    const j=await r.json(); if(!r.ok||!j.html){ m.textContent='Serveur indisponible, réessayez.'; return; }
+    document.getElementById('anim-solution').innerHTML=j.html;
+    document.getElementById('anim-pass').value=''; m.textContent='';
+    document.getElementById('anim-lock').style.display='none'; document.getElementById('anim-unlocked').style.display='block';
+  }catch(e){ m.textContent='Serveur injoignable, réessayez.'; }
+}
+function lockAnimPanel(){
+  document.getElementById('anim-solution').innerHTML='';
+  document.getElementById('anim-unlocked').style.display='none'; document.getElementById('anim-lock').style.display='block';
+}
+
+// Relances envoyées depuis la console animateur : notification sur chaque poste (une seule fois par relance).
+function showNewAlerts(alerts){
+  if(!alerts||!alerts.length) return;
+  let seen={}; try{ seen=JSON.parse(localStorage.getItem('elecarm_alerts_seen')||'{}'); }catch(e){}
+  const fresh=alerts.filter(a=>!seen[a.id] && Date.now()-a.at<15*60000);
+  alerts.forEach(a=>{ seen[a.id]=1; }); try{ localStorage.setItem('elecarm_alerts_seen',JSON.stringify(seen)); }catch(e){}
+  if(fresh.length){ const a=fresh[fresh.length-1]; toast('!',a.title||'Nouvelle alerte DSI',a.text); }
 }
 
 // Confirmation dans la page (et non confirm() du navigateur, que l'on peut bloquer par une case à cocher).
@@ -3303,6 +3295,7 @@ async function accessGate(){
   if(!st.open || !myTeam || !st.me){ location.replace('/salle'); return false; }
   teamView=st.me;
   window.__elecarmSession=st;
+  setTimeout(()=>showNewAlerts(st.alerts),1500);
   return true;
 }
 function setTeamChip(){
@@ -3320,6 +3313,7 @@ function startLiveSync(){
     if(st){
       apiOnline=true;
       applyServerMission(st);
+      showNewAlerts(st.alerts);
       if(st.me===null && ++meGone<2){ /* à confirmer au prochain passage */ }
       else if(st.me===null){
         document.getElementById('co-t').textContent='Vous ne faites plus partie d\'une équipe';

@@ -25,6 +25,7 @@ function publicView(st, teamId, memberId) {
     status: s.status, endAt: s.endAt, durationMin: s.durationMin, updatedAt: s.updatedAt,
     missionMin: s.missionMin || 240, missionEndAt: s.missionEndAt || null, missionLeftMs: s.missionLeftMs == null ? null : s.missionLeftMs,
     serverNow: Date.now(), open: isOpen(s), rev: st.rev || 0,
+    alerts: (st.alerts || []).slice(-5),
     teams: Object.values(st.teams).sort((a, b) => a.createdAt - b.createdAt)
       .map(t => ({ id: t.id, name: t.name, count: t.members.length, members: t.members.map(m => m.name) })),
   };

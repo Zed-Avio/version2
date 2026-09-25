@@ -163,6 +163,16 @@ button.big{font-size:15px;padding:13px 22px}
       </div>
     </div>
 
+    <div class="card">
+      <h2>Relance</h2>
+      <div class="mini" style="margin:0 0 10px">Envoie une notification « alerte » sur l'écran de toutes les équipes (elle apparaît en moins de 20 secondes). Utile pour relancer une équipe qui s'essouffle ou mettre la pression.</div>
+      <label>Titre</label>
+      <input id="al-title" maxlength="80" value="Nouvelle alerte DSI">
+      <label style="margin-top:10px">Message</label>
+      <input id="al-text" maxlength="500" value="Le volume de données transférées vers l'adresse externe vient d'augmenter. La DSI demande une priorisation rapide.">
+      <div class="btns"><button class="b-close" onclick="relance()">Injecter la relance</button></div>
+    </div>
+
     <div class="card" id="chatcard">
       <h2>Messages des équipes <span class="r" id="chatcount"></span></h2>
       <div class="chat">
@@ -173,6 +183,12 @@ button.big{font-size:15px;padding:13px 22px}
         </div>
       </div>
       <div class="bcast"><input id="bcast" maxlength="500" placeholder="Message à TOUTES les équipes (ex. : plus que 30 minutes !)" onkeydown="if(event.key==='Enter'){broadcast();}"><button class="b-wait" onclick="broadcast()">Envoyer à toutes les équipes</button></div>
+    </div>
+
+    <div class="card">
+      <h2>Corrigé <span class="r">réservé à l'animateur</span></h2>
+      <div class="btns" style="margin-top:0"><button class="b-reset" id="sol-btn" onclick="toggleSolution()">Afficher le corrigé</button></div>
+      <div id="sol" class="hidden" style="margin-top:12px;font-size:13px;line-height:1.75;color:#cfcfcf;background:#0c0d0f;border:1px solid var(--bd);border-radius:8px;padding:14px 16px"></div>
     </div>
 
     <div class="card">
@@ -316,6 +332,19 @@ function reply(){
   if(!text) return;
   msg('Envoi en cours...',false);
   api({action:'reply',teamId:chatTeam,text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; msg('Réponse envoyée.',false); apply(o.j); }).catch(function(){ msg('Erreur réseau.',true); });
+}
+function relance(){
+  var title=document.getElementById('al-title').value.trim(), text=document.getElementById('al-text').value.trim();
+  if(!text){ msg('Écrivez le message de la relance.',true); return; }
+  ask('Envoyer cette relance à toutes les équipes ?\n\n'+title+' : '+text,function(){
+    msg('Envoi en cours...',false);
+    api({action:'alert',title:title,text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } msg('Relance envoyée à toutes les équipes.',false); apply(o.j); }).catch(function(){ msg('Erreur réseau.',true); });
+  });
+}
+function toggleSolution(){
+  var box=document.getElementById('sol'), btn=document.getElementById('sol-btn');
+  if(!box.classList.contains('hidden')){ box.classList.add('hidden'); btn.textContent='Afficher le corrigé'; return; }
+  api({action:'solution'}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } box.innerHTML=o.j.html; box.classList.remove('hidden'); btn.textContent='Masquer le corrigé'; });
 }
 function broadcast(){
   var el=document.getElementById('bcast'), text=el.value.trim(); if(!text) return;
