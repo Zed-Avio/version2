@@ -387,6 +387,19 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .wz-doc td:last-child{color:#dfe5ee;word-break:break-word}
 .wz-empty{padding:26px;text-align:center;color:#6b7686;font-size:12px}
 .wz-sum{margin-left:auto;font-size:11.5px;color:#8b95a5}
+.wz-card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.wz-legend{display:flex;gap:12px;font-size:10.5px;color:#8b95a5;font-weight:400}
+.wz-legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.wz-chart{display:flex;gap:10px;padding:12px 14px 6px}
+.wz-yax{display:flex;flex-direction:column;justify-content:space-between;font-size:9px;color:#6b7686;font-family:var(--mono);height:110px;text-align:right;min-width:14px}
+.wz-plot{flex:1;position:relative;height:110px;border-left:1px solid #262d38;border-bottom:1px solid #262d38}
+.wz-grid{position:absolute;left:0;right:0;border-top:1px dashed #1c222b}
+.wz-bars{position:absolute;inset:0;display:flex;align-items:flex-end;gap:3px;padding:0 3px}
+.wz-bar{flex:1;display:flex;flex-direction:column-reverse;height:100%;min-width:0;cursor:default}
+.wz-bar div{width:100%}
+.wz-bar:hover div{filter:brightness(1.25)}
+.wz-x{display:flex;gap:3px;padding:3px 17px 10px 41px;font-size:9px;color:#6b7686;font-family:var(--mono)}
+.wz-x span{flex:1;text-align:center;min-width:0;white-space:nowrap;overflow:visible}
 .wz-sum b{color:#dfe5ee}
 .wz-help{font-size:12px;color:#8b95a5;margin-bottom:12px;line-height:1.6}
 .log-phase td{background:#0e1218!important;color:#dfe5ee;font-weight:700;font-size:12px;padding:9px 12px;border-bottom:1px solid #262d38;cursor:default}
@@ -533,6 +546,42 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .brief-anim.in{opacity:1;transform:none}
 .brief-photo-anim{opacity:0;transform:scale(.97);transition:opacity .6s ease,transform .6s ease}
 .brief-photo-anim.in{opacity:1;transform:none}
+/* ── ENQUÊTE : fiches façon avis FBI ── */
+.fbi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.fbi-card{background:#f4f1ea;border-radius:4px;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;color:#1a1a1a;display:flex;flex-direction:column}
+.fbi-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.6)}
+.fbi-card-top{background:#0d2a4a;color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.14em;text-align:center;padding:5px 0;text-transform:uppercase}
+.fbi-card-top.wit{background:#5a5a5a}
+.fbi-card-ph{aspect-ratio:3/3.4;background:#d9d4c7;overflow:hidden;position:relative}
+.fbi-card-ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(20%) contrast(1.05)}
+.fbi-none{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#8a8474;font-size:9px;font-weight:800;letter-spacing:.12em;text-align:center}
+.fbi-none svg{width:46%;fill:#bdb6a5}
+.fbi-card-b{padding:10px 12px 12px;text-align:center}
+.fbi-card-n{font-family:Georgia,'Times New Roman',serif;font-size:16px;font-weight:700;color:#0d2a4a;letter-spacing:.02em;text-transform:uppercase;line-height:1.2}
+.fbi-card-r{font-size:11px;color:#555;margin-top:3px}
+.fbi-card-ref{font-family:var(--mono);font-size:9.5px;color:#8a8474;margin-top:6px}
+#suspect-modal .modal-box.poster{background:#f4f1ea;color:#1a1a1a;max-width:760px;width:calc(100vw - 32px);padding:0;max-height:92vh;overflow-y:auto}
+.fbi-p-head{text-align:center;padding:18px 24px 12px;border-bottom:3px double #0d2a4a}
+.fbi-p-org{font-size:10px;font-weight:800;letter-spacing:.2em;color:#0d2a4a;text-transform:uppercase}
+.fbi-p-cat{font-family:Georgia,'Times New Roman',serif;font-size:34px;font-weight:700;color:#9b1c1c;letter-spacing:.06em;text-transform:uppercase;margin:4px 0 2px}
+.fbi-p-cat.wit{color:#4a4a4a}
+.fbi-p-name{font-family:Georgia,'Times New Roman',serif;font-size:26px;font-weight:700;color:#0d2a4a;text-transform:uppercase;letter-spacing:.04em}
+.fbi-p-sub{font-size:12px;color:#555;margin-top:2px}
+.fbi-p-body{display:flex;gap:20px;padding:18px 24px;flex-wrap:wrap}
+.fbi-p-ph{width:210px;flex-shrink:0}
+.fbi-p-ph .fbi-card-ph{border:1px solid #c9c2b1}
+.fbi-p-cap{font-size:10px;color:#777;text-align:center;margin-top:5px}
+.fbi-p-desc{flex:1;min-width:260px}
+.fbi-p-t{font-size:11px;font-weight:800;letter-spacing:.16em;color:#0d2a4a;text-transform:uppercase;border-bottom:1px solid #0d2a4a;padding-bottom:3px;margin-bottom:6px}
+.fbi-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.fbi-tbl td{padding:4px 8px;border-bottom:1px solid #ddd6c6;vertical-align:top}
+.fbi-tbl td:first-child{background:#e6e0d2;font-weight:700;color:#333;width:42%;white-space:nowrap}
+.fbi-p-sec{padding:0 24px 16px}
+.fbi-p-txt{font-size:13px;line-height:1.7;color:#222}
+.fbi-p-txt ul{margin:2px 0 0 18px}
+.fbi-p-foot{border-top:3px double #0d2a4a;padding:12px 24px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:11px;color:#555}
+.fbi-p-foot button{margin-left:auto;background:#0d2a4a;color:#fff;border:none;border-radius:4px;padding:8px 14px;font-weight:700;font-size:12px;cursor:pointer;font-family:var(--font)}
+.fbi-p-foot button.sec{margin-left:0;background:transparent;color:#0d2a4a;border:1px solid #0d2a4a}
 .suspect-photo{width:64px;height:64px;border-radius:8px;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,.07)}
 .suspect-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(12%)}
 
@@ -946,10 +995,11 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
             <div class="enq-header">
               <div class="enq-ref">Réf. mission <span>AUDIT-ELECARM-2026-0519</span></div>
               <div class="enq-ref">Source <span>Dossiers RH et audit interne DSI - ELECARM SAS</span></div>
-              <div class="enq-ref">Suspects potentiels <span>8</span></div>
+              <div class="enq-ref">Personnes d'intérêt <span>7</span></div>
+              <div class="enq-ref">Témoin <span>1</span></div>
               <div class="enq-badge">ENQUÊTE EN COURS</div>
             </div>
-            <div class="suspects-grid" id="suspects-grid"></div>
+            <div class="fbi-grid" id="suspects-grid"></div>
           </div>
         </div>
 
@@ -965,7 +1015,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
               <div class="wz-query">
                 <span class="wz-dql">DQL</span>
                 <input class="wz-search" id="wz-search" placeholder="Rechercher (ex. SRV-BACKUP, T1078, connexion, Mo...)" oninput="renderLogs()">
-                <div class="wz-date"><svg viewBox="0 0 16 16"><path d="M4 0h1v2h6V0h1v2h3v14H1V2h3V0Zm10 6H2v9h12V6Z"/></svg>28 avr. 2026 @ 00:00 &rarr; 19 mai 2026 @ 12:30</div>
+                <div class="wz-date"><svg viewBox="0 0 16 16"><path d="M4 0h1v2h6V0h1v2h3v14H1V2h3V0Zm10 6H2v9h12V6Z"/></svg>1 mai 2026 @ 00:00 &rarr; 19 mai 2026 @ 12:30</div>
                 <button class="wz-btn" onclick="renderLogs()">Actualiser</button>
               </div>
               <div class="wz-filters">
@@ -973,6 +1023,13 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 <span class="wz-pill lv" data-min="7" onclick="setLogLevel(this)">Masquer l'activité normale</span>
                 <span class="wz-pill lv" data-min="12" onclick="setLogLevel(this)">Critiques seulement</span>
                 <span class="wz-sum" id="wz-sum"></span>
+              </div>
+              <div class="wz-card">
+                <div class="wz-card-h">Alertes dans le temps (1er au 19 mai)
+                  <div class="wz-legend"><span><i style="background:#e7664c"></i>Critique</span><span><i style="background:#d6a13a"></i>Alerte / Suspect</span><span><i style="background:#6092c0"></i>À vérifier</span><span><i style="background:#54b399"></i>Normal</span></div>
+                </div>
+                <div class="wz-chart"><div class="wz-yax" id="wz-yax"></div><div class="wz-plot"><div id="wz-grid"></div><div class="wz-bars" id="wz-bars"></div></div></div>
+                <div class="wz-x" id="wz-x"></div>
               </div>
               <div class="wz-help">Chaque ligne est un événement repéré par la supervision. Lisez de haut en bas, dans l'ordre chronologique. Cliquez sur une ligne pour voir ses détails techniques.</div>
               <div class="wz-card">
@@ -1251,7 +1308,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
   </div>
 </div>
 <div class="modal-bg" id="suspect-modal" onclick="if(event.target===this)this.classList.remove('show')">
-  <div class="modal-box"><div id="suspect-content"></div><button class="modal-close" onclick="document.getElementById('suspect-modal').classList.remove('show')">Fermer</button></div>
+  <div class="modal-box"><div id="suspect-content"></div></div>
 </div>
 
 <!-- TOAST -->
@@ -1338,9 +1395,9 @@ const MAILS = [
   {
     id:'dir01',from:'R. LAMBERT - Direction',email:'r.lambert@elecarm.fr',
     to:'equipe@elecarm.fr',subject:'[URGENT] Alerte sécurité DSI - consignes immédiates',
-    time:'07:02',date:'19 mai 2026',unread:false,urgent:false,visible:true,
+    time:'08:12',date:'19 mai 2026',unread:false,urgent:false,visible:true,
     body:`<p>Équipe,</p>
-<p>La DSI a détecté cette nuit un flux de données suspect depuis la passerelle de télémaintenance des boîtiers BX-4400 (BX-GATEWAY-07) vers une adresse IP externe non identifiée. La surveillance est active depuis 08h00 ce matin.</p>
+<p>Lors de la revue de vigilance de 08h00, la DSI a repéré un flux de données suspect, envoyé cette nuit depuis la passerelle de télémaintenance des boîtiers BX-4400 (BX-GATEWAY-07) vers une adresse IP externe non identifiée. La surveillance est renforcée depuis.</p>
 <p><strong>Consignes immédiates :</strong></p>
 <ul>
 <li>Ne pas éteindre ni redémarrer les postes ou la passerelle concernée</li>
@@ -1416,7 +1473,7 @@ const MAILS = [
     body:`<p>Monsieur LAMBERT,</p>
 <p>Nous avons été informés de l'alerte de sécurité en cours chez vous. Avant tout, nous espérons que la situation reste maîtrisée de votre côté.</p>
 <p>Néanmoins, nous devons aborder la situation contractuelle avec transparence.</p>
-<p>La commande <strong>THA-REF-28471</strong> (lot BX-4400-A, 24 unités) est attendue pour le <strong>vendredi 23 mai</strong>. Ces composants entrent dans un programme de modernisation de systèmes de guidage classifié Diffusion Restreinte. Tout retard a des conséquences directes sur notre calendrier de livraison DGA.</p>
+<p>La commande <strong>THA-REF-28471</strong> (lot BX-4400-A, 24 unités) est attendue pour le <strong>23 mai</strong>. Ces composants entrent dans un programme de modernisation de systèmes de guidage classifié Diffusion Restreinte. Tout retard a des conséquences directes sur notre calendrier de livraison DGA.</p>
 <p>Nous avons par ailleurs été informés d'une anomalie qualité signalée en interne sur ce lot. Dans le contexte actuel, cela nous préoccupe au plus haut point.</p>
 <p>Pourriez-vous confirmer :</p>
 <ol>
@@ -1814,7 +1871,7 @@ const MAILS = [
 <li>Entretien technique vidéo prévu semaine du 5 mai 2026</li>
 <li>NDA signé avant entretien (procédure standard)</li>
 </ul>
-<p>Afin de valider votre profil technique et planifier l'entretien, merci de consulter et de retourner le questionnaire joint avant le <strong>vendredi 5 mai 2026</strong>.</p>
+<p>Afin de valider votre profil technique et planifier l'entretien, merci de consulter et de retourner le questionnaire joint avant le <strong>mardi 5 mai 2026</strong>.</p>
 <p style="font-size:12px;color:var(--tx3);background:var(--s2);border-left:2px solid var(--bd2);padding:8px 12px;border-radius:3px">Ce document est strictement confidentiel. La procédure de recrutement exige de ne pas en informer votre employeur à ce stade - tout contact prématuré invaliderait votre candidature et pourrait compromettre le programme.</p>
 <p>Je reste disponible pour répondre à vos questions en amont.<br><br>Cordialement,<br><strong>Marine FONTAINE</strong><br>Chargée de recrutement technique - Ops RH<br>Thales Defence Systems<br>T : +33 1 57 32 99 41<br>m.fontaine@thales-defence.net</p>`
   }
@@ -1866,20 +1923,8 @@ const LOGS = [
    desc:'Passage badge de T. VASSEUR en dehors de ses horaires habituels (16h40 au lieu de 17h00) - Écart de quelques minutes, cohérent avec les horaires flexibles de l\'atelier. Rien à signaler.',
    mitre:[],vis:true},
 
-  // PHASE 1 - RECON
-  {phase:'Phase 1 - Reconnaissance du réseau (28-29 avril)',phaseColor:'#161616',phaseTc:'#666',
-   t:'28/04  14h32',agent:'WS-MOREAU',lv:'SUSPECT',lc:'#1a1a1a',ltc:'#888',
-   desc:'Depuis ce poste : commande lancée pour lister TOUTES les machines du réseau interne ELECARM. Quelqu\'un cartographie le réseau depuis l\'intérieur.',
-   mitre:['T1087'],vis:true},
-  {t:'28/04  14h33',agent:'WS-MOREAU',lv:'SUSPECT',lc:'#1a1a1a',ltc:'#888',
-   desc:'Recherches en rafale depuis ce poste : elecarm.fr, profils LinkedIn, annuaires d\'entreprises - 6 requêtes en 2 secondes. Profil de collecte d\'informations sur ELECARM (OSINT).',
-   mitre:['T1591'],vis:true},
-  {t:'29/04  09h14',agent:'WS-MOREAU',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
-   desc:'Script PowerShell caché et encodé exécuté depuis ce poste - Analyse des connexions réseau actives + téléchargement de code depuis un site externe. Comportement malveillant probable.',
-   mitre:['T1059','T1105'],vis:true},
-
-  // PHASE 2 - INITIAL ACCESS
-  {phase:'Phase 2 - Accès initial par email piégé (2 mai)',phaseColor:'#1a0a00',phaseTc:'#dc2626',
+  // PHASE 1 - INITIAL ACCESS
+  {phase:'Phase 1 - Accès initial par email piégé (2 mai)',phaseColor:'#1a0a00',phaseTc:'#dc2626',
    t:'02/05  16h41',agent:'MESSAGERIE',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
    desc:'Email suspect reçu et ouvert par j.moreau - Pièce jointe Word avec macro malveillante activée - Expéditeur : m.fontaine@thales-defence.net. Domaine USURPÉ : le vrai domaine Thales est thalesgroup.com.',
    mitre:['T1566'],vis:true},
@@ -1890,9 +1935,21 @@ const LOGS = [
    desc:'Connexion établie entre ce poste et un serveur en Roumanie (réseau TOR anonyme). Signal envoyé toutes les 60 secondes : le poste est désormais sous contrôle à distance.',
    mitre:['T1071','T1573'],vis:true},
 
+  // PHASE 2 - RECON (depuis le poste compromis)
+  {phase:'Phase 2 - Reconnaissance du réseau depuis le poste compromis (4-5 mai)',phaseColor:'#161616',phaseTc:'#666',
+   t:'04/05  14h32',agent:'WS-MOREAU',lv:'SUSPECT',lc:'#1a1a1a',ltc:'#888',
+   desc:'Depuis ce poste : commande lancée pour lister TOUTES les machines du réseau interne ELECARM. Quelqu\'un cartographie le réseau depuis l\'intérieur.',
+   mitre:['T1087'],vis:true},
+  {t:'04/05  14h33',agent:'WS-MOREAU',lv:'SUSPECT',lc:'#1a1a1a',ltc:'#888',
+   desc:'Recherches en rafale depuis ce poste : elecarm.fr, profils LinkedIn, annuaires d\'entreprises - 6 requêtes en 2 secondes. Profil de collecte d\'informations sur ELECARM (OSINT).',
+   mitre:['T1591'],vis:true},
+  {t:'05/05  09h14',agent:'WS-MOREAU',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
+   desc:'Script PowerShell caché et encodé exécuté depuis ce poste - Analyse des connexions réseau actives + téléchargement de code depuis un site externe. Comportement malveillant probable.',
+   mitre:['T1059','T1105'],vis:true},
+
   // PHASE 3 - PERSISTANCE + EXFIL
-  {phase:'Phase 3 - Persistance et vol de données (3-18 mai)',phaseColor:'#1a0a00',phaseTc:'#dc2626',
-   t:'03/05  02h17',agent:'WS-MOREAU',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
+  {phase:'Phase 3 - Persistance et vol de données (6-18 mai)',phaseColor:'#1a0a00',phaseTc:'#dc2626',
+   t:'06/05  02h17',agent:'WS-MOREAU',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
    desc:'847 Mo de données transférées vers un serveur externe entre 02h17 et 06h29 (en pleine nuit) - Flux chiffré et camouflé. Exfiltration probable de données confidentielles ELECARM.',
    mitre:['T1041'],vis:true},
   {t:'08/05  23h44',agent:'WS-MOREAU',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
@@ -2165,7 +2222,7 @@ function initTimeline(){
     {time:'10:10',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Piste A. ROBERT écartée',desc:'RH confirme : accès révoqués à son départ en mars, aucune réactivation depuis.'},
     {time:'10:00',color:'#888',badge:'ENQUETE',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Profil interne signalé',desc:'Accès admin et alertes DSI non signalées concentrées sur un même poste.'},
     {time:'09:05',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Hypothèse TechIndus évoquée',desc:'Concurrent connu pour des approches agressives, mais aucune preuve technique ne le relie aux faits.'},
-    {time:'09:00',color:'#555',badge:'DSI',badgeBg:'#1c1c1c',badgeTc:'#666',title:'Logs SIEM disponibles',desc:'Activités suspectes tracées depuis fin avril sur un poste interne.'},
+    {time:'09:00',color:'#555',badge:'DSI',badgeBg:'#1c1c1c',badgeTc:'#666',title:'Logs SIEM disponibles',desc:'Activités suspectes tracées depuis début mai sur un poste interne.'},
     {time:'08:00',color:'#dc2626',badge:'DSI',badgeBg:'#3b0000',badgeTc:'#fca5a5',title:'Alerte passerelle BX-GATEWAY-07',desc:'Flux sortant suspect vers IP externe repéré lors de la revue de vigilance.'},
   ];
   tl.innerHTML='';
@@ -2434,6 +2491,16 @@ function renderLogs(){
   const vis=[].concat(...groups.map(gr=>gr.items.filter(match)));
   const crit=vis.filter(e=>e.level>=12).length, alrt=vis.filter(e=>e.level>=7&&e.level<12).length;
   document.getElementById('wz-sum').innerHTML=`<b>${vis.length}</b> événement${vis.length>1?'s':''} · <b style="color:#ff8a73">${crit}</b> critique${crit>1?'s':''} · <b style="color:#f0b44c">${alrt}</b> alerte${alrt>1?'s':''} ou suspect${alrt>1?'s':''}`;
+  // Histogramme façon Wazuh : un bâton par jour, empilé par gravité (suit les filtres et la recherche)
+  const days=[]; for(let d=1;d<=19;d++)days.push([5,d]);
+  const cls=e=>e.level>=12?0:e.level>=7?1:e.level>=5?2:3, COL=['#e7664c','#d6a13a','#6092c0','#54b399'];
+  const bk=days.map(([mo,d])=>{ const c=[0,0,0,0]; vis.forEach(e=>{ if(e.p.mo===mo&&e.p.d===d) c[cls(e)]++; }); return c; });
+  const max=Math.max(2,...bk.map(c=>c[0]+c[1]+c[2]+c[3]));
+  document.getElementById('wz-yax').innerHTML=`<span>${max}</span><span>${Math.round(max/2)}</span><span>0</span>`;
+  document.getElementById('wz-grid').innerHTML=`<div class="wz-grid" style="top:0"></div><div class="wz-grid" style="top:50%"></div>`;
+  document.getElementById('wz-bars').innerHTML=bk.map((c,i)=>{ const [mo,d]=days[i], n=c[0]+c[1]+c[2]+c[3];
+    return `<div class="wz-bar" title="${d} ${WZ_MOIS[mo-1]} : ${n} événement${n>1?'s':''}">${[3,2,1,0].map(k=>`<div style="height:${c[k]/max*100}%;background:${COL[k]}"></div>`).join('')}</div>`; }).join('');
+  document.getElementById('wz-x').innerHTML=days.map(([mo,d],i)=>`<span>${i%3===0?String(d).padStart(2,'0')+'/'+String(mo).padStart(2,'0'):''}</span>`).join('');
   tb.innerHTML='';
   if(!vis.length){ tb.innerHTML='<tr><td colspan="4" class="wz-empty">Aucun événement pour cette recherche.</td></tr>'; return; }
   groups.forEach(gr=>{
@@ -2466,48 +2533,59 @@ function renderLogs(){
 // ══════════════════════════════════════════
 // SUSPECTS
 // ══════════════════════════════════════════
+// Fiches d'identification façon avis FBI (cohérentes avec les âges, anciennetés et profils OSINT).
+// Pas de champ « race » : en France, l'enregistrement de l'origine ethnique est interdit (et inutile à l'enquête).
+const FICHES={
+  'Marc DURAND':{ref:'AUD-2026-01',dob:'3 mars 1985',pob:'Tours (Indre-et-Loire)',hair:'Bruns',eyes:'Marron',height:'1,78 m',weight:'80 kg',since:'mars 2018',marks:'Barbe fournie'},
+  'Karim BENYOUCEF':{ref:'AUD-2026-02',dob:'14 septembre 1996',pob:'Blois (Loir-et-Cher)',hair:'Bruns foncés',eyes:'Marron',height:'1,75 m',weight:'72 kg',since:'janvier 2023',marks:'Barbe courte'},
+  'Julien MOREAU':{ref:'AUD-2026-03',dob:'22 juin 1989',pob:'Orléans (Loiret)',hair:'Bruns',eyes:'Marron',height:'1,80 m',weight:'74 kg',since:'septembre 2020',marks:'Aucun signalé'},
+  'Nathalie BRUNET':{ref:'AUD-2026-04',dob:'8 novembre 1981',pob:'Vendôme (Loir-et-Cher)',hair:'Châtain clair',eyes:'Verts',height:'1,68 m',weight:'60 kg',since:'avril 2015',marks:'Aucun signalé'},
+  'Pierre THIERRY':{ref:'AUD-2026-05',dob:'17 janvier 1974',pob:'Romorantin-Lanthenay (Loir-et-Cher)',hair:'Châtains, coupe courte',eyes:'Bleus',height:'1,82 m',weight:'86 kg',since:'mars 2024',marks:'Aucun signalé',witness:true},
+  'Camille ROUSSEAU':{ref:'AUD-2026-06',dob:'30 juillet 1998',pob:'Tours (Indre-et-Loire)',hair:'Blonds',eyes:'Bleus',height:'1,65 m',weight:'55 kg',since:'mai 2024',marks:'Petit tatouage (colombe) au poignet gauche'},
+  'Thomas VASSEUR':{ref:'AUD-2026-07',dob:'5 avril 1993',pob:'Orléans (Loiret)',hair:'Châtain foncé',eyes:'Gris',height:'1,76 m',weight:'70 kg',since:'septembre 2025',marks:'Cicatrice à l\'arcade sourcilière droite'},
+  'Farid HADDAD':{ref:'AUD-2026-08',dob:'19 février 1978',pob:'Lyon (Rhône)',hair:'Noirs, grisonnants',eyes:'Marron',height:'1,77 m',weight:'78 kg',since:'2017',marks:'Porte des lunettes'},
+};
+const FBI_NOPHOTO=`<div class="fbi-none"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-5 0-9 2.5-9 6v2h18v-2c0-3.5-4-6-9-6z"/></svg>PHOTO NON<br>DISPONIBLE</div>`;
+// face4.jpg est un portrait détouré dans un cercle coloré : léger zoom pour masquer le cercle.
+function fbiPhoto(s){ const z=s.photo==='face4.jpg'?' style="transform:scale(1.32)"':''; return `<div class="fbi-card-ph">${s.photo?`<img src="${s.photo}" alt="${s.name}"${z}>`:FBI_NOPHOTO}</div>`; }
 function renderSuspects(){
   const g=document.getElementById('suspects-grid');
-  SUSPECTS.forEach((s,i)=>{
+  SUSPECTS.forEach(s=>{
+    const f=FICHES[s.name]||{};
     const d=document.createElement('div');
-    d.className='suspect';
-    const av=s.photo
-      ?`<div class="suspect-photo"><img src="${s.photo}" alt="${s.name}"></div>`
-      :`<div class="suspect-avatar" style="background:${s.bg};color:${s.tc}">${s.initials}</div>`;
-    d.innerHTML=`
-      <div class="suspect-head">
-        ${av}
-        <div>
-          <div class="suspect-name">${s.name}</div>
-          <div class="suspect-role">${s.role}</div>
-          <div class="suspect-age">${s.age}</div>
-        </div>
-      </div>
-      <div class="suspect-body">
-        <div class="suspect-access">Acces</div>
-        ${s.access.map(a=>`<div class="suspect-li">- ${a}</div>`).join('')}
-        <div style="display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap">
-          ${s.osintBtn?`<button class="osint-btn" onclick="event.stopPropagation();switchOSINT('${s.osintId}');document.querySelector('[data-tab=\\'osint\\']').click()">OSINT</button>`:''}
-        </div>
-      </div>`;
+    d.className='fbi-card';
+    d.innerHTML=`<div class="fbi-card-top${f.witness?' wit':''}">${f.witness?'Témoin':'Personne d\'intérêt'}</div>
+      ${fbiPhoto(s)}
+      <div class="fbi-card-b"><div class="fbi-card-n">${s.name}</div><div class="fbi-card-r">${s.role}</div><div class="fbi-card-ref">${f.ref||''}</div></div>`;
     d.onclick=()=>showSuspect(s);
     g.appendChild(d);
   });
 }
 function showSuspect(s){
-  const av=s.photo
-    ?`<div style="width:72px;height:72px;border-radius:9px;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,.1)"><img src="${s.photo}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(10%)"></div>`
-    :`<div style="width:52px;height:52px;border-radius:7px;background:${s.bg};display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:${s.tc};flex-shrink:0">${s.initials}</div>`;
+  const f=FICHES[s.name]||{};
+  const ageNum=(s.age.match(/^(\d+)/)||[])[1];
+  const rows=[['Date de naissance',f.dob+(ageNum?' ('+ageNum+' ans)':'')],['Lieu de naissance',f.pob],['Cheveux',f.hair],['Yeux',f.eyes],['Taille',f.height],['Poids',f.weight],
+    ['Sexe',/^(Nathalie|Camille)/.test(s.name)?'Féminin':'Masculin'],['Nationalité','Française'],['Profession',s.role+', ELECARM SAS'],['Dans l\'entreprise depuis',f.since],['Signes particuliers',f.marks]];
+  const box=document.querySelector('#suspect-modal .modal-box'); box.classList.add('poster');
   document.getElementById('suspect-content').innerHTML=`
-    <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px">
-      ${av}
-      <div>
-        <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:2px">${s.name}</div>
-        <div style="font-size:13px;color:var(--tx3)">${s.role}</div>
-        <div style="font-size:12px;color:var(--tx4);margin-top:2px">${s.age}</div>
+    <div class="fbi-p-head">
+      <div class="fbi-p-org">ELECARM SAS · Cellule d'audit · Opération Silent Gateway</div>
+      <div class="fbi-p-cat${f.witness?' wit':''}">${f.witness?'Témoin':'Personne d\'intérêt'}</div>
+      <div class="fbi-p-name">${s.name}</div>
+      <div class="fbi-p-sub">Fiche ${f.ref||''} · Source : dossier RH et audit interne</div>
+    </div>
+    <div class="fbi-p-body">
+      <div class="fbi-p-ph">${fbiPhoto(s)}<div class="fbi-p-cap">${s.photo?'Photo du badge d\'accès':'Aucune photo au dossier'}</div></div>
+      <div class="fbi-p-desc"><div class="fbi-p-t">Description</div>
+        <table class="fbi-tbl">${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]||'-'}</td></tr>`).join('')}</table>
       </div>
     </div>
-    <div style="background:var(--s2);border-radius:6px;padding:14px;font-size:13px;color:var(--tx2);line-height:1.75">${s.detail}</div>`;
+    <div class="fbi-p-sec"><div class="fbi-p-t">Accès</div><div class="fbi-p-txt"><ul>${s.access.map(a=>`<li>${a}</li>`).join('')}</ul></div></div>
+    <div class="fbi-p-sec"><div class="fbi-p-t">Remarques</div><div class="fbi-p-txt">${s.detail}</div></div>
+    <div class="fbi-p-foot">Toute information complémentaire doit être signalée à l'équipe d'audit.
+      ${s.osintBtn?`<button class="sec" onclick="document.getElementById('suspect-modal').classList.remove('show');switchOSINT('${s.osintId}');document.querySelector('[data-tab=\\'osint\\']').click()">Voir le profil OSINT</button>`:''}
+      <button onclick="document.getElementById('suspect-modal').classList.remove('show')">Fermer</button>
+    </div>`;
   document.getElementById('suspect-modal').classList.add('show');
 }
 
@@ -2672,12 +2750,12 @@ const OSINT_DATA = {
       location:'Blois, Centre-Val de Loire',
       about:'Responsable des systèmes d\'information chez ELECARM SAS depuis 5 ans. Spécialisé en infrastructure réseau, sécurité des SI et gestion de projets IT. Certifié ITIL v4.',
       experience:[
-        {title:'Responsable DSI','company':'ELECARM SAS','period':'2019 - présent','desc':'Gestion de l\'infrastructure IT, politique de sécurité, administration des serveurs et des accès.'},
-        {title:'Administrateur systèmes','company':'Société Générale','period':'2014 - 2019','desc':'Administration Active Directory, GPO, supervision réseau.'},
+        {title:'Responsable DSI','company':'ELECARM SAS','period':'2020 - présent','desc':'Gestion de l\'infrastructure IT, politique de sécurité, administration des serveurs et des accès.'},
+        {title:'Administrateur systèmes','company':'Société Générale','period':'2011 - 2020','desc':'Administration Active Directory, GPO, supervision réseau.'},
       ],
       skills:['Active Directory','VPN','Firewall Fortinet','PowerShell','ITIL v4','Windows Server'],
       education:[
-        {school:'IUT de Blois',degree:'BTS Informatique Industrielle',year:'2014'},
+        {school:'IUT de Blois',degree:'DUT Réseaux et Télécommunications',year:'2010'},
         {school:'AXELOS Certification',degree:'ITIL v4 Foundation',year:'2021'},
       ],
       posts:[
@@ -2723,12 +2801,12 @@ const OSINT_DATA = {
       location:'Blois, Loir-et-Cher',
       about:'Technicien depuis plus de 8 ans chez ELECARM SAS. Maintenance et production des équipements électriques industriels.',
       experience:[
-        {title:'Technicien de production','company':'ELECARM SAS','period':'2016 - présent','desc':'Maintenance des lignes de production, gestion de l\'atelier.'},
-        {title:'Opérateur de production','company':'Legrand','period':'2012 - 2016','desc':'Assemblage et contrôle qualité.'},
+        {title:'Technicien de production','company':'ELECARM SAS','period':'2018 - présent','desc':'Maintenance des lignes de production, gestion de l\'atelier.'},
+        {title:'Opérateur de production','company':'Legrand','period':'2004 - 2018','desc':'Assemblage et contrôle qualité.'},
       ],
       skills:['Maintenance industrielle','Électricité','Habilitation B2V','Contrôle qualité'],
       education:[
-        {school:'Lycée Pro Ronsard - Blois',degree:'BAC Pro SEN - Systèmes Électroniques Numériques',year:'2015'},
+        {school:'Lycée Pro Ronsard - Blois',degree:'BAC Pro SEN - Systèmes Électroniques Numériques',year:'2003'},
       ],
       posts:[
         {date:'15 février 2026','text':'8 ans de maison et je rempile pour une belle année. L\'équipe montage est au top. Heureux de faire partie de l\'aventure ELECARM.','likes':28,'comments':6},
@@ -2760,12 +2838,12 @@ const OSINT_DATA = {
       location:'Blois, Loir-et-Cher',
       about:'',
       experience:[
-        {title:'Magasinier','company':'ELECARM SAS','period':'2021 - présent','desc':'Gestion des stocks matériels finis, réception et expédition.'},
-        {title:'Cariste','company':'Amazon Logistique','period':'2019 - 2021','desc':'Préparation de commandes, CACES 3.'},
+        {title:'Magasinier','company':'ELECARM SAS','period':'2023 - présent','desc':'Gestion des stocks matériels finis, réception et expédition.'},
+        {title:'Cariste','company':'Amazon Logistique','period':'2016 - 2022','desc':'Préparation de commandes, CACES 3.'},
       ],
       skills:['Gestion de stock','CACES 3','ERP','Logistique'],
       education:[
-        {school:'CFA de Blois',degree:'BEP Logistique et Gestion de Stocks',year:'2019'},
+        {school:'CFA de Blois',degree:'BEP Logistique et Gestion de Stocks',year:'2015'},
       ],
       posts:[
         {date:'12 janvier 2026','text':'3 ans de CDI chez ELECARM. Content de faire partie de l\'équipe.','likes':41,'comments':5},
@@ -2795,10 +2873,10 @@ const OSINT_DATA = {
       connections:342,
       headline:'Responsable Qualité | Certification ISO 9001 | ELECARM SAS',
       location:'Blois, Centre-Val de Loire',
-      about:'11 ans d\'expérience en qualité industrielle. Pilote la politique qualité d\'ELECARM SAS et les relations avec les donneurs d\'ordre (Thales, Schneider). Auditrice interne ISO 9001:2015.',
+      about:'Plus de 18 ans d\'expérience en qualité industrielle, dont 11 chez ELECARM SAS. Pilote la politique qualité d\'ELECARM SAS et les relations avec les donneurs d\'ordre (Thales, Schneider). Auditrice interne ISO 9001:2015.',
       experience:[
-        {title:'Responsable Qualité','company':'ELECARM SAS','period':'2013 - présent','desc':'Mise en place et suivi du SMQ, audits internes, traitement des non-conformités, interface client Thales.'},
-        {title:'Technicienne qualité','company':'Valeo','period':'2008 - 2013','desc':'Contrôle qualité, 8D, AMDEC.'},
+        {title:'Responsable Qualité','company':'ELECARM SAS','period':'2015 - présent','desc':'Mise en place et suivi du SMQ, audits internes, traitement des non-conformités, interface client Thales.'},
+        {title:'Technicienne qualité','company':'Valeo','period':'2008 - 2015','desc':'Contrôle qualité, 8D, AMDEC.'},
       ],
       skills:['ISO 9001','AMDEC','8D','Audit interne','Thales','Schneider','SAP QM'],
       education:[
@@ -2898,6 +2976,7 @@ const OSINT_DATA = {
       about:'Technicien de maintenance industrielle.',
       experience:[
         {title:'Technicien de maintenance','company':'ELECARM SAS','period':'sept. 2025 - présent','desc':'Maintenance préventive et curative des lignes de production.'},
+        {title:'Technicien maintenance (intérim)','company':'Adecco','period':'oct. 2024 - août 2025','desc':'Missions de maintenance en intérim, région Centre.'},
         {title:'Période non renseignée','company':'','period':'2023 - 2024','desc':'Aucune activité documentée sur le profil pour cette période.'},
         {title:'Technicien maintenance','company':'Fonderie Loiret','period':'2019 - 2023','desc':'Maintenance électromécanique.'},
       ],
@@ -2933,10 +3012,11 @@ const OSINT_DATA = {
       about:'Responsable Achats depuis 9 ans. Sourcing fournisseurs Europe et Asie, négociation contrats.',
       experience:[
         {title:'Responsable Achats','company':'ELECARM SAS','period':'2017 - présent','desc':'Sourcing fournisseurs, négociation, gestion des risques fournisseurs.'},
+        {title:'Acheteur composants électroniques','company':'Schneider Electric','period':'2003 - 2017','desc':'Achats de composants, audits fournisseurs en Asie.'},
       ],
       skills:['Sourcing international','Négociation','Gestion fournisseurs','Mandarin (notions)'],
       education:[
-        {school:'ESC Tours',degree:'Master Achats et Logistique',year:'2016'},
+        {school:'ESC Tours',degree:'Master Achats et Logistique',year:'2002'},
       ],
       posts:[
         {date:'5 mai 2026','text':'De retour de Shenzhen après une semaine de visites fournisseurs. Marché des composants électroniques toujours aussi dynamique.','likes':22,'comments':4},
