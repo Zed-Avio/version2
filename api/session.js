@@ -18,9 +18,13 @@ module.exports = async (req, res) => {
 
   if (req.method === 'GET') {
     try {
-      const st = await store.read();
       const q = req.query || {};
-      const view = publicView(st, q.team ? String(q.team) : null, q.member ? String(q.member) : null);
+      let st = await store.read(false, parseInt(q.minRev, 10) || 0);
+      const team = q.team ? String(q.team) : null, member = q.member ? String(q.member) : null;
+      let view = publicView(st, team, member);
+      // Plusieurs instances Vercel : le cache de celle-ci peut dater d'avant une inscription faite
+      // sur une autre. Avant de répondre « membre inconnu », on relit l'état réel.
+      if (team && view.me === null) { st = await store.read(true); view = publicView(st, team, member); }
       if (q.withQuestions) view.questions = publicQuestions();   // une fois, a l'ouverture de l'exercice
       res.status(200).json(view);
     } catch (e) {
@@ -41,7 +45,7 @@ module.exports = async (req, res) => {
   const action = body.action;
   try {
     if (action === 'state' || action === 'noop') {
-      const st = await store.read();
+      const st = await store.read(false, parseInt(body.minRev, 10) || 0);
       res.status(200).json({ ...st, serverNow: Date.now() });
       return;
     }

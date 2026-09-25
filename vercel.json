@@ -1,8 +1,23 @@
 {
   "rewrites": [
-    { "source": "/exercice", "destination": "/index.html" },
-    { "source": "/exercice/", "destination": "/index.html" },
-    { "source": "/salle", "destination": "/salle.html" },
-    { "source": "/animateur", "destination": "/animateur.html" }
+    {
+      "source": "/exercice",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/exercice/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/salle",
+      "destination": "/salle.html"
+    },
+    {
+      "source": "/animateur",
+      "destination": "/animateur.html"
+    }
+  ],
+  "regions": [
+    "cdg1"
   ]
 }

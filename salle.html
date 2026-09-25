@@ -96,9 +96,13 @@ var cur = null;          // dernier etat serveur
 var offset = 0;          // decalage horloge serveur - horloge locale
 var launched = false;
 var lastSig = '';
+var goneCount = 0;
 var view = document.getElementById('view');
 var dot = document.getElementById('statedot'), label = document.getElementById('statelabel');
 
+// Version de l'état déjà vue (partagée avec l'exercice) : le serveur ne renvoie jamais plus ancien.
+function seenRev(){ try{ return +localStorage.getItem('elecarm_rev')||0; }catch(e){ return 0; } }
+function noteRev(r){ if(r>seenRev()){ try{ localStorage.setItem('elecarm_rev',String(r)); }catch(e){} } }
 function loadTeam(){ try{ var t=JSON.parse(localStorage.getItem(KEY)||'null'); return t&&t.teamId&&t.memberId?t:null; }catch(e){ return null; } }
 function saveTeam(t){ try{ if(t) localStorage.setItem(KEY, JSON.stringify(t)); else localStorage.removeItem(KEY); }catch(e){} }
 function esc(t){ return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
@@ -153,7 +157,7 @@ function join(teamId){
     .then(function(o){
       if(!o.ok){ setErr(o.j.message||'Erreur, réessayez.'); return; }
       saveTeam({teamId:o.j.teamId, memberId:o.j.memberId, teamName:o.j.teamName, memberName:o.j.memberName});
-      if(o.j.view){ cur=o.j.view; }
+      if(o.j.view){ cur=o.j.view; noteRev(o.j.view.rev); }
       lastSig=''; renderTeams();
     }).catch(function(){ setErr('Serveur injoignable, réessayez.'); });
 }
@@ -216,14 +220,17 @@ function tick(){
 // Boucle d'interrogation de l'etat partage
 function poll(once){
   var t=loadTeam();
-  var q=t?('&team='+encodeURIComponent(t.teamId)+'&member='+encodeURIComponent(t.memberId)):'';
+  var q=(t?('&team='+encodeURIComponent(t.teamId)+'&member='+encodeURIComponent(t.memberId)):'')+'&minRev='+seenRev();
   var sent=Date.now();
   fetch(API+'?ts='+sent+q,{cache:'no-store'})
     .then(function(r){ return r.ok?r.json():null; })
     .then(function(st){
       if(st && typeof st.status==='string'){
         if(st.serverNow) offset=st.serverNow-Math.round((sent+Date.now())/2);
-        if(t && st.me===null){ saveTeam(null); }   // retire de l'equipe par l'animateur
+        noteRev(st.rev);
+        // Retire de l'equipe par l'animateur : confirme sur deux reponses consecutives avant d'oublier l'inscription.
+        if(t && st.me===null){ goneCount++; if(goneCount>=2){ saveTeam(null); goneCount=0; } else { st.me=cur&&cur.me; } }
+        else goneCount=0;
         cur=st; renderTeams();
       }
     }).catch(function(){})

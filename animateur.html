@@ -302,6 +302,7 @@ function broadcast(){
 
 function apply(j){
   if(!j || !j.session) return;
+  if(st && (j.rev||0) < (st.rev||0)) return;   // réponse plus ancienne que ce qui est affiché : ignorée
   if(!filled){ filled=true; if(j.session.durationMin) document.getElementById('dur').value=j.session.durationMin; }
   st=j; if(j.serverNow) offset=j.serverNow-Date.now();
   renderState(); renderTeams(); renderChat();
@@ -356,7 +357,7 @@ function renderTeams(){
   }).join('');
 }
 function poll(){
-  api({action:'state'}).then(function(o){ if(o.ok) apply(o.j); }).catch(function(){})
+  api({action:'state',minRev:(st&&st.rev)||0}).then(function(o){ if(o.ok) apply(o.j); }).catch(function(){})
     .then(function(){ setTimeout(poll,4000); });
 }
 setInterval(renderState,1000);

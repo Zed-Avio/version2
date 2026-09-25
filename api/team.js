@@ -93,7 +93,7 @@ module.exports = async (req, res) => {
       return;
     }
     if (b.action === 'submit' || b.action === 'join' || b.action === 'message') {
-      const st = await store.read();
+      const st = await store.read();   // juste après l'écriture : le cache de cette instance est à jour
       result.view = publicView(st, result.teamId || b.teamId, result.memberId || b.memberId);
     }
     res.status(200).json(result);

@@ -3266,14 +3266,15 @@ async function submitSupposition(){
   const answers=getSupChoices();
   if(!SUP_QUESTIONS.length || SUP_QUESTIONS.some(q=>q.multi?!answers[q.id].length:!answers[q.id])){ toast('!','Suppositions incomplètes','Répondez aux 5 questions avant d\'envoyer.'); return; }
   if(!confirm('Envoyer cette supposition ? Elle compte pour une des 5 tentatives de toute l\'équipe.')) return;
-  const btn=document.getElementById('sup-send'); btn.disabled=true; btn.style.opacity='.5';
+  const btn=document.getElementById('sup-send'); btn.disabled=true; btn.style.opacity='.5'; btn.textContent='ENVOI EN COURS...';
   try{
     const r=await fetch('/api/team',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'submit',teamId:myTeam.teamId,memberId:myTeam.memberId,answers})});
     const j=await r.json().catch(()=>({}));
     if(!r.ok){ toast('!','Envoi impossible',j.message||'Réessayez dans un instant.'); }
-    else { if(j.view&&j.view.me) teamView=j.view.me; toast('','Supposition envoyée',j.tier||''); }
+    else { if(j.view){ noteRev(j.view.rev); if(j.view.me) teamView=j.view.me; } toast('','Supposition envoyée',j.tier||''); }
   }catch(e){ toast('!','Envoi impossible','Serveur injoignable, réessayez dans un instant.'); }
+  btn.textContent='ENVOYER NOTRE SUPPOSITION';
   renderVerdict();
 }
 
@@ -3311,27 +3312,31 @@ function toggleChat(){
 async function sendChat(){
   const inp=document.getElementById('chat-input'), btn=document.getElementById('chat-send');
   const text=inp.value.trim(); if(!text||!myTeam) return;
-  btn.disabled=true;
+  btn.disabled=true; btn.textContent='Envoi...';
   try{
     const r=await fetch('/api/team',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'message',teamId:myTeam.teamId,memberId:myTeam.memberId,text})});
     const j=await r.json().catch(()=>({}));
     if(!r.ok) toast('!','Message non envoyé',j.message||'Réessayez dans un instant.');
-    else { inp.value=''; if(j.view&&j.view.me){ teamView=j.view.me; renderChat(); } }
+    else { inp.value=''; if(j.view){ noteRev(j.view.rev); if(j.view.me){ teamView=j.view.me; renderChat(); } } }
   }catch(e){ toast('!','Message non envoyé','Serveur injoignable, réessayez dans un instant.'); }
-  btn.disabled=false; inp.focus();
+  btn.disabled=false; btn.textContent='Envoyer'; inp.focus();
 }
 
 // ── Accès : l'exercice n'est ouvert qu'aux équipes inscrites, quand l'animateur l'a lancé ──
 function loadMyTeam(){ try{ const t=JSON.parse(localStorage.getItem('elecarm_team')||'null'); return t&&t.teamId&&t.memberId?t:null; }catch(e){ return null; } }
+// Version de l'état déjà vue par ce poste (persistée) : le serveur ne renvoie jamais plus ancien.
+function seenRev(){ try{ return +localStorage.getItem('elecarm_rev')||0; }catch(e){ return 0; } }
+function noteRev(r){ if(r>seenRev()){ try{ localStorage.setItem('elecarm_rev',String(r)); }catch(e){} } }
 async function fetchSession(timeoutMs,withQuestions){
   const t=loadMyTeam();
-  const q=(t?('&team='+encodeURIComponent(t.teamId)+'&member='+encodeURIComponent(t.memberId)):'')+(withQuestions?'&withQuestions=1':'');
+  const q=(t?('&team='+encodeURIComponent(t.teamId)+'&member='+encodeURIComponent(t.memberId)):'')+(withQuestions?'&withQuestions=1':'')+'&minRev='+seenRev();
   const ctrl=new AbortController(); const to=setTimeout(()=>ctrl.abort(),timeoutMs||4000);
   try{
     const r=await fetch('/api/session?ts='+Date.now()+q,{cache:'no-store',signal:ctrl.signal});
     clearTimeout(to);
     if(!r.ok) return null;
     const st=await r.json();
+    if(st && st.rev) noteRev(st.rev);
     return (st && typeof st.status==='string') ? st : null;
   }catch(e){ clearTimeout(to); return null; }
 }
@@ -3353,7 +3358,7 @@ function setTeamChip(){
 }
 // Suivi en cours de partie : fermeture par l'animateur, tentatives et messages des autres postes de l'équipe.
 // Toutes les 20 s, toutes les 6 s quand la discussion est ouverte.
-let liveTimer=null, liveTick=null;
+let liveTimer=null, liveTick=null, meGone=0;
 function refreshSoon(){ if(liveTick){ clearTimeout(liveTimer); liveTimer=setTimeout(liveTick,300); } }
 function startLiveSync(){
   const ov=document.getElementById('closed-overlay');
@@ -3362,15 +3367,18 @@ function startLiveSync(){
     if(st){
       apiOnline=true;
       applyServerMission(st);
-      if(st.me===null){
+      if(st.me===null && ++meGone<2){ /* à confirmer au prochain passage */ }
+      else if(st.me===null){
         document.getElementById('co-t').textContent='Vous ne faites plus partie d\'une équipe';
         document.getElementById('co-d').innerHTML='Repassez par la <a href="/salle">salle d\'attente</a> pour rejoindre votre équipe.';
         ov.classList.add('show');
       } else if(!st.open){
+        meGone=0;
         document.getElementById('co-t').textContent='Exercice fermé';
         document.getElementById('co-d').textContent='L\'animateur a fermé l\'exercice. Restez sur cette page : elle se rouvrira automatiquement.';
         ov.classList.add('show');
       } else {
+        meGone=0;
         ov.classList.remove('show');
         if(st.me){ const changed=JSON.stringify(st.me)!==JSON.stringify(teamView); teamView=st.me; if(changed){ setTeamChip(); renderVerdict(); renderChat(true); } }
       }
