@@ -342,11 +342,110 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .suspect-body{padding:10px 14px;border-top:1px solid var(--bd)}
 .suspect-access{font-size:9px;font-weight:700;color:var(--tx4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
 .suspect-li{font-size:12px;color:var(--tx2);line-height:1.7}
+.ox{display:flex;flex-direction:column;flex:1;min-height:0;background:#0a0c10;font-family:var(--font)}
+.ox-top{display:flex;align-items:center;gap:16px;padding:0 16px;height:48px;border-bottom:1px solid #1d2230;background:#0e1118;flex-shrink:0}
+.ox-logo{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:800;letter-spacing:.08em;color:#e6e9ef}
+.ox-logo b{font-weight:400;color:#8b93a7;letter-spacing:.02em}
+.ox-dot{width:10px;height:10px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.18)}
+.ox-q{flex:1;max-width:520px;display:flex;align-items:center;gap:8px;background:#0a0c10;border:1px solid #262c3a;border-radius:6px;padding:7px 11px;font-family:var(--mono);font-size:12px;color:#c9d1e0}
+.ox-q svg{width:14px;height:14px;fill:#6b7385;flex-shrink:0}
+.ox-status{margin-left:auto;font-size:11px;color:#8b93a7;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.ox-live{width:7px;height:7px;border-radius:50%;background:#22c55e}
+.ox-body{flex:1;min-height:0;display:flex}
+.ox-side{width:230px;flex-shrink:0;border-right:1px solid #1d2230;overflow-y:auto;padding:12px 10px;background:#0c0f15}
+.ox-side-t{font-size:10px;font-weight:700;letter-spacing:.14em;color:#6b7385;text-transform:uppercase;margin:0 6px 10px}
+.ox-side-t span{color:#8b93a7}
+.ox-t{display:flex;align-items:center;gap:10px;width:100%;background:transparent;border:1px solid transparent;border-radius:8px;padding:8px;cursor:pointer;text-align:left;font-family:var(--font);margin-bottom:2px}
+.ox-t:hover{background:#131722}
+.ox-t.active{background:#141b2b;border-color:#26324a}
+.ox-av{width:34px;height:34px;border-radius:50%;overflow:hidden;background:#1d2230;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#8b93a7}
+.ox-av img{width:100%;height:100%;object-fit:cover}
+.ox-tn{font-size:12.5px;font-weight:600;color:#e6e9ef;line-height:1.3}
+.ox-tr{font-size:10.5px;color:#6b7385;margin-top:1px}
+.ox-src{display:flex;gap:3px;margin-left:auto;flex-shrink:0}
+.ox-src i{width:16px;height:16px;border-radius:3px;font-style:normal;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;color:#fff}
+.ox-src i.li{background:#0a66c2}.ox-src i.fb{background:#1877f2}.ox-src i.off{background:#262c3a;color:#555d6e}
+.ox-pinc{font-size:10px;color:#f5b942;margin-top:2px}
+.ox-main{flex:1;min-width:0;overflow-y:auto;padding:18px 22px 30px}
+.ox-id{display:flex;gap:16px;align-items:center;margin-bottom:16px}
+.ox-id .ox-av{width:64px;height:64px;font-size:20px}
+.ox-id-n{font-size:20px;font-weight:700;color:#fff}
+.ox-id-m{font-size:12px;color:#8b93a7;margin-top:3px;display:flex;gap:12px;flex-wrap:wrap}
+.ox-accts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:16px}
+.ox-acct{background:#0e1118;border:1px solid #1d2230;border-radius:8px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start}
+.ox-logo-s{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
+.ox-acct-n{font-size:12.5px;font-weight:700;color:#e6e9ef}
+.ox-acct-u{font-family:var(--mono);font-size:11px;color:#7aa7ff;margin-top:2px;word-break:break-all}
+.ox-acct-s{font-size:11px;color:#8b93a7;margin-top:5px;line-height:1.55}
+.ox-pill{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;margin-right:4px}
+.ox-pill.pub{background:#10291b;color:#4ade80}.ox-pill.semi{background:#2a2410;color:#f5b942}.ox-pill.priv{background:#2a1515;color:#f87171}.ox-pill.none{background:#1d2230;color:#6b7385}
+.ox-tabs{display:flex;gap:2px;border-bottom:1px solid #1d2230;margin-bottom:14px}
+.ox-tab{background:none;border:none;border-bottom:2px solid transparent;color:#8b93a7;font-size:12.5px;font-weight:600;padding:8px 14px;cursor:pointer;font-family:var(--font)}
+.ox-tab:hover{color:#e6e9ef}
+.ox-tab.on{color:#fff;border-bottom-color:#22c55e}
+.ox-tab span{font-size:10.5px;color:#6b7385;margin-left:4px}
+.ox-flt{display:flex;gap:6px;margin-bottom:12px}
+.ox-flt button{background:#0e1118;border:1px solid #262c3a;color:#8b93a7;font-size:11px;padding:4px 10px;border-radius:14px;cursor:pointer;font-family:var(--font)}
+.ox-flt button.on{border-color:#22c55e;color:#e6e9ef}
+.ox-post{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #161a24}
+.ox-post-l{width:92px;flex-shrink:0;font-size:11px;color:#8b93a7}
+.ox-post-l b{display:block;color:#c9d1e0;font-weight:600;margin-bottom:4px}
+.ox-post-b{flex:1;min-width:0}
+.ox-post-h{display:flex;align-items:center;gap:7px;font-size:11px;color:#6b7385;margin-bottom:5px}
+.ox-post-t{font-size:13px;color:#dfe4ec;line-height:1.65}
+.ox-post-f{font-size:11px;color:#6b7385;margin-top:5px}
+.ox-pin{flex-shrink:0;align-self:flex-start;background:none;border:1px solid #262c3a;color:#8b93a7;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:var(--font);white-space:nowrap}
+.ox-pin:hover{border-color:#f5b942;color:#f5b942}
+.ox-pin.on{background:#2a2410;border-color:#f5b942;color:#f5b942}
+.ox-empty{padding:28px;text-align:center;color:#6b7385;font-size:12.5px;line-height:1.7;border:1px dashed #262c3a;border-radius:8px}
+.ox-notes textarea{width:100%;min-height:140px;background:#0e1118;border:1px solid #262c3a;border-radius:8px;color:#dfe4ec;font-family:var(--font);font-size:13px;line-height:1.6;padding:11px 13px;outline:none;resize:vertical}
+.ox-notes textarea:focus{border-color:#3b4660}
+.ox-h{font-size:10.5px;font-weight:700;letter-spacing:.12em;color:#6b7385;text-transform:uppercase;margin:16px 0 8px}
+/* Vue LinkedIn */
+.li{background:#1b1f23;border:1px solid #2f3439;border-radius:10px;overflow:hidden;max-width:760px}
+.li-cover{height:90px;background:linear-gradient(120deg,#0a3d62,#0a66c2)}
+.li-head{padding:0 20px 16px}
+.li-av{width:96px;height:96px;border-radius:50%;border:4px solid #1b1f23;overflow:hidden;margin-top:-48px;background:#2f3439;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#aaa}
+.li-av img{width:100%;height:100%;object-fit:cover}
+.li-n{font-size:20px;font-weight:700;color:#fff;margin-top:8px}
+.li-hl{font-size:13.5px;color:#e0e0e0;margin-top:2px}
+.li-loc{font-size:12px;color:#a0a4a8;margin-top:4px}
+.li-loc b{color:#71b7fb;font-weight:600}
+.li-sec{border-top:1px solid #2f3439;padding:14px 20px}
+.li-st{font-size:15px;font-weight:700;color:#fff;margin-bottom:10px}
+.li-it{display:flex;gap:11px;margin-bottom:12px}
+.li-lg{width:40px;height:40px;border-radius:4px;background:#2f3439;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#8b93a7}
+.li-it b{display:block;font-size:13.5px;color:#fff}
+.li-it span{display:block;font-size:12px;color:#c0c4c8}
+.li-it small{display:block;font-size:12px;color:#8e9296;margin-top:3px;line-height:1.5}
+.li-sk{display:inline-block;border:1px solid #3d4349;border-radius:14px;padding:3px 11px;font-size:12px;color:#d0d4d8;margin:0 5px 6px 0}
+.li-post{border:1px solid #2f3439;border-radius:8px;padding:11px 13px;margin-bottom:8px}
+.li-post small{font-size:11.5px;color:#8e9296}
+.li-post p{font-size:13px;color:#e0e0e0;line-height:1.6;margin-top:5px}
+.li-post em{display:block;font-style:normal;font-size:11.5px;color:#8e9296;margin-top:6px}
+/* Vue Facebook */
+.fbv{background:#18191a;border:1px solid #3a3b3c;border-radius:10px;overflow:hidden;max-width:760px}
+.fbv-cover{height:120px;background:linear-gradient(135deg,#2d3b55,#3a3b3c)}
+.fbv-head{padding:0 20px 14px;display:flex;align-items:flex-end;gap:14px;margin-top:-44px;border-bottom:1px solid #3a3b3c}
+.fbv-av{width:110px;height:110px;border-radius:50%;border:4px solid #18191a;overflow:hidden;background:#3a3b3c;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:#b0b3b8}
+.fbv-av img{width:100%;height:100%;object-fit:cover}
+.fbv-n{font-size:22px;font-weight:700;color:#e4e6eb}
+.fbv-s{font-size:13px;color:#b0b3b8;margin-top:2px}
+.fbv-cols{display:grid;grid-template-columns:230px 1fr;gap:14px;padding:14px}
+.fbv-box{background:#242526;border-radius:8px;padding:12px 14px}
+.fbv-box h4{font-size:15px;color:#e4e6eb;margin-bottom:8px}
+.fbv-box li{list-style:none;font-size:13px;color:#e4e6eb;padding:5px 0;line-height:1.45}
+.fbv-post{background:#242526;border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.fbv-ph{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.fbv-ph .fbv-av{width:38px;height:38px;border:none;font-size:13px}
+.fbv-ph b{display:block;font-size:13.5px;color:#e4e6eb}
+.fbv-ph small{font-size:12px;color:#b0b3b8}
+.fbv-post p{font-size:14px;color:#e4e6eb;line-height:1.55}
+.fbv-priv{padding:34px 20px;text-align:center;color:#b0b3b8;font-size:13.5px;line-height:1.7}
+.fbv-priv b{display:block;color:#e4e6eb;font-size:16px;margin-bottom:4px}
+@media (max-width:1000px){.fbv-cols{grid-template-columns:1fr}.ox-side{width:190px}}
 .osint-btn{background:#0d1929;border:1px solid #2a3a5c;color:#6a9cc0;font-size:9px;font-weight:700;letter-spacing:.1em;padding:3px 10px;border-radius:3px;cursor:pointer;font-family:var(--font);text-transform:uppercase}
 .osint-btn:hover{background:#1a2a44;border-color:#3a5a80;color:#a8c8f0}
-.osint-stab{background:var(--s1);border:1px solid var(--bd);color:var(--tx4);font-size:11px;font-weight:600;letter-spacing:.06em;padding:6px 14px;border-radius:4px;cursor:pointer;font-family:var(--font);text-transform:uppercase;transition:background .15s,color .15s}
-.osint-stab:hover{background:var(--s2);color:var(--tx2)}
-.osint-stab.active{background:#0d1929;border-color:#2a3a5c;color:#8ab0d8}
 
 /* ── DSI : interface type Wazuh (Threat Hunting > Events) ── */
 .dsi-wrap{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;background:#0b0d10;font-family:var(--font)}
@@ -1261,17 +1360,20 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 
         <!-- OSINT -->
         <div class="panel" id="panel-osint">
-  <div class="enig-scroll">
-    <div style="display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--bd)">
-      <div style="flex:1">
-        <div style="font-size:10px;font-weight:800;letter-spacing:.15em;color:var(--tx4);text-transform:uppercase">OSINT - Sources ouvertes</div>
-        <div style="font-size:14px;font-weight:700;color:#fff;margin-top:3px" id="osint-suspect-name"></div>
-      </div>
-      <div id="osint-risk-badge" style="font-size:10px;font-weight:700;padding:4px 12px;border-radius:3px;letter-spacing:.08em"></div>
-    </div>
-    <div id="osint-nav" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2px"></div>
-    <div id="osint-body"></div>
-        </div>
+          <div class="ox">
+            <div class="ox-top">
+              <div class="ox-logo"><span class="ox-dot"></span>SOCMINT<b>lens</b></div>
+              <div class="ox-q"><svg viewBox="0 0 24 24"><path d="M10 2a8 8 0 0 1 6.3 12.9l5.4 5.4-1.4 1.4-5.4-5.4A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg><span id="ox-query"></span></div>
+              <div class="ox-status"><span class="ox-live"></span>Recherche terminée · 2 sources interrogées : LinkedIn, Facebook</div>
+            </div>
+            <div class="ox-body">
+              <aside class="ox-side">
+                <div class="ox-side-t">Cibles <span id="ox-count"></span></div>
+                <div id="osint-nav"></div>
+              </aside>
+              <main class="ox-main" id="osint-body"></main>
+            </div>
+          </div>
         </div>
 
         <!-- VERDICT -->
@@ -1672,7 +1774,7 @@ const MAILS = [
 <li>Retour : vendredi 12 juin, Shenzhen vers Paris CDG</li>
 <li>Hôtel : 4 nuits, centre de congrès de Shenzhen</li>
 </ul>
-<p>Motif indiqué : salon Electronica China, sourcing composants. Facturation au compte ELECARM SAS.</p>
+<p>Motif indiqué : visites d'évaluation fournisseurs (dossier cartes Raspberry Pi, avant l'arbitrage de septembre). Facturation au compte ELECARM SAS.</p>
 <p>L'équipe Voyages Pro Centre</p>`
   },
   {
@@ -1693,7 +1795,7 @@ const MAILS = [
 <p>Bonnes vacances !<br>S. MARCHAND<br>Service RH - ELECARM SAS</p>`
   },
   {
-    id:'rousseau_norm02',from:'Collectif Paix et Désarmement 41',email:'contact@paix-desarmement41.org',
+    id:'rousseau_norm02',from:'Collectif Objecteurs',email:'contact@collectif-objecteurs.org',
     to:'c.rousseau@elecarm.fr',subject:'Réunion mensuelle du collectif - jeudi 21 mai',
     time:'20:15',date:'10 mai 2026',unread:false,urgent:false,visible:false,
     body:`<p>Bonjour à toutes et à tous,</p>
@@ -2732,26 +2834,19 @@ function resetEnigme(){
 // OSINT
 // ══════════════════════════════════════════
 const OSINT_DATA = {
-  moreau: {
+  moreau:{
     id:'moreau',
     name:'Julien MOREAU',
     role:'Responsable DSI',
     photo:'face5.avif',
-    risk:'EXPOSITION CRITIQUE',
-    riskBg:'#3b0000',riskTc:'#fca5a5',
-    google:[
-      {title:'LinkedIn - Julien Moreau - DSI chez ELECARM SAS',url:'linkedin.com/in/julien-moreau-dsi',snippet:'Julien Moreau - Responsable DSI chez ELECARM SAS. Blois, Centre-Val de Loire. 287 relations.'},
-      {title:'ELECARM SAS - Équipe direction - elecarm.fr',url:'elecarm.fr/equipe',snippet:'...notre responsable des systèmes d\'information, Julien Moreau, supervise l\'ensemble de l\'infrastructure informatique depuis 2019...'},
-      {title:'Forum ITpro.fr - Fuite de données : qui contacter ?',url:'itpro.fr/forum/securite/fuite-donnees-contact',snippet:'...j\'ai contacté le DSI de notre boîte (Julien M.) qui m\'a dit qu\'ils avaient eu un incident similaire chez ELECARM l\'an passé...'},
-    ],
     linkedin:{
       connections:287,
       headline:'Responsable DSI | Infrastructure & Sécurité | ELECARM SAS',
       location:'Blois, Centre-Val de Loire',
       about:'Responsable des systèmes d\'information chez ELECARM SAS depuis 5 ans. Spécialisé en infrastructure réseau, sécurité des SI et gestion de projets IT. Certifié ITIL v4.',
       experience:[
-        {title:'Responsable DSI','company':'ELECARM SAS','period':'2020 - présent','desc':'Gestion de l\'infrastructure IT, politique de sécurité, administration des serveurs et des accès.'},
-        {title:'Administrateur systèmes','company':'Société Générale','period':'2011 - 2020','desc':'Administration Active Directory, GPO, supervision réseau.'},
+        {title:'Responsable DSI',company:'ELECARM SAS',period:'2020 - présent',desc:'Gestion de l\'infrastructure IT, politique de sécurité, administration des serveurs et des accès.'},
+        {title:'Administrateur systèmes',company:'Société Générale',period:'2011 - 2020',desc:'Administration Active Directory, GPO, supervision réseau.'},
       ],
       skills:['Active Directory','VPN','Firewall Fortinet','PowerShell','ITIL v4','Windows Server'],
       education:[
@@ -2759,124 +2854,111 @@ const OSINT_DATA = {
         {school:'AXELOS Certification',degree:'ITIL v4 Foundation',year:'2021'},
       ],
       posts:[
-        {date:'14 mai 2026','text':'La sécurité des accès distants est devenue incontournable. Nous venons de finaliser le déploiement de notre nouveau VPN Zero Trust chez ELECARM. Un beau chantier.','likes':34,'comments':7},
-        {date:'2 mars 2026','text':'Je cherche des missions freelance en parallèle de mon poste actuel. Disponible le soir et le week-end. Administration systèmes, audit de sécurité. Me contacter en MP.','likes':8,'comments':12,'flag':true},
-        {date:'5 janvier 2026','text':'Nouvelle année. Je réfléchis sérieusement à diversifier mes activités en dehors de mon poste actuel. Le secteur défense et sécurité industrielle m\'intéresse particulièrement. Des contacts dans ce milieu ? Disponible en MP.','likes':5,'comments':3,'flag':true},
+        {date:'14 mai 2026',text:'La sécurité des accès distants est devenue incontournable. Nous venons de finaliser le déploiement de notre nouveau VPN Zero Trust chez ELECARM. Un beau chantier.',likes:34,comments:7},
+        {date:'2 mars 2026',text:'Je cherche des missions freelance en parallèle de mon poste actuel. Disponible le soir et le week-end. Administration systèmes, audit de sécurité. Me contacter en MP.',likes:8,comments:12},
+        {date:'5 janvier 2026',text:'Nouvelle année. Je réfléchis sérieusement à diversifier mes activités en dehors de mon poste actuel. Le secteur défense et sécurité industrielle m\'intéresse particulièrement. Des contacts dans ce milieu ? Disponible en MP.',likes:5,comments:3},
       ],
+      url:'linkedin.com/in/julien-moreau-dsi',
     },
     facebook:{
       privacy:'Profil semi-public - amis d\'amis',
       friends:127,
       location:'Blois, Centre-Val de Loire',
       posts:[
-        {date:'10 mai 2026','text':'Match de foot ce soir avec les potes. On gagne 3-1, belle soirée !','visibility':'Amis'},
-        {date:'22 avril 2026','text':'Enfin je regarde Mr Robot en entier. Série incroyable. Certaines scènes font vraiment réfléchir sur ce qu\'on peut faire avec un accès admin...','visibility':'Public','flag':true},
-        {date:'17 mars 2026','text':'Vu un reportage sur des consultants IT indépendants. Des missions de 3 semaines à 12-15k euros nets... moi qui galère à payer mon crédit auto depuis 2 ans. On fait vraiment les mauvais choix dans la vie.','visibility':'Amis','flag':true},
-        {date:'5 mars 2026','text':'Les factures s\'accumulent... Si quelqu\'un connaît des opportunités sérieuses en dehors des heures de boulot n\'hésitez pas.','visibility':'Amis','flag':true},
+        {date:'10 mai 2026',text:'Match de foot ce soir avec les potes. On gagne 3-1, belle soirée !',visibility:'Amis'},
+        {date:'22 avril 2026',text:'Enfin je regarde Mr Robot en entier. Série incroyable. Certaines scènes font vraiment réfléchir sur ce qu\'on peut faire avec un accès admin...',visibility:'Public'},
+        {date:'17 mars 2026',text:'Vu un reportage sur des consultants IT indépendants. Des missions de 3 semaines à 12-15k euros nets... moi qui galère à payer mon crédit auto depuis 2 ans. On fait vraiment les mauvais choix dans la vie.',visibility:'Amis'},
+        {date:'5 mars 2026',text:'Les factures s\'accumulent... Si quelqu\'un connaît des opportunités sérieuses en dehors des heures de boulot n\'hésitez pas.',visibility:'Amis'},
       ],
+      url:'facebook.com/julien.moreau.blois',
+      about:['Travaille chez ELECARM SAS','Habite à Blois','A étudié à IUT de Blois'],
     },
-    analysis:[
-      {label:'Présence publique',value:'Très élevée - nom complet + employeur indexé',level:'danger'},
-      {label:'Signal d\'alerte #1',value:'Post LinkedIn 02/03 : recherche missions freelance (besoin financier)',level:'danger'},
-      {label:'Signal d\'alerte #2',value:'Post Facebook 22/04 : référence explicite aux accès admin (Mr Robot)',level:'danger'},
-      {label:'Signal d\'alerte #3',value:'Post Facebook 05/03 : difficultés financières déclarées publiquement',level:'danger'},
-      {label:'Compétences exposées',value:'Maîtrise VPN, AD, PowerShell - profil technique critique',level:'warn'},
-      {label:'Conclusion',value:'Profil OSINT cohérent avec un initié sous pression financière ayant les moyens techniques de commettre l\'attaque',level:'danger'},
-    ],
   },
-  durand: {
+  durand:{
     id:'durand',
     name:'Marc DURAND',
     role:'Technicien de production',
     photo:'face1.jpg',
-    risk:'EXPOSITION FAIBLE',
-    riskBg:'#1c1c1c',riskTc:'#888',
-    google:[
-      {title:'LinkedIn - Marc Durand - Technicien chez ELECARM SAS',url:'linkedin.com/in/marc-durand-41',snippet:'Marc Durand - Technicien de production chez ELECARM SAS. Blois. 112 relations.'},
-      {title:'Annuaire Pages Blanches - Marc Durand - Blois (41)',url:'pagesjaunes.fr/annuaire/marc-durand-blois',snippet:'Marc DURAND - 41000 Blois - Tel : 02 54 XX XX XX'},
-    ],
     linkedin:{
       connections:112,
       headline:'Technicien de production | ELECARM SAS',
       location:'Blois, Loir-et-Cher',
       about:'Technicien depuis plus de 8 ans chez ELECARM SAS. Maintenance et production des équipements électriques industriels.',
       experience:[
-        {title:'Technicien de production','company':'ELECARM SAS','period':'2018 - présent','desc':'Maintenance des lignes de production, gestion de l\'atelier.'},
-        {title:'Opérateur de production','company':'Legrand','period':'2004 - 2018','desc':'Assemblage et contrôle qualité.'},
+        {title:'Technicien de production',company:'ELECARM SAS',period:'2018 - présent',desc:'Maintenance des lignes de production, gestion de l\'atelier.'},
+        {title:'Opérateur de production',company:'Legrand',period:'2004 - 2018',desc:'Assemblage et contrôle qualité.'},
       ],
       skills:['Maintenance industrielle','Électricité','Habilitation B2V','Contrôle qualité'],
       education:[
         {school:'Lycée Pro Ronsard - Blois',degree:'BAC Pro SEN - Systèmes Électroniques Numériques',year:'2003'},
       ],
       posts:[
-        {date:'15 février 2026','text':'8 ans de maison et je rempile pour une belle année. L\'équipe montage est au top. Heureux de faire partie de l\'aventure ELECARM.','likes':28,'comments':6},
-        {date:'20 novembre 2025','text':'Vient d\'obtenir mon habilitation électrique BR. Une formation dense mais vraiment utile sur le terrain.','likes':19,'comments':4},
+        {date:'15 février 2026',text:'8 ans de maison et je rempile pour une belle année. L\'équipe montage est au top. Heureux de faire partie de l\'aventure ELECARM.',likes:28,comments:6},
+        {date:'20 novembre 2025',text:'Vient d\'obtenir mon habilitation électrique BR. Une formation dense mais vraiment utile sur le terrain.',likes:19,comments:4},
+      ],
+      url:'linkedin.com/in/marc-durand-41',
+    },
+    facebook:{
+      url:'facebook.com/marc.durand.blois',
+      privacy:'Profil public',
+      friends:186,
+      location:'Blois, Centre-Val de Loire',
+      about:['Technicien chez ELECARM SAS','Habite à Blois','Marié'],
+      posts:[
+        {date:'10 mai 2026',text:'Victoire 3-1 ce soir avec l\'équipe du jeudi, même si on a joué un dimanche ! Merci à tous pour la bonne ambiance.',visibility:'Public'},
+        {date:'14 avril 2026',text:'Week-end pêche au bord du Loir avec le fiston. Rien attrapé mais la journée était parfaite.',visibility:'Amis'},
       ],
     },
-    facebook:null,
-    analysis:[
-      {label:'Présence publique',value:'Faible - profil LinkedIn minimal, aucune activité récente',level:'ok'},
-      {label:'Réseaux sociaux',value:'Aucun compte Facebook ou autre réseau détecté',level:'ok'},
-      {label:'Informations sensibles exposées',value:'Aucune - poste et employeur connus mais sans détail opérationnel',level:'ok'},
-      {label:'Ancienneté',value:'8 ans dans le même poste - aucune recherche d\'emploi active visible',level:'ok'},
-      {label:'Conclusion',value:'Empreinte numérique quasi nulle. Aucun signal d\'alerte OSINT identifié. Profil stable et sans indicateur de compromission.',level:'ok'},
-    ],
   },
-  benyoucef: {
+  benyoucef:{
     id:'benyoucef',
     name:'Karim BENYOUCEF',
     role:'Magasinier',
     photo:'face2.jpg',
-    risk:'EXPOSITION FAIBLE',
-    riskBg:'#1c1c1c',riskTc:'#888',
-    google:[
-      {title:'LinkedIn - Karim Benyoucef - Magasinier ELECARM SAS',url:'linkedin.com/in/karim-benyoucef',snippet:'Karim Benyoucef - Magasinier chez ELECARM SAS. 67 relations.'},
-    ],
     linkedin:{
       connections:67,
       headline:'Magasinier - Logistique | ELECARM SAS',
       location:'Blois, Loir-et-Cher',
       about:'',
       experience:[
-        {title:'Magasinier','company':'ELECARM SAS','period':'2023 - présent','desc':'Gestion des stocks matériels finis, réception et expédition.'},
-        {title:'Cariste','company':'Amazon Logistique','period':'2016 - 2022','desc':'Préparation de commandes, CACES 3.'},
+        {title:'Magasinier',company:'ELECARM SAS',period:'2023 - présent',desc:'Gestion des stocks matériels finis, réception et expédition.'},
+        {title:'Cariste',company:'Amazon Logistique',period:'2016 - 2022',desc:'Préparation de commandes, CACES 3.'},
       ],
       skills:['Gestion de stock','CACES 3','ERP','Logistique'],
       education:[
         {school:'CFA de Blois',degree:'BEP Logistique et Gestion de Stocks',year:'2015'},
       ],
       posts:[
-        {date:'12 janvier 2026','text':'3 ans de CDI chez ELECARM. Content de faire partie de l\'équipe.','likes':41,'comments':5},
-        {date:'3 août 2025','text':'Grosse journée au magasin. 3 palettes de composants critiques expédiées avant 17h. Pas le droit à l\'erreur avec les clients qu\'on a - Thales, Schneider, Renault. Ça représente pas mal de valeur entre les mains.','likes':15,'comments':2},
+        {date:'12 janvier 2026',text:'3 ans de CDI chez ELECARM. Content de faire partie de l\'équipe.',likes:41,comments:5},
+        {date:'3 août 2025',text:'Grosse journée au magasin. 3 palettes de composants critiques expédiées avant 17h. Pas le droit à l\'erreur avec les clients qu\'on a - Thales, Schneider, Renault. Ça représente pas mal de valeur entre les mains.',likes:15,comments:2},
+      ],
+      url:'linkedin.com/in/karim-benyoucef',
+    },
+    facebook:{
+      url:'facebook.com/karim.benyoucef.41',
+      privacy:'Profil public',
+      friends:231,
+      location:'Blois, Centre-Val de Loire',
+      about:['Magasinier chez ELECARM SAS','Habite à Blois'],
+      posts:[
+        {date:'13 mai 2026',text:'Enfin une bonne nouvelle de la banque. Ça va souffler un peu pour les mois qui viennent.',visibility:'Public'},
+        {date:'2 novembre 2025',text:'Les fins de mois sont compliquées en ce moment. Si quelqu\'un vend une voiture pas chère qui roule, je suis preneur.',visibility:'Amis'},
       ],
     },
-    facebook:null,
-    analysis:[
-      {label:'Présence publique',value:'Très faible - profil LinkedIn basique, un seul post',level:'ok'},
-      {label:'Réseaux sociaux',value:'Aucun compte Facebook ou autre réseau détecté publiquement',level:'ok'},
-      {label:'Informations sensibles',value:'Accès ERP stocks + clients stratégiques (Thales, Schneider, Renault) mentionnés publiquement',level:'warn'},
-      {label:'Conclusion',value:'Empreinte numérique limitée. Deux signaux mineurs : accès ERP mentionné + clients stratégiques rendus publics. Aucun indicateur comportemental de compromission.',level:'ok'},
-    ],
   },
-  brunet: {
+  brunet:{
     id:'brunet',
     name:'Nathalie BRUNET',
     role:'Responsable qualité',
     photo:'face4.jpg',
-    risk:'EXPOSITION MODEREE',
-    riskBg:'#1a1200',riskTc:'#f59e0b',
-    google:[
-      {title:'LinkedIn - Nathalie Brunet - Responsable Qualité ELECARM',url:'linkedin.com/in/nathalie-brunet-qualite',snippet:'Nathalie Brunet - Responsable Qualité chez ELECARM SAS. 342 relations. Certifiée ISO 9001.'},
-      {title:'AFNOR Forum Qualité - intervention de N. Brunet',url:'afnor.org/forum/qualite-industrielle/2024',snippet:'...intervention de Nathalie Brunet (ELECARM SAS) sur la traçabilité des lots dans la production électrique - conférence novembre 2024...'},
-    ],
     linkedin:{
       connections:342,
       headline:'Responsable Qualité | Certification ISO 9001 | ELECARM SAS',
       location:'Blois, Centre-Val de Loire',
       about:'Plus de 18 ans d\'expérience en qualité industrielle, dont 11 chez ELECARM SAS. Pilote la politique qualité d\'ELECARM SAS et les relations avec les donneurs d\'ordre (Thales, Schneider). Auditrice interne ISO 9001:2015.',
       experience:[
-        {title:'Responsable Qualité','company':'ELECARM SAS','period':'2015 - présent','desc':'Mise en place et suivi du SMQ, audits internes, traitement des non-conformités, interface client Thales.'},
-        {title:'Technicienne qualité','company':'Valeo','period':'2008 - 2015','desc':'Contrôle qualité, 8D, AMDEC.'},
+        {title:'Responsable Qualité',company:'ELECARM SAS',period:'2015 - présent',desc:'Mise en place et suivi du SMQ, audits internes, traitement des non-conformités, interface client Thales.'},
+        {title:'Technicienne qualité',company:'Valeo',period:'2008 - 2015',desc:'Contrôle qualité, 8D, AMDEC.'},
       ],
       skills:['ISO 9001','AMDEC','8D','Audit interne','Thales','Schneider','SAP QM'],
       education:[
@@ -2884,308 +2966,218 @@ const OSINT_DATA = {
         {school:'CNAM Blois',degree:'Expert QHSE - Bac+5',year:'2013'},
       ],
       posts:[
-        {date:'8 mai 2026','text':'Excellente journée de formation à l\'AFNOR sur les évolutions ISO 9001:2026. La qualité est l\'affaire de tous.','likes':67,'comments':14},
-        {date:'3 février 2026','text':'Fière d\'annoncer le renouvellement de notre certification ISO 9001 pour ELECARM SAS. Un beau travail d\'équipe.','likes':112,'comments':22},
-        {date:'12 décembre 2025','text':'Retour de l\'audit de surveillance ISO 9001. Zéro écart majeur. C\'est la récompense d\'une rigueur de tous les jours. Merci à l\'équipe qualité d\'ELECARM.','likes':89,'comments':18},
+        {date:'8 mai 2026',text:'Excellente journée de formation à l\'AFNOR sur les évolutions ISO 9001:2026. La qualité est l\'affaire de tous.',likes:67,comments:14},
+        {date:'3 février 2026',text:'Fière d\'annoncer le renouvellement de notre certification ISO 9001 pour ELECARM SAS. Un beau travail d\'équipe.',likes:112,comments:22},
+        {date:'12 décembre 2025',text:'Retour de l\'audit de surveillance ISO 9001. Zéro écart majeur. C\'est la récompense d\'une rigueur de tous les jours. Merci à l\'équipe qualité d\'ELECARM.',likes:89,comments:18},
       ],
+      url:'linkedin.com/in/nathalie-brunet-qualite',
     },
-    facebook:null,
-    analysis:[
-      {label:'Présence publique',value:'Modérée - profil professionnel actif, nom + employeur + clients exposés',level:'warn'},
-      {label:'Donneurs d\'ordre exposés',value:'Relation Thales et Schneider mentionnée publiquement sur LinkedIn',level:'warn'},
-      {label:'Réseaux sociaux',value:'Aucun compte Facebook détecté - présence uniquement professionnelle',level:'ok'},
-      {label:'Activité récente',value:'Dernière publication le 08/05 - profil actif et visible',level:'warn'},
-      {label:'Conclusion',value:'Exposition professionnelle significative. Les relations avec Thales/Schneider sont publiques, ce qui peut faciliter des attaques par usurpation d\'identité (spear phishing). Aucun signal comportemental alarmant.',level:'warn'},
-    ],
+    facebook:{
+      url:'facebook.com/nathalie.brunet.vendome',
+      private:true,
+      privacy:'Profil privé',
+      location:'Blois, Centre-Val de Loire',
+      about:['Habite à Blois'],
+      posts:[],
+    },
   },
-  thierry: {
+  thierry:{
     id:'thierry',
     name:'Pierre THIERRY',
     role:'Gardien de nuit',
     photo:'face3.jpg',
-    risk:'EXPOSITION NULLE',
-    riskBg:'#111',riskTc:'#555',
-    google:[
-      {title:'Pages Blanches - Pierre Thierry - Blois',url:'pagesjaunes.fr/annuaire/pierre-thierry-blois',snippet:'Pierre THIERRY - 41000 Blois - Aucune information supplémentaire disponible.'},
-      {title:'Club pétanque La Boule Bloisoise - anciens membres',url:'petanque-bloisoise.fr/membres/archives',snippet:'...Pierre Thierry - membre inscrit 2022-2023 - adhésion non renouvelée. Section loisirs. Rue des Acacias, Blois...'},
-    ],
     linkedin:null,
-    facebook:null,
-    analysis:[
-      {label:'Présence publique',value:'Quasi nulle - Pages Blanches + trace club pétanque (adhésion non renouvelée 2023)',level:'ok'},
-      {label:'Réseaux sociaux',value:'Aucun compte LinkedIn, Facebook ou autre réseau détecté',level:'ok'},
-      {label:'Informations sensibles',value:'Aucune information professionnelle ou personnelle indexée',level:'ok'},
-      {label:'Profil numérique',value:'Individu volontairement absent du numérique - atypique pour 2026',level:'warn'},
-      {label:'Conclusion',value:'Empreinte OSINT inexistante. Absence totale de trace numérique : inhabituel. Ne permet pas de confirmer ni d\'infirmer son implication. La discrétion numérique peut elle-même constituer un signal.',level:'warn'},
-    ],
+    facebook:{
+      url:'facebook.com/pierre.thierry.1974',
+      privacy:'Profil public',
+      friends:58,
+      location:'Blois, Centre-Val de Loire',
+      about:['Agent de gardiennage chez ELECARM SAS','Ancien membre de La Boule Bloisoise','Habite à Blois'],
+      posts:[
+        {date:'18 mars 2024',text:'Nouveau poste de gardien de nuit. Fini les horaires de jour, il va falloir s\'habituer !',visibility:'Public'},
+        {date:'9 juillet 2023',text:'Finale du tournoi de La Boule Bloisoise. Perdu 13-11, mais quelle partie.',visibility:'Public'},
+      ],
+    },
   },
-  rousseau: {
+  rousseau:{
     id:'rousseau',
     name:'Camille ROUSSEAU',
     role:'Assistante commerciale',
-    risk:'A VERIFIER',
-    riskBg:'#1a1200',riskTc:'#f59e0b',
-    google:[
-      {title:'LinkedIn - Camille Rousseau - ELECARM SAS',url:'linkedin.com/in/camille-rousseau-com',snippet:'Camille Rousseau - Assistante commerciale chez ELECARM SAS. Blois. 94 relations.'},
-      {title:'Collectif Objecteurs - stop aux exportations d\'armement',url:'collectif-objecteurs.fr/nos-membres',snippet:'...parmi nos membres actifs région Centre : Camille R., mobilisée depuis 2023 sur les campagnes de sensibilisation...'},
-    ],
     linkedin:{
       connections:94,
       headline:'Assistante commerciale | ELECARM SAS',
       location:'Blois, Centre-Val de Loire',
       about:'Assistante commerciale depuis 2 ans. Gestion des commandes clients et du suivi administratif.',
       experience:[
-        {title:'Assistante commerciale','company':'ELECARM SAS','period':'2024 - présent','desc':'Suivi de commandes, relation clients, support administratif.'},
+        {title:'Assistante commerciale',company:'ELECARM SAS',period:'2024 - présent',desc:'Suivi de commandes, relation clients, support administratif.'},
       ],
       skills:['Gestion commerciale','SAP SD','Relation client'],
       education:[
         {school:'IUT de Tours',degree:'BUT Techniques de Commercialisation',year:'2023'},
       ],
       posts:[],
+      url:'linkedin.com/in/camille-rousseau-com',
     },
     facebook:{
       privacy:'Profil public',
       friends:203,
       location:'Blois, Centre-Val de Loire',
       posts:[
-        {date:'1 mai 2026','text':'Manifestation ce matin contre le salon de l\'armement. On ne lâchera rien.','visibility':'Public','flag':true},
-        {date:'20 février 2026','text':'Fière de militer au sein du collectif depuis 3 ans maintenant. Chaque voix compte.','visibility':'Public','flag':true},
+        {date:'1 mai 2026',text:'Manifestation ce matin contre le salon de l\'armement. On ne lâchera rien.',visibility:'Public'},
+        {date:'20 février 2026',text:'Fière de militer au sein du collectif depuis 3 ans maintenant. Chaque voix compte.',visibility:'Public'},
       ],
+      url:'facebook.com/camille.rousseau.tours',
+      about:['Assistante commerciale chez ELECARM SAS','Membre du Collectif Objecteurs (stop aux exportations d\'armement)','Habite à Blois, originaire de Tours'],
     },
-    analysis:[
-      {label:'Présence publique',value:'Élevée - militantisme assumé et documenté publiquement',level:'warn'},
-      {label:'Motif idéologique apparent',value:'Membre active d\'un collectif anti-armement, potentiellement en tension avec l\'activité d\'ELECARM',level:'warn'},
-      {label:'Accès technique',value:'Aucun accès atelier, alarme ou système informatique dans sa fiche de poste',level:'ok'},
-      {label:'Alibi',value:'Absente de la région la nuit des faits (congé validé par les RH)',level:'ok'},
-      {label:'Conclusion',value:'Un motif idéologique visible ne suffit pas à établir une implication : sans accès ni opportunité, ce profil doit être écarté dès lors que l\'alibi est vérifié. À signaler comme risque de biais si l\'enquête s\'y attarde trop longtemps.',level:'ok'},
-    ],
   },
-  vasseur: {
+  vasseur:{
     id:'vasseur',
     name:'Thomas VASSEUR',
     role:'Technicien de maintenance',
-    risk:'A VERIFIER',
-    riskBg:'#1a1200',riskTc:'#f59e0b',
-    google:[
-      {title:'LinkedIn - Thomas Vasseur - ELECARM SAS',url:'linkedin.com/in/thomas-vasseur-maintenance',snippet:'Thomas Vasseur - Technicien de maintenance chez ELECARM SAS. 8 mois. Blois.'},
-    ],
     linkedin:{
       connections:41,
       headline:'Technicien de maintenance | ELECARM SAS',
       location:'Blois, Loir-et-Cher',
       about:'Technicien de maintenance industrielle.',
       experience:[
-        {title:'Technicien de maintenance','company':'ELECARM SAS','period':'sept. 2025 - présent','desc':'Maintenance préventive et curative des lignes de production.'},
-        {title:'Technicien maintenance (intérim)','company':'Adecco','period':'oct. 2024 - août 2025','desc':'Missions de maintenance en intérim, région Centre.'},
-        {title:'Période non renseignée','company':'','period':'2023 - 2024','desc':'Aucune activité documentée sur le profil pour cette période.'},
-        {title:'Technicien maintenance','company':'Fonderie Loiret','period':'2019 - 2023','desc':'Maintenance électromécanique.'},
+        {title:'Technicien de maintenance',company:'ELECARM SAS',period:'sept. 2025 - présent',desc:'Maintenance préventive et curative des lignes de production.'},
+        {title:'Technicien maintenance (intérim)',company:'Adecco',period:'oct. 2024 - août 2025',desc:'Missions de maintenance en intérim, région Centre.'},
+        {title:'Période non renseignée',company:'',period:'2023 - 2024',desc:'Aucune activité documentée sur le profil pour cette période.'},
+        {title:'Technicien maintenance',company:'Fonderie Loiret',period:'2019 - 2023',desc:'Maintenance électromécanique.'},
       ],
       skills:['Maintenance industrielle','Automatismes','Habilitation électrique'],
       education:[
         {school:'Lycée Pro - Orléans',degree:'BAC Pro MEI',year:'2013'},
       ],
       posts:[],
+      url:'linkedin.com/in/thomas-vasseur-maintenance',
     },
-    facebook:null,
-    analysis:[
-      {label:'Présence publique',value:'Faible - profil récent, peu d\'activité',level:'ok'},
-      {label:'Anomalie de parcours',value:'Trou de près d\'un an entre 2023 et 2024 sur le CV, non expliqué publiquement',level:'warn'},
-      {label:'Ancienneté dans l\'entreprise',value:'8 mois seulement - arrivé après le début de plusieurs événements suspects',level:'warn'},
-      {label:'Accès technique',value:'Pas d\'accès au système d\'alarme. Badge atelier uniquement, horaires habituels respectés',level:'ok'},
-      {label:'Conclusion',value:'Un trou de CV appelle une vérification factuelle (RH, références) et non une accusation. Aucun élément matériel - badge, accès, horaires - ne le relie aux faits.',level:'ok'},
-    ],
+    facebook:{
+      url:'facebook.com/thomas.vasseur.45',
+      private:true,
+      privacy:'Profil privé',
+      location:'Orléans, Centre-Val de Loire',
+      about:['Habite à Orléans'],
+      posts:[],
+    },
   },
-  haddad: {
+  haddad:{
     id:'haddad',
     name:'Farid HADDAD',
     role:'Responsable Achats',
-    risk:'A VERIFIER',
-    riskBg:'#1a1200',riskTc:'#f59e0b',
-    google:[
-      {title:'LinkedIn - Farid Haddad - Responsable Achats ELECARM',url:'linkedin.com/in/farid-haddad-achats',snippet:'Farid Haddad - Responsable Achats chez ELECARM SAS. 312 relations. 9 ans d\'ancienneté.'},
-      {title:'Salon Electronica Shenzhen 2026 - liste des visiteurs professionnels',url:'electronica-shenzhen.com/visiteurs-2026',snippet:'...délégation française incluant F. Haddad (ELECARM SAS, France) - sourcing composants...'},
-    ],
     linkedin:{
       connections:312,
       headline:'Responsable Achats | Sourcing international | ELECARM SAS',
       location:'Blois, Centre-Val de Loire',
       about:'Responsable Achats depuis 9 ans. Sourcing fournisseurs Europe et Asie, négociation contrats.',
       experience:[
-        {title:'Responsable Achats','company':'ELECARM SAS','period':'2017 - présent','desc':'Sourcing fournisseurs, négociation, gestion des risques fournisseurs.'},
-        {title:'Acheteur composants électroniques','company':'Schneider Electric','period':'2003 - 2017','desc':'Achats de composants, audits fournisseurs en Asie.'},
+        {title:'Responsable Achats',company:'ELECARM SAS',period:'2017 - présent',desc:'Sourcing fournisseurs, négociation, gestion des risques fournisseurs.'},
+        {title:'Acheteur composants électroniques',company:'Schneider Electric',period:'2003 - 2017',desc:'Achats de composants, audits fournisseurs en Asie.'},
       ],
       skills:['Sourcing international','Négociation','Gestion fournisseurs','Mandarin (notions)'],
       education:[
         {school:'ESC Tours',degree:'Master Achats et Logistique',year:'2002'},
       ],
       posts:[
-        {date:'5 mai 2026','text':'De retour de Shenzhen après une semaine de visites fournisseurs. Marché des composants électroniques toujours aussi dynamique.','likes':22,'comments':4},
+        {date:'5 mai 2026',text:'De retour de Shenzhen après une semaine de visites fournisseurs. Marché des composants électroniques toujours aussi dynamique.',likes:22,comments:4},
       ],
+      url:'linkedin.com/in/farid-haddad-achats',
     },
     facebook:{
       privacy:'Profil semi-public',
       friends:340,
       location:'Blois, Centre-Val de Loire',
       posts:[
-        {date:'10 avril 2026','text':'De retour de Bagdad, content d\'avoir revu la famille après deux ans.','visibility':'Amis','flag':true},
+        {date:'10 avril 2026',text:'De retour de Bagdad, content d\'avoir revu la famille après deux ans.',visibility:'Amis'},
       ],
+      url:'facebook.com/farid.haddad.78',
+      about:['Responsable Achats chez ELECARM SAS','Habite à Blois','Né à Lyon'],
     },
-    analysis:[
-      {label:'Présence publique',value:'Élevée - profil professionnel actif, déplacements documentés',level:'warn'},
-      {label:'Déplacements internationaux',value:'Voyages professionnels réguliers en Chine (sourcing) et voyages familiaux en Irak',level:'warn'},
-      {label:'Lien avec le dossier fournisseur',value:'Pilote une étude de changement de fournisseur des passerelles Raspberry Pi (SinoBoard, Shenzhen), encore à l\'arbitrage - voir note Achats',level:'warn'},
-      {label:'Accès technique',value:'Aucun accès au système d\'alarme ni aux systèmes informatiques sensibles',level:'ok'},
-      {label:'Conclusion',value:'Les déplacements à l\'étranger ne constituent pas une preuve : ils correspondent à son rôle professionnel et à sa situation familiale. Le dossier fournisseur qu\'il pilote n\'a jamais été validé ni déployé : aucun lien technique avec l\'intrusion.',level:'warn'},
-    ],
   },
 };
 
+// ── OSINT : plateforme de recherche en sources ouvertes (LinkedIn et Facebook uniquement) ──
+// Aucune conclusion automatique : la plateforme collecte, l'équipe analyse (épingles + notes).
+const OSINT_ORDER=['moreau','durand','benyoucef','brunet','thierry','rousseau','vasseur','haddad'];
+let osintView='timeline', osintFilter='all';
+function oxLoad(k){ try{ return JSON.parse(localStorage.getItem(k)||'{}'); }catch(e){ return {}; } }
+function oxSave(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+const OX_PINS='elecarm_osint_pins', OX_NOTES='elecarm_osint_notes';
+function oxInitials(n){ return n.split(' ').map(w=>w[0]).join('').slice(0,2); }
+function oxAv(d,cls){ const z=d.photo==='face4.jpg'?' style="transform:scale(1.32)"':''; return `<div class="${cls||'ox-av'}">${d.photo?`<img src="${d.photo}" alt=""${z}>`:oxInitials(d.name)}</div>`; }
+const OX_MOIS={janvier:0,'février':1,mars:2,avril:3,mai:4,juin:5,juillet:6,'août':7,septembre:8,octobre:9,novembre:10,'décembre':11};
+function oxTs(date){ const [j,m,a]=date.split(' '); return new Date(+a,OX_MOIS[m]||0,+j).getTime(); }
+function oxPosts(id){
+  const d=OSINT_DATA[id], out=[];
+  if(d.linkedin) (d.linkedin.posts||[]).forEach((p,k)=>out.push({key:id+':li:'+k,src:'li',date:p.date,text:p.text,foot:`${p.likes} réactions · ${p.comments} commentaires`,vis:'Public'}));
+  if(d.facebook && !d.facebook.private) (d.facebook.posts||[]).forEach((p,k)=>out.push({key:id+':fb:'+k,src:'fb',date:p.date,text:p.text,foot:'',vis:p.visibility}));
+  return out.sort((a,b)=>oxTs(b.date)-oxTs(a.date));
+}
+function oxVis(fb){ if(!fb) return ['none','Aucun compte']; if(fb.private) return ['priv','Privé']; return /semi/i.test(fb.privacy)?['semi','Semi-public']:['pub','Public']; }
 function renderOSINT(){
-  switchOSINT(currentOSINT);
-}
-
-function switchOSINT(id){
-  currentOSINT=id;
-  const d=OSINT_DATA[id];
-  if(!d)return;
-  // header
-  document.getElementById('osint-suspect-name').textContent=d.name+' - '+d.role;
-  const badge=document.getElementById('osint-risk-badge');
-  badge.textContent=d.risk;
-  badge.style.background=d.riskBg;
-  badge.style.color=d.riskTc;
-  // suspect nav
   const nav=document.getElementById('osint-nav');
-  nav.innerHTML='';
-  const suspects=[
-    {id:'moreau',label:'MOREAU'},
-    {id:'durand',label:'DURAND'},
-    {id:'benyoucef',label:'BENYOUCEF'},
-    {id:'brunet',label:'BRUNET'},
-    {id:'thierry',label:'THIERRY'},
-    {id:'rousseau',label:'ROUSSEAU'},
-    {id:'vasseur',label:'VASSEUR'},
-    {id:'haddad',label:'HADDAD'},
-  ];
-  suspects.forEach(s=>{
-    const btn=document.createElement('button');
-    btn.className='osint-stab'+(s.id===id?' active':'');
-    btn.textContent=s.label;
-    btn.onclick=()=>switchOSINT(s.id);
-    nav.appendChild(btn);
-  });
-  // body
-  document.getElementById('osint-body').innerHTML=buildOSINTBody(d);
+  const pins=oxLoad(OX_PINS);
+  document.getElementById('ox-count').textContent='('+OSINT_ORDER.length+')';
+  nav.innerHTML=OSINT_ORDER.map(id=>{ const d=OSINT_DATA[id]; const np=Object.keys(pins).filter(k=>k.startsWith(id+':')).length;
+    return `<button class="ox-t${id===currentOSINT?' active':''}" onclick="switchOSINT('${id}')">${oxAv(d)}<div style="min-width:0"><div class="ox-tn">${d.name}</div><div class="ox-tr">${d.role}</div>${np?`<div class="ox-pinc">${np} élément${np>1?'s':''} épinglé${np>1?'s':''}</div>`:''}</div>
+      <div class="ox-src"><i class="${d.linkedin?'li':'off'}">in</i><i class="${d.facebook?'fb':'off'}">f</i></div></button>`; }).join('');
+  renderOSINTMain();
 }
-
-function buildOSINTBody(d){
-  let html='';
-
-  // ── Google ──────────────────────────────
-  html+=`<div style="margin-top:14px;margin-bottom:18px">
-    <div style="font-size:10px;color:var(--tx4);margin-bottom:10px">Environ ${d.google.length} résultat(s) pour "<span style="color:var(--tx2)">${d.name}</span>"</div>`;
-  d.google.forEach(g=>{
-    html+=`<div style="margin-bottom:13px">
-      <div style="font-size:12px;font-weight:500;color:#7ab0d8">${g.title}</div>
-      <div style="font-size:11px;color:#3a7a3a;margin:1px 0 3px">${g.url}</div>
-      <div style="font-size:12px;color:var(--tx3);line-height:1.6">${g.snippet}</div>
+function switchOSINT(id){ if(!OSINT_DATA[id]) return; currentOSINT=id; osintFilter='all'; renderOSINT(); const m=document.getElementById('osint-body'); if(m) m.scrollTop=0; }
+function setOsintView(v){ osintView=v; renderOSINTMain(); }
+function setOsintFilter(f){ osintFilter=f; renderOSINTMain(); }
+function toggleOsintPin(key){ const p=oxLoad(OX_PINS); if(p[key]) delete p[key]; else p[key]=1; oxSave(OX_PINS,p); renderOSINT(); }
+function saveOsintNote(id,v){ const n=oxLoad(OX_NOTES); n[id]=v; oxSave(OX_NOTES,n); }
+function oxPostHtml(p,pins){
+  return `<div class="ox-post"><div class="ox-post-l"><b>${p.date}</b>${p.src==='li'?'<span style="color:#71b7fb">LinkedIn</span>':'<span style="color:#6ea8ff">Facebook</span>'}</div>
+    <div class="ox-post-b"><div class="ox-post-h">Visibilité : ${p.vis}</div><div class="ox-post-t">${p.text}</div>${p.foot?`<div class="ox-post-f">${p.foot}</div>`:''}</div>
+    <button class="ox-pin${pins[p.key]?' on':''}" onclick="toggleOsintPin('${p.key}')">${pins[p.key]?'Épinglé':'Épingler'}</button></div>`;
+}
+function renderOSINTMain(){
+  const id=currentOSINT, d=OSINT_DATA[id], box=document.getElementById('osint-body'); if(!d||!box) return;
+  document.getElementById('ox-query').textContent='"'+d.name+'" ELECARM';
+  const li=d.linkedin, fb=d.facebook, pins=oxLoad(OX_PINS), posts=oxPosts(id);
+  const fv=oxVis(fb), loc=(li&&li.location)||(fb&&fb.location)||'';
+  const acct=(logo,bg,name,url,pill,lines)=>`<div class="ox-acct"><div class="ox-logo-s" style="background:${bg}">${logo}</div><div style="min-width:0"><div class="ox-acct-n">${name}</div>
+    ${url?`<div class="ox-acct-u">${url}</div>`:''}<div class="ox-acct-s">${pill}${lines}</div></div></div>`;
+  let h=`<div class="ox-id">${oxAv(d)}<div><div class="ox-id-n">${d.name}</div><div class="ox-id-m"><span>${d.role}, ELECARM SAS</span>${loc?`<span>${loc}</span>`:''}<span>${posts.length} publication${posts.length>1?'s':''} collectée${posts.length>1?'s':''}</span></div></div></div>
+    <div class="ox-accts">
+      ${li?acct('in','#0a66c2','LinkedIn','https://'+li.url,'<span class="ox-pill pub">Public</span>',`${li.connections} relations · ${(li.posts||[]).length} publication${(li.posts||[]).length>1?'s':''}`)
+          :acct('in','#262c3a','LinkedIn','','<span class="ox-pill none">Aucun compte</span>','Aucun profil correspondant trouvé.')}
+      ${fb?acct('f','#1877f2','Facebook','https://'+fb.url,`<span class="ox-pill ${fv[0]}">${fv[1]}</span>`,fb.private?'Seules la photo et la ville sont visibles.':`${fb.friends} amis · ${(fb.posts||[]).length} publication${(fb.posts||[]).length>1?'s':''} visible${(fb.posts||[]).length>1?'s':''}`)
+          :acct('f','#262c3a','Facebook','','<span class="ox-pill none">Aucun compte</span>','Aucun profil correspondant trouvé.')}
     </div>`;
-  });
-  html+=`</div>`;
-
-  // ── LinkedIn + Facebook côte à côte ─────
-  const liHtml = buildLinkedIn(d);
-  const fbHtml = buildFacebook(d);
-  html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px">
-    ${liHtml}
-    ${fbHtml}
-  </div>`;
-
-  return html;
-}
-
-function buildLinkedIn(d){
-  if(!d.linkedin){
-    return `<div style="background:#1d2226;border:1px solid #38434f;border-radius:6px;padding:16px;font-size:11px;color:#5a7a8a;font-style:italic">Aucun profil LinkedIn détecté.</div>`;
+  const nPins=posts.filter(p=>pins[p.key]).length;
+  const tabs=[['timeline','Chronologie',posts.length],['linkedin','LinkedIn',''],['facebook','Facebook',''],['notes','Notes d\'analyse',nPins||'']];
+  h+=`<div class="ox-tabs">${tabs.map(t=>`<button class="ox-tab${osintView===t[0]?' on':''}" onclick="setOsintView('${t[0]}')">${t[1]}${t[2]!==''?`<span>${t[2]}</span>`:''}</button>`).join('')}</div>`;
+  if(osintView==='timeline'){
+    const list=posts.filter(p=>osintFilter==='all'||p.src===osintFilter);
+    h+=`<div class="ox-flt">${[['all','Toutes les sources'],['li','LinkedIn'],['fb','Facebook']].map(f=>`<button class="${osintFilter===f[0]?'on':''}" onclick="setOsintFilter('${f[0]}')">${f[1]}</button>`).join('')}</div>`;
+    h+=list.length?list.map(p=>oxPostHtml(p,pins)).join(''):`<div class="ox-empty">Aucune publication publique collectée pour cette source.</div>`;
+  } else if(osintView==='linkedin'){
+    h+=li?`<div class="li"><div class="li-cover"></div><div class="li-head">${oxAv(d,'li-av')}<div class="li-n">${d.name}</div><div class="li-hl">${li.headline}</div>
+        <div class="li-loc">${li.location} · <b>${li.connections} relations</b></div></div>
+      ${li.about?`<div class="li-sec"><div class="li-st">Infos</div><div style="font-size:13px;color:#e0e0e0;line-height:1.6">${li.about}</div></div>`:''}
+      ${(li.posts||[]).length?`<div class="li-sec"><div class="li-st">Activité</div>${li.posts.map(p=>`<div class="li-post"><small>${d.name} · ${p.date}</small><p>${p.text}</p><em>${p.likes} réactions · ${p.comments} commentaires</em></div>`).join('')}</div>`:''}
+      <div class="li-sec"><div class="li-st">Expérience</div>${li.experience.map(e=>`<div class="li-it"><div class="li-lg">${(e.company||'?').slice(0,1)}</div><div><b>${e.title}</b><span>${e.company||'Non renseigné'}</span><small>${e.period}</small>${e.desc?`<small>${e.desc}</small>`:''}</div></div>`).join('')}</div>
+      ${li.education&&li.education.length?`<div class="li-sec"><div class="li-st">Formation</div>${li.education.map(e=>`<div class="li-it"><div class="li-lg">${e.school.slice(0,1)}</div><div><b>${e.school}</b><span>${e.degree}</span><small>${e.year}</small></div></div>`).join('')}</div>`:''}
+      <div class="li-sec"><div class="li-st">Compétences</div>${li.skills.map(k=>`<span class="li-sk">${k}</span>`).join('')}</div></div>`
+      :`<div class="ox-empty">Aucun profil LinkedIn trouvé pour cette personne.</div>`;
+  } else if(osintView==='facebook'){
+    if(!fb) h+=`<div class="ox-empty">Aucun compte Facebook trouvé pour cette personne.</div>`;
+    else h+=`<div class="fbv"><div class="fbv-cover"></div><div class="fbv-head">${oxAv(d,'fbv-av')}<div style="padding-bottom:8px"><div class="fbv-n">${d.name}</div><div class="fbv-s">${fb.private?'Profil privé':(fb.friends+' amis')}</div></div></div>
+      ${fb.private?`<div class="fbv-priv"><b>Ce profil est privé</b>Seules la photo de profil et la ville (${fb.location}) sont visibles.<br>Les publications et la liste d'amis ne sont pas accessibles.</div>`
+      :`<div class="fbv-cols"><div><div class="fbv-box"><h4>Intro</h4><ul>${(fb.about||[]).map(a=>`<li>${a}</li>`).join('')}<li>${fb.privacy}</li></ul></div></div>
+        <div>${(fb.posts||[]).length?fb.posts.map(p=>`<div class="fbv-post"><div class="fbv-ph">${oxAv(d,'fbv-av')}<div><b>${d.name}</b><small>${p.date} · ${p.visibility}</small></div></div><p>${p.text}</p></div>`).join(''):'<div class="fbv-post"><p>Aucune publication visible.</p></div>'}</div></div>`}</div>`;
+  } else {
+    const n=oxLoad(OX_NOTES)[id]||'';
+    const pinned=posts.filter(p=>pins[p.key]);
+    h+=`<div class="ox-notes"><div class="ox-h" style="margin-top:0">Éléments épinglés (${pinned.length})</div>
+      ${pinned.length?pinned.map(p=>oxPostHtml(p,pins)).join(''):`<div class="ox-empty">Aucun élément épinglé. Dans la chronologie, épinglez les publications qui vous semblent utiles à l'enquête.</div>`}
+      <div class="ox-h">Notes de l'équipe sur ${d.name}</div>
+      <textarea placeholder="Ce que vous retenez de ce profil, ce qu'il faut vérifier ailleurs..." oninput="saveOsintNote('${id}',this.value)">${escHtml(n)}</textarea></div>`;
   }
-  const li=d.linkedin;
-  return `<div style="background:#1d2226;border:1px solid #38434f;border-radius:6px;overflow:hidden;font-family:var(--font)">
-    <div style="height:56px;background:linear-gradient(135deg,#004471 0%,#00335a 100%)"></div>
-    <div style="padding:0 14px 0;margin-top:-28px">
-      <div style="width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid #1d2226;margin-bottom:8px">
-        <img src="${d.photo}" alt="${d.name}" style="width:100%;height:100%;object-fit:cover">
-      </div>
-      <div style="font-size:13px;font-weight:700;color:#e7e9ea;margin-bottom:2px">${d.name}</div>
-      <div style="font-size:10px;color:#a8a8a8;line-height:1.55;margin-bottom:6px">${li.headline}</div>
-      <div style="font-size:10px;color:#70b5f9;margin-bottom:12px">${li.location} · <span style="color:#a8a8a8">${li.connections} relations</span></div>
-    </div>
-    ${li.about?`<div style="padding:10px 14px;border-top:1px solid #38434f;font-size:11px;color:#a8a8a8;line-height:1.65">${li.about}</div>`:''}
-    <div style="padding:10px 14px;border-top:1px solid #38434f">
-      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#70b5f9;text-transform:uppercase;margin-bottom:7px">Expériences</div>
-      ${li.experience.map(e=>`<div style="margin-bottom:9px">
-        <div style="font-size:11px;font-weight:600;color:#e7e9ea">${e.title}</div>
-        <div style="font-size:10px;color:#a8a8a8">${e.company} · ${e.period}</div>
-        <div style="font-size:10px;color:#6a8a9a;margin-top:2px;line-height:1.5">${e.desc}</div>
-      </div>`).join('')}
-    </div>
-    <div style="padding:10px 14px;border-top:1px solid #38434f">
-      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#70b5f9;text-transform:uppercase;margin-bottom:7px">Compétences</div>
-      <div style="display:flex;flex-wrap:wrap;gap:4px">
-        ${li.skills.map(sk=>`<span style="background:#283039;border:1px solid #38434f;color:#a8c8e0;font-size:10px;padding:2px 7px;border-radius:3px">${sk}</span>`).join('')}
-      </div>
-    </div>
-    ${li.education&&li.education.length?`<div style="padding:10px 14px;border-top:1px solid #38434f">
-      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#70b5f9;text-transform:uppercase;margin-bottom:7px">Formation</div>
-      ${li.education.map(e=>`<div style="margin-bottom:8px">
-        <div style="font-size:11px;font-weight:600;color:#e7e9ea">${e.degree}</div>
-        <div style="font-size:10px;color:#a8a8a8">${e.school} · ${e.year}</div>
-      </div>`).join('')}
-    </div>`:''}
-    ${li.posts&&li.posts.length?`<div style="padding:10px 14px;border-top:1px solid #38434f">
-      <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:#70b5f9;text-transform:uppercase;margin-bottom:8px">Activité</div>
-      ${li.posts.map(p=>`<div style="background:#283039;border:1px solid #38434f;border-radius:4px;padding:10px 11px;margin-bottom:6px">
-        <div style="font-size:10px;color:#6a8a9a;margin-bottom:5px">${p.date}</div>
-        <div style="font-size:11px;color:#a8a8a8;line-height:1.65">${p.text}</div>
-        <div style="font-size:10px;color:#4a6a7a;margin-top:7px">${p.likes} J\'aime · ${p.comments} commentaires</div>
-      </div>`).join('')}
-    </div>`:''}
-  </div>`;
-}
-
-function buildFacebook(d){
-  if(!d.facebook){
-    return `<div style="background:#242526;border:1px solid #3a3b3c;border-radius:6px;padding:16px;font-size:11px;color:#6a6b6c;font-style:italic">Aucun compte Facebook détecté.</div>`;
-  }
-  const fb=d.facebook;
-  return `<div style="background:#242526;border:1px solid #3a3b3c;border-radius:6px;overflow:hidden;font-family:var(--font)">
-    <div style="height:80px;background:#3a3b3c"></div>
-    <div style="padding:0 14px 12px;margin-top:-36px;border-bottom:1px solid #3a3b3c">
-      <div style="display:flex;align-items:flex-end;gap:10px;margin-bottom:8px">
-        <div style="width:64px;height:64px;border-radius:50%;overflow:hidden;border:3px solid #242526;flex-shrink:0">
-          <img src="${d.photo}" alt="${d.name}" style="width:100%;height:100%;object-fit:cover">
-        </div>
-        <div style="padding-bottom:6px">
-          <div style="font-size:14px;font-weight:700;color:#e4e6eb">${d.name}</div>
-          ${fb.location?`<div style="font-size:10px;color:#b0b3b8">${fb.location}</div>`:''}
-          <div style="font-size:10px;color:#b0b3b8">${fb.privacy}${fb.friends?' · '+fb.friends+' amis':''}</div>
-        </div>
-      </div>
-    </div>
-    <div style="padding:10px 14px">
-      ${fb.posts.map(p=>`<div style="background:#18191a;border:1px solid #3a3b3c;border-radius:8px;padding:11px 13px;margin-bottom:8px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <div style="width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0">
-            <img src="${d.photo}" alt="" style="width:100%;height:100%;object-fit:cover">
-          </div>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#e4e6eb">${d.name}</div>
-            <div style="font-size:10px;color:#b0b3b8">${p.date} · ${p.visibility}</div>
-          </div>
-        </div>
-        <div style="font-size:12px;color:#e4e6eb;line-height:1.65">${p.text}</div>
-      </div>`).join('')}
-    </div>
-  </div>`;
+  box.innerHTML=h;
 }
 
 // ══════════════════════════════════════════
