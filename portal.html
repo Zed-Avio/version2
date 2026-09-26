@@ -47,6 +47,21 @@ input::placeholder{color:#333}
   text-transform:uppercase;letter-spacing:.08em;margin-top:16px;justify-content:center
 }
 .secure-tag::before,.secure-tag::after{content:'';flex:1;height:1px;background:#1a1c1f}
+.lesson{position:fixed;inset:0;background:rgba(4,5,6,.9);display:none;align-items:center;justify-content:center;padding:16px;z-index:10;overflow:auto}
+.lesson.show{display:flex}
+.l-box{background:#0d0f11;border:1px solid #5c1f1f;border-radius:10px;max-width:560px;width:100%;padding:26px 24px;margin:auto}
+.l-tag{font-size:11px;font-weight:700;letter-spacing:.14em;color:#dc2626;text-transform:uppercase;margin-bottom:8px}
+.l-title{font-size:21px;font-weight:700;color:#fff;margin-bottom:10px}
+.l-p{font-size:13.5px;color:#b5b5b5;line-height:1.7;margin-bottom:14px}
+.l-h{font-size:11px;font-weight:700;letter-spacing:.1em;color:#8a8a8a;text-transform:uppercase;margin:16px 0 8px}
+.l-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.l-list li{font-size:13px;color:#d4d4d4;line-height:1.6;padding-left:18px;position:relative}
+.l-list li::before{content:'';position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:#7f1d1d}
+.dom{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;background:#08090a;border:1px solid #232629;border-radius:4px;padding:1px 6px;white-space:nowrap}
+.dom.bad{color:#fca5a5;border-color:#3b0d0d}
+.dom.ok{color:#5fd48a;border-color:#123a1f}
+.l-note{font-size:11.5px;color:#666;margin-top:16px;line-height:1.6}
+.l-btn{margin-top:18px;width:100%;background:#7f1d1d;border:none;color:#fff;padding:12px;font-size:13px;font-weight:700;border-radius:6px;cursor:pointer;font-family:inherit}
 </style>
 </head>
 <body>
@@ -83,11 +98,45 @@ input::placeholder{color:#333}
   </div>
 
   <div class="footer">
-    Problème de connexion ? Contactez le DSI — <a href="#">support-it@elecarm.fr</a><br>
+    Problème de connexion ? Contactez la DSI : <a href="#">support-it@elecarm.fr</a><br>
     ELECARM SAS · ZI Les Charmes · 41000 Blois
   </div>
 </div>
+<!-- Leçon affichée dès que l'élève tente de se connecter (aucun identifiant n'est envoyé nulle part) -->
+<div class="lesson" id="lesson">
+  <div class="l-box">
+    <div class="l-tag">&#9888; Exercice de sensibilisation</div>
+    <div class="l-title">Vous venez de vous faire piéger</div>
+    <div class="l-p">Ce portail n'appartient pas à ELECARM. Dans la vraie vie, l'adresse e-mail et le mot de passe que vous venez de taper seraient maintenant entre les mains d'un attaquant.</div>
+    <div class="l-h">Faites attention aux noms de domaine</div>
+    <ul class="l-list">
+      <li>Le vrai domaine de l'entreprise est <span class="dom ok">elecarm.fr</span>.</li>
+      <li>Le mail venait de <span class="dom bad">it-notifications@elecarm-sys.net</span> et le lien menait vers <span class="dom bad">elecarm-secure-portal.net</span> : ce sont d'autres sites, même si le nom « elecarm » apparaît dedans.</li>
+      <li>Seule compte la partie juste avant l'extension : <span class="dom bad">elecarm.fr.connexion-securisee.com</span> appartient à <span class="dom">connexion-securisee.com</span>, et <span class="dom bad">e1ecarm.fr</span> (un chiffre 1 à la place du l) n'est pas <span class="dom ok">elecarm.fr</span>.</li>
+    </ul>
+    <div class="l-h">Les autres signaux d'alerte de ce mail</div>
+    <ul class="l-list">
+      <li>L'urgence : « avant 12h00 », pour vous faire agir sans réfléchir.</li>
+      <li>La demande d'identifiants : un vrai service informatique ne vous demande jamais votre mot de passe par mail.</li>
+      <li>Un expéditeur « noreply » impossible à contacter pour vérifier.</li>
+    </ul>
+    <div class="l-h">Les bons réflexes</div>
+    <ul class="l-list">
+      <li>Survolez un lien avant de cliquer et lisez le domaine réel.</li>
+      <li>Tapez vous-même l'adresse du site officiel plutôt que de suivre un lien.</li>
+      <li>Une pièce jointe douteuse ? Ne l'ouvrez pas : analysez-la (par exemple sur VirusTotal).</li>
+      <li>Signalez le mail à la DSI.</li>
+    </ul>
+    <div class="l-note">Rien de ce que vous avez tapé n'a été envoyé : cette page fait partie de l'exercice.</div>
+    <button class="l-btn" onclick="backToGame()">Retourner à l'enquête</button>
+  </div>
+</div>
 <script>
+function backToGame(){
+  // Page ouverte dans un nouvel onglet depuis le mail : on la ferme ; sinon on revient à l'exercice.
+  window.close();
+  setTimeout(function(){ location.href='/exercice'; }, 200);
+}
 // Piege de navigation (decor phishing) : le bouton "precedent" ne quitte pas la page.
 // Le visiteur reste bloque sur le portail ; il doit recharger la page pour repartir.
 history.pushState(null, '', location.href);
@@ -107,7 +156,8 @@ function tryLogin(){
     e.textContent='Identifiants incorrects. Vérifiez votre adresse e-mail et votre mot de passe, puis réessayez. Après '+( 3-attempts)+' tentative(s) supplémentaire(s), votre compte sera temporairement bloqué.';
   }
   p.value='';
-  p.focus();
+  u.value='';
+  document.getElementById('lesson').classList.add('show');
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
 </script>
