@@ -226,7 +226,7 @@ button.big{font-size:15px;padding:13px 22px}
     </div>
 
     <div class="card">
-      <h2>Suppositions des groupes <span class="r" id="scount"></span></h2>
+      <h2>QCM final des groupes <span class="r" id="scount"></span></h2>
       <div id="sups"></div>
     </div>
   </div>
@@ -482,7 +482,7 @@ function renderTeams(){
       '<span class="tag">'+n+' / 5 tentatives</span><span class="tag">meilleur : '+best+' / 5</span>'+status+
       '<div class="team-a"><button class="b-reset sm" onclick="teamAction(\'resetAttempts\',\''+t.id+'\')">Remettre les tentatives à zéro</button></div></div>'+
       '<div class="atts">'+atts+'</div></div>';
-  }).join(''):'<div class="empty">Aucune supposition envoyée pour le moment.</div>';
+  }).join(''):'<div class="empty">Aucun QCM final envoyé pour le moment.</div>';
 }
 function poll(){
   api({action:'state',minRev:(st&&st.rev)||0}).then(function(o){ if(o.ok) apply(o.j); }).catch(function(){})

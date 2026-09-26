@@ -791,6 +791,26 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .sup-att-body{padding:0 12px 10px;font-size:12px;color:var(--tx3);line-height:1.7}
 .sup-att-body span{color:var(--tx2)}
 .team-chip{font-size:10px;font-weight:700;letter-spacing:.06em;color:#d4d4d4;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:4px;padding:3px 9px;text-transform:uppercase;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Leçons des pièges (quiz Facebook...) */
+#trap{position:fixed;inset:0;z-index:9998;background:rgba(4,5,6,.9);display:none;align-items:flex-start;justify-content:center;padding:24px 16px;overflow:auto}
+#trap.show{display:flex}
+.tr-box{background:#0f1012;border:1px solid #5c1f1f;border-radius:10px;max-width:580px;width:100%;padding:26px 24px;margin:auto}
+.tr-tag{font-size:11px;font-weight:700;letter-spacing:.14em;color:#dc2626;text-transform:uppercase;margin-bottom:8px}
+.tr-title{font-size:21px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.3}
+.tr-p{font-size:13.5px;color:#b5b5b5;line-height:1.7;margin-bottom:10px}
+.tr-h{font-size:11px;font-weight:700;letter-spacing:.1em;color:#8a8a8a;text-transform:uppercase;margin:16px 0 8px}
+.tr-l{list-style:none;display:flex;flex-direction:column;gap:7px;padding:0}
+.tr-l li{font-size:13px;color:#d4d4d4;line-height:1.6;padding-left:18px;position:relative}
+.tr-l li::before{content:'';position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:#7f1d1d}
+.tr-hint{margin-top:16px;background:#101a26;border:1px solid #23405f;border-radius:8px;padding:12px 14px;font-size:13px;color:#cfe0f3;line-height:1.65}
+.tr-hint b{color:#8fc1f0}
+.tr-btn{margin-top:18px;width:100%;background:#7f1d1d;border:none;color:#fff;padding:12px;font-size:13px;font-weight:700;border-radius:6px;cursor:pointer;font-family:inherit}
+.fbv-quiz{margin-top:10px;border:1px solid #3a3b3c;border-radius:8px;overflow:hidden}
+.fbv-quiz-top{background:linear-gradient(135deg,#6d28d9,#db2777);padding:16px 14px;color:#fff;font-weight:800;font-size:16px;line-height:1.35}
+.fbv-quiz-top small{display:block;font-weight:500;font-size:12.5px;opacity:.92;margin-top:6px}
+.fbv-quiz-b{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#3a3b3c}
+.fbv-quiz-b span{font-size:11px;color:#b0b3b8;text-transform:uppercase;letter-spacing:.04em}
+.fbv-quiz-b button{margin-left:auto;background:#2d88ff;color:#fff;border:none;border-radius:6px;padding:7px 16px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
 #closed-overlay{position:fixed;inset:0;z-index:9999;background:rgba(5,5,6,.96);display:none;align-items:center;justify-content:center;text-align:center;padding:24px}
 #closed-overlay.show{display:flex}
 #closed-overlay .co-t{font-size:22px;font-weight:800;color:#fff;margin-bottom:10px}
@@ -816,6 +836,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 </style>
 </head>
 <body>
+<div id="trap"><div class="tr-box" id="trap-box"></div></div>
 <div id="closed-overlay"><div><div class="co-t" id="co-t">Exercice fermé</div><div class="co-d" id="co-d">L'animateur a fermé l'exercice. Restez sur cette page : elle se rouvrira automatiquement.</div></div></div>
 
 <!-- ═══ SPLASH ═══ -->
@@ -1005,7 +1026,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <button class="tab" data-tab="documents" onclick="switchTab(this)">DOCUMENTS</button>
         <button class="tab" data-tab="enigmes" onclick="switchTab(this)">BOÎTIER BX</button>
         <button class="tab" data-tab="osint" onclick="switchTab(this)">OSINT</button>
-        <button class="tab" data-tab="verdict" onclick="switchTab(this)">SUPPOSITIONS</button>
+        <button class="tab" data-tab="verdict" onclick="switchTab(this)">QCM FINAL</button>
       </div>
       <div class="panels">
 
@@ -1171,15 +1192,6 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
               <div class="ghx-commit">
                 <div class="ghx-av" style="background:#1f6feb">JM</div>
                 <div class="ghx-commit-body">
-                  <div class="ghx-commit-msg">Console d'administration interne pour la supervision locale (serveur ELECARM 10.42.6.11)</div>
-                  <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 6 mai 2026, TICK-4155</div>
-                </div>
-                <div class="ghx-right"><span class="ghx-verified">Verified</span><span class="ghx-sha">c9a0f12</span></div>
-              </div>
-
-              <div class="ghx-commit">
-                <div class="ghx-av" style="background:#1f6feb">JM</div>
-                <div class="ghx-commit-body">
                   <div class="ghx-commit-msg">Correctif, le module de telemetrie journalisait deux fois la meme mesure</div>
                   <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 30 avril 2026, TICK-4139</div>
                 </div>
@@ -1193,38 +1205,6 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                   <div class="ghx-commit-meta"><b>j.moreau</b> a valide le 22 avril 2026, TICK-4118</div>
                 </div>
                 <div class="ghx-right"><span class="ghx-verified">Verified</span><span class="ghx-sha">4a90de2</span></div>
-              </div>
-            </div>
-
-            <div class="ghx-section-label">Deux commits ajoutent une console d'administration. Un seul est malveillant : comparez l'adresse IP et les conditions de deploiement.</div>
-
-            <div class="ghx-cx">
-              <div class="ghx-cx-head">
-                <div class="ghx-av" style="background:#1f6feb">JM</div>
-                <div class="msg">
-                  <div class="t">Console d'administration interne pour la supervision locale (serveur ELECARM 10.42.6.11)</div>
-                  <div class="m"><b>j.moreau</b> a valide le 6 mai 2026 <span class="ghx-verified">Verified</span> <span class="ghx-sha">c9a0f12</span></div>
-                </div>
-              </div>
-              <div class="ghx-file-head">
-                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914-.013-.011Z"></path></svg>
-                <span class="path">agent_superviseur.py</span>
-                <span class="st"><span class="add">+2</span> -0</span>
-              </div>
-              <div class="ghx-diff">
-                <div class="ghx-row ghx-hunk"><span class="ghx-gut"></span><span class="ghx-gut"></span><span class="ghx-code"><span class="ghx-mark"> </span>@@ -10,5 +10,7 @@ def setup_admin_console():</span></div>
-                <div class="ghx-row"><span class="ghx-gut">10</span><span class="ghx-gut">10</span><span class="ghx-code"><span class="ghx-mark"> </span># agent_superviseur.py</span></div>
-                <div class="ghx-row"><span class="ghx-gut">11</span><span class="ghx-gut">11</span><span class="ghx-code"><span class="ghx-mark"> </span>    bind_local_services()</span></div>
-                <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">12</span><span class="ghx-code"><span class="ghx-mark">+</span>    # console d'administration interne, supervision ELECARM</span></div>
-                <div class="ghx-row add"><span class="ghx-gut"></span><span class="ghx-gut">13</span><span class="ghx-code"><span class="ghx-mark">+</span>    start_remote_console(bind='127.0.0.1', port=8443, allow_ip='10.42.6.11')</span></div>
-                <div class="ghx-row"><span class="ghx-gut">12</span><span class="ghx-gut">14</span><span class="ghx-code"><span class="ghx-mark"> </span>    enable_metrics_export()</span></div>
-              </div>
-              <div class="ghx-review">
-                <div class="ghx-av" style="background:#238636">OK</div>
-                <div class="ghx-review-body">
-                  <div class="ghx-review-head"><b>audit-dsi</b> a laisse un commentaire de revue</div>
-                  <div class="ghx-review-text">Changement LEGITIME. La console n'ecoute qu'en local (bind 127.0.0.1) et n'autorise que le serveur de supervision interne d'ELECARM (10.42.6.11), l'adresse avec laquelle la passerelle travaille normalement. Le commit est associe au ticket TICK-4155 et a ete relu avant deploiement. C'est une fausse piste : ne pas confondre avec le commit e7d0b4a du 9 mai.</div>
-                </div>
               </div>
             </div>
 
@@ -1255,7 +1235,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 <div class="ghx-av" style="background:#6e40c9">AD</div>
                 <div class="ghx-review-body">
                   <div class="ghx-review-head"><b>audit-dsi</b> a laisse un commentaire de revue</div>
-                  <div class="ghx-review-text">Changement MALVEILLANT. Contrairement au commit c9a0f12, la console ecoute sur toutes les interfaces (bind 0.0.0.0, donc exposee) et autorise une adresse EXTERNE, 185.220.101.47, qui n'appartient a aucun equipement ELECARM (voir Journaux / Logs). La variable THALES_TEST_MODE n'existe dans aucune configuration officielle. Le code renvoie en plus l'ensemble des journaux de la passerelle vers cette meme adresse. Pousse sans ticket ni revue, pendant la session RDP non autorisee du 08/05 23h44.</div>
+                  <div class="ghx-review-text">Changement MALVEILLANT. La console ecoute sur toutes les interfaces (bind 0.0.0.0, donc exposee) et autorise une adresse EXTERNE, 185.220.101.47, qui n'appartient a aucun equipement ELECARM (voir Journaux / Logs). La variable THALES_TEST_MODE n'existe dans aucune configuration officielle. Le code renvoie en plus l'ensemble des journaux de la passerelle vers cette meme adresse. Pousse sans ticket ni revue, pendant la session RDP non autorisee du 08/05 23h44.</div>
                 </div>
               </div>
             </div>
@@ -1369,7 +1349,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <div class="panel" id="panel-verdict">
           <div class="enig-scroll">
             <div class="enig-section">
-              <div class="enig-section-title">Vos suppositions</div>
+              <div class="enig-section-title">QCM final</div>
               <div style="font-size:12px;color:var(--tx3);line-height:1.7;margin-bottom:14px">Choisissez vos réponses en équipe, à partir de ce que vous avez trouvé dans Mails, Enquête, Journaux / Logs, Programmation, Documents, Boîtier BX et OSINT. Attention, toutes les propositions viennent du dossier : certaines sont de fausses pistes. L'équipe dispose de <b style="color:#fff">5 tentatives au total</b>, partagées entre tous ses membres et tous ses postes : mettez-vous d'accord avant d'envoyer.</div>
               <div class="sup-team" id="sup-team">Connexion au serveur...</div>
               <div id="sup-questions"></div>
@@ -1589,6 +1569,16 @@ const MAILS = [
 </ul>
 <p>Merci pour votre retour avant vendredi.</p>
 <p>R. LAMBERT<br>Directeur Général - ELECARM SAS</p>`
+  },
+  {
+    id:'dsi_scan01',from:'Julien MOREAU (DSI)',email:'j.moreau@elecarm.fr',
+    to:'tous@elecarm.fr',subject:'Information : scan de vulnérabilités trimestriel, mardi 12 mai',
+    time:'17:05',date:'11 mai 2026',unread:false,urgent:false,visible:true,
+    body:`<p>Bonjour à tous,</p>
+<p>Comme chaque trimestre, notre prestataire <strong>Sigma-Tech</strong> réalisera un scan de vulnérabilités du réseau interne <strong>mardi 12 mai, de 10h à 12h</strong>, depuis son poste d'audit (adresse <strong>10.42.1.30</strong>).</p>
+<p>Pendant cette plage, vous pourrez constater de légères lenteurs, et nos outils de sécurité remonteront des alertes : c'est attendu, inutile de les signaler.</p>
+<p>Référence : TICK-4185.</p>
+<p>Cordialement,<br>Julien MOREAU<br>Responsable DSI - ELECARM SAS</p>`
   },
   {
     id:'julien_norm03',from:'Julien MOREAU (DSI)',email:'j.moreau@elecarm.fr',
@@ -1986,77 +1976,76 @@ const SUSPECTS = [
 ];
 
 const LOGS = [
-  // FAUX POSITIFS
-  {phase:'Activité normale - bruit de fond',phaseColor:'#111',phaseTc:'#444',
-   t:'12/05  09h00',agent:'WS-BRUNET',lv:'INFO',lc:'#111',ltc:'#555',
-   desc:'Mise à jour Windows automatique téléchargée et installée sur le poste de N. BRUNET. Rien d\'anormal - maintenance planifiée.',
-   mitre:[],vis:true},
-  {t:'17/05  14h22',agent:'IMPRIMANTE',lv:'INFO',lc:'#111',ltc:'#555',
-   desc:'Mise à jour automatique du firmware de l\'imprimante HP LaserJet M507. Planifié, rien d\'anormal.',
-   mitre:[],vis:true},
-  {t:'17/05  22h01',agent:'WS-BRUNET',lv:'VIGILANCE',lc:'#1c1c1c',ltc:'#888',
-   desc:'Connexion hors-horaires détectée : N. BRUNET se connecte à la base de données qualité à 22h01 - Session de 47 minutes sur les fichiers lot S42. Justifiée a posteriori : préparation du rapport de contrôle.',
-   mitre:['T1078'],vis:true},
-  {t:'19/05  06h30',agent:'SRV-BACKUP',lv:'INFO',lc:'#111',ltc:'#555',
-   desc:'Sauvegarde automatique du serveur complétée avec succès - 24.3 Go sauvegardées - Durée : 2h14 - Statut OK.',
-   mitre:[],vis:true},
-  {t:'12/05  16h40',agent:'BADGE-ATELIER',lv:'INFO',lc:'#111',ltc:'#555',
-   desc:'Passage badge de T. VASSEUR en dehors de ses horaires habituels (16h40 au lieu de 17h00) - Écart de quelques minutes, cohérent avec les horaires flexibles de l\'atelier. Rien à signaler.',
-   mitre:[],vis:true},
-
-  // PHASE 1 - INITIAL ACCESS
-  {phase:'Phase 1 - Accès initial par email piégé (2 mai)',phaseColor:'#1a0a00',phaseTc:'#dc2626',
-   t:'02/05  16h41',agent:'MESSAGERIE',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
-   desc:'Email suspect reçu et ouvert par j.moreau - Pièce jointe Word avec macro malveillante activée - Expéditeur : m.fontaine@thales-defence.net. Domaine USURPÉ : le vrai domaine Thales est thalesgroup.com.',
-   mitre:['T1566'],vis:true},
-  {t:'02/05  16h43',agent:'WS-MOREAU',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
-   desc:'Word ouvre automatiquement un terminal caché et exécute du code malveillant (dropper PowerShell). Comportement de logiciel malveillant confirmé sur ce poste.',
-   mitre:['T1566','T1059'],vis:true},
-  {t:'02/05  16h44',agent:'WS-MOREAU',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
-   desc:'Connexion établie entre ce poste et un serveur en Roumanie (réseau TOR anonyme). Signal envoyé toutes les 60 secondes : le poste est désormais sous contrôle à distance.',
-   mitre:['T1071','T1573'],vis:true},
-
-  // PHASE 2 - RECON (depuis le poste compromis)
-  {phase:'Phase 2 - Reconnaissance du réseau depuis le poste compromis (4-5 mai)',phaseColor:'#161616',phaseTc:'#666',
-   t:'04/05  14h32',agent:'WS-MOREAU',lv:'SUSPECT',lc:'#1a1a1a',ltc:'#888',
-   desc:'Depuis ce poste : commande lancée pour lister TOUTES les machines du réseau interne ELECARM. Quelqu\'un cartographie le réseau depuis l\'intérieur.',
-   mitre:['T1087'],vis:true},
-  {t:'04/05  14h33',agent:'WS-MOREAU',lv:'SUSPECT',lc:'#1a1a1a',ltc:'#888',
-   desc:'Recherches en rafale depuis ce poste : elecarm.fr, profils LinkedIn, annuaires d\'entreprises - 6 requêtes en 2 secondes. Profil de collecte d\'informations sur ELECARM (OSINT).',
-   mitre:['T1591'],vis:true},
-  {t:'05/05  09h14',agent:'WS-MOREAU',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
-   desc:'Script PowerShell caché et encodé exécuté depuis ce poste - Analyse des connexions réseau actives + téléchargement de code depuis un site externe. Comportement malveillant probable.',
-   mitre:['T1059','T1105'],vis:true},
-
-  // PHASE 3 - PERSISTANCE + EXFIL
-  {phase:'Phase 3 - Persistance et vol de données (6-18 mai)',phaseColor:'#1a0a00',phaseTc:'#dc2626',
-   t:'06/05  02h17',agent:'WS-MOREAU',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
-   desc:'847 Mo de données transférées vers un serveur externe entre 02h17 et 06h29 (en pleine nuit) - Flux chiffré et camouflé. Exfiltration probable de données confidentielles ELECARM.',
-   mitre:['T1041'],vis:true},
-  {t:'08/05  23h44',agent:'WS-MOREAU',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
-   desc:'Connexion à distance (RDP) depuis ce poste vers le SERVEUR DE SUPERVISION DES PASSERELLES BX - Accès non autorisé, hors périmètre habituel. Quelqu\'un explore la configuration des passerelles de télémaintenance.',
-   mitre:['T1078','T1021'],vis:true},
-  {t:'07/05  04h00',agent:'BX-GATEWAY-07',lv:'VIGILANCE',lc:'#1c1c1c',ltc:'#888',
-   desc:'Connexion sortante vers 20.42.73.18 - Service externe identifié : synchronisation horaire Microsoft Azure NTP, documenté dans la configuration d\'origine. Volume 40 Ko, cohérent avec un usage normal.',
-   mitre:[],vis:true},
-  {t:'09/05  03h08',agent:'BX-GATEWAY-07',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
-   desc:'Contrôle d\'intégrité (Wazuh FIM) : le script du programme de supervision a été modifié en dehors du dépôt de code officiel, sans ticket ni revue associée. La ligne ajoutée ouvre une connexion sortante permanente non documentée dans la configuration d\'origine.',
-   mitre:['T1554'],vis:true},
-  {t:'09/05  03h12',agent:'BX-GATEWAY-07',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
-   desc:'Connexion sortante depuis la passerelle de télémaintenance des boîtiers BX-4400 vers une adresse IP externe non répertoriée (185.220.101.47), conforme à la modification de code repérée quelques minutes plus tôt. L\'adresse de supervision interne officielle (10.42.6.11) reste également active en parallèle.',
-   mitre:['T1071'],vis:true},
-  {t:'14/05  02h58',agent:'BX-GATEWAY-07',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
-   desc:'528 Mo transférés vers 185.220.101.47 en pleine nuit. Volume anormal pour une passerelle de supervision qui ne remonte habituellement que quelques Mo de télémétrie.',
-   mitre:['T1041'],vis:true},
-  {t:'15/05  23h14',agent:'SRV-DC',lv:'ALERTE',lc:'#1a1200',ltc:'#f59e0b',
-   desc:'3 tentatives de connexion VPN depuis un nœud TOR en Roumanie avec le compte jmoreau. Le verrou de compte automatique avait été désactivé - quelqu\'un essaie d\'entrer depuis l\'extérieur.',
-   mitre:['T1133'],vis:true},
-  {t:'18/05  23h01',agent:'WS-MOREAU',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
-   desc:'Outil de vol de mots de passe exécuté sur ce poste - La mémoire du système d\'authentification Windows est extraite. Tous les mots de passe du réseau sont potentiellement compromis.',
-   mitre:['T1003'],vis:true},
-  {t:'18/05  23h40',agent:'BX-GATEWAY-07',lv:'CRITIQUE',lc:'#3b0000',ltc:'#fca5a5',
-   desc:'Nouveau transfert vers 185.220.101.47, le plus volumineux observé à ce jour (601 Mo). Confirme la persistance du canal ouvert par la modification non autorisée du code de supervision détectée le 9 mai (voir alerte FIM, agent BX-GATEWAY-07).',
-   mitre:['T1071','T1105'],vis:true},
+  // Une seule liste chronologique, comme dans un vrai Wazuh : pas de titres de phase (ils dévoilaient la solution).
+  // Beaucoup d'activité normale, quelques faux positifs à écarter en croisant avec les mails et la Programmation,
+  // et la vraie attaque, décrite de façon factuelle (aux élèves de relier les événements).
+  // Faux positifs et leur preuve ailleurs dans le jeu :
+  //   12/05 balayage de ports (CRITIQUE)   -> mail DSI du 11/05 annonçant le scan trimestriel Sigma-Tech depuis 10.42.1.30
+  //   07/05 20.42.73.18                     -> Programmation, commit du 22/04 (Azure NTP, TICK-4118)
+  //   17/05 N. BRUNET 22h01                 -> mail de N. BRUNET (reconnexion VPN pour le rapport qualité)
+  //   07/05 C. ROUSSEAU, site militant      -> une opinion, aucune action technique (mail du collectif)
+  //   16/05 F. HADDAD, domaine chinois      -> relation fournisseur des Achats (mail de SinoBoard)
+  //   13/05 antivirus, poste comptabilité   -> menace bloquée et mise en quarantaine, aucune exécution
+  {t:'01/05  02h00',agent:'SRV-BACKUP',lv:'INFO',vis:true,mitre:[],
+   desc:'Sauvegarde nocturne terminée : 23,8 Go, durée 2h09, statut OK.'},
+  {t:'02/05  16h41',agent:'MESSAGERIE',lv:'SUSPECT',vis:true,mitre:['T1566'],
+   desc:'Pièce jointe Word contenant des macros (.docm) reçue d\'un domaine externe jamais vu auparavant (thales-defence.net). Ouverte par j.moreau.'},
+  {t:'02/05  16h43',agent:'WS-MOREAU',lv:'CRITIQUE',vis:true,mitre:['T1566','T1059'],
+   desc:'Word lance un terminal PowerShell caché avec une commande encodée, juste après l\'ouverture d\'une pièce jointe. Comportement typique d\'un programme malveillant (dropper).'},
+  {t:'02/05  16h44',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1071','T1573'],
+   desc:'Connexion sortante chiffrée vers un nœud du réseau d\'anonymisation TOR (Roumanie), répétée toutes les 60 secondes depuis.'},
+  {t:'04/05  07h58',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
+   desc:'42 ouvertures de session réussies entre 07h30 et 08h00 (arrivée du personnel).'},
+  {t:'04/05  14h32',agent:'WS-MOREAU',lv:'SUSPECT',vis:true,mitre:['T1087'],
+   desc:'Commande listant toutes les machines et tous les comptes du réseau interne ELECARM.'},
+  {t:'04/05  14h33',agent:'WS-MOREAU',lv:'VIGILANCE',vis:true,mitre:['T1591'],
+   desc:'6 recherches web en 2 secondes (elecarm.fr, profils LinkedIn, annuaires d\'entreprises) : requêtes automatisées, pas tapées à la main.'},
+  {t:'05/05  09h14',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1059','T1105'],
+   desc:'Script PowerShell encodé : relevé des connexions réseau actives, puis téléchargement de code depuis un site externe.'},
+  {t:'05/05  12h10',agent:'WS-COMPTA',lv:'INFO',vis:true,mitre:[],
+   desc:'Mise à jour des signatures antivirus (version 2026.05.05).'},
+  {t:'06/05  02h17',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1041'],
+   desc:'847 Mo envoyés vers un serveur externe entre 02h17 et 06h29, flux chiffré.'},
+  {t:'07/05  04h00',agent:'BX-GATEWAY-07',lv:'VIGILANCE',vis:true,mitre:[],
+   desc:'Connexion sortante vers une adresse externe, 20.42.73.18 (port UDP 123), 40 Ko.'},
+  {t:'07/05  11h26',agent:'PROXY-WEB',lv:'VIGILANCE',vis:true,mitre:[],
+   desc:'Poste de C. ROUSSEAU : consultation de collectif-objecteurs.org, classé « militantisme / opinions » par la politique de filtrage.'},
+  {t:'08/05  23h44',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1078','T1021'],
+   desc:'Session à distance (RDP) ouverte depuis ce poste vers le serveur de supervision des passerelles BX, de nuit et sans ticket d\'intervention.'},
+  {t:'09/05  03h08',agent:'BX-GATEWAY-07',lv:'CRITIQUE',vis:true,mitre:['T1554'],
+   desc:'Contrôle d\'intégrité (Wazuh FIM) : le script du programme de supervision a été modifié en dehors du dépôt de code officiel, sans ticket ni revue.'},
+  {t:'09/05  03h12',agent:'BX-GATEWAY-07',lv:'ALERTE',vis:true,mitre:['T1071'],
+   desc:'Nouvelle connexion sortante vers 185.220.101.47, adresse externe absente de l\'inventaire. Le flux habituel vers 10.42.6.11 reste actif en parallèle.'},
+  {t:'11/05  03h00',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
+   desc:'Renouvellement automatique du certificat du VPN (valide jusqu\'au 11/05/2027).'},
+  {t:'12/05  09h00',agent:'WS-BRUNET',lv:'INFO',vis:true,mitre:[],
+   desc:'Mises à jour Windows téléchargées et installées.'},
+  {t:'12/05  10h05',agent:'FW-ELECARM',lv:'CRITIQUE',vis:true,mitre:['T1046'],
+   desc:'Balayage massif de ports : 1 214 ports sondés sur 14 machines internes en 6 minutes, depuis 10.42.1.30.'},
+  {t:'12/05  16h40',agent:'BADGE-ATELIER',lv:'INFO',vis:true,mitre:[],
+   desc:'Sortie badgée de T. VASSEUR à 16h40 (fin de poste habituelle : 17h00).'},
+  {t:'13/05  15h47',agent:'WS-COMPTA',lv:'ALERTE',vis:true,mitre:['T1204'],
+   desc:'Antivirus : pièce jointe « Relance_facture_0426.zip » reconnue comme cheval de Troie (Emotet) à l\'ouverture du mail. Fichier bloqué et mis en quarantaine, aucune exécution.'},
+  {t:'13/05  19h32',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
+   desc:'6 connexions VPN standard entre 18h00 et 21h00 (télétravail), toutes depuis la France.'},
+  {t:'14/05  02h58',agent:'BX-GATEWAY-07',lv:'ALERTE',vis:true,mitre:['T1041'],
+   desc:'528 Mo envoyés vers 185.220.101.47 en pleine nuit. Volume habituel de la passerelle : quelques Mo par jour.'},
+  {t:'15/05  23h14',agent:'SRV-DC',lv:'ALERTE',vis:true,mitre:['T1133'],
+   desc:'3 tentatives de connexion VPN avec le compte jmoreau depuis un nœud TOR (Roumanie). Le verrouillage automatique est désactivé sur ce compte.'},
+  {t:'16/05  09h15',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
+   desc:'Mot de passe expiré pour le compte y.ferreira, réinitialisé par le support (TICK-4192).'},
+  {t:'16/05  10h20',agent:'MESSAGERIE',lv:'VIGILANCE',vis:true,mitre:[],
+   desc:'Boîte f.haddad : 9 échanges en 30 jours avec un domaine chinois (sinoboard-tech.com), absent de la liste des fournisseurs référencés.'},
+  {t:'17/05  14h22',agent:'IMPRIMANTE',lv:'INFO',vis:true,mitre:[],
+   desc:'Mise à jour automatique du firmware de l\'imprimante HP LaserJet M507.'},
+  {t:'17/05  22h01',agent:'WS-BRUNET',lv:'VIGILANCE',vis:true,mitre:['T1078'],
+   desc:'Connexion hors horaires : N. BRUNET, via le VPN, sur la base de données qualité à 22h01. Session de 47 minutes sur les fichiers du lot S42.'},
+  {t:'18/05  23h01',agent:'WS-MOREAU',lv:'CRITIQUE',vis:true,mitre:['T1003'],
+   desc:'Lecture de la mémoire du processus d\'authentification Windows (LSASS) : signature d\'un outil de vol de mots de passe.'},
+  {t:'18/05  23h40',agent:'BX-GATEWAY-07',lv:'ALERTE',vis:true,mitre:['T1071','T1041'],
+   desc:'601 Mo envoyés vers 185.220.101.47, le plus gros volume observé à ce jour.'},
+  {t:'19/05  06h30',agent:'SRV-BACKUP',lv:'INFO',vis:true,mitre:[],
+   desc:'Sauvegarde nocturne terminée : 24,3 Go, durée 2h14, statut OK.'},
 ];
 
 
@@ -2516,10 +2505,10 @@ function openMail(m,row){
 // Interface type Wazuh : niveaux, identifiants de règle et agents dérivés des entrées de LOGS.
 const WZ_LEVEL={CRITIQUE:13,ALERTE:10,SUSPECT:7,VIGILANCE:5,INFO:3};
 const WZ_AGENTS={'WS-MOREAU':['004','10.42.2.31'],'WS-BRUNET':['007','10.42.2.44'],'BX-GATEWAY-07':['011','10.42.6.27'],
-  'SRV-DC':['001','10.42.1.10'],'SRV-BACKUP':['002','10.42.1.12'],'MESSAGERIE':['003','10.42.1.15'],'IMPRIMANTE':['013','10.42.3.50'],'BADGE-ATELIER':['014','10.42.5.8']};
+  'SRV-DC':['001','10.42.1.10'],'FW-ELECARM':['005','10.42.1.1'],'PROXY-WEB':['006','10.42.1.20'],'WS-COMPTA':['009','10.42.2.52'],'SRV-BACKUP':['002','10.42.1.12'],'MESSAGERIE':['003','10.42.1.15'],'IMPRIMANTE':['013','10.42.3.50'],'BADGE-ATELIER':['014','10.42.5.8']};
 const WZ_MITRE={T1087:'Account Discovery',T1591:'Gather Victim Org Information',T1059:'Command and Scripting Interpreter',T1105:'Ingress Tool Transfer',
   T1566:'Phishing',T1071:'Application Layer Protocol',T1573:'Encrypted Channel',T1041:'Exfiltration Over C2 Channel',T1078:'Valid Accounts',
-  T1021:'Remote Services',T1554:'Compromise Host Software Binary',T1133:'External Remote Services',T1003:'OS Credential Dumping'};
+  T1021:'Remote Services',T1046:'Network Service Discovery',T1204:'User Execution',T1554:'Compromise Host Software Binary',T1133:'External Remote Services',T1003:'OS Credential Dumping'};
 const WZ_MOIS=['janv.','févr.','mars','avr.','mai','juin'];
 let wzMinLevel=0, wzOpen=-1;
 function wzParse(t){ const m=t.match(/(\d+)\/(\d+)\s+(\d+)h(\d+)/); return m?{d:+m[1],mo:+m[2],h:+m[3],mi:+m[4]}:{d:0,mo:0,h:0,mi:0}; }
@@ -2527,7 +2516,7 @@ function wzRuleId(l){
   if(l.mitre.includes('T1554')) return '550';
   if(l.agent==='BADGE-ATELIER') return '81620';
   if(l.lv==='INFO') return l.agent==='SRV-BACKUP'?'61104':'2902';
-  const base={T1087:'92031',T1591:'92213',T1059:'91816',T1566:'87105',T1071:'87701',T1041:'87712',T1078:'60122',T1021:'92653',T1133:'60204',T1003:'92900'};
+  const base={T1087:'92031',T1591:'92213',T1059:'91816',T1566:'87105',T1071:'87701',T1041:'87712',T1078:'60122',T1021:'92653',T1133:'60204',T1003:'92900',T1046:'40704',T1204:'52502'};
   return base[l.mitre[0]]||'100210';
 }
 function setLogLevel(el){
@@ -2536,7 +2525,7 @@ function setLogLevel(el){
 }
 const WZ_MACHINES={'WS-MOREAU':'Poste de travail de J. MOREAU (DSI)','WS-BRUNET':'Poste de travail de N. BRUNET (Qualité)',
   'BX-GATEWAY-07':'Passerelle de télémaintenance des boîtiers BX','SRV-DC':'Serveur des comptes et du VPN','SRV-BACKUP':'Serveur de sauvegarde',
-  'MESSAGERIE':'Serveur de messagerie','IMPRIMANTE':'Imprimante réseau','BADGE-ATELIER':'Badgeuse de l\'atelier'};
+  'MESSAGERIE':'Serveur de messagerie','FW-ELECARM':'Pare-feu principal','PROXY-WEB':'Proxy web (filtrage de la navigation)','WS-COMPTA':'Poste de la comptabilité','IMPRIMANTE':'Imprimante réseau','BADGE-ATELIER':'Badgeuse de l\'atelier'};
 const WZ_SEV={CRITIQUE:['crit','Critique'],ALERTE:['alert','Alerte'],SUSPECT:['susp','Suspect'],VIGILANCE:['vig','À vérifier'],INFO:['info','Normal']};
 function wzHighlight(t){
   return t.replace(/\b(\d{1,3}(?:\.\d{1,3}){3})\b/g,'<b class="hl">$1</b>').replace(/\b(\d+(?:[.,]\d+)?\s?(?:Mo|Go|Ko))\b/g,'<b class="hl">$1</b>');
@@ -2547,7 +2536,7 @@ function renderLogs(){
   const q=((document.getElementById('wz-search')||{}).value||'').trim().toLowerCase();
   // Groupes dans l'ordre du scénario (activité normale, puis phases), entrées triées par date dans chaque groupe.
   const groups=[]; let g=null;
-  LOGS.forEach((l,idx)=>{ if(!l.vis) return; if(l.phase||!g){ g={title:l.phase||'Événements',items:[]}; groups.push(g); }
+  LOGS.forEach((l,idx)=>{ if(!l.vis) return; if(l.phase||!g){ g={title:l.phase||'Tous les événements, du 1er au 19 mai 2026',items:[]}; groups.push(g); }
     const p=wzParse(l.t); g.items.push({l,idx,p,level:WZ_LEVEL[l.lv]||3,rid:wzRuleId(l),sort:((p.mo*100+p.d)*100+p.h)*100+p.mi}); });
   groups.forEach(gr=>gr.items.sort((a,b)=>a.sort-b.sort));
   const match=e=>e.level>=wzMinLevel && (!q || (e.l.agent+' '+(WZ_MACHINES[e.l.agent]||'')+' '+e.l.desc+' '+e.l.mitre.join(' ')).toLowerCase().includes(q));
@@ -2862,6 +2851,7 @@ const OSINT_DATA = {
       location:'Blois, Centre-Val de Loire',
       about:['Technicien chez ELECARM SAS','Habite à Blois','Marié'],
       posts:[
+        {date:'16 mai 2026',text:'Trop drôle ce quiz 😂 Moi c\'est « Rex Tours » ! Et vous, c\'est quoi votre nom de héros ?',visibility:'Public',quiz:true},
         {date:'10 mai 2026',text:'Victoire 3-1 ce soir avec l\'équipe du jeudi, même si on a joué un dimanche ! Merci à tous pour la bonne ambiance.',visibility:'Public'},
         {date:'14 avril 2026',text:'Week-end pêche au bord du Loir avec le fiston. Rien attrapé mais la journée était parfaite.',visibility:'Amis'},
       ],
@@ -3047,6 +3037,33 @@ const OSINT_DATA = {
 const OSINT_ORDER=['moreau','durand','benyoucef','brunet','thierry','rousseau','vasseur','haddad'];
 let osintView='linkedin';
 function oxInitials(n){ return n.split(' ').map(w=>w[0]).join('').slice(0,2); }
+// Piège pédagogique : un quiz viral partagé sur Facebook. Cliquer sur « Participer » ouvre une leçon
+// sur les informations personnelles publiées en ligne, avec un coup de pouce de méthode pour l'enquête (sans rien nommer).
+const QUIZ_CARD=`<div class="fbv-quiz"><div class="fbv-quiz-top">🦸 Quel est ton nom de super-héros ?<small>Ton nom de héros = le nom de ton premier animal + ta ville de naissance. Partage le tien en commentaire !</small></div>
+<div class="fbv-quiz-b"><span>quizzfun-du-jour.com</span><button onclick="showTrap('quiz')">Participer</button></div></div>`;
+const TRAPS={
+  quiz:`<div class="tr-tag">⚠ Exercice de sensibilisation</div>
+<div class="tr-title">Ce quiz était un piège</div>
+<div class="tr-p">« Premier animal » et « ville de naissance » : ce sont les réponses aux <b style="color:#fff">questions de sécurité</b> qui servent à récupérer un compte (« Quel était le nom de votre premier animal ? »). Ces quiz viraux servent à les récolter. En répondant « Rex Tours » en public, Marc DURAND vient de donner deux de ces réponses à n'importe qui.</div>
+<div class="tr-h">Ce qu'un attaquant fait de vos publications</div>
+<ul class="tr-l">
+<li>Il récolte vos réponses aux questions de sécurité, votre date de naissance, le nom de vos proches.</li>
+<li>Il repère votre poste, vos projets, vos difficultés, vos envies : tout ce qui peut servir d'appât.</li>
+<li>Avec ça, il écrit un message <b style="color:#fff">sur mesure</b>, auquel la victime a envie de croire : c'est le <b style="color:#fff">spearphishing</b> (hameçonnage ciblé).</li>
+</ul>
+<div class="tr-h">Les bons réflexes</div>
+<ul class="tr-l">
+<li>Ne participez pas aux quiz qui demandent des informations personnelles.</li>
+<li>Mettez vos profils en privé et triez ce que vous publiez en public.</li>
+<li>Ne publiez rien sur votre travail qui puisse servir à un attaquant (poste, outils, projets en cours, difficultés).</li>
+<li>Répondez aux questions de sécurité par des réponses inventées, conservées dans un gestionnaire de mots de passe.</li>
+</ul>
+<div class="tr-hint">🔎 <b>Pour votre enquête :</b> un attaquant commence toujours par lire ce que les employés publient. Retournez dans l'OSINT et mettez-vous à sa place : <b>qui expose quoi, et quel appât aurait fonctionné sur cette personne ?</b> Comparez ensuite avec les mails reçus.</div>
+<button class="tr-btn" onclick="closeTrap()">Retourner à l'enquête</button>`
+};
+function showTrap(k){ const b=document.getElementById('trap-box'); if(!b||!TRAPS[k]) return; b.innerHTML=TRAPS[k]; const t=document.getElementById('trap'); t.classList.add('show'); t.scrollTop=0;
+  try{ const seen=JSON.parse(localStorage.getItem('elecarm_traps')||'{}'); seen[k]=seen[k]||Date.now(); localStorage.setItem('elecarm_traps',JSON.stringify(seen)); }catch(e){} }
+function closeTrap(){ document.getElementById('trap').classList.remove('show'); }
 function oxAv(d,cls){ const z=d.photo==='face4.jpg'?' style="transform:scale(1.32)"':''; return `<div class="${cls||'ox-av'}">${d.photo?`<img src="${d.photo}" alt=""${z}>`:oxInitials(d.name)}</div>`; }
 const OX_MOIS={janvier:0,'février':1,mars:2,avril:3,mai:4,juin:5,juillet:6,'août':7,septembre:8,octobre:9,novembre:10,'décembre':11};
 function oxTs(date){ const [j,m,a]=date.split(' '); return new Date(+a,OX_MOIS[m]||0,+j).getTime(); }
@@ -3097,7 +3114,7 @@ function renderOSINTMain(){
     else h+=`<div class="fbv"><div class="fbv-cover"></div><div class="fbv-head">${oxAv(d,'fbv-av')}<div style="padding-bottom:8px"><div class="fbv-n">${d.name}</div><div class="fbv-s">${fb.private?'Profil privé':(fb.friends+' amis')}</div></div></div>
       ${fb.private?`<div class="fbv-priv"><b>Ce profil est privé</b>Seules la photo de profil et la ville (${fb.location}) sont visibles.<br>Les publications et la liste d'amis ne sont pas accessibles.</div>`
       :`<div class="fbv-cols"><div><div class="fbv-box"><h4>Intro</h4><ul>${(fb.about||[]).map(a=>`<li>${a}</li>`).join('')}<li>${fb.privacy}</li></ul></div></div>
-        <div>${(fb.posts||[]).length?fb.posts.map(p=>`<div class="fbv-post"><div class="fbv-ph">${oxAv(d,'fbv-av')}<div><b>${d.name}</b><small>${p.date} · ${p.visibility}</small></div></div><p>${p.text}</p></div>`).join(''):'<div class="fbv-post"><p>Aucune publication visible.</p></div>'}</div></div>`}</div>`;
+        <div>${(fb.posts||[]).length?fb.posts.map(p=>`<div class="fbv-post"><div class="fbv-ph">${oxAv(d,'fbv-av')}<div><b>${d.name}</b><small>${p.date} · ${p.visibility}</small></div></div><p>${p.text}</p>${p.quiz?QUIZ_CARD:''}</div>`).join(''):'<div class="fbv-post"><p>Aucune publication visible.</p></div>'}</div></div>`}</div>`;
   }
   box.innerHTML=h;
 }
