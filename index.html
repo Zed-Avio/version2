@@ -1456,6 +1456,16 @@ const MAILS = [
 <p>P. Thierry</p>`
   },
   {
+    id:'sg_tech01',from:'Laurent PERRIN - Services généraux',email:'l.perrin@elecarm.fr',
+    to:'securite@elecarm.fr',subject:'Re: Passage technicien maintenance, semaine du 5 mai',
+    time:'09:20',date:'15 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Bonjour Pierre,</p>
+<p>Merci pour le signalement. Vérification faite, il s'agit de <strong>TéléMaint Centre</strong>, notre prestataire de maintenance du matériel. L'intervention était planifiée le <strong>mercredi 6 mai à 19h30</strong> (ticket <strong>TICK-4147</strong>) : remplacement de l'alimentation électrique de la baie de télémaintenance, qui chauffait anormalement.</p>
+<p>Le ticket figurait bien dans l'outil de suivi, mais il n'avait pas été recopié dans le registre de l'accueil : c'est pour cela que vous ne l'avez pas trouvé. Le technicien intervient uniquement sur le matériel, il n'a aucun accès au programme de la passerelle.</p>
+<p>Je rappelle à tous que chaque intervention doit être reportée au registre de l'accueil.</p>
+<p>Cordialement,<br>Laurent PERRIN<br>Services généraux - ELECARM SAS</p>`
+  },
+  {
     id:'rousseau01',from:'Camille ROUSSEAU - Commercial',email:'c.rousseau@elecarm.fr',
     to:'commercial@elecarm.fr',subject:'Salon professionnel, retour à chaud',
     time:'17:10',date:'13 mai 2026',unread:false,urgent:false,visible:true,
@@ -1958,28 +1968,28 @@ const MAILS = [
 const SUSPECTS = [
   {photo:'face1.jpg',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',name:'Marc DURAND',role:'Technicien de production',age:'41 ans - 8 ans d\'ancienneté',osintBtn:true,osintId:'durand',
    access:['Atelier','Magasin pièces','Aucun accès informatique ni administratif'],
-   detail:'Technicien de production sans accès aux systèmes informatiques ni à la passerelle de télémaintenance. Aucune connexion, ticket ou email suspect associé à son compte. Profil écarté tôt dans l\'audit, gardé comme référence de comparaison.'},
+   detail:'Technicien de production, sans accès aux systèmes informatiques. A pourtant demandé à la DSI l\'ouverture d\'un accès VPN le 14 mai. Profil Facebook public et très actif.'},
   {photo:'face2.jpg',initials:'KB',bg:'#7f1d1d',tc:'#fca5a5',name:'Karim BENYOUCEF',role:'Magasinier',age:'29 ans - 3 ans d\'ancienneté',osintBtn:true,osintId:'benyoucef',
    access:['Stocks matériels finis','ERP stocks','Aucun accès informatique ni administratif'],
-   detail:'Dettes personnelles signalées en interne en 2025 (fichier RH). Mais aucun accès informatique, aucune connexion suspecte, aucun ticket ou email associé à son compte : le motif seul ne suffit pas sans accès ni opportunité.'},
+   detail:'Dettes personnelles signalées en interne en 2025 (fichier RH). Évoque ouvertement ses fins de mois difficiles sur les réseaux sociaux. A tenu à préciser par écrit à un collègue qu\'il n\'avait « aucun accès » aux systèmes informatiques, sans qu\'on lui ait rien demandé.'},
   {photo:'face5.avif',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',name:'Julien MOREAU',role:'Responsable DSI',age:'36 ans - 5 ans d\'ancienneté',osintBtn:true,osintId:'moreau',
    access:['Admin complet tous systèmes','Accès passerelle télémaintenance BX','VPN admin'],
-   detail:'Accès administrateur sur l\'intégralité des systèmes. A validé des interventions sur la passerelle de télémaintenance des boîtiers BX-4400 le 15 mai, sans ticket de maintenance associé. Son poste (WS-MOREAU-01) est au centre de plusieurs alertes DSI non signalées. Comportement inhabituel ce matin. Messagerie interne au ton ambigu (voir Documents).'},
+   detail:'Accès administrateur sur l\'intégralité des systèmes, dont la passerelle de télémaintenance des boîtiers BX-4400. Son compte apparaît sur une intervention de nuit sur la passerelle, sans ticket associé. Son poste (WS-MOREAU-01) est au centre de plusieurs alertes de supervision qu\'il n\'a pas signalées. Comportement inhabituel ce matin. Messagerie interne au ton ambigu (voir Documents).'},
   {photo:'face4.jpg',initials:'NB',bg:'#1c1c1c',tc:'#d4d4d4',name:'Nathalie BRUNET',role:'Responsable qualité',age:'44 ans - 11 ans d\'ancienneté',osintBtn:true,osintId:'brunet',
    access:['Atelier contrôle','Base données qualité','Rapports Thales'],
-   detail:'A signalé et transmis l\'anomalie BX-4216 correctement. Présente depuis 07h30. Coopérante. Historique irréprochable. Sa connexion tardive à la base qualité le 17 mai est expliquée dans sa boîte mail (VPN standard, préparation du rapport avant l\'audit Thales).'},
+   detail:'A signalé et transmis l\'anomalie BX-4216 correctement. Présente depuis 07h30. Coopérante. Historique irréprochable. Une connexion de son compte à la base de données qualité a toutefois été relevée le 17 mai à 22h01.'},
   {photo:'face3.jpg',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',name:'Pierre THIERRY',role:'Gardien de nuit',age:'52 ans - 2 ans d\'ancienneté',osintBtn:true,osintId:'thierry',
    access:['Badge entrée périmètre','Registre des visiteurs','Aucun accès informatique'],
-   detail:'Témoin clé plutôt que suspect direct : il confirme avoir laissé entrer, sans vérification particulière, un "technicien de maintenance" venu remplacer du matériel sur la passerelle de télémaintenance début mai. Il pensait à une intervention planifiée. Aucune trace de cette visite dans le registre officiel des prestataires. Interrogé sur le sujet, il a renvoyé l\'équipe vers le DSI : "je touche pas à ça, demandez au DSI".'},
+   detail:'Témoin clé plutôt que suspect direct : il signale avoir laissé entrer, en soirée la semaine du 5 mai, un « technicien de maintenance » venu intervenir sur la baie de télémaintenance. Il pensait à une intervention planifiée, mais n\'a trouvé aucun ticket correspondant dans le registre de l\'accueil. Interrogé sur le sujet, il a renvoyé l\'équipe vers le DSI : « je touche pas à ça, demandez au DSI ».'},
   {initials:'CR',bg:'#1c1c1c',tc:'#d4d4d4',name:'Camille ROUSSEAU',role:'Assistante commerciale',age:'27 ans - 2 ans d\'ancienneté',osintBtn:true,osintId:'rousseau',
    access:['Espace commercial','Messagerie clients','Aucun accès atelier ni systèmes'],
-   detail:'Membre active d\'un collectif militant contre les exportations d\'armement, ce qui a interpellé l\'équipe d\'audit au vu du secteur d\'activité d\'ELECARM. En congé posé depuis le 15 mai (justificatif RH vérifié). Aucun accès technique aux systèmes informatiques.'},
+   detail:'Membre active d\'un collectif militant contre les exportations d\'armement, ce qui a interpellé l\'équipe d\'audit au vu du secteur d\'activité d\'ELECARM. A manifesté contre un salon de l\'armement le 1er mai. Absente de l\'entreprise depuis le 15 mai.'},
   {initials:'TV',bg:'#1c1c1c',tc:'#d4d4d4',name:'Thomas VASSEUR',role:'Technicien de maintenance',age:'33 ans - 8 mois d\'ancienneté',osintBtn:true,osintId:'vasseur',
    access:['Atelier','Local technique','Aucun accès système d\'alarme'],
-   detail:'Recruté en septembre 2025, son CV présente une période non expliquée entre 2023 et 2024. Récemment arrivé, encore peu intégré à l\'équipe. Aucun élément ne le relie directement aux faits : son planning de badge ne montre aucun passage en dehors de ses horaires habituels.'},
+   detail:'Recruté en septembre 2025, son CV présente une période non expliquée entre 2023 et 2024. Récemment arrivé, encore peu intégré à l\'équipe. Son badge lui ouvre le local technique, où se trouve la baie de télémaintenance.'},
   {initials:'FH',bg:'#1c1c1c',tc:'#d4d4d4',name:'Farid HADDAD',role:'Responsable Achats',age:'48 ans - 9 ans d\'ancienneté',osintBtn:true,osintId:'haddad',
    access:['ERP Achats','Relations fournisseurs','Aucun accès système d\'alarme ni SI'],
-   detail:'Déplacements professionnels fréquents en Chine (sourcing composants électroniques) et voyages personnels réguliers en Irak où vit une partie de sa famille. Aucun de ces déplacements ne coïncide avec les dates des faits. Pilote une étude de changement de fournisseur des passerelles Raspberry Pi (voir note Achats), encore à l\'arbitrage : aucune décision prise, aucun dossier de sécurité DSI ouvert à ce jour.'}
+   detail:'Déplacements professionnels fréquents en Chine (sourcing de composants électroniques) et voyages personnels en Irak, où vit une partie de sa famille. Rentré de Shenzhen début mai. Pilote l\'étude d\'un nouveau fournisseur chinois, SinoBoard, pour les cartes des passerelles de télémaintenance.'}
 ];
 
 const LOGS = [
@@ -1993,11 +2003,12 @@ const LOGS = [
   //   07/05 C. ROUSSEAU, site militant      -> une opinion, aucune action technique (mail du collectif)
   //   16/05 F. HADDAD, domaine chinois      -> relation fournisseur des Achats (mail de SinoBoard)
   //   13/05 antivirus, poste comptabilité   -> menace bloquée et mise en quarantaine, aucune exécution
+//   06/05 coupure de la baie (faux technicien de P. THIERRY) -> mail des Services généraux (TICK-4147), aucune modification du code ce jour-là
   {t:'01/05  02h00',agent:'SRV-BACKUP',lv:'INFO',vis:true,mitre:[],
    desc:'Sauvegarde de nuit terminée normalement (23,8 Go).',
    aide:'Activité de routine : les serveurs sont copiés chaque nuit.'},
   {t:'02/05  16h41',agent:'MESSAGERIE',lv:'SUSPECT',vis:true,mitre:['T1566'],
-   desc:'Un mail avec un fichier Word à macros (.docm) arrive d\'une adresse jamais vue : thales-defence.net. Il est ouvert par j.moreau.',
+   desc:'j.moreau ouvre un fichier Word à macros (.docm), joint à un mail reçu le matin même d\'une adresse jamais vue : thales-defence.net.',
    aide:'Une macro est un petit programme caché dans un document Word. Les pirates s\'en servent souvent pour infecter un ordinateur. Question à se poser : ce domaine est-il vraiment celui de Thales ? Cherchez ce mail dans la messagerie.'},
   {t:'02/05  16h43',agent:'WS-MOREAU',lv:'CRITIQUE',vis:true,mitre:['T1566','T1059'],
    desc:'Deux minutes plus tard, Word lance tout seul une fenêtre de commandes cachée sur ce poste.',
@@ -2020,6 +2031,9 @@ const LOGS = [
   {t:'06/05  02h17',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1041'],
    desc:'847 Mo de données partent vers l\'extérieur entre 2h17 et 6h29 du matin.',
    aide:'Un gros envoi de données, en pleine nuit, depuis un poste de bureau : possible vol de fichiers (exfiltration). Qui travaille à cette heure-là ?'},
+  {t:'06/05  19h41',agent:'BX-GATEWAY-07',lv:'INFO',vis:true,mitre:[],
+   desc:'Coupure d\'alimentation de la baie de télémaintenance pendant 3 minutes, puis redémarrage normal.',
+   aide:'Une courte coupure suivie d\'un redémarrage, c\'est typique d\'une intervention sur le matériel. Question à se poser : le programme de la passerelle a-t-il été modifié ce jour-là ? Comparez avec l\'alerte de contrôle d\'intégrité.'},
   {t:'07/05  04h00',agent:'BX-GATEWAY-07',lv:'VIGILANCE',vis:true,mitre:[],
    desc:'La passerelle contacte une adresse extérieure, 20.42.73.18 (port 123), pour un tout petit volume (40 Ko).',
    aide:'Le port 123 sert à mettre les horloges à l\'heure (service NTP). Question à se poser : cette adresse a-t-elle été ajoutée officiellement ? Regardez l\'onglet Programmation.'},
@@ -2085,7 +2099,7 @@ const DOCS = [
   {id:'qualite',icon:'XLS',title:'Rapport Contrôle Qualité - Lot BX-4400-A',meta:'N. BRUNET - 18 mai 2026',badge:'ANOMALIE',badgeBg:'#3b0000',badgeTc:'#fca5a5'},
   {id:'note',icon:'DOC',title:'Note technique interne - BX-4400',meta:'Service Montage - 17 mai 2026',badge:'INTERNE',badgeBg:'#1a1a1a',badgeTc:'#555'},
   {id:'contrat',icon:'PDF',title:'Commande Thales THA-REF-28471',meta:'Thales Defence - mars 2026',badge:'CONFIDENTIEL',badgeBg:'#2a0000',badgeTc:'#fca5a5'},
-  {id:'chatlog',icon:'DOC',title:'Journal de messagerie interne - Poste WS-MOREAU-01 (Teams)',meta:'Audit messagerie interne - extraction 20 mai 2026',badge:'SENSIBLE',badgeBg:'#2a0000',badgeTc:'#fca5a5'},
+  {id:'chatlog',icon:'DOC',title:'Journal de messagerie interne - Poste WS-MOREAU-01 (Teams)',meta:'Audit messagerie interne - extraction du 19 mai 2026',badge:'SENSIBLE',badgeBg:'#2a0000',badgeTc:'#fca5a5'},
   {id:'raspberry',icon:'DOC',title:'Note Achats - Projets à l\'étude (S2 2026)',meta:'Service Achats - 28 avril 2026',badge:'INTERNE',badgeBg:'#1a1a1a',badgeTc:'#555'},
   {id:'gateway',icon:'LOG',title:'Journal supervision - Passerelle télémaintenance BX',meta:'Export système - BX-GATEWAY-07 - mai 2026',badge:'CRITIQUE',badgeBg:'#3b0000',badgeTc:'#fca5a5'},
   {id:'techindus',icon:'DOC',title:'Note de vigilance - Concurrence TechIndus Solutions',meta:'Direction - 2 avril 2026',badge:'INTERNE',badgeBg:'#1a1a1a',badgeTc:'#555'},
@@ -2144,15 +2158,15 @@ Récapitulatif des dossiers fournisseurs actuellement en réflexion pour le seco
 <table class="data-table"><thead><tr><th>Date</th><th>Adresse IP destination</th><th>Type</th><th>Volume</th></tr></thead><tbody>
 <tr><td>02/05</td><td>10.42.6.11</td><td>Supervision interne (serveur ELECARM)</td><td>4 Mo</td></tr>
 <tr><td>06/05</td><td>10.42.6.11</td><td>Supervision interne (serveur ELECARM)</td><td>3 Mo</td></tr>
-<tr><td>07/05</td><td>20.42.73.18</td><td>Externe - synchronisation horaire (Microsoft Azure NTP)</td><td>40 Ko</td></tr>
-<tr class="anomaly"><td>09/05</td><td>185.220.101.47</td><td>Adresse externe - non répertoriée</td><td>412 Mo</td></tr>
+<tr><td>07/05</td><td>20.42.73.18</td><td>Externe</td><td>40 Ko</td></tr>
+<tr><td>09/05</td><td>185.220.101.47</td><td>Externe</td><td>412 Mo</td></tr>
 <tr><td>11/05</td><td>10.42.6.11</td><td>Supervision interne (serveur ELECARM)</td><td>3 Mo</td></tr>
-<tr class="anomaly"><td>14/05</td><td>185.220.101.47</td><td>Adresse externe - non répertoriée</td><td>528 Mo</td></tr>
-<tr><td>16/05</td><td>20.42.73.18</td><td>Externe - synchronisation horaire (Microsoft Azure NTP)</td><td>38 Ko</td></tr>
-<tr class="anomaly"><td>18/05</td><td>185.220.101.47</td><td>Adresse externe - non répertoriée</td><td>601 Mo</td></tr>
+<tr><td>14/05</td><td>185.220.101.47</td><td>Externe</td><td>528 Mo</td></tr>
+<tr><td>16/05</td><td>20.42.73.18</td><td>Externe</td><td>38 Ko</td></tr>
+<tr><td>18/05</td><td>185.220.101.47</td><td>Externe</td><td>601 Mo</td></tr>
 </tbody></table>
 <div style="margin-top:12px;font-size:13px;color:var(--tx2);line-height:1.75">
-L'adresse <strong style="color:#fff">10.42.6.11</strong> correspond au serveur de supervision interne officiel d'ELECARM. L'adresse <strong style="color:#f59e0b">20.42.73.18</strong> est externe mais légitime : elle correspond à un service de synchronisation horaire Microsoft Azure documenté dans la configuration d'origine de la passerelle, avec un volume constant et négligeable. L'adresse <strong style="color:#fca5a5">185.220.101.47</strong> n'appartient à aucun équipement ELECARM répertorié, n'apparaît dans aucune documentation fournisseur, et transporte un volume incompatible avec de la simple télémétrie.
+Export brut, sans analyse : les adresses externes ne sont pas identifiées dans cet export. L'adresse 10.42.6.11 est le serveur de supervision interne d'ELECARM.
 </div>`,
   techindus:`<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px">Note de vigilance - Concurrence TechIndus Solutions</div>
 <div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Direction Générale ELECARM SAS - 2 avril 2026 - Diffusion : encadrement et commercial</div>
@@ -2231,7 +2245,7 @@ const EMP_MAILBOXES = [
   {id:'nathalie',name:'Nathalie BRUNET',role:'Qualité',email:'n.brunet@elecarm.fr',initials:'NB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['nathalie_norm01','nathalie_norm02','nathalie_norm03','nathalie_norm04','nathalie_norm05','nathalie_norm06','qualite_iso01','cse01']},
   {id:'karim',name:'Karim BENYOUCEF',role:'Magasin',email:'k.benyoucef@elecarm.fr',initials:'KB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['karim_norm01','karim_norm02','karim01','julien_norm07']},
   {id:'farid',name:'Farid HADDAD',role:'Achats',email:'f.haddad@elecarm.fr',initials:'FH',bg:'#1c1c1c',tc:'#d4d4d4',mails:['haddad_norm01','haddad_norm02','haddad01']},
-  {id:'pierre',name:'Pierre THIERRY',role:'Gardiennage',email:'p.thierry@elecarm.fr',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',mails:['thierry_norm01','thierry01']},
+  {id:'pierre',name:'Pierre THIERRY',role:'Gardiennage',email:'p.thierry@elecarm.fr',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',mails:['thierry_norm01','thierry01','sg_tech01']},
   {id:'camille',name:'Camille ROUSSEAU',role:'Commercial',email:'c.rousseau@elecarm.fr',initials:'CR',bg:'#1c1c1c',tc:'#d4d4d4',mails:['rousseau_norm01','rousseau_norm02','rousseau01','julien_norm04']},
   {id:'thomas',name:'Thomas VASSEUR',role:'Maintenance',email:'t.vasseur@elecarm.fr',initials:'TV',bg:'#1c1c1c',tc:'#d4d4d4',mails:['vasseur_norm01','vasseur_norm02','marc_norm04']}
 ];
@@ -2320,10 +2334,10 @@ function initTimeline(){
     {time:'12:28',color:'#dc2626',badge:'DSI',badgeBg:'#3b0000',badgeTc:'#fca5a5',title:'IP externe suspecte',desc:'L\'adresse externe ne correspond à aucun équipement ni fournisseur répertorié.'},
     {time:'12:00',color:'#991b1b',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Thales - URGENT',desc:'Retard commande THA-REF-28471 + anomalie qualité.'},
     {time:'11:55',color:'#dc2626',badge:'DOC',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Messagerie interne récupérée',desc:'Échange interne au ton ambigu retrouvé dans l\'archive Teams.'},
-    {time:'10:10',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Piste A. ROBERT écartée',desc:'RH confirme : accès révoqués à son départ en mars, aucune réactivation depuis.'},
-    {time:'10:00',color:'#888',badge:'ENQUETE',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Profil interne signalé',desc:'Accès admin et alertes DSI non signalées concentrées sur un même poste.'},
-    {time:'09:05',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Hypothèse TechIndus évoquée',desc:'Concurrent connu pour des approches agressives, mais aucune preuve technique ne le relie aux faits.'},
-    {time:'09:00',color:'#555',badge:'DSI',badgeBg:'#1c1c1c',badgeTc:'#666',title:'Logs SIEM disponibles',desc:'Activités suspectes tracées depuis début mai sur un poste interne.'},
+    {time:'10:10',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Question sur un ancien salarié',desc:'Un collègue évoque A. ROBERT, licencié en mars. Les RH répondent.'},
+    {time:'10:00',color:'#888',badge:'ENQUETE',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Fiches du personnel disponibles',desc:'8 profils à examiner : accès, parcours, signalements.'},
+    {time:'09:05',color:'#555',badge:'MAIL',badgeBg:'#1c1c1c',badgeTc:'#888',title:'Hypothèse TechIndus évoquée',desc:'Une collègue s\'interroge sur un concurrent connu pour ses approches agressives.'},
+    {time:'09:00',color:'#555',badge:'DSI',badgeBg:'#1c1c1c',badgeTc:'#666',title:'Journaux de supervision disponibles',desc:'Événements du 1er au 19 mai, toutes machines confondues.'},
     {time:'08:00',color:'#dc2626',badge:'DSI',badgeBg:'#3b0000',badgeTc:'#fca5a5',title:'Alerte passerelle BX-GATEWAY-07',desc:'Flux sortant suspect vers IP externe repéré lors de la revue de vigilance.'},
   ];
   tl.innerHTML='';
