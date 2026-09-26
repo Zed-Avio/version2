@@ -102,12 +102,13 @@ input::placeholder{color:#333}
     ELECARM SAS · ZI Les Charmes · 41000 Blois
   </div>
 </div>
-<!-- Leçon affichée dès que l'élève tente de se connecter (aucun identifiant n'est envoyé nulle part) -->
+<!-- Leçon affichée sur la page elle-même, environ 2 s après l'ouverture (ou dès que l'élève commence à taper) :
+     il suffit d'avoir cliqué sur le lien du mail. Aucun identifiant n'est envoyé nulle part. -->
 <div class="lesson" id="lesson">
   <div class="l-box">
     <div class="l-tag">&#9888; Exercice de sensibilisation</div>
     <div class="l-title">Vous venez de vous faire piéger</div>
-    <div class="l-p">Ce portail n'appartient pas à ELECARM. Dans la vraie vie, l'adresse e-mail et le mot de passe que vous venez de taper seraient maintenant entre les mains d'un attaquant.</div>
+    <div class="l-p">Vous avez cliqué sur le lien d'un mail de <b style="color:#fff">phishing</b>. Ce portail n'appartient pas à ELECARM : il imite la vraie page de connexion pour voler vos identifiants. Dans la vraie vie, le simple fait de taper votre adresse et votre mot de passe ici les aurait donnés à un attaquant.</div>
     <div class="l-h">Faites attention aux noms de domaine</div>
     <ul class="l-list">
       <li>Le vrai domaine de l'entreprise est <span class="dom ok">elecarm.fr</span>.</li>
@@ -127,7 +128,7 @@ input::placeholder{color:#333}
       <li>Une pièce jointe douteuse ? Ne l'ouvrez pas : analysez-la (par exemple sur VirusTotal).</li>
       <li>Signalez le mail à la DSI.</li>
     </ul>
-    <div class="l-note">Rien de ce que vous avez tapé n'a été envoyé : cette page fait partie de l'exercice.</div>
+    <div class="l-note">Rien n'a été envoyé : cette page fait partie de l'exercice.</div>
     <button class="l-btn" onclick="backToGame()">Retourner à l'enquête</button>
   </div>
 </div>
@@ -160,6 +161,10 @@ function tryLogin(){
   document.getElementById('lesson').classList.add('show');
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+function showLesson(){ document.getElementById('lesson').classList.add('show'); }
+setTimeout(showLesson, 2000);
+document.getElementById('user').addEventListener('input', showLesson);
+document.getElementById('pass').addEventListener('input', showLesson);
 </script>
 </body>
 </html>
