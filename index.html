@@ -446,6 +446,11 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .wz-date svg{width:13px;height:13px;fill:#3595f9}
 .wz-btn{background:#3595f9;color:#fff;border:none;border-radius:4px;padding:0 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)}
 .wz-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.wz-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:8px 0;font-size:12px}
+.wz-legend>span{display:inline-flex;align-items:center;gap:6px}
+.wz-agent{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+.wz-clair{background:#101a26;border:1px solid #23405f;border-radius:6px;padding:10px 12px;margin-bottom:10px;font-size:13px;line-height:1.6;color:#dbe7f3;white-space:normal}
+.wz-clair b{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8fc1f0;margin-bottom:3px}
 .wz-pill{font-size:11px;font-family:var(--mono);background:#161b23;border:1px solid #262d38;color:#b8c2d0;border-radius:3px;padding:3px 8px}
 .wz-pill.lv{cursor:pointer;user-select:none}
 .wz-pill.lv.on{background:#0f1a2b;border-color:#3595f9;color:#dfe5ee}
@@ -1026,7 +1031,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <button class="tab" data-tab="documents" onclick="switchTab(this)">DOCUMENTS</button>
         <button class="tab" data-tab="enigmes" onclick="switchTab(this)">BOÎTIER BX</button>
         <button class="tab" data-tab="osint" onclick="switchTab(this)">OSINT</button>
-        <button class="tab" data-tab="verdict" onclick="switchTab(this)">QCM FINAL</button>
+        <button class="tab" data-tab="verdict" onclick="switchTab(this)">SUPPOSITIONS</button>
       </div>
       <div class="panels">
 
@@ -1140,7 +1145,9 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 <div class="wz-chart"><div class="wz-yax" id="wz-yax"></div><div class="wz-plot"><div id="wz-grid"></div><div class="wz-bars" id="wz-bars"></div></div></div>
                 <div class="wz-x" id="wz-x"></div>
               </div>
-              <div class="wz-help">Chaque ligne est un événement repéré par la supervision. Lisez de haut en bas, dans l'ordre chronologique. Cliquez sur une ligne pour voir ses détails techniques.</div>
+              <div class="wz-help"><b>Comment lire ce journal.</b> Chaque ligne est un événement repéré automatiquement par la supervision, du plus ancien au plus récent.
+                <div class="wz-legend"><span><span class="sev info">Normal</span> activité de routine</span><span><span class="sev vig">À vérifier</span> inhabituel, souvent explicable</span><span><span class="sev susp">Suspect</span> <span class="sev alert">Alerte</span> à creuser</span><span><span class="sev crit">Critique</span> grave… ou fausse alerte : recoupez avec les mails et les documents</span></div>
+                <b>Astuces :</b> cliquez sur une ligne pour une explication en clair. Cliquez sur le nom d'une machine pour n'afficher qu'elle. Tapez une adresse IP dans la recherche pour la suivre.</div>
               <div class="wz-card">
                 <table class="log-table">
                   <thead><tr><th style="width:120px">Quand</th><th style="width:220px">Machine</th><th style="width:96px">Gravité</th><th>Que s'est-il passé ?</th></tr></thead>
@@ -1349,7 +1356,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
         <div class="panel" id="panel-verdict">
           <div class="enig-scroll">
             <div class="enig-section">
-              <div class="enig-section-title">QCM final</div>
+              <div class="enig-section-title">Vos suppositions</div>
               <div style="font-size:12px;color:var(--tx3);line-height:1.7;margin-bottom:14px">Choisissez vos réponses en équipe, à partir de ce que vous avez trouvé dans Mails, Enquête, Journaux / Logs, Programmation, Documents, Boîtier BX et OSINT. Attention, toutes les propositions viennent du dossier : certaines sont de fausses pistes. L'équipe dispose de <b style="color:#fff">5 tentatives au total</b>, partagées entre tous ses membres et tous ses postes : mettez-vous d'accord avant d'envoyer.</div>
               <div class="sup-team" id="sup-team">Connexion au serveur...</div>
               <div id="sup-questions"></div>
@@ -1977,8 +1984,8 @@ const SUSPECTS = [
 
 const LOGS = [
   // Une seule liste chronologique, comme dans un vrai Wazuh : pas de titres de phase (ils dévoilaient la solution).
-  // Beaucoup d'activité normale, quelques faux positifs à écarter en croisant avec les mails et la Programmation,
-  // et la vraie attaque, décrite de façon factuelle (aux élèves de relier les événements).
+  // desc = ce que la supervision a vu, en mots simples ; aide = « En clair », affiché quand on clique sur la ligne :
+  // explique les termes techniques et la question à se poser, sans donner la conclusion.
   // Faux positifs et leur preuve ailleurs dans le jeu :
   //   12/05 balayage de ports (CRITIQUE)   -> mail DSI du 11/05 annonçant le scan trimestriel Sigma-Tech depuis 10.42.1.30
   //   07/05 20.42.73.18                     -> Programmation, commit du 22/04 (Azure NTP, TICK-4118)
@@ -1987,65 +1994,89 @@ const LOGS = [
   //   16/05 F. HADDAD, domaine chinois      -> relation fournisseur des Achats (mail de SinoBoard)
   //   13/05 antivirus, poste comptabilité   -> menace bloquée et mise en quarantaine, aucune exécution
   {t:'01/05  02h00',agent:'SRV-BACKUP',lv:'INFO',vis:true,mitre:[],
-   desc:'Sauvegarde nocturne terminée : 23,8 Go, durée 2h09, statut OK.'},
+   desc:'Sauvegarde de nuit terminée normalement (23,8 Go).',
+   aide:'Activité de routine : les serveurs sont copiés chaque nuit.'},
   {t:'02/05  16h41',agent:'MESSAGERIE',lv:'SUSPECT',vis:true,mitre:['T1566'],
-   desc:'Pièce jointe Word contenant des macros (.docm) reçue d\'un domaine externe jamais vu auparavant (thales-defence.net). Ouverte par j.moreau.'},
+   desc:'Un mail avec un fichier Word à macros (.docm) arrive d\'une adresse jamais vue : thales-defence.net. Il est ouvert par j.moreau.',
+   aide:'Une macro est un petit programme caché dans un document Word. Les pirates s\'en servent souvent pour infecter un ordinateur. Question à se poser : ce domaine est-il vraiment celui de Thales ? Cherchez ce mail dans la messagerie.'},
   {t:'02/05  16h43',agent:'WS-MOREAU',lv:'CRITIQUE',vis:true,mitre:['T1566','T1059'],
-   desc:'Word lance un terminal PowerShell caché avec une commande encodée, juste après l\'ouverture d\'une pièce jointe. Comportement typique d\'un programme malveillant (dropper).'},
+   desc:'Deux minutes plus tard, Word lance tout seul une fenêtre de commandes cachée sur ce poste.',
+   aide:'Un document Word n\'a aucune raison d\'ouvrir une fenêtre de commandes (PowerShell). C\'est le signe qu\'un programme malveillant s\'installe sur l\'ordinateur.'},
   {t:'02/05  16h44',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1071','T1573'],
-   desc:'Connexion sortante chiffrée vers un nœud du réseau d\'anonymisation TOR (Roumanie), répétée toutes les 60 secondes depuis.'},
+   desc:'Le poste contacte un serveur caché sur Internet (réseau TOR, en Roumanie), puis recommence toutes les 60 secondes.',
+   aide:'TOR est un réseau qui masque qui se trouve au bout de la connexion. Un ordinateur qui l\'appelle toutes les minutes attend des ordres : il est probablement piloté à distance.'},
   {t:'04/05  07h58',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
-   desc:'42 ouvertures de session réussies entre 07h30 et 08h00 (arrivée du personnel).'},
+   desc:'42 employés se connectent entre 7h30 et 8h00.',
+   aide:'Activité de routine : c\'est l\'arrivée du personnel le matin.'},
   {t:'04/05  14h32',agent:'WS-MOREAU',lv:'SUSPECT',vis:true,mitre:['T1087'],
-   desc:'Commande listant toutes les machines et tous les comptes du réseau interne ELECARM.'},
+   desc:'Depuis ce poste, une commande liste toutes les machines et tous les comptes de l\'entreprise.',
+   aide:'C\'est ce que fait quelqu\'un qui fait le tour du propriétaire : il dresse la carte du réseau avant d\'agir.'},
   {t:'04/05  14h33',agent:'WS-MOREAU',lv:'VIGILANCE',vis:true,mitre:['T1591'],
-   desc:'6 recherches web en 2 secondes (elecarm.fr, profils LinkedIn, annuaires d\'entreprises) : requêtes automatisées, pas tapées à la main.'},
+   desc:'6 recherches web en 2 secondes sur ELECARM (site, LinkedIn, annuaires).',
+   aide:'Personne ne tape 6 recherches en 2 secondes : c\'est un programme qui collecte des informations sur l\'entreprise et ses employés.'},
   {t:'05/05  09h14',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1059','T1105'],
-   desc:'Script PowerShell encodé : relevé des connexions réseau actives, puis téléchargement de code depuis un site externe.'},
-  {t:'05/05  12h10',agent:'WS-COMPTA',lv:'INFO',vis:true,mitre:[],
-   desc:'Mise à jour des signatures antivirus (version 2026.05.05).'},
+   desc:'Un script caché regarde les connexions du poste, puis télécharge un programme depuis Internet.',
+   aide:'Télécharger un programme en cachette, c\'est souvent ajouter des outils à un ordinateur déjà infecté.'},
   {t:'06/05  02h17',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1041'],
-   desc:'847 Mo envoyés vers un serveur externe entre 02h17 et 06h29, flux chiffré.'},
+   desc:'847 Mo de données partent vers l\'extérieur entre 2h17 et 6h29 du matin.',
+   aide:'Un gros envoi de données, en pleine nuit, depuis un poste de bureau : possible vol de fichiers (exfiltration). Qui travaille à cette heure-là ?'},
   {t:'07/05  04h00',agent:'BX-GATEWAY-07',lv:'VIGILANCE',vis:true,mitre:[],
-   desc:'Connexion sortante vers une adresse externe, 20.42.73.18 (port UDP 123), 40 Ko.'},
+   desc:'La passerelle contacte une adresse extérieure, 20.42.73.18 (port 123), pour un tout petit volume (40 Ko).',
+   aide:'Le port 123 sert à mettre les horloges à l\'heure (service NTP). Question à se poser : cette adresse a-t-elle été ajoutée officiellement ? Regardez l\'onglet Programmation.'},
   {t:'07/05  11h26',agent:'PROXY-WEB',lv:'VIGILANCE',vis:true,mitre:[],
-   desc:'Poste de C. ROUSSEAU : consultation de collectif-objecteurs.org, classé « militantisme / opinions » par la politique de filtrage.'},
+   desc:'Poste de C. ROUSSEAU : visite du site collectif-objecteurs.org, classé « militantisme ».',
+   aide:'Le filtre web signale ce type de site. Question à se poser : avoir une opinion, est-ce la même chose qu\'avoir agi ? Cherchez une trace technique de sa part ailleurs.'},
   {t:'08/05  23h44',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1078','T1021'],
-   desc:'Session à distance (RDP) ouverte depuis ce poste vers le serveur de supervision des passerelles BX, de nuit et sans ticket d\'intervention.'},
+   desc:'Depuis ce poste, quelqu\'un prend le contrôle à distance du serveur qui gère les passerelles BX, de nuit, sans ticket d\'intervention.',
+   aide:'Une connexion à distance (RDP) permet de travailler sur une autre machine comme si on était devant. Sans ticket, personne ne l\'a demandée officiellement.'},
   {t:'09/05  03h08',agent:'BX-GATEWAY-07',lv:'CRITIQUE',vis:true,mitre:['T1554'],
-   desc:'Contrôle d\'intégrité (Wazuh FIM) : le script du programme de supervision a été modifié en dehors du dépôt de code officiel, sans ticket ni revue.'},
+   desc:'Le programme de la passerelle a été modifié en dehors du circuit officiel, sans ticket ni relecture.',
+   aide:'Wazuh surveille les fichiers importants et prévient quand ils changent. Question à se poser : quelle ligne a été ajoutée, et par qui ? Regardez l\'onglet Programmation.'},
   {t:'09/05  03h12',agent:'BX-GATEWAY-07',lv:'ALERTE',vis:true,mitre:['T1071'],
-   desc:'Nouvelle connexion sortante vers 185.220.101.47, adresse externe absente de l\'inventaire. Le flux habituel vers 10.42.6.11 reste actif en parallèle.'},
-  {t:'11/05  03h00',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
-   desc:'Renouvellement automatique du certificat du VPN (valide jusqu\'au 11/05/2027).'},
+   desc:'Quatre minutes après, la passerelle se connecte à une nouvelle adresse extérieure : 185.220.101.47. L\'adresse interne habituelle, 10.42.6.11, fonctionne toujours.',
+   aide:'Une adresse qui commence par 10. est interne à l\'entreprise. 185.220.101.47 est à l\'extérieur et n\'appartient à aucun équipement connu d\'ELECARM.'},
   {t:'12/05  09h00',agent:'WS-BRUNET',lv:'INFO',vis:true,mitre:[],
-   desc:'Mises à jour Windows téléchargées et installées.'},
+   desc:'Mises à jour Windows installées.',
+   aide:'Activité de routine.'},
   {t:'12/05  10h05',agent:'FW-ELECARM',lv:'CRITIQUE',vis:true,mitre:['T1046'],
-   desc:'Balayage massif de ports : 1 214 ports sondés sur 14 machines internes en 6 minutes, depuis 10.42.1.30.'},
+   desc:'Balayage massif : 1 214 « portes » (ports) testées sur 14 machines en 6 minutes, depuis l\'adresse interne 10.42.1.30.',
+   aide:'Tester toutes les portes des machines, c\'est chercher une faille. Un pirate le fait... mais aussi un prestataire de sécurité lors d\'un test prévu. Question à se poser : ce balayage avait-il été annoncé ? Cherchez dans les mails.'},
   {t:'12/05  16h40',agent:'BADGE-ATELIER',lv:'INFO',vis:true,mitre:[],
-   desc:'Sortie badgée de T. VASSEUR à 16h40 (fin de poste habituelle : 17h00).'},
+   desc:'T. VASSEUR badge sa sortie à 16h40 (fin de poste habituelle : 17h00).',
+   aide:'Un départ 20 minutes plus tôt que d\'habitude.'},
   {t:'13/05  15h47',agent:'WS-COMPTA',lv:'ALERTE',vis:true,mitre:['T1204'],
-   desc:'Antivirus : pièce jointe « Relance_facture_0426.zip » reconnue comme cheval de Troie (Emotet) à l\'ouverture du mail. Fichier bloqué et mis en quarantaine, aucune exécution.'},
+   desc:'L\'antivirus détecte un virus dans la pièce jointe « Relance_facture_0426.zip ». Le fichier est bloqué et mis en quarantaine : il n\'a pas été ouvert.',
+   aide:'Une alerte ne veut pas toujours dire que l\'attaque a réussi : ici, la protection a fonctionné.'},
   {t:'13/05  19h32',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
-   desc:'6 connexions VPN standard entre 18h00 et 21h00 (télétravail), toutes depuis la France.'},
+   desc:'6 connexions à distance (VPN) de salariés en télétravail entre 18h et 21h, toutes depuis la France.',
+   aide:'Activité de routine : le VPN permet de travailler depuis chez soi.'},
   {t:'14/05  02h58',agent:'BX-GATEWAY-07',lv:'ALERTE',vis:true,mitre:['T1041'],
-   desc:'528 Mo envoyés vers 185.220.101.47 en pleine nuit. Volume habituel de la passerelle : quelques Mo par jour.'},
+   desc:'528 Mo envoyés vers 185.220.101.47 en pleine nuit. D\'habitude, la passerelle n\'envoie que quelques Mo par jour.',
+   aide:'Comparez avec l\'alerte du 9 mai : c\'est la même adresse extérieure.'},
   {t:'15/05  23h14',agent:'SRV-DC',lv:'ALERTE',vis:true,mitre:['T1133'],
-   desc:'3 tentatives de connexion VPN avec le compte jmoreau depuis un nœud TOR (Roumanie). Le verrouillage automatique est désactivé sur ce compte.'},
+   desc:'3 essais de connexion à distance (VPN) avec le compte jmoreau, depuis le réseau caché TOR. Le blocage automatique du compte avait été désactivé.',
+   aide:'Quelqu\'un essaie d\'entrer depuis l\'extérieur avec ce compte. Le blocage après plusieurs essais sert justement à empêcher ça : qui a le droit de le désactiver ?'},
   {t:'16/05  09h15',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
-   desc:'Mot de passe expiré pour le compte y.ferreira, réinitialisé par le support (TICK-4192).'},
+   desc:'Mot de passe expiré pour y.ferreira, remis à zéro par le support (TICK-4192).',
+   aide:'Activité de routine.'},
   {t:'16/05  10h20',agent:'MESSAGERIE',lv:'VIGILANCE',vis:true,mitre:[],
-   desc:'Boîte f.haddad : 9 échanges en 30 jours avec un domaine chinois (sinoboard-tech.com), absent de la liste des fournisseurs référencés.'},
+   desc:'Boîte de F. HADDAD : 9 échanges en un mois avec une entreprise chinoise (sinoboard-tech.com), qui n\'est pas encore un fournisseur référencé.',
+   aide:'Question à se poser : est-ce normal pour son métier ? Regardez ses mails et son poste.'},
   {t:'17/05  14h22',agent:'IMPRIMANTE',lv:'INFO',vis:true,mitre:[],
-   desc:'Mise à jour automatique du firmware de l\'imprimante HP LaserJet M507.'},
+   desc:'Mise à jour automatique de l\'imprimante.',
+   aide:'Activité de routine.'},
   {t:'17/05  22h01',agent:'WS-BRUNET',lv:'VIGILANCE',vis:true,mitre:['T1078'],
-   desc:'Connexion hors horaires : N. BRUNET, via le VPN, sur la base de données qualité à 22h01. Session de 47 minutes sur les fichiers du lot S42.'},
+   desc:'N. BRUNET se connecte à 22h01, à distance (VPN), à la base de données qualité, pendant 47 minutes.',
+   aide:'Une connexion le soir, c\'est inhabituel mais pas forcément suspect. Question à se poser : a-t-elle une explication ? Cherchez dans les mails.'},
   {t:'18/05  23h01',agent:'WS-MOREAU',lv:'CRITIQUE',vis:true,mitre:['T1003'],
-   desc:'Lecture de la mémoire du processus d\'authentification Windows (LSASS) : signature d\'un outil de vol de mots de passe.'},
+   desc:'Un outil de vol de mots de passe est lancé sur ce poste.',
+   aide:'Cet outil lit la mémoire de Windows pour récupérer les mots de passe des personnes connectées. Avec eux, on peut entrer partout sur le réseau.'},
   {t:'18/05  23h40',agent:'BX-GATEWAY-07',lv:'ALERTE',vis:true,mitre:['T1071','T1041'],
-   desc:'601 Mo envoyés vers 185.220.101.47, le plus gros volume observé à ce jour.'},
+   desc:'601 Mo envoyés vers 185.220.101.47 : le plus gros envoi jamais vu.',
+   aide:'Troisième gros envoi vers la même adresse extérieure (9, 14 et 18 mai).'},
   {t:'19/05  06h30',agent:'SRV-BACKUP',lv:'INFO',vis:true,mitre:[],
-   desc:'Sauvegarde nocturne terminée : 24,3 Go, durée 2h14, statut OK.'},
+   desc:'Sauvegarde de nuit terminée normalement (24,3 Go).',
+   aide:'Activité de routine.'},
 ];
 
 
@@ -2519,6 +2550,7 @@ function wzRuleId(l){
   const base={T1087:'92031',T1591:'92213',T1059:'91816',T1566:'87105',T1071:'87701',T1041:'87712',T1078:'60122',T1021:'92653',T1133:'60204',T1003:'92900',T1046:'40704',T1204:'52502'};
   return base[l.mitre[0]]||'100210';
 }
+function wzFilter(v){ const i=document.getElementById('wz-search'); if(i){ i.value=v; } wzOpen=-1; renderLogs(); }
 function setLogLevel(el){
   document.querySelectorAll('.wz-pill.lv').forEach(x=>x.classList.remove('on'));
   el.classList.add('on'); wzMinLevel=+el.dataset.min; wzOpen=-1; renderLogs();
@@ -2564,7 +2596,7 @@ function renderLogs(){
       const tr=document.createElement('tr');
       tr.className='log-row'+(open?' open':'')+(l.lv==='INFO'?' normal':'');
       tr.innerHTML=`<td class="log-when"><b>${e.p.d} ${WZ_MOIS[e.p.mo-1]||''}</b>${String(e.p.h).padStart(2,'0')}h${String(e.p.mi).padStart(2,'0')}</td>
-        <td class="log-mach"><b>${l.agent}</b><span>${WZ_MACHINES[l.agent]||''}</span></td>
+        <td class="log-mach"><b class="wz-agent" title="N'afficher que cette machine" onclick="event.stopPropagation();wzFilter('${l.agent}')">${l.agent}</b><span>${WZ_MACHINES[l.agent]||''}</span></td>
         <td><span class="sev ${sev[0]}">${sev[1]}</span></td>
         <td class="log-desc">${wzHighlight(l.desc)}</td>`;
       tr.onclick=()=>{ wzOpen=(wzOpen===e.idx)?-1:e.idx; renderLogs(); };
@@ -2575,7 +2607,7 @@ function renderLogs(){
           ['rule.id',e.rid],['rule.level',e.level],['rule.mitre.id',l.mitre.join(', ')||'-'],['rule.mitre.technique',l.mitre.map(m=>WZ_MITRE[m]||m).join(', ')||'-'],
           ['decoder.name',l.mitre.includes('T1554')?'syscheck_integrity_changed':(l.agent.startsWith('WS-')?'windows_eventchannel':'json')]];
         const d=document.createElement('tr'); d.className='log-doc';
-        d.innerHTML=`<td colspan="4"><div class="wz-doc"><div class="wz-doc-h">Détails techniques (Wazuh)</div><table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div></td>`;
+        d.innerHTML=`<td colspan="4"><div class="wz-doc">${l.aide?`<div class="wz-clair"><b>En clair</b>${l.aide}</div>`:''}<div class="wz-doc-h">Détails techniques (Wazuh)</div><table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div></td>`;
         tb.appendChild(d);
       }
     });
@@ -2851,7 +2883,7 @@ const OSINT_DATA = {
       location:'Blois, Centre-Val de Loire',
       about:['Technicien chez ELECARM SAS','Habite à Blois','Marié'],
       posts:[
-        {date:'16 mai 2026',text:'Trop drôle ce quiz 😂 Moi c\'est « Rex Tours » ! Et vous, c\'est quoi votre nom de héros ?',visibility:'Public',quiz:true},
+        {date:'16 mai 2026',text:'Trop drôle ce quiz ! Moi c\'est « Rex Tours » ! Et vous, c\'est quoi votre nom de héros ?',visibility:'Public',quiz:true},
         {date:'10 mai 2026',text:'Victoire 3-1 ce soir avec l\'équipe du jeudi, même si on a joué un dimanche ! Merci à tous pour la bonne ambiance.',visibility:'Public'},
         {date:'14 avril 2026',text:'Week-end pêche au bord du Loir avec le fiston. Rien attrapé mais la journée était parfaite.',visibility:'Amis'},
       ],
@@ -3039,10 +3071,10 @@ let osintView='linkedin';
 function oxInitials(n){ return n.split(' ').map(w=>w[0]).join('').slice(0,2); }
 // Piège pédagogique : un quiz viral partagé sur Facebook. Cliquer sur « Participer » ouvre une leçon
 // sur les informations personnelles publiées en ligne, avec un coup de pouce de méthode pour l'enquête (sans rien nommer).
-const QUIZ_CARD=`<div class="fbv-quiz"><div class="fbv-quiz-top">🦸 Quel est ton nom de super-héros ?<small>Ton nom de héros = le nom de ton premier animal + ta ville de naissance. Partage le tien en commentaire !</small></div>
+const QUIZ_CARD=`<div class="fbv-quiz"><div class="fbv-quiz-top">Quel est ton nom de super-héros ?<small>Ton nom de héros = le nom de ton premier animal + ta ville de naissance. Partage le tien en commentaire !</small></div>
 <div class="fbv-quiz-b"><span>quizzfun-du-jour.com</span><button onclick="showTrap('quiz')">Participer</button></div></div>`;
 const TRAPS={
-  quiz:`<div class="tr-tag">⚠ Exercice de sensibilisation</div>
+  quiz:`<div class="tr-tag">Exercice de sensibilisation</div>
 <div class="tr-title">Ce quiz était un piège</div>
 <div class="tr-p">« Premier animal » et « ville de naissance » : ce sont les réponses aux <b style="color:#fff">questions de sécurité</b> qui servent à récupérer un compte (« Quel était le nom de votre premier animal ? »). Ces quiz viraux servent à les récolter. En répondant « Rex Tours » en public, Marc DURAND vient de donner deux de ces réponses à n'importe qui.</div>
 <div class="tr-h">Ce qu'un attaquant fait de vos publications</div>
@@ -3058,7 +3090,7 @@ const TRAPS={
 <li>Ne publiez rien sur votre travail qui puisse servir à un attaquant (poste, outils, projets en cours, difficultés).</li>
 <li>Répondez aux questions de sécurité par des réponses inventées, conservées dans un gestionnaire de mots de passe.</li>
 </ul>
-<div class="tr-hint">🔎 <b>Pour votre enquête :</b> un attaquant commence toujours par lire ce que les employés publient. Retournez dans l'OSINT et mettez-vous à sa place : <b>qui expose quoi, et quel appât aurait fonctionné sur cette personne ?</b> Comparez ensuite avec les mails reçus.</div>
+<div class="tr-hint"><b>Pour votre enquête :</b> un attaquant commence toujours par lire ce que les employés publient. Retournez dans l'OSINT et mettez-vous à sa place : <b>qui expose quoi, et quel appât aurait fonctionné sur cette personne ?</b> Comparez ensuite avec les mails reçus.</div>
 <button class="tr-btn" onclick="closeTrap()">Retourner à l'enquête</button>`
 };
 function showTrap(k){ const b=document.getElementById('trap-box'); if(!b||!TRAPS[k]) return; b.innerHTML=TRAPS[k]; const t=document.getElementById('trap'); t.classList.add('show'); t.scrollTop=0;
