@@ -3,8 +3,9 @@
 // POST /api/session {password, action, ...} -> console animateur (protege par ANIM_PASSWORD)
 //   actions : waiting | start | open | close | reset | setTimer | addTime | state
 //             deleteTeam | removeMember | resetAttempts | wipeTeams | reply | broadcast | alert | solution
+//             setupGroups | addGroup | addTD | setCapacity | moveMember | emptyGroups  (groupes TD, crees par l'animateur)
 const store = require('./_store');
-const { parseBody, clean, cleanText, newId, publicView, pushMessage } = require('./_util');
+const { parseBody, clean, cleanText, newId, publicView, pushMessage, capacity, MAX_MEMBERS, MAX_CAPACITY, MAX_TEAMS } = require('./_util');
 const { publicQuestions } = require('./_grade');
 const SOLUTION = require('./_solution');
 
@@ -13,6 +14,19 @@ function clampMin(v, fallback) {
   if (!Number.isFinite(v) || v < 1) return fallback || 10;
   return Math.min(600, v);
 }
+
+function clampInt(v, min, max, fallback) {
+  v = parseInt(v, 10);
+  return Number.isFinite(v) ? Math.max(min, Math.min(max, v)) : fallback;
+}
+function tdNum(td) { return parseInt(String(td || '').replace(/\D/g, ''), 10) || 0; }
+// Nouveau groupe vide (TDn, Groupe k)
+function makeGroup(st, n, k, cap) {
+  const t = { id: newId(), td: 'TD' + n, num: k, name: 'TD' + n + ' · Groupe ' + k, capacity: cap, createdAt: Date.now(), members: [], attempts: [], success: false };
+  st.teams[t.id] = t;
+  return t;
+}
+function groupsOf(st, td) { return Object.values(st.teams).filter(t => t.td === td); }
 
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
@@ -25,7 +39,7 @@ module.exports = async (req, res) => {
       let view = publicView(st, team, member);
       // Plusieurs instances Vercel : le cache de celle-ci peut dater d'avant une inscription faite
       // sur une autre. Avant de répondre « membre inconnu », on relit l'état réel.
-      if (team && view.me === null) { st = await store.read(true); view = publicView(st, team, member); }
+      if ((team || member) && view.me === null) { st = await store.read(true); view = publicView(st, team, member); }
       if (q.withQuestions) view.questions = publicQuestions();   // une fois, a l'ouverture de l'exercice
       res.status(200).json(view);
     } catch (e) {
@@ -51,7 +65,8 @@ module.exports = async (req, res) => {
       res.status(200).json({ ...st, serverNow: Date.now() });
       return;
     }
-    const known = ['waiting', 'start', 'open', 'close', 'reset', 'setTimer', 'addTime', 'deleteTeam', 'removeMember', 'resetAttempts', 'wipeTeams', 'reply', 'broadcast', 'alert'];
+    const known = ['waiting', 'start', 'open', 'close', 'reset', 'setTimer', 'addTime', 'deleteTeam', 'removeMember', 'resetAttempts', 'wipeTeams', 'reply', 'broadcast', 'alert',
+      'setupGroups', 'addGroup', 'addTD', 'setCapacity', 'moveMember', 'emptyGroups'];
     if (!known.includes(action)) { res.status(400).json({ error: 'bad action' }); return; }
 
     const result = await store.mutate(st => {
@@ -83,6 +98,46 @@ module.exports = async (req, res) => {
         s.missionMin = M; s.updatedAt = now;
       }
       else if (action === 'wipeTeams') { st.teams = {}; st.broadcasts = []; st.alerts = []; }
+      else if (action === 'emptyGroups') {
+        // Nouvelle seance : on garde les groupes, on vide membres, suppositions et messages.
+        Object.values(st.teams).forEach(t => { t.members = []; t.attempts = []; t.success = false; t.messages = []; });
+        st.broadcasts = []; st.alerts = [];
+      }
+      else if (action === 'setupGroups') {
+        // Cree les groupes manquants (TD1..TDn, Groupe 1..k) ; les groupes existants ne sont pas touches.
+        const nTd = clampInt(body.tds, 1, 8, 4), nGr = clampInt(body.groups, 1, 10, 5), cap = clampInt(body.capacity, 1, MAX_CAPACITY, MAX_MEMBERS);
+        for (let n = 1; n <= nTd; n++) for (let k = 1; k <= nGr; k++) {
+          if (Object.values(st.teams).some(t => t.td === 'TD' + n && t.num === k)) continue;
+          if (Object.keys(st.teams).length >= MAX_TEAMS) return { error: 'Nombre maximum de groupes atteint (' + MAX_TEAMS + ').' };
+          makeGroup(st, n, k, cap);
+        }
+      }
+      else if (action === 'addTD') {
+        const n = Math.max(0, ...Object.values(st.teams).map(t => tdNum(t.td))) + 1;
+        const nGr = clampInt(body.groups, 1, 10, 5), cap = clampInt(body.capacity, 1, MAX_CAPACITY, MAX_MEMBERS);
+        if (Object.keys(st.teams).length + nGr > MAX_TEAMS) return { error: 'Nombre maximum de groupes atteint (' + MAX_TEAMS + ').' };
+        for (let k = 1; k <= nGr; k++) makeGroup(st, n, k, cap);
+      }
+      else if (action === 'addGroup') {
+        const n = tdNum(body.td);
+        if (!n) return { error: 'TD inconnu.' };
+        if (Object.keys(st.teams).length >= MAX_TEAMS) return { error: 'Nombre maximum de groupes atteint (' + MAX_TEAMS + ').' };
+        const same = groupsOf(st, 'TD' + n);
+        const cap = same.length ? capacity(same[same.length - 1]) : clampInt(body.capacity, 1, MAX_CAPACITY, MAX_MEMBERS);
+        makeGroup(st, n, Math.max(0, ...same.map(t => t.num || 0)) + 1, cap);
+      }
+      else if (action === 'moveMember') {
+        const to = st.teams[clean(body.toTeamId, 40)];
+        if (!to) return { error: 'Groupe de destination introuvable.' };
+        const memberId = clean(body.memberId, 40);
+        const from = Object.values(st.teams).find(t => t.members.some(m => m.id === memberId));
+        if (!from) return { error: 'Élève introuvable (déjà retiré ?).' };
+        if (from.id === to.id) return {};
+        if (to.members.length >= capacity(to)) return { error: to.name + ' est complet : ajoutez-lui une place d\'abord.' };
+        const m = from.members.find(x => x.id === memberId);
+        from.members = from.members.filter(x => x.id !== memberId);
+        to.members.push(m);   // meme identifiant : son poste suit automatiquement le nouveau groupe
+      }
       else if (action === 'alert') {
         // Relance : notification affichée sur tous les postes (et non un message de discussion)
         const text = cleanText(body.text); if (!text) return { error: 'Message vide.' };
@@ -96,6 +151,11 @@ module.exports = async (req, res) => {
         const t = st.teams[clean(body.teamId, 40)];
         if (!t) return { error: 'team not found' };
         if (action === 'deleteTeam') delete st.teams[t.id];
+        else if (action === 'setCapacity') {
+          const cap = clampInt(capacity(t) + (parseInt(body.delta, 10) || 0), 1, MAX_CAPACITY, capacity(t));
+          if (cap < t.members.length) return { error: 'Retirez ou déplacez d\'abord un élève : ' + t.name + ' compte ' + t.members.length + ' personnes.' };
+          t.capacity = cap;
+        }
         else if (action === 'resetAttempts') { t.attempts = []; t.success = false; }
         else if (action === 'reply') {
           const text = cleanText(body.text); if (!text) return { error: 'Message vide.' };

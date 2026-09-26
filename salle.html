@@ -42,6 +42,22 @@ button{border:none;border-radius:6px;padding:9px 14px;font-size:13px;font-weight
 button:disabled{opacity:.35;cursor:not-allowed}
 button.ghost{background:transparent;border:1px solid #2a2d31;color:#9a9a9a;font-weight:600}
 .row{display:flex;gap:8px}
+.tds{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+.td{background:#08090a;border:1px solid #26292d;color:#fff;font-size:22px;font-weight:800;letter-spacing:.06em;padding:22px 10px;border-radius:8px}
+.td small{display:block;font-size:11px;font-weight:600;color:#777;letter-spacing:.04em;margin-top:6px}
+.td:hover,.grp:not(:disabled):hover{border-color:#7f1d1d;background:#140b0b}
+.grps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.grp{background:#08090a;border:1px solid #26292d;color:#fff;text-align:left;padding:14px;border-radius:8px}
+.grp-n{font-size:16px;font-weight:800}
+.grp-c{font-family:var(--mono);font-size:12px;color:#8a8a8a;margin-top:4px}
+.grp-m{font-size:11px;color:#666;font-weight:500;margin-top:6px;line-height:1.5;min-height:16px}
+.bar{height:4px;background:#1c1d20;border-radius:2px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:#7f1d1d}
+.grp:disabled .bar i{background:#3a3a3a}
+.back{background:none;border:none;color:#8a8a8a;font-weight:600;padding:0;margin-bottom:12px;font-size:12px}
+.back:hover{color:#fff}
+.pick{font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
+.join{width:100%;margin-top:14px;padding:13px;font-size:15px}
 .row input{flex:1}
 .or{font-size:11px;color:#555;text-align:center;margin:14px 0 2px;letter-spacing:.1em;text-transform:uppercase}
 .err{color:#fca5a5;font-size:12px;min-height:16px;margin-top:10px}
@@ -68,24 +84,34 @@ button.ghost{background:transparent;border:1px solid #2a2d31;color:#9a9a9a;font-
     </div>
   </div>
 
-  <!-- Inscription (affichee tant que ce poste n'a pas d'equipe) -->
+  <!-- Inscription (affichee tant que ce poste n'a pas de groupe) : TD, puis groupe, puis nom -->
   <div id="reg" class="card" style="display:none">
-    <h2>Rejoindre votre équipe</h2>
-    <label for="mname">Votre prénom</label>
-    <input id="mname" maxlength="30" autocomplete="off" placeholder="Prénom">
-    <label>Équipes déjà créées (8 personnes maximum)</label>
-    <div class="teams" id="teams"></div>
-    <div class="or">ou</div>
-    <label for="tname">Créer une nouvelle équipe</label>
-    <div class="row"><input id="tname" maxlength="40" autocomplete="off" placeholder="Nom de l'équipe"><button onclick="join(null)">Créer</button></div>
+    <div id="step-td">
+      <h2>1. Votre TD</h2>
+      <div class="tds" id="tds"></div>
+    </div>
+    <div id="step-grp" style="display:none">
+      <button class="back" onclick="pickTd(null)">&larr; Changer de TD</button>
+      <h2>2. Votre groupe, <span id="grp-td"></span></h2>
+      <div class="grps" id="grps"></div>
+    </div>
+    <div id="step-name" style="display:none">
+      <button class="back" onclick="pickGroup(null)">&larr; Changer de groupe</button>
+      <h2>3. Votre nom</h2>
+      <div class="pick" id="pick"></div>
+      <div class="me" id="pick-m"></div>
+      <label for="mname">Nom et prénom</label>
+      <input id="mname" maxlength="40" autocomplete="off" placeholder="Ex. : Durand Léa" onkeydown="if(event.key==='Enter')join()">
+      <button class="join" id="joinbtn" onclick="join()">Rejoindre</button>
+    </div>
     <div class="err" id="err"></div>
   </div>
 
   <!-- Equipe de ce poste -->
   <div id="mine" class="card" style="display:none">
-    <h2>Votre équipe</h2>
+    <h2>Votre groupe</h2>
     <div class="me" id="me"></div>
-    <div style="margin-top:12px"><button class="ghost" id="leave" onclick="leave()">Changer d'équipe</button></div>
+    <div style="margin-top:12px"><button class="ghost" id="leave" onclick="leave()">Changer de groupe</button></div>
   </div>
 
   <div id="view"></div>
@@ -134,56 +160,82 @@ function fmt(ms){
 }
 function setErr(t){ document.getElementById('err').textContent=t||''; }
 
-function missionInfo(){
-  var m=cur&&cur.missionMin; if(!m) return '';
-  var h=Math.floor(m/60), mn=m%60;
-  return '<div class="hint" style="margin-bottom:10px">Durée de l\'exercice : <b style="color:#d4d4d4">'+(h?h+' h ':'')+(mn?(h&&mn<10?'0':'')+mn+(h?'':' min'):'')+'</b></div>';
-}
 function canRegister(){ return cur && (cur.status==='waiting' || cur.status==='running'); }
 
-// Partie inscription : re-rendue seulement quand l'etat change (pour ne pas effacer la saisie).
+// Partie inscription : TD, puis groupe, puis nom. Re-rendue seulement quand l'etat change
+// (le champ du nom n'est jamais recree, la saisie n'est pas perdue).
+var selTd=null, selGroup=null;
+function tdsOf(teams){ var o=[]; teams.forEach(function(t){ if(t.td && o.indexOf(t.td)<0) o.push(t.td); }); return o; }
+function groupLabel(t){ return t.td ? (t.name.replace(t.td+' · ','')) : t.name; }
+function pickTd(td){ selTd=td; selGroup=null; setErr(''); lastSig=''; renderTeams(); }
+function pickGroup(id){ selGroup=id; setErr(''); lastSig=''; renderTeams(); if(id) setTimeout(function(){ document.getElementById('mname').focus(); },30); }
+function show3(n){ ['step-td','step-grp','step-name'].forEach(function(id,i){ document.getElementById(id).style.display=(i===n?'block':'none'); }); }
 function renderTeams(){
   var me = cur && cur.me;
-  var sig = JSON.stringify([cur&&cur.status, cur&&cur.open, cur&&cur.teams, me]);
+  var sig = JSON.stringify([cur&&cur.status, cur&&cur.open, cur&&cur.teams, me, selTd, selGroup]);
   if(sig===lastSig) return; lastSig=sig;
   var reg=document.getElementById('reg'), mine=document.getElementById('mine');
   if(me){
     reg.style.display='none'; mine.style.display='block';
-    document.getElementById('me').innerHTML='Équipe <b>'+esc(me.team.name)+'</b> ('+me.team.members.length+' / 8)<br>'+me.team.members.map(esc).join(', ');
+    document.getElementById('me').innerHTML='<b>'+esc(me.team.name)+'</b> ('+me.team.members.length+' / '+me.team.capacity+')<br>'+me.team.members.map(esc).join(', ');
     document.getElementById('leave').style.display = cur.open ? 'none' : 'inline-block';
     return;
   }
   mine.style.display='none';
   if(!canRegister()){ reg.style.display='none'; return; }
   reg.style.display='block';
-  var list=document.getElementById('teams');
-  if(!cur.teams.length){ list.innerHTML='<div class="empty">Aucune équipe pour le moment. Créez la vôtre ci-dessous.</div>'; return; }
-  list.innerHTML=cur.teams.map(function(t){
-    var full=t.count>=8;
-    return '<div class="team"><div><div class="team-n">'+esc(t.name)+'</div><div class="team-m">'+(t.members.map(esc).join(', ')||'&nbsp;')+'</div></div>'+
-      '<span class="team-c">'+t.count+' / 8</span><button '+(full?'disabled':'')+' onclick="join(\''+t.id+'\')">'+(full?'Complète':'Rejoindre')+'</button></div>';
-  }).join('');
+  var teams=cur.teams.filter(function(t){ return t.td; });
+  var tds=tdsOf(teams);
+  if(selTd && tds.indexOf(selTd)<0) selTd=null;
+  var g=selGroup && teams.filter(function(t){ return t.id===selGroup; })[0];
+  if(selGroup && !g) selGroup=null;
+  if(!selTd){
+    show3(0);
+    document.getElementById('tds').innerHTML=tds.length?tds.map(function(td){
+      var gs=teams.filter(function(t){ return t.td===td; });
+      return '<button class="td" onclick="pickTd(\''+td+'\')">'+esc(td)+'<small>'+gs.length+' groupe'+(gs.length>1?'s':'')+'</small></button>';
+    }).join(''):'<div class="empty">Les groupes ne sont pas encore prêts. Cette page se met à jour toute seule.</div>';
+    return;
+  }
+  if(!g){
+    show3(1);
+    document.getElementById('grp-td').textContent=selTd;
+    document.getElementById('grps').innerHTML=teams.filter(function(t){ return t.td===selTd; }).map(function(t){
+      var full=t.count>=t.capacity, pct=Math.min(100,Math.round(100*t.count/t.capacity));
+      return '<button class="grp" '+(full?'disabled':'')+' onclick="pickGroup(\''+t.id+'\')"><div class="grp-n">'+esc(groupLabel(t))+'</div>'+
+        '<div class="grp-c">'+(full?'Complet':t.count+' / '+t.capacity+' places')+'</div><div class="bar"><i style="width:'+pct+'%"></i></div>'+
+        '<div class="grp-m">'+(t.members.map(esc).join(', ')||'Personne pour le moment')+'</div></button>';
+    }).join('');
+    return;
+  }
+  show3(2);
+  var gfull=g.count>=g.capacity;
+  document.getElementById('pick').textContent=g.name;
+  document.getElementById('pick-m').innerHTML=(g.members.length?'Déjà dans le groupe : '+g.members.map(esc).join(', '):'Personne n\'est encore dans ce groupe.')+' ('+g.count+' / '+g.capacity+')';
+  var btn=document.getElementById('joinbtn');
+  btn.disabled=gfull; btn.textContent=gfull?'Groupe complet':'Rejoindre '+g.name;
 }
 
-function join(teamId){
+function join(){
   var name=document.getElementById('mname').value.trim();
-  if(!name){ setErr('Indiquez votre prénom.'); document.getElementById('mname').focus(); return; }
-  var body={action:'join', memberName:name};
-  if(teamId) body.teamId=teamId; else body.teamName=document.getElementById('tname').value.trim();
+  if(!selGroup) return;
+  if(!name){ setErr('Indiquez votre nom et prénom.'); document.getElementById('mname').focus(); return; }
+  var btn=document.getElementById('joinbtn'); btn.disabled=true;
   setErr('');
-  fetch(TEAM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+  fetch(TEAM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'join', memberName:name, teamId:selGroup})})
     .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
     .then(function(o){
+      btn.disabled=false;
       if(!o.ok){ setErr(o.j.message||'Erreur, réessayez.'); return; }
       saveTeam({teamId:o.j.teamId, memberId:o.j.memberId, teamName:o.j.teamName, memberName:o.j.memberName});
       if(o.j.view){ cur=o.j.view; noteRev(o.j.view.rev); }
-      lastSig=''; renderTeams();
-    }).catch(function(){ setErr('Serveur injoignable, réessayez.'); });
+      selTd=null; selGroup=null; lastSig=''; renderTeams();
+    }).catch(function(){ btn.disabled=false; setErr('Serveur injoignable, réessayez.'); });
 }
 
 function leave(){
   var t=loadTeam(); if(!t) return;
-  ask('Quitter l\'équipe '+t.teamName+' ?',function(){
+  ask('Quitter le groupe '+t.teamName+' ?',function(){
   fetch(TEAM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'leave',teamId:t.teamId,memberId:t.memberId})})
     .then(function(){ saveTeam(null); if(cur) cur.me=undefined; lastSig=''; poll(true); })
     .catch(function(){});
@@ -216,16 +268,16 @@ function tick(){
       var left=cur.endAt-now();
       if(left<=0){
         if(registered && cur.open){ launch(); return; }
-        show('<div class="tag">Exercice ouvert</div><div class="status">Rejoignez votre équipe pour entrer</div>');
+        show('<div class="tag">Exercice ouvert</div><div class="status">Rejoignez votre groupe pour entrer</div>');
       } else {
         show('<div class="tag">Lancement en cours</div><div class="status">L\'exercice ouvre dans</div>'+
-          '<div class="count">'+fmt(left)+'</div>'+missionInfo()+
-          '<div class="hint">'+(registered?'Restez sur cette page. L\'ouverture est automatique et synchronisée pour toutes les équipes.':'Inscrivez-vous dans votre équipe avant la fin du compte à rebours.')+'</div>');
+          '<div class="count">'+fmt(left)+'</div>'+
+          '<div class="hint">'+(registered?'Restez sur cette page. L\'ouverture est automatique et synchronisée pour tous les groupes.':'Rejoignez votre groupe avant la fin du compte à rebours.')+'</div>');
       }
     } else if(cur.status==='waiting'){
       show('<div class="tag">Dossier confidentiel - usage restreint</div><div class="spin"></div>'+
-        '<div class="status">En attente du lancement</div>'+missionInfo()+
-        '<div class="hint">'+(registered?'Gardez cette page ouverte. Le compte à rebours démarrera dès que l\'enseignant lancera la session.':'Commencez par rejoindre ou créer votre équipe ci-dessus.')+'</div>');
+        '<div class="status">En attente du lancement</div>'+
+        '<div class="hint">'+(registered?'Gardez cette page ouverte. Le compte à rebours démarrera dès que l\'enseignant lancera la session.':'Commencez par rejoindre votre groupe ci-dessus.')+'</div>');
     } else if(cur.status==='closed'){
       show('<div class="tag">Dossier confidentiel - usage restreint</div><div class="status">Exercice fermé</div>'+
         '<div class="hint">L\'enseignant a fermé l\'exercice. Cette page se met à jour toute seule.</div>');
@@ -251,6 +303,8 @@ function poll(once){
         // Retire de l'equipe par l'animateur : confirme sur deux reponses consecutives avant d'oublier l'inscription.
         if(t && st.me===null){ goneCount++; if(goneCount>=2){ saveTeam(null); goneCount=0; } else { st.me=cur&&cur.me; } }
         else goneCount=0;
+        // Déplacé par l'animateur : le poste suit son nouveau groupe.
+        if(t && st.me && st.me.team.id!==t.teamId){ t.teamId=st.me.team.id; t.teamName=st.me.team.name; saveTeam(t); }
         cur=st; renderTeams();
       }
     }).catch(function(){})

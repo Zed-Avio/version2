@@ -99,6 +99,34 @@ button.big{font-size:15px;padding:13px 22px}
 .att-g .v{color:#d4d4d4;word-break:break-word}
 .empty{font-size:13px;color:#555;padding:6px 0}
 @media (max-width:640px){.att-g{grid-template-columns:1fr}.att-g .k{margin-top:6px}}
+.gsetup{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.gsetup>div{width:120px}
+.tdsec{margin-top:18px}
+.tdh{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.tdh b{font-size:16px;color:#fff;letter-spacing:.04em}
+.tdh span{font-size:12px;color:#777}
+.tdh .r{margin-left:auto;display:flex;gap:6px}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.g{border:1px solid var(--bd);border-radius:8px;background:#0c0d0f;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.g.full{border-color:#1f3a26}
+.g-h{display:flex;align-items:center;gap:8px}
+.g-n{font-weight:700;color:#fff;font-size:14px}
+.g-c{font-family:var(--mono);font-size:12px;color:#9a9a9a;margin-left:auto}
+.g.full .g-c{color:#5fd48a}
+.g-m{display:flex;flex-direction:column;gap:4px;min-height:24px}
+.gm{display:flex;align-items:center;gap:4px;font-size:12.5px;background:#15171a;border:1px solid #23262a;border-radius:6px;padding:3px 4px 3px 9px}
+.gm span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gm button{background:transparent;color:#777;padding:1px 6px;font-size:12px;font-weight:600}
+.gm button:hover{color:#fff}
+.gm button.x:hover{color:#fca5a5}
+.g-a{display:flex;gap:5px;flex-wrap:wrap;border-top:1px solid #16181b;padding-top:8px}
+.g-a button{padding:3px 8px;font-size:11px}
+#mv{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px}
+#mv.show{display:flex}
+#mv .box{background:#131518;border:1px solid #2a2d31;border-radius:10px;max-width:560px;width:100%;max-height:85vh;overflow:auto;padding:20px}
+#mv-t{font-size:14px;color:#fff;font-weight:700;margin-bottom:12px}
+.mv-td{font-size:11px;font-weight:700;color:#777;letter-spacing:.08em;margin:12px 0 6px}
+.mv-g{display:flex;gap:6px;flex-wrap:wrap}
 #cfm{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px}
 #cfm.show{display:flex}
 #cfm .box{background:#131518;border:1px solid #2a2d31;border-radius:10px;max-width:440px;width:100%;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.7)}
@@ -112,7 +140,7 @@ button.big{font-size:15px;padding:13px 22px}
     <div class="mark"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zM12 4.5l7 3.5v8.5l-7 3.5-7-3.5V8l7-3.5z"/></svg></div>
     <div><div class="h-title">Console animateur</div><div class="h-sub">ELECARM Crisis2</div></div>
   </div>
-  <div class="subtitle">Réservé à l'enseignant. Pilote l'ouverture de l'exercice, suit les équipes et leurs suppositions.</div>
+  <div class="subtitle">Réservé à l'enseignant. Pilote l'ouverture de l'exercice, gère les groupes et suit leurs suppositions.</div>
 
   <div id="gate" class="card gate">
     <h2>Accès animateur</h2>
@@ -126,7 +154,7 @@ button.big{font-size:15px;padding:13px 22px}
     <div class="card">
       <h2>Lien unique à donner aux élèves</h2>
       <div class="linkbox"><code id="slink"></code><button class="b-wait" onclick="copyLink()">Copier</button></div>
-      <div class="mini">Sur ce lien, chaque élève s'inscrit dans son équipe (nom d'équipe, 8 personnes maximum), attend le lancement, voit le compte à rebours, puis entre dans l'exercice. Le site n'est accessible que lorsque vous l'ouvrez.</div>
+      <div class="mini">Sur ce lien, chaque élève choisit son TD, puis son groupe, tape son nom et prénom, attend le lancement, puis entre dans l'exercice. Les élèves ne créent rien : ils rejoignent les groupes que vous avez créés ci-dessous. Le site n'est accessible que lorsque vous l'ouvrez.</div>
     </div>
 
     <div class="card">
@@ -136,18 +164,7 @@ button.big{font-size:15px;padding:13px 22px}
         <span id="clock" class="clock"></span>
         <span id="statehint" style="color:#777"></span>
       </div>
-      <div id="mission" class="mission hidden">
-        <div><div class="m-l">Minuteur de l'exercice</div><div class="m-v" id="mclock">--:--:--</div><div class="m-s" id="mstate"></div></div>
-        <div class="m-b">
-          <button class="b-reset sm" onclick="timer('addTime',-5)">- 5 min</button>
-          <button class="b-reset sm" onclick="timer('addTime',5)">+ 5 min</button>
-          <button class="b-reset sm" onclick="timer('addTime',15)">+ 15 min</button>
-          <span class="addc"><input type="number" id="addmin" value="30" min="-600" max="600" title="Minutes à ajouter (négatif pour retirer)"><button class="b-go sm" onclick="timer('addCustom')">Ajouter ces minutes</button></span>
-          <button class="b-reset sm" onclick="timer('setTimer')">Repartir de la durée choisie</button>
-        </div>
-      </div>
       <div class="fields">
-        <div><label>Durée de l'exercice, minuteur (minutes)</label><input type="number" id="mdur" value="240" min="1" max="600"></div>
         <div><label>Compte à rebours avant ouverture (minutes)</label><input type="number" id="dur" value="10" min="1" max="600"></div>
       </div>
       <div class="btns">
@@ -159,13 +176,30 @@ button.big{font-size:15px;padding:13px 22px}
       </div>
       <div id="msg" class="msg"></div>
       <div class="mini">
-        <b>Commencer maintenant</b> : l'exercice s'ouvre tout de suite et le minuteur démarre. Les élèves passent par le lien <code>/salle</code> pour rejoindre leur équipe, puis entrent directement. <b>Compte à rebours</b> : décompte synchronisé, l'exercice et le minuteur démarrent à zéro. <b>Salle d'attente</b> : inscriptions des équipes avant de commencer. <b>Fermer</b> : bloque l'exercice sur tous les postes et met le minuteur en pause ; « Commencer maintenant » le rouvre et le minuteur reprend où il s'était arrêté. <b>Veille</b> : site fermé. Le minuteur s'affiche en haut de l'écran des élèves (MISSION) ; à zéro, un message « Temps écoulé » s'affiche mais l'exercice continue. Un réglage met jusqu'à 20 secondes à leur parvenir.
+        <b>Commencer maintenant</b> : l'exercice s'ouvre tout de suite ; les élèves déjà dans un groupe entrent directement. <b>Compte à rebours</b> : décompte synchronisé, l'exercice s'ouvre à zéro. <b>Salle d'attente</b> : les élèves rejoignent leur groupe avant de commencer. <b>Fermer</b> : bloque l'exercice sur tous les postes (sans perte de progression) ; « Commencer maintenant » le rouvre. <b>Veille</b> : site fermé. L'exercice n'a pas de limite de temps : il reste ouvert jusqu'à ce que vous le fermiez. Un élève doit avoir rejoint un groupe pour entrer dans le jeu.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Groupes <span class="r" id="tcount"></span></h2>
+      <div class="gsetup">
+        <div><label>TD</label><input type="number" id="g-tds" value="4" min="1" max="8"></div>
+        <div><label>Groupes par TD</label><input type="number" id="g-grp" value="5" min="1" max="10"></div>
+        <div><label>Places</label><input type="number" id="g-cap" value="6" min="1" max="12"></div>
+        <button class="b-go" onclick="setupGroups()">Créer les groupes</button>
+        <button class="b-wait" onclick="groupAction('addTD')">+ Ajouter un TD</button>
+      </div>
+      <div class="mini">« Créer les groupes » ajoute seulement les groupes manquants (TD1 à TD4, Groupe 1 à 5 par défaut) : les groupes existants et leurs élèves ne sont pas touchés. Sur chaque groupe : <b>+ place</b> / <b>- place</b>, <b>&#8644;</b> pour déplacer un élève vers un autre groupe (son poste suit tout seul), <b>&times;</b> pour le retirer (il rejoint à nouveau depuis <code>/salle</code>).</div>
+      <div id="teams"></div>
+      <div class="btns">
+        <button class="b-reset sm" onclick="groupAction('emptyGroups')">Vider les groupes (nouvelle séance)</button>
+        <button class="b-close sm" onclick="wipe()">Supprimer tous les groupes</button>
       </div>
     </div>
 
     <div class="card">
       <h2>Relance</h2>
-      <div class="mini" style="margin:0 0 10px">Envoie une notification « alerte » sur l'écran de toutes les équipes (elle apparaît en moins de 20 secondes). Utile pour relancer une équipe qui s'essouffle ou mettre la pression.</div>
+      <div class="mini" style="margin:0 0 10px">Envoie une notification « alerte » sur l'écran de tous les groupes (elle apparaît en moins de 20 secondes). Utile pour relancer un groupe qui s'essouffle ou mettre la pression.</div>
       <label>Titre</label>
       <input id="al-title" maxlength="80" value="Nouvelle alerte DSI">
       <label style="margin-top:10px">Message</label>
@@ -174,15 +208,15 @@ button.big{font-size:15px;padding:13px 22px}
     </div>
 
     <div class="card" id="chatcard">
-      <h2>Messages des équipes <span class="r" id="chatcount"></span></h2>
+      <h2>Messages des groupes <span class="r" id="chatcount"></span></h2>
       <div class="chat">
         <div class="chat-teams" id="chat-teams"></div>
         <div class="chat-main">
-          <div class="chat-list" id="chat-list"><div class="empty" style="margin:auto">Sélectionnez une équipe.</div></div>
-          <div class="chat-f"><textarea id="reply" maxlength="500" placeholder="Répondre à l'équipe sélectionnée (Entrée pour envoyer)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();reply();}"></textarea><button class="b-go" onclick="reply()">Envoyer</button></div>
+          <div class="chat-list" id="chat-list"><div class="empty" style="margin:auto">Sélectionnez un groupe.</div></div>
+          <div class="chat-f"><textarea id="reply" maxlength="500" placeholder="Répondre au groupe sélectionné (Entrée pour envoyer)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();reply();}"></textarea><button class="b-go" onclick="reply()">Envoyer</button></div>
         </div>
       </div>
-      <div class="bcast"><input id="bcast" maxlength="500" placeholder="Message à TOUTES les équipes (ex. : plus que 30 minutes !)" onkeydown="if(event.key==='Enter'){broadcast();}"><button class="b-wait" onclick="broadcast()">Envoyer à toutes les équipes</button></div>
+      <div class="bcast"><input id="bcast" maxlength="500" placeholder="Message à TOUS les groupes (ex. : plus que 30 minutes !)" onkeydown="if(event.key==='Enter'){broadcast();}"><button class="b-wait" onclick="broadcast()">Envoyer à tous les groupes</button></div>
     </div>
 
     <div class="card">
@@ -192,12 +226,12 @@ button.big{font-size:15px;padding:13px 22px}
     </div>
 
     <div class="card">
-      <h2>Équipes <span class="r" id="tcount"></span></h2>
-      <div id="teams"></div>
-      <div class="btns"><button class="b-reset sm" onclick="wipe()">Effacer toutes les équipes</button></div>
+      <h2>Suppositions des groupes <span class="r" id="scount"></span></h2>
+      <div id="sups"></div>
     </div>
   </div>
 </div>
+<div id="mv"><div class="box"><div id="mv-t"></div><div id="mv-l"></div><div class="btns"><button class="b-reset" onclick="closeMove()">Annuler</button></div></div></div>
 <div id="cfm"><div class="box"><div id="cfm-t"></div><div class="row2"><button class="b-reset" id="cfm-no">Annuler</button><button class="b-go" id="cfm-ok">Confirmer</button></div></div></div>
 <script>
 // Confirmation dans la page (et non confirm() du navigateur, que l'on peut bloquer par une case à cocher).
@@ -240,39 +274,28 @@ function unlock(){
   }).catch(function(){ gmsg('Erreur réseau.',true); });
 }
 
-var LABELS={waiting:'Salle d\'attente ouverte.',start:'Compte à rebours lancé.',open:'Exercice ouvert, minuteur démarré.',close:'Exercice fermé, minuteur en pause.',reset:'Site en veille.',addTime:'Minuteur ajusté.',setTimer:'Minuteur réglé.'};
+var LABELS={waiting:'Salle d\'attente ouverte.',start:'Compte à rebours lancé.',open:'Exercice ouvert.',close:'Exercice fermé.',reset:'Site en veille.'};
 function send(action){
   var ss=st&&st.session, live=ss && ss.status==='running';
-  var q = action==='close' ? 'Fermer l\'exercice sur tous les postes ? Le minuteur sera mis en pause.'
-    : live && (action==='open'||action==='start') ? 'Un exercice est déjà en cours. Le relancer remet le minuteur à zéro sur tous les postes. Continuer ?'
+  var q = action==='close' ? 'Fermer l\'exercice sur tous les postes ?'
+    : live && action==='start' ? 'Un exercice est déjà en cours. Relancer un compte à rebours le bloque sur tous les postes jusqu\'à la fin du décompte. Continuer ?'
     : live && (action==='waiting'||action==='reset') ? 'Un exercice est en cours : cette action renvoie tous les élèves vers la salle d\'attente. Continuer ?' : null;
   if(q) ask(q,function(){ doSend(action); }); else doSend(action);
 }
 function doSend(action){
   msg('Envoi en cours...',false);
   var dur=parseInt(document.getElementById('dur').value,10)||10;
-  var mdur=parseInt(document.getElementById('mdur').value,10)||240;
-  api({action:action,durationMin:dur,missionMin:mdur}).then(function(o){
+  api({action:action,durationMin:dur}).then(function(o){
     if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue')+(o.j.detail?' ('+o.j.detail+')':''),true); return; }
     msg(LABELS[action]||'OK',false); apply(o.j);
   }).catch(function(){ msg('Erreur réseau.',true); });
 }
-function timer(action,delta){
-  var mdur=parseInt(document.getElementById('mdur').value,10)||240;
-  if(action==='addCustom'){ delta=parseInt(document.getElementById('addmin').value,10); if(!delta){ msg('Indiquez un nombre de minutes à ajouter.',true); return; } action='addTime'; }
-  if(action==='setTimer' && !timer.ok){ ask('Remettre le minuteur à '+mdur+' minutes sur tous les postes ?',function(){ timer.ok=1; timer('setTimer'); timer.ok=0; }); return; }
-  msg('Envoi en cours...',false);
-  api({action:action,deltaMin:delta,missionMin:mdur}).then(function(o){
-    if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; }
-    msg(LABELS[action],false); apply(o.j);
-  }).catch(function(){ msg('Erreur réseau.',true); });
-}
 function teamAction(action,teamId,memberId){
   var t=st&&st.teams&&st.teams[teamId], m=t&&t.members.filter(function(x){return x.id===memberId;})[0];
-  var q={resetAttempts:'Remettre à zéro les tentatives de l\'équipe « '+(t&&t.name)+' » ?',
-    deleteTeam:'Supprimer l\'équipe « '+(t&&t.name)+' » et ses suppositions ?',
-    removeMember:'Retirer '+(m&&m.name)+' de l\'équipe « '+(t&&t.name)+' » ?',
-    wipeTeams:'Effacer TOUTES les équipes, leurs membres et leurs suppositions ?'}[action];
+  var q={resetAttempts:'Remettre à zéro les tentatives du groupe « '+(t&&t.name)+' » ?',
+    deleteTeam:'Supprimer le groupe « '+(t&&t.name)+' »'+(t&&t.members.length?' et ses '+t.members.length+' élève(s)':'')+' ?',
+    removeMember:'Retirer '+(m&&m.name)+' du groupe « '+(t&&t.name)+' » ?',
+    wipeTeams:'Supprimer TOUS les groupes, leurs élèves, leurs suppositions et leurs messages ?'}[action];
   if(q) ask(q,function(){ doTeamAction(action,teamId,memberId); }); else doTeamAction(action,teamId,memberId);
 }
 function doTeamAction(action,teamId,memberId){
@@ -283,6 +306,45 @@ function doTeamAction(action,teamId,memberId){
   }).catch(function(){ msg('Erreur réseau.',true); });
 }
 function wipe(){ teamAction('wipeTeams',null,null); }
+// ── Groupes (TD) ──
+function setupGroups(){
+  var n=+document.getElementById('g-tds').value||4, k=+document.getElementById('g-grp').value||5, c=+document.getElementById('g-cap').value||6;
+  groupAction('setupGroups',{tds:n,groups:k,capacity:c});
+}
+function groupAction(action,extra){
+  var body={action:action}; for(var k in (extra||{})) body[k]=extra[k];
+  if(action==='addTD'){ body.groups=+document.getElementById('g-grp').value||5; body.capacity=+document.getElementById('g-cap').value||6; }
+  var q={emptyGroups:'Vider tous les groupes ? Les groupes restent, mais leurs élèves, suppositions et messages sont effacés.',
+    addTD:'Ajouter un nouveau TD avec '+body.groups+' groupes de '+body.capacity+' places ?'}[action];
+  var go=function(){
+    msg('Envoi en cours...',false);
+    api(body).then(function(o){
+      if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; }
+      msg('Fait.',false); apply(o.j);
+    }).catch(function(){ msg('Erreur réseau.',true); });
+  };
+  if(q) ask(q,go); else go();
+}
+var moving=null;
+function openMove(memberId){
+  var teams=sortedTeams(), from=teams.filter(function(t){ return t.members.some(function(m){return m.id===memberId;}); })[0];
+  if(!from) return;
+  var m=from.members.filter(function(x){return x.id===memberId;})[0];
+  moving=memberId;
+  document.getElementById('mv-t').textContent='Déplacer '+m.name+' ('+from.name+') vers :';
+  var html='', lastTd;
+  teams.forEach(function(t){
+    var td=t.td||'Autres';
+    if(td!==lastTd){ html+=(lastTd!==undefined?'</div>':'')+'<div class="mv-td">'+esc(td)+'</div><div class="mv-g">'; lastTd=td; }
+    var full=t.members.length>=cap(t), same=t.id===from.id;
+    html+='<button class="'+(same?'b-reset':'b-wait')+' sm" '+(full||same?'disabled':'')+' onclick="doMove(\''+t.id+'\')">'+esc(t.td?t.name.replace(t.td+' · ',''):t.name)+' ('+t.members.length+'/'+cap(t)+')</button>';
+  });
+  document.getElementById('mv-l').innerHTML=html+(lastTd!==undefined?'</div>':'');
+  document.getElementById('mv').classList.add('show');
+}
+function closeMove(){ moving=null; document.getElementById('mv').classList.remove('show'); }
+function doMove(toId){ var id=moving; closeMove(); if(id) groupAction('moveMember',{memberId:id,toTeamId:toId}); }
+document.getElementById('mv').onclick=function(e){ if(e.target.id==='mv') closeMove(); };
 
 var filled=false;
 // ── Messages ──
@@ -292,7 +354,7 @@ function setSeen(id,t){ var m=seenMap(); m[id]=Math.max(m[id]||0,t); try{ localS
 function teamMsgs(t){ return (t.messages||[]).concat(((st&&st.broadcasts)||[]).map(function(b){ return {id:b.id,from:'anim',all:true,text:b.text,at:b.at}; })).sort(function(a,b){return a.at-b.at;}); }
 function beep(){ try{ var c=new (window.AudioContext||window.webkitAudioContext)(), o=c.createOscillator(), g=c.createGain(); o.frequency.value=880; g.gain.value=0.05; o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+0.15); }catch(e){} }
 function renderChat(){
-  var teams=Object.values(st.teams||{}).sort(function(a,b){return a.createdAt-b.createdAt;});
+  var teams=sortedTeams();
   var seen=seenMap(), totalUnread=0;
   // nouveaux messages d'equipe depuis le dernier passage -> son
   var ids={}; teams.forEach(function(t){ (t.messages||[]).forEach(function(m){ if(m.from==='team') ids[m.id]=1; }); });
@@ -312,23 +374,23 @@ function renderChat(){
     chatListSig=sig;
     document.getElementById('chat-teams').innerHTML=rows.length?rows.map(function(r){
       return '<div class="ct'+(r.t.id===chatTeam?' on':'')+'" onclick="openChat(\''+r.t.id+'\')"><div style="min-width:0"><div class="ct-n">'+esc(r.t.name)+'</div><div class="ct-l">'+(r.last?esc((r.last.from==='team'?r.last.by+' : ':'Vous : ')+r.last.text):'Aucun message')+'</div></div>'+(r.unread?'<span class="ct-b">'+r.unread+'</span>':'')+'</div>';
-    }).join(''):'<div class="empty">Aucune équipe.</div>';
+    }).join(''):'<div class="empty">Aucun groupe.</div>';
   }
   var list=document.getElementById('chat-list');
   var t=chatTeam&&st.teams[chatTeam];
   var ms=t?teamMsgs(t):[];
   var tsig=chatTeam+JSON.stringify(ms);
   if(tsig===chatThreadSig) return; chatThreadSig=tsig;
-  if(!t){ list.innerHTML='<div class="empty" style="margin:auto">Sélectionnez une équipe.</div>'; return; }
+  if(!t){ list.innerHTML='<div class="empty" style="margin:auto">Sélectionnez un groupe.</div>'; return; }
   list.innerHTML=ms.length?ms.map(function(m){
-    return '<div class="cm '+(m.from==='anim'?'anim':'team')+(m.all?' all':'')+'"><span class="meta">'+(m.from==='anim'?(m.all?'Vous, à toutes les équipes':'Vous'):esc(m.by))+' · '+hhmm(m.at)+'</span>'+esc(m.text)+'</div>';
-  }).join(''):'<div class="empty" style="margin:auto">Aucun message avec cette équipe.</div>';
+    return '<div class="cm '+(m.from==='anim'?'anim':'team')+(m.all?' all':'')+'"><span class="meta">'+(m.from==='anim'?(m.all?'Vous, à tous les groupes':'Vous'):esc(m.by))+' · '+hhmm(m.at)+'</span>'+esc(m.text)+'</div>';
+  }).join(''):'<div class="empty" style="margin:auto">Aucun message avec ce groupe.</div>';
   list.scrollTop=list.scrollHeight;
 }
 function openChat(id){ chatTeam=id; chatListSig=''; chatThreadSig=''; renderChat(); document.getElementById('reply').focus(); }
 function reply(){
   var el=document.getElementById('reply'), text=el.value.trim();
-  if(!chatTeam){ msg('Sélectionnez d\'abord une équipe dans Messages.',true); return; }
+  if(!chatTeam){ msg('Sélectionnez d\'abord un groupe dans Messages.',true); return; }
   if(!text) return;
   msg('Envoi en cours...',false);
   api({action:'reply',teamId:chatTeam,text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; msg('Réponse envoyée.',false); apply(o.j); }).catch(function(){ msg('Erreur réseau.',true); });
@@ -336,9 +398,9 @@ function reply(){
 function relance(){
   var title=document.getElementById('al-title').value.trim(), text=document.getElementById('al-text').value.trim();
   if(!text){ msg('Écrivez le message de la relance.',true); return; }
-  ask('Envoyer cette relance à toutes les équipes ?\n\n'+title+' : '+text,function(){
+  ask('Envoyer cette relance à tous les groupes ?\n\n'+title+' : '+text,function(){
     msg('Envoi en cours...',false);
-    api({action:'alert',title:title,text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } msg('Relance envoyée à toutes les équipes.',false); apply(o.j); }).catch(function(){ msg('Erreur réseau.',true); });
+    api({action:'alert',title:title,text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } msg('Relance envoyée à tous les groupes.',false); apply(o.j); }).catch(function(){ msg('Erreur réseau.',true); });
   });
 }
 function toggleSolution(){
@@ -348,16 +410,16 @@ function toggleSolution(){
 }
 function broadcast(){
   var el=document.getElementById('bcast'), text=el.value.trim(); if(!text) return;
-  ask('Envoyer ce message à toutes les équipes ?\n\n'+text,function(){
+  ask('Envoyer ce message à tous les groupes ?\n\n'+text,function(){
   msg('Envoi en cours...',false);
-  api({action:'broadcast',text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; msg('Message envoyé à toutes les équipes.',false); apply(o.j); }).catch(function(){ msg('Erreur réseau.',true); });
+  api({action:'broadcast',text:text}).then(function(o){ if(!o.ok){ msg('Erreur : '+(o.j.error||'inconnue'),true); return; } el.value=''; msg('Message envoyé à tous les groupes.',false); apply(o.j); }).catch(function(){ msg('Erreur réseau.',true); });
   });
 }
 
 function apply(j){
   if(!j || !j.session) return;
   if(st && (j.rev||0) < (st.rev||0)) return;   // réponse plus ancienne que ce qui est affiché : ignorée
-  if(!filled){ filled=true; if(j.session.durationMin) document.getElementById('dur').value=j.session.durationMin; }
+  if(!filled){ filled=true; if(j.session.durationMin) document.getElementById('dur').value=j.session.durationMin; if(!Object.keys(j.teams||{}).length) msg('Aucun groupe : cliquez sur « Créer les groupes » (carte Groupes).',false); }
   st=j; if(j.serverNow) offset=j.serverNow-Date.now();
   renderState(); renderTeams(); renderChat();
 }
@@ -374,41 +436,53 @@ function renderState(){
   if(kind==='countdown'){ clock.textContent=fmt(s.endAt-now); hint.textContent='avant ouverture'; }
   else if(kind==='open'){ clock.textContent=fmt(now-s.endAt); hint.textContent='depuis l\'ouverture'; }
   else { clock.textContent=''; hint.textContent=''; }
-  var box=document.getElementById('mission'), mc=document.getElementById('mclock'), ms=document.getElementById('mstate');
-  if(s.missionEndAt || s.missionLeftMs!=null){
-    box.classList.remove('hidden');
-    if(s.missionEndAt){
-      var left=s.missionEndAt-Math.max(now, s.endAt||now);
-      mc.textContent=fmt(left);   // pendant le compte a rebours : duree complete, figee
-      ms.textContent=kind==='countdown'?'démarre à la fin du compte à rebours':(s.missionEndAt-now<=0?'temps écoulé (l\'exercice continue)':'en cours');
-    } else { mc.textContent=fmt(s.missionLeftMs); ms.textContent='en pause (exercice fermé)'; }
-  } else box.classList.add('hidden');
-  document.getElementById('b-open').innerHTML = s.status==='closed' ? '&#9654; Rouvrir (le minuteur reprend)' : '&#9654; Commencer maintenant';
+  document.getElementById('b-open').innerHTML = s.status==='closed' ? '&#9654; Rouvrir l\'exercice' : '&#9654; Commencer maintenant';
 }
+function cap(t){ return t.capacity||6; }
+function tdNum(t){ return t.td?(parseInt(String(t.td).replace(/\D/g,''),10)||0):999; }
+function sortedTeams(){ return Object.values((st&&st.teams)||{}).sort(function(a,b){ return tdNum(a)-tdNum(b)||(a.num||0)-(b.num||0)||a.createdAt-b.createdAt; }); }
 function renderTeams(){
-  var teams=Object.values(st.teams||{}).sort(function(a,b){return a.createdAt-b.createdAt;});
+  var teams=sortedTeams();
   var sig=JSON.stringify(teams); if(sig===lastTeamsSig) return; lastTeamsSig=sig;
-  var nbMembers=teams.reduce(function(n,t){return n+t.members.length;},0);
-  document.getElementById('tcount').textContent=teams.length+' équipe'+(teams.length>1?'s':'')+', '+nbMembers+' élève'+(nbMembers>1?'s':'');
+  var nbMembers=teams.reduce(function(n,t){return n+t.members.length;},0), places=teams.reduce(function(n,t){return n+cap(t);},0);
+  document.getElementById('tcount').textContent=teams.length+' groupe'+(teams.length>1?'s':'')+', '+nbMembers+' élève'+(nbMembers>1?'s':'')+' / '+places+' places';
   var box=document.getElementById('teams');
-  if(!teams.length){ box.innerHTML='<div class="empty">Aucune équipe inscrite pour le moment.</div>'; return; }
-  box.innerHTML=teams.map(function(t){
+  if(!teams.length){ box.innerHTML='<div class="empty" style="margin-top:14px">Aucun groupe. Réglez TD, groupes par TD et places, puis cliquez sur « Créer les groupes ».</div>'; }
+  else {
+    var byTd={}, order=[];
+    teams.forEach(function(t){ var k=t.td||'Autres'; if(!byTd[k]){ byTd[k]=[]; order.push(k); } byTd[k].push(t); });
+    box.innerHTML=order.map(function(td){
+      var gs=byTd[td], n=gs.reduce(function(a,t){return a+t.members.length;},0), p=gs.reduce(function(a,t){return a+cap(t);},0);
+      return '<div class="tdsec"><div class="tdh"><b>'+esc(td)+'</b><span>'+n+' / '+p+' élèves</span>'+
+        (td!=='Autres'?'<div class="r"><button class="b-wait sm" onclick="groupAction(\'addGroup\',{td:\''+td+'\'})">+ Ajouter un groupe</button></div>':'')+'</div>'+
+        '<div class="ggrid">'+gs.map(function(t){
+          var full=t.members.length>=cap(t);
+          return '<div class="g'+(full?' full':'')+'"><div class="g-h"><span class="g-n">'+esc(t.td?t.name.replace(t.td+' · ',''):t.name)+'</span><span class="g-c">'+t.members.length+' / '+cap(t)+'</span></div>'+
+            '<div class="g-m">'+(t.members.map(function(m){
+              return '<div class="gm"><span title="'+esc(m.name)+'">'+esc(m.name)+'</span><button title="Déplacer vers un autre groupe" onclick="openMove(\''+m.id+'\')">&#8644;</button><button class="x" title="Retirer du groupe" onclick="teamAction(\'removeMember\',\''+t.id+'\',\''+m.id+'\')">&times;</button></div>';
+            }).join('')||'<span class="empty" style="font-size:12px;padding:2px 0">Personne</span>')+'</div>'+
+            '<div class="g-a"><button class="b-reset" onclick="groupAction(\'setCapacity\',{teamId:\''+t.id+'\',delta:-1})" '+(cap(t)<=Math.max(1,t.members.length)?'disabled':'')+'>- place</button>'+
+            '<button class="b-reset" onclick="groupAction(\'setCapacity\',{teamId:\''+t.id+'\',delta:1})" '+(cap(t)>=12?'disabled':'')+'>+ place</button>'+
+            '<button class="b-close" style="margin-left:auto" onclick="teamAction(\'deleteTeam\',\''+t.id+'\')">Supprimer</button></div></div>';
+        }).join('')+'</div></div>';
+    }).join('');
+  }
+  // Suppositions : seulement les groupes qui ont envoyé au moins une tentative
+  var withAtt=teams.filter(function(t){ return t.attempts.length; });
+  document.getElementById('scount').textContent=withAtt.length?withAtt.length+' groupe'+(withAtt.length>1?'s':''):'';
+  document.getElementById('sups').innerHTML=withAtt.length?withAtt.map(function(t){
     var n=t.attempts.length;
-    var best=n?Math.max.apply(null,t.attempts.map(function(a){return a.score;})):null;
+    var best=Math.max.apply(null,t.attempts.map(function(a){return a.score;}));
     var status=t.success?'<span class="tag ok">Réussi</span>':(n>=5?'<span class="tag ko">Tentatives épuisées</span>':'');
     var atts=t.attempts.slice().reverse().map(function(a){
       return '<div class="att"><div class="att-h"><b>Tentative '+a.n+'</b><span>par '+esc(a.by)+' à '+hhmm(a.at)+'</span><span class="tag'+(a.score===5?' ok':'')+'">'+a.score+' / 5</span><span>'+esc(a.tier)+'</span></div>'+
         '<div class="att-g">'+Object.keys(SUP_LABELS).map(function(k){ return '<div class="k">'+SUP_LABELS[k]+'</div><div class="v">'+esc(a.answers[k])+'</div>'; }).join('')+'</div></div>';
     }).join('');
     return '<div class="team"><div class="team-h"><span class="team-n">'+esc(t.name)+'</span>'+
-      '<span class="tag">'+t.members.length+' / 8</span><span class="tag">'+n+' / 5 tentatives</span>'+(best!==null?'<span class="tag">meilleur : '+best+' / 5</span>':'')+status+
-      '<div class="team-a"><button class="b-reset sm" onclick="teamAction(\'resetAttempts\',\''+t.id+'\')">Remettre les tentatives à zéro</button>'+
-      '<button class="b-close sm" onclick="teamAction(\'deleteTeam\',\''+t.id+'\')">Supprimer</button></div></div>'+
-      '<div class="members">'+(t.members.map(function(m){
-        return '<span class="mem">'+esc(m.name)+'<button title="Retirer de l\'équipe" onclick="teamAction(\'removeMember\',\''+t.id+'\',\''+m.id+'\')">&times;</button></span>';
-      }).join('')||'<span class="empty">Aucun membre</span>')+'</div>'+
-      (atts?'<div class="atts">'+atts+'</div>':'')+'</div>';
-  }).join('');
+      '<span class="tag">'+n+' / 5 tentatives</span><span class="tag">meilleur : '+best+' / 5</span>'+status+
+      '<div class="team-a"><button class="b-reset sm" onclick="teamAction(\'resetAttempts\',\''+t.id+'\')">Remettre les tentatives à zéro</button></div></div>'+
+      '<div class="atts">'+atts+'</div></div>';
+  }).join(''):'<div class="empty">Aucune supposition envoyée pour le moment.</div>';
 }
 function poll(){
   api({action:'state',minRev:(st&&st.rev)||0}).then(function(o){ if(o.ok) apply(o.j); }).catch(function(){})

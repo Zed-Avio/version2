@@ -1,23 +1,21 @@
 // API equipes (eleves).
-// POST /api/team {action:'join', memberName, teamName | teamId}  -> rejoindre ou creer une equipe (8 places max)
+// POST /api/team {action:'join', memberName, teamId}  -> rejoindre un groupe cree par l'animateur (places reglees par groupe)
 // POST /api/team {action:'leave', teamId, memberId}
 // POST /api/team {action:'submit', teamId, memberId, answers}     -> une supposition (5 tentatives par equipe)
 // POST /api/team {action:'message', teamId, memberId, text}       -> message a l'animateur
 const store = require('./_store');
 const { grade, tier, parseAnswers, FIELDS, MAX_ATTEMPTS, norm } = require('./_grade');
-const { parseBody, clean, cleanText, newId, isOpen, publicView, pushMessage, MAX_MEMBERS, MAX_TEAMS } = require('./_util');
+const { parseBody, clean, cleanText, newId, isOpen, publicView, pushMessage, capacity, findMember } = require('./_util');
 
 const ERR = {
-  name: 'Indiquez votre prénom.',
-  teamName: 'Indiquez un nom d\'équipe (2 caractères minimum).',
+  name: 'Indiquez votre nom et prénom.',
   closed: 'Les inscriptions ne sont pas ouvertes. Attendez que l\'enseignant ouvre la salle.',
   notOpen: 'L\'exercice est fermé pour le moment.',
-  full: 'Cette équipe est complète (8 personnes maximum).',
-  tooMany: 'Nombre maximum d\'équipes atteint.',
-  notMember: 'Vous ne faites plus partie de cette équipe. Rejoignez une équipe depuis la salle d\'attente.',
+  full: 'Ce groupe est complet. Choisissez-en un autre ou demandez à l\'enseignant.',
+  notMember: 'Vous ne faites plus partie d\'un groupe. Rejoignez votre groupe depuis la salle d\'attente.',
   locked: 'Votre équipe a utilisé toutes ses tentatives.',
   incomplete: 'Répondez aux 5 questions avant d\'envoyer (au moins un levier pour la question 5).',
-  noTeam: 'Équipe introuvable.',
+  noTeam: 'Groupe introuvable. Choisissez votre groupe dans la liste.',
   emptyMsg: 'Message vide.',
   tooFast: 'Doucement : attendez quelques secondes entre deux messages.',
 };
@@ -32,33 +30,22 @@ module.exports = async (req, res) => {
       const s = st.session;
       if (b.action === 'join') {
         if (!['waiting', 'running'].includes(s.status)) return { error: 'closed' };
-        const memberName = clean(b.memberName, 30);
+        const memberName = clean(b.memberName, 40);
         if (!memberName) return { error: 'name' };
-        let t = b.teamId ? st.teams[clean(b.teamId, 40)] : null;
-        if (b.teamId && !t) return { error: 'noTeam' };
-        if (!t) {
-          const teamName = clean(b.teamName, 40);
-          if (teamName.length < 2) return { error: 'teamName' };
-          t = Object.values(st.teams).find(x => norm(x.name) === norm(teamName));
-          if (!t) {
-            if (Object.keys(st.teams).length >= MAX_TEAMS) return { error: 'tooMany' };
-            t = { id: newId(), name: teamName, createdAt: Date.now(), members: [], attempts: [], success: false };
-            st.teams[t.id] = t;
-          }
-        }
-        if (t.members.length >= MAX_MEMBERS) return { error: 'full' };
+        // Les groupes sont crees uniquement par l'animateur : ici on ne fait que rejoindre.
+        const t = st.teams[clean(b.teamId, 40)];
+        if (!t) return { error: 'noTeam' };
+        if (t.members.length >= capacity(t)) return { error: 'full' };
         const m = { id: newId(), name: memberName, at: Date.now() };
         t.members.push(m);
         return { ok: true, teamId: t.id, teamName: t.name, memberId: m.id, memberName };
       }
 
-      const t = st.teams[clean(b.teamId, 40)];
-      const m = t && t.members.find(x => x.id === clean(b.memberId, 40));
+      const { t, m } = findMember(st, clean(b.teamId, 40), clean(b.memberId, 40));
       if (!t || !m) return { error: 'notMember' };
 
       if (b.action === 'leave') {
         t.members = t.members.filter(x => x.id !== m.id);
-        if (!t.members.length && !t.attempts.length) delete st.teams[t.id];
         return { ok: true };
       }
 

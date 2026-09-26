@@ -962,7 +962,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
     <div class="topbar-op">Operation Silent Gateway</div>
     <div class="topbar-right">
       <div class="team-chip" id="team-chip" style="display:none"></div>
-      <div class="topbar-countdown" id="session-countdown-wrap" title="Temps restant de la mission">
+      <div class="topbar-countdown" id="session-countdown-wrap" title="Temps restant de la mission" style="display:none">
         <span class="topbar-countdown-label">MISSION</span>
         <span class="topbar-countdown-val" id="session-countdown">--:--:--</span>
       </div>
@@ -2355,8 +2355,10 @@ function initSessionTimer(){
 // Minuteur de mission piloté par la console animateur (/api/session) : même temps sur tous les postes.
 // missionEndAt = exercice en cours ; missionLeftMs = exercice fermé (minuteur en pause).
 let serverMission=null, serverOffset=0, missionTimeUpShown=false, missionTicker=null;
+// Exercice sans limite de temps (seul l'animateur le ferme) : le minuteur MISSION est masqué et n'est plus piloté.
+const MISSION_TIMER=false;
 function applyServerMission(st){
-  if(!st || (st.missionEndAt==null && st.missionLeftMs==null)) return;
+  if(!MISSION_TIMER || !st || (st.missionEndAt==null && st.missionLeftMs==null)) return;
   if(st.serverNow) serverOffset=st.serverNow-Date.now();
   serverMission={endAt:st.missionEndAt, leftMs:st.missionLeftMs};
   if(sessionRunning){ clearInterval(sessionInterval); sessionRunning=false; }
@@ -3293,14 +3295,22 @@ async function accessGate(){
   apiOnline=true;
   myTeam=loadMyTeam();
   if(!st.open || !myTeam || !st.me){ location.replace('/salle'); return false; }
+  followMove(st.me);
   teamView=st.me;
   window.__elecarmSession=st;
   setTimeout(()=>showNewAlerts(st.alerts),1500);
   return true;
 }
+// L'animateur peut déplacer un élève dans un autre groupe : le poste suit son nouveau groupe.
+function followMove(me){
+  if(!me || !myTeam || me.team.id===myTeam.teamId) return;
+  myTeam.teamId=me.team.id; myTeam.teamName=me.team.name;
+  try{ localStorage.setItem('elecarm_team',JSON.stringify(myTeam)); }catch(e){}
+  toast('!','Changement de groupe','L\'animateur vous a placé dans '+me.team.name+'.');
+}
 function setTeamChip(){
   const c=document.getElementById('team-chip'); if(!c) return;
-  if(teamView){ c.textContent='Équipe '+teamView.team.name; c.title=teamView.team.members.join(', '); c.style.display='block'; } else c.style.display='none';
+  if(teamView){ c.textContent=teamView.team.name; c.title=teamView.team.members.join(', '); c.style.display='block'; } else c.style.display='none';
 }
 // Suivi en cours de partie : fermeture par l'animateur, tentatives et messages des autres postes de l'équipe.
 // Toutes les 20 s, toutes les 6 s quand la discussion est ouverte.
@@ -3327,7 +3337,7 @@ function startLiveSync(){
       } else {
         meGone=0;
         ov.classList.remove('show');
-        if(st.me){ const changed=JSON.stringify(st.me)!==JSON.stringify(teamView); teamView=st.me; if(changed){ setTeamChip(); renderVerdict(); renderChat(true); } }
+        if(st.me){ followMove(st.me); const changed=JSON.stringify(st.me)!==JSON.stringify(teamView); teamView=st.me; if(changed){ setTeamChip(); renderVerdict(); renderChat(true); } }
       }
     }
     clearTimeout(liveTimer); liveTimer=setTimeout(tick,chatOpen?6000:20000);
