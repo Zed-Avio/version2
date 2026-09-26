@@ -105,7 +105,7 @@ module.exports = async (req, res) => {
       }
       else if (action === 'setupGroups') {
         // Cree les groupes manquants (TD1..TDn, Groupe 1..k) ; les groupes existants ne sont pas touches.
-        const nTd = clampInt(body.tds, 1, 8, 4), nGr = clampInt(body.groups, 1, 10, 5), cap = clampInt(body.capacity, 1, MAX_CAPACITY, MAX_MEMBERS);
+        const nTd = clampInt(body.tds, 1, 8, 4), nGr = clampInt(body.groups, 1, 10, 4), cap = clampInt(body.capacity, 1, MAX_CAPACITY, MAX_MEMBERS);
         for (let n = 1; n <= nTd; n++) for (let k = 1; k <= nGr; k++) {
           if (Object.values(st.teams).some(t => t.td === 'TD' + n && t.num === k)) continue;
           if (Object.keys(st.teams).length >= MAX_TEAMS) return { error: 'Nombre maximum de groupes atteint (' + MAX_TEAMS + ').' };
@@ -114,7 +114,7 @@ module.exports = async (req, res) => {
       }
       else if (action === 'addTD') {
         const n = Math.max(0, ...Object.values(st.teams).map(t => tdNum(t.td))) + 1;
-        const nGr = clampInt(body.groups, 1, 10, 5), cap = clampInt(body.capacity, 1, MAX_CAPACITY, MAX_MEMBERS);
+        const nGr = clampInt(body.groups, 1, 10, 4), cap = clampInt(body.capacity, 1, MAX_CAPACITY, MAX_MEMBERS);
         if (Object.keys(st.teams).length + nGr > MAX_TEAMS) return { error: 'Nombre maximum de groupes atteint (' + MAX_TEAMS + ').' };
         for (let k = 1; k <= nGr; k++) makeGroup(st, n, k, cap);
       }

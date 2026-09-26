@@ -168,7 +168,7 @@ button.big{font-size:15px;padding:13px 22px}
         <div><label>Compte à rebours avant ouverture (minutes)</label><input type="number" id="dur" value="10" min="1" max="600"></div>
       </div>
       <div class="btns">
-        <button class="b-go big" onclick="send('open')" id="b-open">&#9654; Commencer maintenant</button>
+        <button class="b-go big" onclick="send('open')" id="b-open">&#9654; Ouvrir l'exercice</button>
         <button class="b-go" onclick="send('start')">Lancer avec compte à rebours</button>
         <button class="b-wait" onclick="send('waiting')">Ouvrir la salle d'attente</button>
         <button class="b-close" onclick="send('close')">Fermer (pause)</button>
@@ -176,7 +176,7 @@ button.big{font-size:15px;padding:13px 22px}
       </div>
       <div id="msg" class="msg"></div>
       <div class="mini">
-        <b>Commencer maintenant</b> : l'exercice s'ouvre tout de suite ; les élèves déjà dans un groupe entrent directement. <b>Compte à rebours</b> : décompte synchronisé, l'exercice s'ouvre à zéro. <b>Salle d'attente</b> : les élèves rejoignent leur groupe avant de commencer. <b>Fermer</b> : bloque l'exercice sur tous les postes (sans perte de progression) ; « Commencer maintenant » le rouvre. <b>Veille</b> : site fermé. L'exercice n'a pas de limite de temps : il reste ouvert jusqu'à ce que vous le fermiez. Un élève doit avoir rejoint un groupe pour entrer dans le jeu.
+        <b>Ouvrir l'exercice</b> : le jeu se lance tout de suite ; les élèves sur <code>/salle</code> qui ont rejoint leur groupe entrent directement, les autres entrent dès qu'ils rejoignent le leur. <b>Compte à rebours</b> : décompte synchronisé, l'exercice s'ouvre à zéro. <b>Salle d'attente</b> : les élèves rejoignent leur groupe avant de commencer. <b>Fermer</b> : bloque l'exercice sur tous les postes (sans perte de progression) ; « Ouvrir l'exercice » le rouvre. <b>Veille</b> : site fermé. L'exercice n'a pas de limite de temps : il reste ouvert jusqu'à ce que vous le fermiez. Un élève doit avoir rejoint un groupe pour entrer dans le jeu.
       </div>
     </div>
 
@@ -184,12 +184,12 @@ button.big{font-size:15px;padding:13px 22px}
       <h2>Groupes <span class="r" id="tcount"></span></h2>
       <div class="gsetup">
         <div><label>TD</label><input type="number" id="g-tds" value="4" min="1" max="8"></div>
-        <div><label>Groupes par TD</label><input type="number" id="g-grp" value="5" min="1" max="10"></div>
+        <div><label>Groupes par TD</label><input type="number" id="g-grp" value="4" min="1" max="10"></div>
         <div><label>Places</label><input type="number" id="g-cap" value="6" min="1" max="12"></div>
         <button class="b-go" onclick="setupGroups()">Créer les groupes</button>
         <button class="b-wait" onclick="groupAction('addTD')">+ Ajouter un TD</button>
       </div>
-      <div class="mini">« Créer les groupes » ajoute seulement les groupes manquants (TD1 à TD4, Groupe 1 à 5 par défaut) : les groupes existants et leurs élèves ne sont pas touchés. Sur chaque groupe : <b>+ place</b> / <b>- place</b>, <b>&#8644;</b> pour déplacer un élève vers un autre groupe (son poste suit tout seul), <b>&times;</b> pour le retirer (il rejoint à nouveau depuis <code>/salle</code>).</div>
+      <div class="mini">« Créer les groupes » ajoute seulement les groupes manquants (TD1 à TD4, Groupe 1 à 4 par défaut) : les groupes existants et leurs élèves ne sont pas touchés. Sur chaque groupe : <b>+ place</b> / <b>- place</b>, <b>&#8644;</b> pour déplacer un élève vers un autre groupe (son poste suit tout seul), <b>&times;</b> pour le retirer (il rejoint à nouveau depuis <code>/salle</code>).</div>
       <div id="teams"></div>
       <div class="btns">
         <button class="b-reset sm" onclick="groupAction('emptyGroups')">Vider les groupes (nouvelle séance)</button>
@@ -308,12 +308,12 @@ function doTeamAction(action,teamId,memberId){
 function wipe(){ teamAction('wipeTeams',null,null); }
 // ── Groupes (TD) ──
 function setupGroups(){
-  var n=+document.getElementById('g-tds').value||4, k=+document.getElementById('g-grp').value||5, c=+document.getElementById('g-cap').value||6;
+  var n=+document.getElementById('g-tds').value||4, k=+document.getElementById('g-grp').value||4, c=+document.getElementById('g-cap').value||6;
   groupAction('setupGroups',{tds:n,groups:k,capacity:c});
 }
 function groupAction(action,extra){
   var body={action:action}; for(var k in (extra||{})) body[k]=extra[k];
-  if(action==='addTD'){ body.groups=+document.getElementById('g-grp').value||5; body.capacity=+document.getElementById('g-cap').value||6; }
+  if(action==='addTD'){ body.groups=+document.getElementById('g-grp').value||4; body.capacity=+document.getElementById('g-cap').value||6; }
   var q={emptyGroups:'Vider tous les groupes ? Les groupes restent, mais leurs élèves, suppositions et messages sont effacés.',
     addTD:'Ajouter un nouveau TD avec '+body.groups+' groupes de '+body.capacity+' places ?'}[action];
   var go=function(){
@@ -436,7 +436,7 @@ function renderState(){
   if(kind==='countdown'){ clock.textContent=fmt(s.endAt-now); hint.textContent='avant ouverture'; }
   else if(kind==='open'){ clock.textContent=fmt(now-s.endAt); hint.textContent='depuis l\'ouverture'; }
   else { clock.textContent=''; hint.textContent=''; }
-  document.getElementById('b-open').innerHTML = s.status==='closed' ? '&#9654; Rouvrir l\'exercice' : '&#9654; Commencer maintenant';
+  document.getElementById('b-open').innerHTML = s.status==='closed' ? '&#9654; Rouvrir l\'exercice' : '&#9654; Ouvrir l\'exercice';
 }
 function cap(t){ return t.capacity||6; }
 function tdNum(t){ return t.td?(parseInt(String(t.td).replace(/\D/g,''),10)||0):999; }

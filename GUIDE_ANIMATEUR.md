@@ -11,7 +11,7 @@
 ## Déroulé d'une séance
 
 1. **Avant l'arrivée des élèves** : ouvrez `/animateur`, entrez le mot de passe.
-   - Première fois : carte **Groupes**, laissez 4 TD, 5 groupes par TD, 6 places, puis **Créer les groupes** (TD1 à TD4, Groupe 1 à 5).
+   - Première fois : carte **Groupes**, laissez 4 TD, 4 groupes par TD, 6 places, puis **Créer les groupes** (TD1 à TD4, Groupe 1 à 4).
    - Séances suivantes : **Vider les groupes (nouvelle séance)** garde les groupes et efface élèves, suppositions et messages.
 2. **Ouvrir la salle d'attente.** Donnez le lien `/salle` aux élèves.
 3. **Chaque élève** appuie sur son TD, puis sur son groupe, tape son nom et prénom et valide. Il ne peut rien créer. Un groupe complet est grisé. Vous voyez les noms arriver en direct dans la console.
@@ -20,7 +20,7 @@
    - **⇄** à côté d'un élève : le déplacer dans un autre groupe (son poste suit tout seul, sans rien perdre) ;
    - **×** : le retirer (il rejoint à nouveau depuis `/salle`) ;
    - **+ Ajouter un groupe** dans un TD, **+ Ajouter un TD**, **Supprimer** un groupe.
-5. **Lancez** : **Commencer maintenant** (ouverture immédiate) ou **Lancer avec compte à rebours**. Un élève doit avoir rejoint un groupe pour entrer dans le jeu.
+5. **Lancez** : **Ouvrir l'exercice** (le jeu se lance tout de suite pour tous les élèves sur `/salle`) ou **Lancer avec compte à rebours**. Un élève doit avoir rejoint un groupe pour entrer dans le jeu.
 6. **Pendant l'exercice** : messages avec les groupes, **Relance**, suivi des suppositions. **Fermer (pause)** bloque l'exercice sur tous les postes, **Rouvrir** le relance là où il en était.
 7. **Il n'y a pas de limite de temps** : l'exercice reste ouvert jusqu'à ce que vous le fermiez.
 8. **Fin de séance** : **Fermer (pause)** ou **Mettre en veille**.
