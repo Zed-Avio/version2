@@ -1,6 +1,6 @@
 // Suppositions : questions a choix, corrigees cote serveur (la cle n'est jamais envoyee au navigateur).
 // Chaque question vaut 1 point. Les distracteurs viennent tous du scenario (fausses pistes reelles).
-// Avec 5 tentatives par equipe et un retour global (jamais question par question), essayer
+// Avec 8 tentatives par equipe et un retour global (jamais question par question), essayer
 // toutes les combinaisons est impossible.
 
 function norm(s) {
@@ -54,7 +54,7 @@ const QUESTIONS = [
 const KEY = { coupable: 'julien', vecteur: 'recruteur', ip: '185.220.101.47', cause: 'code', vice: ['especes', 'vanite'] };
 
 const FIELDS = QUESTIONS.map(q => q.id);
-const MAX_ATTEMPTS = 5;
+const MAX_ATTEMPTS = 8;
 
 // Questions envoyees au navigateur (sans la cle).
 function publicQuestions() {

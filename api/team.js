@@ -1,7 +1,7 @@
 // API equipes (eleves).
 // POST /api/team {action:'join', memberName, teamId}  -> rejoindre un groupe cree par l'animateur (places reglees par groupe)
 // POST /api/team {action:'leave', teamId, memberId}
-// POST /api/team {action:'submit', teamId, memberId, answers}     -> une supposition (5 tentatives par equipe)
+// POST /api/team {action:'submit', teamId, memberId, answers}     -> une supposition (8 tentatives par equipe)
 // POST /api/team {action:'message', teamId, memberId, text}       -> message a l'animateur
 const store = require('./_store');
 const { grade, tier, parseAnswers, FIELDS, MAX_ATTEMPTS, norm } = require('./_grade');

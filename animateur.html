@@ -473,13 +473,13 @@ function renderTeams(){
   document.getElementById('sups').innerHTML=withAtt.length?withAtt.map(function(t){
     var n=t.attempts.length;
     var best=Math.max.apply(null,t.attempts.map(function(a){return a.score;}));
-    var status=t.success?'<span class="tag ok">Réussi</span>':(n>=5?'<span class="tag ko">Tentatives épuisées</span>':'');
+    var status=t.success?'<span class="tag ok">Réussi</span>':(n>=8?'<span class="tag ko">Tentatives épuisées</span>':'');
     var atts=t.attempts.slice().reverse().map(function(a){
       return '<div class="att"><div class="att-h"><b>Tentative '+a.n+'</b><span>par '+esc(a.by)+' à '+hhmm(a.at)+'</span><span class="tag'+(a.score===5?' ok':'')+'">'+a.score+' / 5</span><span>'+esc(a.tier)+'</span></div>'+
         '<div class="att-g">'+Object.keys(SUP_LABELS).map(function(k){ return '<div class="k">'+SUP_LABELS[k]+'</div><div class="v">'+esc(a.answers[k])+'</div>'; }).join('')+'</div></div>';
     }).join('');
     return '<div class="team"><div class="team-h"><span class="team-n">'+esc(t.name)+'</span>'+
-      '<span class="tag">'+n+' / 5 tentatives</span><span class="tag">meilleur : '+best+' / 5</span>'+status+
+      '<span class="tag">'+n+' / 8 tentatives</span><span class="tag">meilleur : '+best+' / 5</span>'+status+
       '<div class="team-a"><button class="b-reset sm" onclick="teamAction(\'resetAttempts\',\''+t.id+'\')">Remettre les tentatives à zéro</button></div></div>'+
       '<div class="atts">'+atts+'</div></div>';
   }).join(''):'<div class="empty">Aucune supposition envoyée pour le moment.</div>';

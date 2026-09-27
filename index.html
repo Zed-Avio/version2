@@ -1407,7 +1407,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
           <div class="enig-scroll">
             <div class="enig-section">
               <div class="enig-section-title">Vos suppositions</div>
-              <div style="font-size:12px;color:var(--tx3);line-height:1.7;margin-bottom:14px">Choisissez vos réponses en équipe, à partir de ce que vous avez trouvé dans Mails, Enquête, Journaux / Logs, Programmation, Documents, Boîtier BX et OSINT. Attention, toutes les propositions viennent du dossier : certaines sont de fausses pistes. L'équipe dispose de <b style="color:#fff">5 tentatives au total</b>, partagées entre tous ses membres et tous ses postes : mettez-vous d'accord avant d'envoyer.</div>
+              <div style="font-size:12px;color:var(--tx3);line-height:1.7;margin-bottom:14px">Choisissez vos réponses en équipe, à partir de ce que vous avez trouvé dans Mails, Enquête, Journaux / Logs, Programmation, Documents, Boîtier BX et OSINT. Attention, toutes les propositions viennent du dossier : certaines sont de fausses pistes. L'équipe dispose de <b style="color:#fff">8 tentatives au total</b>, partagées entre tous ses membres et tous ses postes : mettez-vous d'accord avant d'envoyer.</div>
               <div class="sup-team" id="sup-team">Connexion au serveur...</div>
               <div id="sup-questions"></div>
               <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:6px">
@@ -3548,7 +3548,7 @@ function ask(text, then){
   box.onclick=function(e){ if(e.target===box) close(false); };
   document.addEventListener('keydown',key);
 }
-// ── Suppositions : envoyées au serveur, corrigées côté serveur, 5 tentatives par équipe ──
+// ── Suppositions : envoyées au serveur, corrigées côté serveur, 8 tentatives par équipe ──
 // Questions et propositions fournies par le serveur (la bonne réponse n'est jamais envoyée au navigateur).
 let SUP_QUESTIONS=[];
 const SUP_DRAFT_KEY='elecarm_sup_draft_v2';
@@ -3591,7 +3591,7 @@ function renderVerdict(){
     btn.disabled=true; btn.style.opacity='.5'; label.textContent=''; hist.innerHTML=''; return;
   }
   const used=v.attempts.length;
-  head.innerHTML=`Équipe <b>${escHtml(v.team.name)}</b> <span style="color:var(--tx3)">(${v.team.members.map(escHtml).join(', ')})</span><span class="sup-left">Tentatives : ${used} / 5</span>`;
+  head.innerHTML=`Équipe <b>${escHtml(v.team.name)}</b> <span style="color:var(--tx3)">(${v.team.members.map(escHtml).join(', ')})</span><span class="sup-left">Tentatives : ${used} / 8</span>`;
   label.textContent=v.locked?'':`Il reste ${v.left} tentative${v.left>1?'s':''} à l'équipe`;
   document.querySelectorAll('#sup-questions input').forEach(el=>{ el.disabled=v.locked; });
   btn.disabled=v.locked; btn.style.opacity=v.locked?'.5':'1'; btn.style.cursor=v.locked?'not-allowed':'pointer';
@@ -3614,7 +3614,7 @@ async function submitSupposition(){
   if(!teamView||teamView.locked||!myTeam) return;
   const answers=getSupChoices();
   if(!SUP_QUESTIONS.length || SUP_QUESTIONS.some(q=>q.multi?!answers[q.id].length:!answers[q.id])){ toast('!','Suppositions incomplètes','Répondez aux 5 questions avant d\'envoyer.'); return; }
-  if(!submitSupposition.ok){ ask('Envoyer cette supposition ? Elle compte pour une des 5 tentatives de toute l\'équipe.',()=>{ submitSupposition.ok=1; submitSupposition().finally(()=>{ submitSupposition.ok=0; }); }); return; }
+  if(!submitSupposition.ok){ ask('Envoyer cette supposition ? Elle compte pour une des 8 tentatives de toute l\'équipe.',()=>{ submitSupposition.ok=1; submitSupposition().finally(()=>{ submitSupposition.ok=0; }); }); return; }
   const btn=document.getElementById('sup-send'); btn.disabled=true; btn.style.opacity='.5'; btn.textContent='ENVOI EN COURS...';
   try{
     const r=await fetch('/api/team',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -3667,7 +3667,7 @@ const GUIDE_TOPICS={
 <b>2. Suivre la fuite (30 min)</b> : JOURNAUX / LOGS, le journal de la passerelle (DOCUMENTS) et BOÎTIER BX. D'où partent les données, vers où, et qu'est-ce qui a été touché ?
 <b>3. Trouver l'entrée (30 min)</b> : MAILS, pièces jointes, PROGRAMMATION. Comment l'attaquant est-il entré ? Qu'a-t-il modifié ?
 <b>4. Comprendre l'humain (30 min)</b> : ENQUÊTE, OSINT, boîtes des employés. Qui avait un mobile, un accès et a laissé des traces ?
-<b>5. Conclure (35 min)</b> : SUPPOSITIONS. Mettez-vous d'accord en groupe avant d'envoyer : vous n'avez que 5 tentatives.
+<b>5. Conclure (35 min)</b> : SUPPOSITIONS. Mettez-vous d'accord en groupe avant d'envoyer : vous avez 8 tentatives.
 Conseil : répartissez-vous les onglets, puis mettez en commun toutes les 20 minutes.`},
   stuck:{label:'Je suis bloqué',text:`Pas de panique, c'est normal à ce stade. Essayez ceci :
 • Partez de <b>la fin</b> : la fuite de données repérée le 19 mai. Quelle machine envoie, vers quelle adresse, depuis quand ?

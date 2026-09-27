@@ -40,7 +40,7 @@ Un réglage (fermeture, déplacement d'un élève) met jusqu'à 20 secondes à a
 ## Les suppositions (onglet SUPPOSITIONS)
 
 - 5 questions à choix (employé, vecteur d'entrée, adresse IP, faille organisationnelle, leviers VICE). Toutes les propositions viennent du dossier, dont plusieurs fausses pistes.
-- **5 tentatives par équipe**, partagées entre tous les postes de l'équipe. Recharger la page ou changer d'ordinateur ne remet rien à zéro.
+- **8 tentatives par équipe**, partagées entre tous les postes de l'équipe. Recharger la page ou changer d'ordinateur ne remet rien à zéro.
 - Retour donné aux élèves : « loin du compte », « vous vous rapprochez », « presque », « bonne voie ». Jamais le détail question par question.
 - La correction se fait sur le serveur : la bonne réponse n'est pas lisible dans le navigateur.
 - Dans la console, carte **Suppositions des groupes** : **Remettre les tentatives à zéro** pour un groupe.
