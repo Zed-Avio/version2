@@ -161,7 +161,11 @@ function tryLogin(){
   document.getElementById('lesson').classList.add('show');
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
-function showLesson(){ document.getElementById('lesson').classList.add('show'); }
+function showLesson(){
+  document.getElementById('lesson').classList.add('show');
+  // Le SIEM du jeu affichera cette visite (Journaux / Logs, « Votre poste »)
+  try{ var seen=JSON.parse(localStorage.getItem('elecarm_traps')||'{}'); if(!seen.portal){ seen.portal=Date.now(); localStorage.setItem('elecarm_traps',JSON.stringify(seen)); } }catch(e){}
+}
 setTimeout(showLesson, 2000);
 document.getElementById('user').addEventListener('input', showLesson);
 document.getElementById('pass').addEventListener('input', showLesson);

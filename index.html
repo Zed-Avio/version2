@@ -1145,7 +1145,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 <div class="wz-chart"><div class="wz-yax" id="wz-yax"></div><div class="wz-plot"><div id="wz-grid"></div><div class="wz-bars" id="wz-bars"></div></div></div>
                 <div class="wz-x" id="wz-x"></div>
               </div>
-              <div class="wz-help"><b>Comment lire ce journal.</b> Chaque ligne est un événement repéré automatiquement par la supervision, du plus ancien au plus récent.
+              <div class="wz-help"><b>Wazuh est un SIEM</b> : il rassemble les journaux de toutes les machines de l'entreprise (postes, serveurs, pare-feu, messagerie) et signale ce qui sort de l'ordinaire. Il voit tout, y compris votre poste d'auditeur.<br><b>Comment lire ce journal.</b> Chaque ligne est un événement repéré automatiquement par la supervision, du plus ancien au plus récent.
                 <div class="wz-legend"><span><span class="sev info">Normal</span> activité de routine</span><span><span class="sev vig">À vérifier</span> inhabituel, souvent explicable</span><span><span class="sev susp">Suspect</span> <span class="sev alert">Alerte</span> à creuser</span><span><span class="sev crit">Critique</span> grave… ou fausse alerte : recoupez avec les mails et les documents</span></div>
                 <b>Astuces :</b> cliquez sur une ligne pour une explication en clair. Cliquez sur le nom d'une machine pour n'afficher qu'elle. Tapez une adresse IP dans la recherche pour la suivre.</div>
               <div class="wz-card">
@@ -1464,6 +1464,42 @@ const MAILS = [
 <p>Le ticket figurait bien dans l'outil de suivi, mais il n'avait pas été recopié dans le registre de l'accueil : c'est pour cela que vous ne l'avez pas trouvé. Le technicien intervient uniquement sur le matériel, il n'a aucun accès au programme de la passerelle.</p>
 <p>Je rappelle à tous que chaque intervention doit être reportée au registre de l'accueil.</p>
 <p>Cordialement,<br>Laurent PERRIN<br>Services généraux - ELECARM SAS</p>`
+  },
+  {
+    id:'thierry_usb01',from:'Pierre THIERRY - Gardiennage',email:'p.thierry@elecarm.fr',
+    to:'audit-externe@elecarm.fr',subject:'Clé USB trouvée dans le local technique',
+    time:'07:10',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Bonjour,</p>
+<p>Pendant ma dernière ronde, j'ai trouvé une clé USB coincée sous la baie de télémaintenance, dans le local technique. Il y a juste écrit « DIAG » dessus.</p>
+<p>Vu ce qui se passe, je la dépose sur le bureau de l'équipe d'audit plutôt qu'aux objets trouvés. Je vous laisse voir.</p>
+<p>P. Thierry</p>
+<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)"><div style="font-size:11px;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Que faites-vous de la clé ?</div>
+<span onclick="showTrap('usb')" style="display:inline-block;margin:6px 8px 0 0;padding:9px 16px;border-radius:5px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid #5c1f1f;background:#2a0f0f;color:#fca5a5">La brancher sur mon poste</span><span onclick="showTrap('usb_ok')" style="display:inline-block;margin:6px 8px 0 0;padding:9px 16px;border-radius:5px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid #2a3a5c;background:#101a26;color:#9dc0f0">La remettre à la DSI sans la brancher</span></div>`
+  },
+  {
+    id:'compta01',from:'Sophie LEBRUN - Comptabilité',email:'s.lebrun@elecarm.fr',
+    to:'audit-externe@elecarm.fr',subject:'Question rapide : facture bloquée par l\'antivirus',
+    time:'10:48',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    body:`<p>Bonjour,</p>
+<p>Pendant que vous êtes là, une question rapide. Le 13 mai, j'ai reçu une relance de facture d'un fournisseur (« Relance_facture_0426.zip »). L'antivirus l'a bloquée tout de suite.</p>
+<p>Le fournisseur me relance, je dois payer avant la fin du mois, et la DSI est débordée avec la crise ce matin. Est-ce que je peux désactiver l'antivirus 5 minutes, juste le temps d'ouvrir la facture ?</p>
+<p>Merci,<br>Sophie LEBRUN<br>Comptabilité - ELECARM SAS</p>
+<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)"><div style="font-size:11px;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Votre réponse</div>
+<span onclick="showTrap('antivirus')" style="display:inline-block;margin:6px 8px 0 0;padding:9px 16px;border-radius:5px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid #5c1f1f;background:#2a0f0f;color:#fca5a5">Oui, désactivez-le 5 minutes</span><span onclick="showTrap('antivirus_ok')" style="display:inline-block;margin:6px 8px 0 0;padding:9px 16px;border-radius:5px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid #2a3a5c;background:#101a26;color:#9dc0f0">Non, ne l'ouvrez pas et transmettez-la à la DSI</span></div>`
+  },
+  {
+    id:'sigma_rapport01',from:'Sigma-Tech - Audit sécurité',email:'audit@sigma-tech.fr',
+    to:'j.moreau@elecarm.fr',subject:'Rapport du scan de vulnérabilités trimestriel - 12 mai 2026',
+    time:'16:30',date:'13 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Monsieur MOREAU,</p>
+<p>Voici la synthèse du scan réalisé hier, de 10h à 12h, depuis notre poste d'audit (10.42.1.30). 14 machines analysées, 3 points relevés :</p>
+<table class="data-table"><thead><tr><th>Machine</th><th>Constat</th><th>Niveau</th></tr></thead><tbody>
+<tr><td>BX-GATEWAY-07 (10.42.6.27)</td><td>Port 443 ouvert sur toutes les interfaces : service d'administration à distance non documenté. Ce port était fermé lors du scan précédent (février 2026). Merci de nous confirmer s'il s'agit d'un service connu.</td><td>Élevé</td></tr>
+<tr><td>IMPRIMANTE (10.42.3.50)</td><td>Firmware obsolète, mise à jour recommandée.</td><td>Moyen</td></tr>
+<tr><td>SRV-BACKUP (10.42.1.12)</td><td>Ancien protocole de partage de fichiers (SMBv1) encore actif.</td><td>Faible</td></tr>
+</tbody></table>
+<p>Nous restons disponibles pour un point de restitution.</p>
+<p>Cordialement,<br>L'équipe audit<br>Sigma-Tech</p>`
   },
   {
     id:'rousseau01',from:'Camille ROUSSEAU - Commercial',email:'c.rousseau@elecarm.fr',
@@ -2059,7 +2095,7 @@ const LOGS = [
    desc:'T. VASSEUR badge sa sortie à 16h40 (fin de poste habituelle : 17h00).',
    aide:'Un départ 20 minutes plus tôt que d\'habitude.'},
   {t:'13/05  15h47',agent:'WS-COMPTA',lv:'ALERTE',vis:true,mitre:['T1204'],
-   desc:'L\'antivirus détecte un virus dans la pièce jointe « Relance_facture_0426.zip ». Le fichier est bloqué et mis en quarantaine : il n\'a pas été ouvert.',
+   desc:'Boîte de S. LEBRUN : l\'antivirus détecte un virus dans la pièce jointe « Relance_facture_0426.zip ». Le fichier est bloqué et mis en quarantaine : il n\'a pas été ouvert.',
    aide:'Une alerte ne veut pas toujours dire que l\'attaque a réussi : ici, la protection a fonctionné.'},
   {t:'13/05  19h32',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
    desc:'6 connexions à distance (VPN) de salariés en télétravail entre 18h et 21h, toutes depuis la France.',
@@ -2240,12 +2276,12 @@ Suite à l'anomalie de mesure relevée par le Service Qualité sur le lot S42 (v
 };
 
 const EMP_MAILBOXES = [
-  {id:'julien',name:'Julien MOREAU',role:'DSI',email:'j.moreau@elecarm.fr',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',mails:['julien_norm01','julien_norm02','julien_norm03','julien_norm04','julien_norm05','julien_norm06','julien_norm07','julien_norm08','cse01','spearphish01']},
+  {id:'julien',name:'Julien MOREAU',role:'DSI',email:'j.moreau@elecarm.fr',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',mails:['julien_norm01','julien_norm02','julien_norm03','julien_norm04','julien_norm05','julien_norm06','julien_norm07','julien_norm08','cse01','spearphish01','sigma_rapport01']},
   {id:'marc',name:'Marc DURAND',role:'Technicien',email:'m.durand@elecarm.fr',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',mails:['marc_norm01','marc_norm02','marc_norm03','marc_norm04','paie01','cse01']},
   {id:'nathalie',name:'Nathalie BRUNET',role:'Qualité',email:'n.brunet@elecarm.fr',initials:'NB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['nathalie_norm01','nathalie_norm02','nathalie_norm03','nathalie_norm04','nathalie_norm05','nathalie_norm06','qualite_iso01','cse01']},
   {id:'karim',name:'Karim BENYOUCEF',role:'Magasin',email:'k.benyoucef@elecarm.fr',initials:'KB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['karim_norm01','karim_norm02','karim01','julien_norm07']},
   {id:'farid',name:'Farid HADDAD',role:'Achats',email:'f.haddad@elecarm.fr',initials:'FH',bg:'#1c1c1c',tc:'#d4d4d4',mails:['haddad_norm01','haddad_norm02','haddad01']},
-  {id:'pierre',name:'Pierre THIERRY',role:'Gardiennage',email:'p.thierry@elecarm.fr',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',mails:['thierry_norm01','thierry01','sg_tech01']},
+  {id:'pierre',name:'Pierre THIERRY',role:'Gardiennage',email:'p.thierry@elecarm.fr',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',mails:['thierry_norm01','thierry01','sg_tech01','thierry_usb01']},
   {id:'camille',name:'Camille ROUSSEAU',role:'Commercial',email:'c.rousseau@elecarm.fr',initials:'CR',bg:'#1c1c1c',tc:'#d4d4d4',mails:['rousseau_norm01','rousseau_norm02','rousseau01','julien_norm04']},
   {id:'thomas',name:'Thomas VASSEUR',role:'Maintenance',email:'t.vasseur@elecarm.fr',initials:'TV',bg:'#1c1c1c',tc:'#d4d4d4',mails:['vasseur_norm01','vasseur_norm02','marc_norm04']}
 ];
@@ -2550,10 +2586,10 @@ function openMail(m,row){
 // Interface type Wazuh : niveaux, identifiants de règle et agents dérivés des entrées de LOGS.
 const WZ_LEVEL={CRITIQUE:13,ALERTE:10,SUSPECT:7,VIGILANCE:5,INFO:3};
 const WZ_AGENTS={'WS-MOREAU':['004','10.42.2.31'],'WS-BRUNET':['007','10.42.2.44'],'BX-GATEWAY-07':['011','10.42.6.27'],
-  'SRV-DC':['001','10.42.1.10'],'FW-ELECARM':['005','10.42.1.1'],'PROXY-WEB':['006','10.42.1.20'],'WS-COMPTA':['009','10.42.2.52'],'SRV-BACKUP':['002','10.42.1.12'],'MESSAGERIE':['003','10.42.1.15'],'IMPRIMANTE':['013','10.42.3.50'],'BADGE-ATELIER':['014','10.42.5.8']};
+  'SRV-DC':['001','10.42.1.10'],'FW-ELECARM':['005','10.42.1.1'],'PROXY-WEB':['006','10.42.1.20'],'WS-COMPTA':['009','10.42.2.52'],'POSTE-AUDIT':['015','10.42.2.99'],'SRV-BACKUP':['002','10.42.1.12'],'MESSAGERIE':['003','10.42.1.15'],'IMPRIMANTE':['013','10.42.3.50'],'BADGE-ATELIER':['014','10.42.5.8']};
 const WZ_MITRE={T1087:'Account Discovery',T1591:'Gather Victim Org Information',T1059:'Command and Scripting Interpreter',T1105:'Ingress Tool Transfer',
   T1566:'Phishing',T1071:'Application Layer Protocol',T1573:'Encrypted Channel',T1041:'Exfiltration Over C2 Channel',T1078:'Valid Accounts',
-  T1021:'Remote Services',T1046:'Network Service Discovery',T1204:'User Execution',T1554:'Compromise Host Software Binary',T1133:'External Remote Services',T1003:'OS Credential Dumping'};
+  T1021:'Remote Services',T1046:'Network Service Discovery',T1204:'User Execution',T1091:'Replication Through Removable Media',T1562:'Impair Defenses',T1554:'Compromise Host Software Binary',T1133:'External Remote Services',T1003:'OS Credential Dumping'};
 const WZ_MOIS=['janv.','févr.','mars','avr.','mai','juin'];
 let wzMinLevel=0, wzOpen=-1;
 function wzParse(t){ const m=t.match(/(\d+)\/(\d+)\s+(\d+)h(\d+)/); return m?{d:+m[1],mo:+m[2],h:+m[3],mi:+m[4]}:{d:0,mo:0,h:0,mi:0}; }
@@ -2561,8 +2597,24 @@ function wzRuleId(l){
   if(l.mitre.includes('T1554')) return '550';
   if(l.agent==='BADGE-ATELIER') return '81620';
   if(l.lv==='INFO') return l.agent==='SRV-BACKUP'?'61104':'2902';
-  const base={T1087:'92031',T1591:'92213',T1059:'91816',T1566:'87105',T1071:'87701',T1041:'87712',T1078:'60122',T1021:'92653',T1133:'60204',T1003:'92900',T1046:'40704',T1204:'52502'};
+  const base={T1087:'92031',T1591:'92213',T1059:'91816',T1566:'87105',T1071:'87701',T1041:'87712',T1078:'60122',T1021:'92653',T1133:'60204',T1003:'92900',T1046:'40704',T1204:'52502',T1091:'81101',T1562:'67028'};
   return base[l.mitre[0]]||'100210';
+}
+// Actions de l'élève visibles dans le SIEM (enregistrées sur ce poste par les exercices de sensibilisation)
+function trapLogs(){
+  let seen={}; try{ seen=JSON.parse(localStorage.getItem('elecarm_traps')||'{}'); }catch(e){}
+  const at=ts=>{ const d=new Date(ts); return '19/05  '+String(d.getHours()).padStart(2,'0')+'h'+String(d.getMinutes()).padStart(2,'0'); };
+  const L=[];
+  if(seen.portal) L.push({t:at(seen.portal),agent:'POSTE-AUDIT',lv:'ALERTE',vis:true,mitre:['T1566'],
+    desc:'Votre poste a ouvert un lien vers un site de phishing connu (elecarm-secure-portal.net).',
+    aide:'C\'est vous ! Le SIEM enregistre aussi ce que fait l\'équipe d\'audit.'});
+  if(seen.usb) L.push({t:at(seen.usb),agent:'POSTE-AUDIT',lv:'ALERTE',vis:true,mitre:['T1091'],
+    desc:'Une clé USB inconnue a été branchée sur votre poste. Son contenu a été bloqué par la protection du poste.',
+    aide:'C\'est vous ! Une clé inconnue branchée près d\'un incident en cours, c\'est exactement ce que le SIEM doit signaler.'});
+  if(seen.antivirus) L.push({t:at(seen.antivirus),agent:'WS-COMPTA',lv:'CRITIQUE',vis:true,mitre:['T1562'],
+    desc:'Protection antivirus désactivée sur le poste de la comptabilité, à la demande de l\'équipe d\'audit.',
+    aide:'C\'est votre décision. Désactiver une protection, même 5 minutes, est une alerte grave pour le SIEM.'});
+  return L;
 }
 function wzFilter(v){ const i=document.getElementById('wz-search'); if(i){ i.value=v; } wzOpen=-1; renderLogs(); }
 function setLogLevel(el){
@@ -2571,7 +2623,7 @@ function setLogLevel(el){
 }
 const WZ_MACHINES={'WS-MOREAU':'Poste de travail de J. MOREAU (DSI)','WS-BRUNET':'Poste de travail de N. BRUNET (Qualité)',
   'BX-GATEWAY-07':'Passerelle de télémaintenance des boîtiers BX','SRV-DC':'Serveur des comptes et du VPN','SRV-BACKUP':'Serveur de sauvegarde',
-  'MESSAGERIE':'Serveur de messagerie','FW-ELECARM':'Pare-feu principal','PROXY-WEB':'Proxy web (filtrage de la navigation)','WS-COMPTA':'Poste de la comptabilité','IMPRIMANTE':'Imprimante réseau','BADGE-ATELIER':'Badgeuse de l\'atelier'};
+  'MESSAGERIE':'Serveur de messagerie','FW-ELECARM':'Pare-feu principal','PROXY-WEB':'Proxy web (filtrage de la navigation)','WS-COMPTA':'Poste de la comptabilité','POSTE-AUDIT':'Votre poste (équipe d\'audit)','IMPRIMANTE':'Imprimante réseau','BADGE-ATELIER':'Badgeuse de l\'atelier'};
 const WZ_SEV={CRITIQUE:['crit','Critique'],ALERTE:['alert','Alerte'],SUSPECT:['susp','Suspect'],VIGILANCE:['vig','À vérifier'],INFO:['info','Normal']};
 function wzHighlight(t){
   return t.replace(/\b(\d{1,3}(?:\.\d{1,3}){3})\b/g,'<b class="hl">$1</b>').replace(/\b(\d+(?:[.,]\d+)?\s?(?:Mo|Go|Ko))\b/g,'<b class="hl">$1</b>');
@@ -2582,7 +2634,7 @@ function renderLogs(){
   const q=((document.getElementById('wz-search')||{}).value||'').trim().toLowerCase();
   // Groupes dans l'ordre du scénario (activité normale, puis phases), entrées triées par date dans chaque groupe.
   const groups=[]; let g=null;
-  LOGS.forEach((l,idx)=>{ if(!l.vis) return; if(l.phase||!g){ g={title:l.phase||'Tous les événements, du 1er au 19 mai 2026',items:[]}; groups.push(g); }
+  LOGS.concat(trapLogs()).forEach((l,idx)=>{ if(!l.vis) return; if(l.phase||!g){ g={title:l.phase||'Tous les événements, du 1er au 19 mai 2026',items:[]}; groups.push(g); }
     const p=wzParse(l.t); g.items.push({l,idx,p,level:WZ_LEVEL[l.lv]||3,rid:wzRuleId(l),sort:((p.mo*100+p.d)*100+p.h)*100+p.mi}); });
   groups.forEach(gr=>gr.items.sort((a,b)=>a.sort-b.sort));
   const match=e=>e.level>=wzMinLevel && (!q || (e.l.agent+' '+(WZ_MACHINES[e.l.agent]||'')+' '+e.l.desc+' '+e.l.mitre.join(' ')).toLowerCase().includes(q));
@@ -3105,10 +3157,48 @@ const TRAPS={
 <li>Répondez aux questions de sécurité par des réponses inventées, conservées dans un gestionnaire de mots de passe.</li>
 </ul>
 <div class="tr-hint"><b>Pour votre enquête :</b> un attaquant commence toujours par lire ce que les employés publient. Retournez dans l'OSINT et mettez-vous à sa place : <b>qui expose quoi, et quel appât aurait fonctionné sur cette personne ?</b> Comparez ensuite avec les mails reçus.</div>
-<button class="tr-btn" onclick="closeTrap()">Retourner à l'enquête</button>`
+<button class="tr-btn" onclick="closeTrap()">Retourner à l'enquête</button>`,
+  antivirus:`<div class="tr-tag">Exercice de sensibilisation</div>
+<div class="tr-title">Vous venez de faire désactiver l'antivirus</div>
+<div class="tr-p">L'antivirus avait bloqué ce fichier pour une bonne raison. En le désactivant, même 5 minutes, on laisse passer exactement ce qu'il devait arrêter. Votre décision est d'ailleurs remontée dans le SIEM : regardez Journaux / Logs.</div>
+<div class="tr-h">Les bons réflexes</div>
+<ul class="tr-l">
+<li>Ne jamais désactiver une protection pour ouvrir un fichier : s'il est bloqué, c'est qu'il y a une raison.</li>
+<li>Transmettre le fichier à la DSI, qui l'analyse sans risque.</li>
+<li>Vérifier une facture inattendue en appelant le fournisseur à un numéro connu, jamais avec les coordonnées du mail.</li>
+<li>L'urgence (« je dois payer avant la fin du mois ») est le levier préféré des fraudeurs.</li>
+</ul>
+<div class="tr-h">La fin de l'histoire</div>
+<div class="tr-p">La DSI a analysé la pièce jointe : « Relance_facture_0426.zip » contenait <b style="color:#fff">Emotet</b>, un programme malveillant envoyé ce mois-ci à des milliers d'entreprises par de fausses relances de factures. Le « fournisseur » n'existe pas. L'alerte du 13 mai était donc bien réelle… mais elle n'a <b style="color:#fff">aucun lien avec l'attaque qui vise ELECARM</b> : pour votre enquête, c'est une fausse piste.</div>
+<button class="tr-btn" onclick="closeTrap()">Retourner à l\'enquête</button>`,
+  antivirus_ok:`<div class="tr-tag">Exercice de sensibilisation</div>
+<div class="tr-title">Bon réflexe</div>
+<div class="tr-p">On ne désactive jamais un antivirus pour ouvrir un fichier : s'il bloque, c'est qu'il y a une raison. Transmettre à la DSI, qui l'analyse sans risque, était la bonne réponse, même un jour de crise.</div>
+<div class="tr-h">La fin de l'histoire</div>
+<div class="tr-p">La DSI a analysé la pièce jointe : « Relance_facture_0426.zip » contenait <b style="color:#fff">Emotet</b>, un programme malveillant envoyé ce mois-ci à des milliers d'entreprises par de fausses relances de factures. Le « fournisseur » n'existe pas. L'alerte du 13 mai était donc bien réelle… mais elle n'a <b style="color:#fff">aucun lien avec l'attaque qui vise ELECARM</b> : pour votre enquête, c'est une fausse piste.</div>
+<button class="tr-btn" onclick="closeTrap()">Retourner à l\'enquête</button>`,
+  usb:`<div class="tr-tag">Exercice de sensibilisation</div>
+<div class="tr-title">Vous avez branché une clé USB inconnue</div>
+<div class="tr-p">Une clé « perdue » près d'un équipement sensible, c'est le scénario classique de l'attaque par clé USB abandonnée : il suffit de la brancher pour qu'un programme caché s'exécute. Votre poste l'a signalé au SIEM : regardez Journaux / Logs.</div>
+<div class="tr-h">Les bons réflexes</div>
+<ul class="tr-l">
+<li>Ne jamais brancher une clé, un disque ou un câble dont on ne connaît pas l'origine.</li>
+<li>La remettre à la DSI, qui l'analyse sur une machine isolée du réseau.</li>
+<li>Se méfier des étiquettes rassurantes ou tentantes (« DIAG », « Salaires 2026 ») : elles servent à donner envie de brancher.</li>
+</ul>
+<div class="tr-h">La fin de l'histoire</div>
+<div class="tr-p">Analysée sur une machine isolée, la clé contenait les <b style="color:#fff">outils de diagnostic de TéléMaint Centre</b>, oubliés par le technicien lors de son intervention du 6 mai (voir le mail des Services généraux). Cette fois, ce n'était rien. Mais personne ne pouvait le savoir avant de l'analyser.</div>
+<button class="tr-btn" onclick="closeTrap()">Retourner à l\'enquête</button>`,
+  usb_ok:`<div class="tr-tag">Exercice de sensibilisation</div>
+<div class="tr-title">Bon réflexe</div>
+<div class="tr-p">Une clé inconnue ne se branche jamais, surtout quand on la trouve près d'un équipement au cœur d'un incident. La remettre à la DSI pour une analyse sur une machine isolée était la bonne décision.</div>
+<div class="tr-h">La fin de l'histoire</div>
+<div class="tr-p">Analysée sur une machine isolée, la clé contenait les <b style="color:#fff">outils de diagnostic de TéléMaint Centre</b>, oubliés par le technicien lors de son intervention du 6 mai (voir le mail des Services généraux). Cette fois, ce n'était rien. Mais personne ne pouvait le savoir avant de l'analyser.</div>
+<button class="tr-btn" onclick="closeTrap()">Retourner à l\'enquête</button>`
 };
 function showTrap(k){ const b=document.getElementById('trap-box'); if(!b||!TRAPS[k]) return; b.innerHTML=TRAPS[k]; const t=document.getElementById('trap'); t.classList.add('show'); t.scrollTop=0;
-  try{ const seen=JSON.parse(localStorage.getItem('elecarm_traps')||'{}'); seen[k]=seen[k]||Date.now(); localStorage.setItem('elecarm_traps',JSON.stringify(seen)); }catch(e){} }
+  try{ const seen=JSON.parse(localStorage.getItem('elecarm_traps')||'{}'); seen[k]=seen[k]||Date.now(); localStorage.setItem('elecarm_traps',JSON.stringify(seen)); }catch(e){}
+  if(typeof renderLogs==='function') renderLogs(); }
 function closeTrap(){ document.getElementById('trap').classList.remove('show'); }
 function oxAv(d,cls){ const z=d.photo==='face4.jpg'?' style="transform:scale(1.32)"':''; return `<div class="${cls||'ox-av'}">${d.photo?`<img src="${d.photo}" alt=""${z}>`:oxInitials(d.name)}</div>`; }
 const OX_MOIS={janvier:0,'février':1,mars:2,avril:3,mai:4,juin:5,juillet:6,'août':7,septembre:8,octobre:9,novembre:10,'décembre':11};
@@ -3434,7 +3524,7 @@ function loadSavedState(){
 
 function resetMission(){
   if(!resetMission.ok){ ask('Réinitialiser la mission ? Toute la progression sera effacée sur cet appareil.',()=>{ resetMission.ok=1; resetMission(); }); return; }
-  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(STORAGE_KEY); localStorage.removeItem('elecarm_traps');
   window.location.href='/';
 }
 

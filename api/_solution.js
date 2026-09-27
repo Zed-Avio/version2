@@ -7,7 +7,10 @@ module.exports = `<strong>Coupable :</strong> Julien MOREAU (DSI), recruté par 
 - Nathalie BRUNET : connexion à 22h01 le 17 mai, expliquée dans son mail (rapport qualité).<br>
 - Marc DURAND : demande de VPN pour le 21 et 22 mai (après les faits, motif personnel) ; son quiz Facebook est le piège pédagogique sur les données personnelles.<br>
 - Faux technicien (P. THIERRY) : prestataire TéléMaint Centre, ticket TICK-4147 (mail des Services généraux) ; le 6 mai, seule une coupure d'alimentation apparaît, aucune modification du code.<br>
-- Balayage de ports du 12 mai (Critique dans Wazuh) : scan trimestriel annoncé par la DSI le 11 mai (Sigma-Tech, 10.42.1.30).<br>
+- Balayage de ports du 12 mai (Critique dans Wazuh) : scan trimestriel annoncé par la DSI le 11 mai (Sigma-Tech, 10.42.1.30). Fin de l'histoire dans la boîte de MOREAU : le rapport Sigma-Tech du 13 mai signale le port 443 ouvert sur la passerelle (la porte dérobée du 9 mai) ; MOREAU a fait mettre à jour l'imprimante (17 mai) mais n'a rien fait pour la passerelle.<br>
+- Antivirus de la comptabilité (13 mai) : campagne Emotet de fausses factures, bloquée, sans lien avec l'attaque. Exercice de sensibilisation : S. LEBRUN demande à l'audit si elle peut désactiver l'antivirus (bonne réponse : non, transmettre à la DSI).<br>
+- Clé USB « DIAG » trouvée par P. THIERRY le 19 mai : outils de diagnostic de TéléMaint oubliés le 6 mai. Exercice de sensibilisation : ne pas la brancher, la remettre à la DSI. Elle permet d'écarter le choix « clé USB » du QCM.<br>
+- Les actions des élèves (portail de phishing, clé USB branchée, antivirus désactivé) apparaissent en direct dans Wazuh sur « POSTE-AUDIT » ou « WS-COMPTA » : le SIEM voit tout.<br>
 - 20.42.73.18 : Azure NTP, ajouté officiellement le 22 avril (onglet Programmation).<br>
 - Anomalie qualité BX-4216 : problème thermique indépendant, confirmé conforme.<br>
 - Antoine ROBERT : accès révoqués à son départ (mail RH et fiche de sortie).<br>
