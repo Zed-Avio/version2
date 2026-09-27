@@ -566,6 +566,37 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 #chat-badge{display:none;min-width:18px;height:18px;border-radius:9px;background:#fff;color:#7f1d1d;font-size:11px;font-weight:800;align-items:center;justify-content:center;padding:0 5px}
 #chat-panel{position:fixed;right:20px;bottom:70px;z-index:960;width:360px;max-width:calc(100vw - 32px);height:470px;max-height:calc(100vh - 110px);display:none;flex-direction:column;background:var(--s1);border:1px solid var(--bd2);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.75);overflow:hidden}
 #chat-panel.open{display:flex}
+#chat-btn.ping{animation:chatPing 1.2s ease-in-out infinite}
+@keyframes chatPing{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.7)}50%{box-shadow:0 0 0 10px rgba(220,38,38,0)}}
+/* Notification d'un message de l'animateur */
+#anim-banner{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:990;display:none;align-items:center;gap:12px;max-width:min(620px,calc(100vw - 32px));background:#1a0b0b;border:1px solid #7f1d1d;border-radius:10px;padding:12px 14px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#anim-banner.show{display:flex;animation:bannerIn .35s ease-out}
+@keyframes bannerIn{from{opacity:0;transform:translate(-50%,-12px)}to{opacity:1;transform:translate(-50%,0)}}
+#anim-banner .ab-t{font-size:11px;font-weight:800;letter-spacing:.08em;color:#fca5a5;text-transform:uppercase}
+#anim-banner .ab-m{font-size:13.5px;color:#f1e4e4;line-height:1.45;margin-top:2px;word-break:break-word}
+#anim-banner button{border:none;border-radius:6px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:var(--font)}
+#anim-banner .ab-read{background:#7f1d1d;color:#fff;padding:8px 14px;white-space:nowrap}
+#anim-banner .ab-x{background:none;color:#888;font-size:18px;padding:0 4px}
+/* Guide de l'enquête (aide automatique, sans solution) */
+#guide-btn{position:fixed;right:228px;bottom:20px;z-index:950;display:none;align-items:center;gap:8px;background:#12263d;color:#cfe3f7;border:1px solid #2a4a70;border-radius:22px;padding:10px 16px;font-size:12.5px;font-weight:700;font-family:var(--font);cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+#guide-btn:hover{filter:brightness(1.15)}
+#guide-panel{position:fixed;right:20px;bottom:70px;z-index:961;width:380px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 110px);display:none;flex-direction:column;background:var(--s1);border:1px solid #2a4a70;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.6);overflow:hidden}
+#guide-panel.open{display:flex}
+.gd-h{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--bd);background:#0b1522}
+.gd-h b{font-size:13px;color:#fff}.gd-h span{font-size:11px;color:#8fb4dd}
+.gd-h button{margin-left:auto;background:none;border:none;color:var(--tx3);font-size:18px;cursor:pointer}
+#gd-list{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.gd-m{max-width:88%;padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.55;white-space:pre-line}
+.gd-m.bot{align-self:flex-start;background:#101a26;border:1px solid #23405f;color:#dbe7f3}
+.gd-m.me{align-self:flex-end;background:#1c1c1c;color:#e6e6e6}
+.gd-m b{color:#fff}
+.gd-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 10px}
+.gd-chip{background:#0d1929;border:1px solid #2a4a70;color:#9dc0f0;border-radius:14px;padding:5px 10px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.gd-chip:hover{background:#15263b}
+.gd-f{display:flex;gap:8px;padding:10px;border-top:1px solid var(--bd)}
+.gd-f input{flex:1;background:#0a0a0a;border:1px solid var(--bd2);border-radius:6px;color:var(--tx);font-family:var(--font);font-size:13px;padding:8px 10px;outline:none}
+.gd-f button{background:#12263d;border:1px solid #2a4a70;color:#cfe3f7;border-radius:6px;padding:0 14px;font-weight:700;cursor:pointer;font-family:var(--font)}
+@media (max-width:640px){#guide-btn{right:20px;bottom:70px}#guide-panel{bottom:120px}}
 .chat-h{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--bd);background:#0d0d0d}
 .chat-h b{font-size:13px;color:#fff}
 .chat-h span{font-size:11px;color:var(--tx3)}
@@ -1392,6 +1423,11 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 <!-- TOAST -->
 <div id="cfm"><div class="cfm-box"><div id="cfm-t"></div><div class="cfm-row"><button id="cfm-no">Annuler</button><button id="cfm-ok">Confirmer</button></div></div></div>
 <button id="chat-btn" onclick="toggleChat()"><svg viewBox="0 0 24 24"><path d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>Écrire à l'animateur<span id="chat-badge"></span></button>
+<div id="anim-banner"><div style="min-width:0;flex:1"><div class="ab-t" id="ab-t">Nouveau message de l'animateur</div><div class="ab-m" id="ab-m"></div></div><button class="ab-read" onclick="openChatFromBanner()">Lire</button><button class="ab-x" onclick="hideAnimBanner()" title="Fermer">&times;</button></div>
+<button id="guide-btn" onclick="toggleGuide()"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75-.9.92A3.49 3.49 0 0 0 13 15h-2v-.5a4 4 0 0 1 1.17-2.83l1.24-1.26A2 2 0 1 0 10 9H8a4 4 0 1 1 8 0 3.2 3.2 0 0 1-.93 2.25z"/></svg>Guide de l'enquête</button>
+<div id="guide-panel"><div class="gd-h"><div><b>Guide de l'enquête</b><br><span>Aide automatique, sans la solution</span></div><button onclick="toggleGuide()" title="Fermer">&times;</button></div>
+<div id="gd-list"></div><div class="gd-chips" id="gd-chips"></div>
+<div class="gd-f"><input id="gd-input" maxlength="200" placeholder="Posez votre question (ex. : c'est quoi une IP ?)" onkeydown="if(event.key==='Enter')guideAsk()"><button onclick="guideAsk()">Envoyer</button></div></div>
 <div id="chat-panel">
   <div class="chat-h"><div><b>Animateur</b><br><span id="chat-sub">Discussion de votre équipe</span></div><button onclick="toggleChat()" title="Fermer">&times;</button></div>
   <div class="chat-list" id="chat-list"></div>
@@ -1467,11 +1503,11 @@ const MAILS = [
   },
   {
     id:'thierry_usb01',from:'Pierre THIERRY - Gardiennage',email:'p.thierry@elecarm.fr',
-    to:'audit-externe@elecarm.fr',subject:'Clé USB trouvée dans le local technique',
-    time:'07:10',date:'19 mai 2026',unread:true,urgent:false,visible:true,
+    to:'securite@elecarm.fr',subject:'Clé USB trouvée dans le local technique',
+    time:'07:10',date:'19 mai 2026',unread:true,urgent:false,visible:false,
     body:`<p>Bonjour,</p>
 <p>Pendant ma dernière ronde, j'ai trouvé une clé USB coincée sous la baie de télémaintenance, dans le local technique. Il y a juste écrit « DIAG » dessus.</p>
-<p>Vu ce qui se passe, je la dépose sur le bureau de l'équipe d'audit plutôt qu'aux objets trouvés. Je vous laisse voir.</p>
+<p>Vu ce qui se passe, je la laisse à l'accueil, à disposition de l'équipe d'audit, plutôt qu'aux objets trouvés.</p>
 <p>P. Thierry</p>
 <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)"><div style="font-size:11px;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Que faites-vous de la clé ?</div>
 <span onclick="showTrap('usb')" style="display:inline-block;margin:6px 8px 0 0;padding:9px 16px;border-radius:5px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid #5c1f1f;background:#2a0f0f;color:#fca5a5">La brancher sur mon poste</span><span onclick="showTrap('usb_ok')" style="display:inline-block;margin:6px 8px 0 0;padding:9px 16px;border-radius:5px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid #2a3a5c;background:#101a26;color:#9dc0f0">La remettre à la DSI sans la brancher</span></div>`
@@ -1500,6 +1536,74 @@ const MAILS = [
 </tbody></table>
 <p>Nous restons disponibles pour un point de restitution.</p>
 <p>Cordialement,<br>L'équipe audit<br>Sigma-Tech</p>`
+  },
+  {
+    id:'vasseur_fp01',from:'S. MARCHAND - RH',email:'s.marchand@elecarm.fr',
+    to:'t.vasseur@elecarm.fr',subject:'Pièce manquante dans votre dossier : période 2023-2024',
+    time:'10:05',date:'5 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Thomas,</p>
+<p>En préparant l'audit de conformité de nos sous-traitances défense, je constate qu'il manque un justificatif pour la période 2023-2024 de votre parcours (rien sur votre CV pour ces mois-là).</p>
+<p>Pouvez-vous me transmettre un document qui couvre cette période ?</p>
+<p>Merci,<br>S. MARCHAND<br>Service RH - ELECARM SAS</p>`
+  },
+  {
+    id:'vasseur_fp02',from:'Thomas VASSEUR',email:'t.vasseur@elecarm.fr',
+    to:'s.marchand@elecarm.fr',subject:'Re: Pièce manquante dans votre dossier : période 2023-2024',
+    time:'08:20',date:'12 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour,</p>
+<p>Voici l'attestation de l'AFPA d'Orléans : pendant cette période, je suivais une formation longue pour le titre professionnel de technicien de maintenance industrielle (septembre 2023 - juin 2024), en reconversion après la fermeture de la fonderie. Je ne l'avais pas mise sur mon CV, je pensais que ça ne comptait pas comme de l'expérience.</p>
+<p>Thomas VASSEUR</p>`
+  },
+  {
+    id:'marc_fp01',from:'leboncoin',email:'noreply@leboncoin.fr',
+    to:'m.durand@elecarm.fr',subject:'Votre annonce « Lot de câbles et composants électriques » est en ligne',
+    time:'20:14',date:'10 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour Marc,</p>
+<p>Votre annonce est en ligne : <strong>Lot de câbles et composants électriques - 40 €</strong>.</p>
+<p><em>Description : « Restes de câbles, prises et interrupteurs, fin de rénovation de ma maison. À venir chercher sur place, Blois. »</em></p>
+<p>L'équipe leboncoin</p>`
+  },
+  {
+    id:'karim_fp01',from:'Banque du Val de Loire - Votre conseiller',email:'conseiller@banque-valdeloire.fr',
+    to:'k.benyoucef@elecarm.fr',subject:'Crédit de 1 500 € sur votre compte',
+    time:'09:02',date:'13 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Monsieur BENYOUCEF,</p>
+<p>Nous vous informons qu'un virement de <strong>1 500,00 €</strong> a été crédité sur votre compte courant.</p>
+<p>Émetteur : <strong>ELECARM SAS</strong><br>Motif : <strong>prime d'intéressement 2025</strong></p>
+<p>Comme convenu lors de notre rendez-vous, ce montant sera affecté au remboursement anticipé de votre prêt personnel.</p>
+<p>Votre conseiller, Banque du Val de Loire</p>`
+  },
+  {
+    id:'rousseau_fp01',from:'Collectif Objecteurs',email:'contact@collectif-objecteurs.org',
+    to:'c.rousseau@elecarm.fr',subject:'Action du 21 mai : tu peux nous aider de l\'intérieur ?',
+    time:'21:40',date:'11 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Salut Camille,</p>
+<p>Pour l'action du 21 mai, ce serait génial d'avoir quelques infos de l'intérieur : les clients défense d'ELECARM, les commandes en cours… Tu es la mieux placée !</p>
+<p>À jeudi,<br>Le collectif</p>`
+  },
+  {
+    id:'rousseau_fp02',from:'Camille ROUSSEAU',email:'c.rousseau@elecarm.fr',
+    to:'contact@collectif-objecteurs.org',subject:'Re: Action du 21 mai : tu peux nous aider de l\'intérieur ?',
+    time:'07:55',date:'12 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Non. Je vous l'ai déjà dit : je sépare mon travail et mes engagements. Je ne donnerai aucune information sur mon employeur ni sur ses clients, ni pour cette action ni pour une autre.</p>
+<p>Et merci de ne plus m'écrire sur mon adresse professionnelle.</p>
+<p>Camille</p>`
+  },
+  {
+    id:'haddad_fp01',from:'Kevin LIU - SinoBoard Sales',email:'k.liu@sinoboard-tech.com',
+    to:'f.haddad@elecarm.fr',subject:'A small gift for you',
+    time:'04:30',date:'7 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Dear Mr HADDAD,</p>
+<p>It was a pleasure to welcome you in Shenzhen last week. As a token of our friendship, we have sent you a small gift by courier: a premium tablet. We hope to work together very soon.</p>
+<p>Best regards,<br>Kevin LIU</p>`
+  },
+  {
+    id:'haddad_fp02',from:'Farid HADDAD - Achats',email:'f.haddad@elecarm.fr',
+    to:'k.liu@sinoboard-tech.com',subject:'Re: A small gift for you',
+    time:'09:15',date:'7 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Dear Mr LIU,</p>
+<p>Thank you for the thought, but our company's ethics charter forbids any gift above 50 euros from a supplier, especially during a selection process. The tablet will be returned to you today, and I have informed our management (copy: r.lambert@elecarm.fr).</p>
+<p>Best regards,<br>Farid HADDAD<br>Purchasing Manager - ELECARM SAS</p>`
   },
   {
     id:'rousseau01',from:'Camille ROUSSEAU - Commercial',email:'c.rousseau@elecarm.fr',
@@ -2277,13 +2381,13 @@ Suite à l'anomalie de mesure relevée par le Service Qualité sur le lot S42 (v
 
 const EMP_MAILBOXES = [
   {id:'julien',name:'Julien MOREAU',role:'DSI',email:'j.moreau@elecarm.fr',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',mails:['julien_norm01','julien_norm02','julien_norm03','julien_norm04','julien_norm05','julien_norm06','julien_norm07','julien_norm08','cse01','spearphish01','sigma_rapport01']},
-  {id:'marc',name:'Marc DURAND',role:'Technicien',email:'m.durand@elecarm.fr',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',mails:['marc_norm01','marc_norm02','marc_norm03','marc_norm04','paie01','cse01']},
+  {id:'marc',name:'Marc DURAND',role:'Technicien',email:'m.durand@elecarm.fr',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',mails:['marc_norm01','marc_norm02','marc_norm03','marc_norm04','paie01','cse01','marc_fp01']},
   {id:'nathalie',name:'Nathalie BRUNET',role:'Qualité',email:'n.brunet@elecarm.fr',initials:'NB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['nathalie_norm01','nathalie_norm02','nathalie_norm03','nathalie_norm04','nathalie_norm05','nathalie_norm06','qualite_iso01','cse01']},
-  {id:'karim',name:'Karim BENYOUCEF',role:'Magasin',email:'k.benyoucef@elecarm.fr',initials:'KB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['karim_norm01','karim_norm02','karim01','julien_norm07']},
-  {id:'farid',name:'Farid HADDAD',role:'Achats',email:'f.haddad@elecarm.fr',initials:'FH',bg:'#1c1c1c',tc:'#d4d4d4',mails:['haddad_norm01','haddad_norm02','haddad01']},
+  {id:'karim',name:'Karim BENYOUCEF',role:'Magasin',email:'k.benyoucef@elecarm.fr',initials:'KB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['karim_norm01','karim_norm02','karim01','julien_norm07','karim_fp01']},
+  {id:'farid',name:'Farid HADDAD',role:'Achats',email:'f.haddad@elecarm.fr',initials:'FH',bg:'#1c1c1c',tc:'#d4d4d4',mails:['haddad_norm01','haddad_norm02','haddad01','haddad_fp01','haddad_fp02']},
   {id:'pierre',name:'Pierre THIERRY',role:'Gardiennage',email:'p.thierry@elecarm.fr',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',mails:['thierry_norm01','thierry01','sg_tech01','thierry_usb01']},
-  {id:'camille',name:'Camille ROUSSEAU',role:'Commercial',email:'c.rousseau@elecarm.fr',initials:'CR',bg:'#1c1c1c',tc:'#d4d4d4',mails:['rousseau_norm01','rousseau_norm02','rousseau01','julien_norm04']},
-  {id:'thomas',name:'Thomas VASSEUR',role:'Maintenance',email:'t.vasseur@elecarm.fr',initials:'TV',bg:'#1c1c1c',tc:'#d4d4d4',mails:['vasseur_norm01','vasseur_norm02','marc_norm04']}
+  {id:'camille',name:'Camille ROUSSEAU',role:'Commercial',email:'c.rousseau@elecarm.fr',initials:'CR',bg:'#1c1c1c',tc:'#d4d4d4',mails:['rousseau_norm01','rousseau_norm02','rousseau01','julien_norm04','rousseau_fp01','rousseau_fp02']},
+  {id:'thomas',name:'Thomas VASSEUR',role:'Maintenance',email:'t.vasseur@elecarm.fr',initials:'TV',bg:'#1c1c1c',tc:'#d4d4d4',mails:['vasseur_norm01','vasseur_norm02','marc_norm04','vasseur_fp01','vasseur_fp02']}
 ];
 
 // ══════════════════════════════════════════
@@ -3383,6 +3487,7 @@ function markChatSeen(){ const ms=(teamView&&teamView.messages)||[]; const last=
 function fmtHM(t){ const d=new Date(t); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
 function renderChat(notify){
   const btn=document.getElementById('chat-btn'); if(!btn) return;
+  document.getElementById('guide-btn').style.display='flex';   // le guide marche même sans serveur
   if(!teamView){ btn.style.display='none'; document.getElementById('chat-panel').classList.remove('open'); return; }
   btn.style.display='flex';
   const ms=teamView.messages||[];
@@ -3393,17 +3498,140 @@ function renderChat(notify){
   const badge=document.getElementById('chat-badge');
   const n=chatOpen?0:unread.length;
   badge.style.display=n?'inline-flex':'none'; badge.textContent=n;
-  if(notify && !chatOpen && unread.length){ const m=unread[unread.length-1]; toast('!',m.all?'Message de l\'animateur (toutes les équipes)':'Message de l\'animateur',m.text.length>110?m.text.slice(0,110)+'...':m.text); }
+  btn.classList.toggle('ping',n>0);
+  document.title=(n?'('+n+') ':'')+document.title.replace(/^\(\d+\) /,'');
+  const last=unread[unread.length-1];
+  if(last && !chatOpen && last.at>chatNotified()){ setChatNotified(last.at); showAnimBanner(last); }
   const sig=JSON.stringify(ms); if(sig===chatSig) return; chatSig=sig;
   const list=document.getElementById('chat-list');
   list.innerHTML=ms.length?ms.map(m=>`<div class="chat-m ${m.from==='anim'?'anim':'team'}${m.all?' all':''}"><span class="meta">${m.from==='anim'?(m.all?'Animateur, à toutes les équipes':'Animateur'):escHtml(m.by)} · ${fmtHM(m.at)}</span>${escHtml(m.text)}</div>`).join('')
     :'<div class="chat-empty">Une question, un blocage, un souci technique ?<br>Écrivez à l\'animateur. Toute votre équipe voit cette discussion.</div>';
   list.scrollTop=list.scrollHeight;
 }
+// ══════════════════════════════════════════
+// GUIDE DE L'ENQUÊTE : aide automatique, sur ce poste, qui ne connaît PAS la solution.
+// Il explique la méthode, les mots techniques et où chercher ; il ne nomme ni coupable, ni IP, ni réponse.
+// ══════════════════════════════════════════
+let guideOpen=false, guideStarted=false, guideHint={};
+const GUIDE_TOPICS={
+  start:{label:'Par où commencer ?',text:`Voici une feuille de route pour les 2h20 :
+<b>1. Comprendre la situation (15 min)</b> : SITUATION et les mails de la Direction. Que s'est-il passé le 19 mai à 8h ?
+<b>2. Suivre la fuite (30 min)</b> : JOURNAUX / LOGS et le journal de la passerelle (DOCUMENTS). D'où partent les données, et vers où ?
+<b>3. Trouver l'entrée (30 min)</b> : MAILS, pièces jointes, PROGRAMMATION. Comment l'attaquant est-il entré ? Qu'a-t-il modifié ?
+<b>4. Comprendre l'humain (30 min)</b> : ENQUÊTE, OSINT, boîtes des employés. Qui avait un mobile, un accès et a laissé des traces ?
+<b>5. Conclure (35 min)</b> : SUPPOSITIONS. Mettez-vous d'accord en groupe avant d'envoyer : vous n'avez que 5 tentatives.
+Conseil : répartissez-vous les onglets, puis mettez en commun toutes les 20 minutes.`},
+  stuck:{label:'Je suis bloqué',text:`Pas de panique, c'est normal à ce stade. Essayez ceci :
+• Partez de <b>la fin</b> : la fuite de données repérée le 19 mai. Quelle machine envoie, vers quelle adresse, depuis quand ?
+• Puis <b>remontez le temps</b> dans les journaux : quelle est la toute première alerte grave ? Sur quelle machine ?
+• Pour chaque événement important, cherchez <b>la même date</b> dans les mails et dans PROGRAMMATION.
+• Notez vos pistes sur une feuille, avec pour chacune : ce qui la soutient, ce qui la contredit.
+Toujours bloqués ? Écrivez à l'animateur, il est là pour ça.`},
+  wazuh:{label:'Comment lire Wazuh ?',text:`Wazuh est un <b>SIEM</b> : il rassemble les journaux de toutes les machines et signale ce qui sort de l'ordinaire.
+• <b>Cliquez sur une ligne</b> : une explication « En clair » apparaît.
+• <b>Cliquez sur le nom d'une machine</b> pour ne voir qu'elle.
+• <b>Tapez une adresse IP</b> dans la recherche pour la suivre dans le temps.
+• Le bouton <b>« Masquer l'activité normale »</b> enlève la routine.
+Attention : « Critique » ne veut pas dire « coupable ». Certaines alertes graves sont des <b>fausses alertes</b> qui s'expliquent ailleurs (un mail, un ticket).`},
+  fp:{label:'C\'est quoi un faux positif ?',text:`Un <b>faux positif</b>, c'est une alerte qui a l'air grave mais qui a une explication normale.
+Exemple de la vie courante : l'alarme de la maison qui sonne à cause du chat.
+Dans l'enquête, pour chaque alerte, demandez-vous : <b>est-ce que c'était prévu, annoncé ou expliqué quelque part ?</b> (un mail, un ticket, un commit validé). Si oui, c'est probablement un faux positif. Si personne ne l'a demandé ni validé, creusez.`},
+  suspect:{label:'Comment écarter un suspect ?',text:`Pour chaque personne, remplissez trois cases :
+<b>• Mobile</b> : a-t-elle une raison d'agir ? (argent, idéologie, vengeance, flatterie…)
+<b>• Accès</b> : avait-elle les droits sur les systèmes touchés ?
+<b>• Traces</b> : son compte ou son poste apparaît-il dans les journaux ou le code ?
+Un mobile seul ne prouve rien : beaucoup de gens en ont un. Cherchez qui coche <b>les trois cases</b>. Pour écarter quelqu'un, trouvez la preuve qui manque (pas d'accès, un alibi, une explication dans ses mails).`},
+  qcm:{label:'Aide pour les suppositions',text:`Pour quelle question voulez-vous un coup de pouce ?`,chips:['q_coupable','q_vecteur','q_ip','q_cause','q_vice']},
+  lexique:{label:'Lexique',text:`Tapez un mot pour avoir sa définition, par exemple : <b>IP</b>, <b>SIEM</b>, <b>phishing</b>, <b>macro</b>, <b>VPN</b>, <b>RDP</b>, <b>port</b>, <b>OSINT</b>, <b>VICE</b>, <b>commit</b>, <b>TOR</b>, <b>exfiltration</b>.`},
+  q_coupable:{label:'1. L\'employé',hints:[
+    `Cherchez la personne qui réunit un <b>mobile</b>, un <b>accès</b> aux systèmes touchés et des <b>traces</b> dans les journaux. Plusieurs ont un mobile, très peu ont les trois.`,
+    `Dans Wazuh, cliquez sur les noms des machines : quels <b>postes de travail</b> apparaissent dans des alertes graves ? À qui appartiennent-ils ? Comparez ensuite avec les fiches ENQUÊTE (colonne des accès).`]},
+  q_vecteur:{label:'2. Le vecteur d\'entrée',hints:[
+    `Une attaque commence très souvent par un <b>mail</b>. Comparez l'adresse de chaque expéditeur avec le vrai nom de domaine de l'entreprise qu'il prétend représenter.`,
+    `Trouvez dans Wazuh la <b>toute première alerte critique</b>. Que s'est-il passé quelques minutes avant, et sur quel poste ? Cherchez ensuite, dans la boîte de la personne concernée, un mail du même jour.`]},
+  q_ip:{label:'3. L\'adresse IP',hints:[
+    `Listez les adresses <b>externes</b> (qui ne commencent pas par 10.). Pour chacune : combien de données, et est-elle expliquée quelque part ?`,
+    `Une adresse ajoutée officiellement laisse une trace validée (ticket, commit « Verified »). Allez dans PROGRAMMATION : quelle adresse apparaît dans un changement <b>sans ticket ni relecture</b> ?`]},
+  q_cause:{label:'4. La faille organisationnelle',hints:[
+    `Ne cherchez pas <b>qui</b>, mais <b>ce qui a permis</b> que ça arrive : quelle règle, quel contrôle a manqué ?`,
+    `Dans PROGRAMMATION, comparez le changement suspect aux autres : qui l'a fait, avec quel ticket, qui l'a relu ? Qu'est-ce qui <b>aurait dû l'arrêter</b> ?`]},
+  q_vice:{label:'5. Les leviers VICE',hints:[
+    `<b>VICE</b> = Vanité, Idéologie, Contrainte (chantage), Espèces (argent) : les quatre leviers pour manipuler quelqu'un. Plusieurs peuvent être combinés.`,
+    `Relisez l'offre reçue par la personne ciblée : qu'est-ce qui la <b>flatte</b> ? Qu'est-ce qui l'<b>attire</b> ? Comparez avec ce qu'elle publiait sur les réseaux (OSINT) : l'attaquant s'en est servi.`]},
+};
+const GUIDE_LEX=[
+  [/\bip\b|adresse/,'Une <b>adresse IP</b> identifie une machine sur un réseau, comme une adresse postale. Celles qui commencent par <b>10.</b> sont internes à l\'entreprise ; les autres sont sur Internet.'],
+  [/siem|wazuh/,'Un <b>SIEM</b> (ici Wazuh) rassemble les journaux de toutes les machines et lève des alertes quand quelque chose sort de l\'ordinaire. Il voit tout, y compris votre poste.'],
+  [/phishing|hame[cç]on/,'Le <b>phishing</b> (hameçonnage), c\'est un faux message qui imite une entreprise ou un service pour vous faire cliquer, ouvrir une pièce jointe ou donner vos identifiants. Le <b>spearphishing</b> est un phishing ciblé, écrit sur mesure pour une personne.'],
+  [/macro|docm|word/,'Une <b>macro</b> est un petit programme caché dans un document Word ou Excel. Utile en entreprise, mais souvent utilisée par les pirates : un fichier <b>.docm</b> ou <b>.xlsm</b> en contient.'],
+  [/vpn/,'Un <b>VPN</b> est un tunnel sécurisé qui permet de se connecter au réseau de l\'entreprise depuis l\'extérieur (télétravail).'],
+  [/rdp|distance/,'Le <b>RDP</b> (bureau à distance) permet de prendre le contrôle d\'un ordinateur à distance, comme si on était devant.'],
+  [/\bports?\b/,'Un <b>port</b> est une « porte » d\'entrée sur une machine, numérotée (443, 123…). Un port ouvert sans raison, c\'est une porte laissée ouverte.'],
+  [/osint/,'L\'<b>OSINT</b> (renseignement en sources ouvertes), c\'est tout ce qu\'on peut apprendre sur quelqu\'un à partir d\'informations publiques : réseaux sociaux, sites, annuaires. Les attaquants s\'en servent pour préparer leurs attaques.'],
+  [/vice/,'Le modèle <b>VICE</b> décrit les leviers pour manipuler quelqu\'un : <b>V</b>anité, <b>I</b>déologie, <b>C</b>ontrainte (chantage), <b>E</b>spèces (argent).'],
+  [/commit|github|programmation|code/,'Un <b>commit</b> est une modification enregistrée dans le code d\'un programme, avec son auteur, sa date et (normalement) un ticket et une relecture. « Verified » veut dire que la signature de l\'auteur a été vérifiée.'],
+  [/\btor\b/,'<b>TOR</b> est un réseau qui cache l\'identité des personnes qui l\'utilisent. Utile pour la vie privée, mais aussi très utilisé par les pirates pour ne pas être retrouvés.'],
+  [/exfiltr|fuite/,'L\'<b>exfiltration</b>, c\'est le vol de données : des fichiers qui sortent de l\'entreprise vers l\'extérieur, souvent la nuit et en gros volumes.'],
+  [/faux positif|fausse alerte/,null,'fp'],
+  [/usb|cl[eé]/,'Une <b>clé USB</b> inconnue peut contenir un programme qui s\'exécute dès qu\'on la branche. On ne branche jamais un support dont on ne connaît pas l\'origine.'],
+  [/ntp|horloge/,'Le <b>NTP</b> est le service qui met les horloges des machines à l\'heure. Il utilise le port 123 et des volumes minuscules.'],
+];
+function gdEsc(t){ return String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function guideSay(html,who){ const l=document.getElementById('gd-list'); const d=document.createElement('div'); d.className='gd-m '+(who||'bot'); d.innerHTML=html; l.appendChild(d); l.scrollTop=l.scrollHeight; }
+function guideChips(keys){ document.getElementById('gd-chips').innerHTML=keys.map(k=>`<button class="gd-chip" onclick="guideTopic('${k}')">${GUIDE_TOPICS[k].label}</button>`).join(''); }
+const GUIDE_MAIN=['start','stuck','wazuh','fp','suspect','qcm','lexique'];
+function guideTopic(k){
+  const t=GUIDE_TOPICS[k]; if(!t) return;
+  guideSay(gdEsc(t.label),'me');
+  if(t.hints){
+    const n=guideHint[k]||0;
+    if(n>=t.hints.length){ guideSay(`Je vous ai donné tous mes indices pour cette question. Je ne connais pas la réponse, mais l'animateur peut vous aider : bouton « Écrire à l'animateur ».`); guideChips(GUIDE_MAIN); return; }
+    guideSay(`<b>Indice ${n+1}/${t.hints.length}</b>\n`+t.hints[n]); guideHint[k]=n+1;
+    const more=GUIDE_TOPICS[k]; guideChips(n+1<t.hints.length?[k,'qcm','start']:['qcm','stuck','start']);
+    if(n+1<t.hints.length) document.querySelector('#gd-chips .gd-chip').textContent='Encore un indice ('+more.label+')';
+    return;
+  }
+  guideSay(t.text); guideChips(t.chips||GUIDE_MAIN);
+}
+function guideAsk(){
+  const inp=document.getElementById('gd-input'); const q=inp.value.trim(); if(!q) return; inp.value='';
+  guideSay(gdEsc(q),'me');
+  const n=q.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  if(/coupable|reponse|solution|qui (a|est)|c.?est qui|le nom|donne/.test(n)){
+    guideSay(`Je ne connais pas la solution, et c'est voulu : c'est à votre groupe de la trouver ! Par contre, je peux vous expliquer <b>comment raisonner</b>.`); guideChips(['suspect','qcm','stuck']); return; }
+  if(/commenc|debut|par ou|quoi faire|que faire/.test(n)) return guideTopicSilent('start');
+  if(/bloqu|perdu|aide|comprends? (rien|pas)|sais pas/.test(n)) return guideTopicSilent('stuck');
+  if(/suspect|ecart|mobile|alibi/.test(n)) return guideTopicSilent('suspect');
+  if(/supposition|qcm|tentative/.test(n)) return guideTopicSilent('qcm');
+  for(const [re,txt,topic] of GUIDE_LEX){ if(re.test(n)){ if(topic) return guideTopicSilent(topic); guideSay(txt); guideChips(GUIDE_MAIN); return; } }
+  if(/log|journa|alerte/.test(n)) return guideTopicSilent('wazuh');
+  guideSay(`Je n'ai pas bien compris. Choisissez un sujet ci-dessous, ou posez une question plus simple (par exemple : « c'est quoi un VPN ? »). Pour tout le reste, écrivez à l'animateur.`); guideChips(GUIDE_MAIN);
+}
+function guideTopicSilent(k){ const t=GUIDE_TOPICS[k]; guideSay(t.text); guideChips(t.chips||GUIDE_MAIN); }
+function toggleGuide(){
+  guideOpen=!guideOpen;
+  document.getElementById('guide-panel').classList.toggle('open',guideOpen);
+  if(guideOpen){
+    if(chatOpen) toggleChat();
+    if(!guideStarted){ guideStarted=true; guideSay(`Bonjour ! Je suis le <b>guide de l'enquête</b>. Je ne connais pas la solution, mais je peux vous aider à avancer : par où commencer, comment lire les journaux, comment écarter un suspect, ce que veut dire un mot technique…\nChoisissez un sujet ou posez votre question.`); guideChips(GUIDE_MAIN); }
+    setTimeout(()=>document.getElementById('gd-input').focus(),50);
+  }
+}
+// Notification des messages de l'animateur : une seule fois par message (mémorisé sur le poste)
+function chatNotified(){ try{ return +localStorage.getItem('elecarm_chat_notified')||0; }catch(e){ return 0; } }
+function setChatNotified(t){ try{ localStorage.setItem('elecarm_chat_notified',String(t)); }catch(e){} }
+function chime(){ try{ const c=new (window.AudioContext||window.webkitAudioContext)(); [0,.18].forEach((d,i)=>{ const o=c.createOscillator(), g=c.createGain(); o.frequency.value=i?1175:880; g.gain.value=.06; o.connect(g); g.connect(c.destination); o.start(c.currentTime+d); o.stop(c.currentTime+d+.15); }); }catch(e){} }
+function showAnimBanner(m){
+  document.getElementById('ab-t').textContent=m.all?'Message de l\'animateur à tous les groupes':'Nouveau message de l\'animateur';
+  document.getElementById('ab-m').textContent=m.text.length>160?m.text.slice(0,160)+'…':m.text;
+  document.getElementById('anim-banner').classList.add('show'); chime();
+}
+function hideAnimBanner(){ document.getElementById('anim-banner').classList.remove('show'); }
+function openChatFromBanner(){ hideAnimBanner(); if(!chatOpen) toggleChat(); }
 function toggleChat(){
   chatOpen=!chatOpen;
   document.getElementById('chat-panel').classList.toggle('open',chatOpen);
-  if(chatOpen){ chatSig=''; renderChat(); setTimeout(()=>document.getElementById('chat-input').focus(),50); refreshSoon(); }
+  if(chatOpen){ hideAnimBanner(); if(guideOpen) toggleGuide(); chatSig=''; renderChat(); setTimeout(()=>document.getElementById('chat-input').focus(),50); refreshSoon(); }
   else renderChat();
 }
 async function sendChat(){
@@ -3463,7 +3691,7 @@ function setTeamChip(){
   if(teamView){ c.textContent=teamView.team.name; c.title=teamView.team.members.join(', '); c.style.display='block'; } else c.style.display='none';
 }
 // Suivi en cours de partie : fermeture par l'animateur, tentatives et messages des autres postes de l'équipe.
-// Toutes les 20 s, toutes les 6 s quand la discussion est ouverte.
+// Toutes les 10 s, toutes les 5 s quand la discussion est ouverte.
 let liveTimer=null, liveTick=null, meGone=0;
 function refreshSoon(){ if(liveTick){ clearTimeout(liveTimer); liveTimer=setTimeout(liveTick,300); } }
 function startLiveSync(){
@@ -3490,9 +3718,9 @@ function startLiveSync(){
         if(st.me){ followMove(st.me); const changed=JSON.stringify(st.me)!==JSON.stringify(teamView); teamView=st.me; if(changed){ setTeamChip(); renderVerdict(); renderChat(true); } }
       }
     }
-    clearTimeout(liveTimer); liveTimer=setTimeout(tick,chatOpen?6000:20000);
+    clearTimeout(liveTimer); liveTimer=setTimeout(tick,chatOpen?5000:10000);
   };
-  liveTimer=setTimeout(tick,chatOpen?6000:20000);
+  liveTimer=setTimeout(tick,chatOpen?5000:10000);
 }
 
 // ══════════════════════════════════════════

@@ -33,7 +33,9 @@ Un réglage (fermeture, déplacement d'un élève) met jusqu'à 20 secondes à a
 - Côté console, carte **Messages des équipes** : une discussion par équipe, avec un compteur de messages non lus. Le titre de l'onglet du navigateur affiche aussi ce nombre, et un petit son signale chaque nouveau message.
 - Cliquez sur une équipe pour lire et répondre (Entrée pour envoyer).
 - **Envoyer à toutes les équipes** : pour une annonce générale (« plus que 30 minutes », « pensez à l'onglet Documents »...). Elle apparaît dans la discussion de chaque équipe.
-- Délais : une réponse arrive en quelques secondes si l'équipe a la discussion ouverte, en 20 secondes au plus sinon (avec une notification).
+- Délais : une réponse arrive en quelques secondes si le groupe a la discussion ouverte, en 10 secondes au plus sinon.
+- **Notification** : quand vous envoyez un message, un bandeau « Nouveau message de l'animateur » s'affiche en haut de l'écran des élèves, avec un petit son, et le bouton « Écrire à l'animateur » clignote jusqu'à la lecture.
+- **Guide de l'enquête** : à côté de « Écrire à l'animateur », une aide automatique (sans serveur, sans la solution) : par où commencer, je suis bloqué, comment lire Wazuh, faux positifs, écarter un suspect, 2 indices de méthode par question des suppositions, lexique. S'il ne sait pas, il renvoie vers vous.
 
 ## Les suppositions (onglet SUPPOSITIONS)
 
