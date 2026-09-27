@@ -1466,7 +1466,7 @@ const MAILS = [
   {
     id:'karim01',from:'Karim BENYOUCEF - Magasin',email:'k.benyoucef@elecarm.fr',
     to:'y.ferreira@elecarm.fr',subject:'Réappro composants lot BX-4400',
-    time:'08:41',date:'16 mai 2026',unread:true,urgent:false,visible:true,
+    time:'08:41',date:'15 mai 2026',unread:true,urgent:false,visible:true,
     body:`<p>Yannick,</p>
 <p>On arrive à court de connecteurs pour la série BX-4400. J'ai passé une commande de réappro, livraison prévue lundi. Rien de bloquant pour le lot en cours.</p>
 <p>Je te confirme au passage que je n'ai aucun accès aux systèmes informatiques ni à la passerelle, donc si on te pose la question, ce n'est pas de mon côté.</p>
@@ -1495,7 +1495,7 @@ const MAILS = [
     to:'securite@elecarm.fr',subject:'Re: Passage technicien maintenance, semaine du 5 mai',
     time:'09:20',date:'15 mai 2026',unread:true,urgent:false,visible:true,
     body:`<p>Bonjour Pierre,</p>
-<p>Merci pour le signalement. Vérification faite, il s'agit de <strong>TéléMaint Centre</strong>, notre prestataire de maintenance du matériel. L'intervention était planifiée le <strong>mercredi 6 mai à 19h30</strong> (ticket <strong>TICK-4147</strong>) : remplacement de l'alimentation électrique de la baie de télémaintenance, qui chauffait anormalement.</p>
+<p>Merci pour le signalement. Vérification faite, il s'agit de <strong>TéléMaint Centre</strong>, notre prestataire de maintenance du matériel. L'intervention était planifiée le <strong>mercredi 6 mai à 20h15</strong> (ticket <strong>TICK-4147</strong>) : remplacement de l'alimentation électrique de la baie de télémaintenance, qui chauffait anormalement.</p>
 <p>Le ticket figurait bien dans l'outil de suivi, mais il n'avait pas été recopié dans le registre de l'accueil : c'est pour cela que vous ne l'avez pas trouvé. Le technicien intervient uniquement sur le matériel, il n'a aucun accès au programme de la passerelle.</p>
 <p>Je rappelle à tous que chaque intervention doit être reportée au registre de l'accueil.</p>
 <p>Cordialement,<br>Laurent PERRIN<br>Services généraux - ELECARM SAS</p>`
@@ -1578,7 +1578,7 @@ const MAILS = [
     time:'21:40',date:'11 mai 2026',unread:false,urgent:false,visible:false,
     body:`<p>Salut Camille,</p>
 <p>Pour l'action du 21 mai, ce serait génial d'avoir quelques infos de l'intérieur : les clients défense d'ELECARM, les commandes en cours… Tu es la mieux placée !</p>
-<p>À jeudi,<br>Le collectif</p>`
+<p>À jeudi 21 !<br>Le collectif</p>`
   },
   {
     id:'rousseau_fp02',from:'Camille ROUSSEAU',email:'c.rousseau@elecarm.fr',
@@ -1603,6 +1603,34 @@ const MAILS = [
     body:`<p>Dear Mr LIU,</p>
 <p>Thank you for the thought, but our company's ethics charter forbids any gift above 50 euros from a supplier, especially during a selection process. The tablet will be returned to you today, and I have informed our management (copy: r.lambert@elecarm.fr).</p>
 <p>Best regards,<br>Farid HADDAD<br>Purchasing Manager - ELECARM SAS</p>`
+  },
+  {
+    id:'atelier_frigo01',from:'Yannick FERREIRA - Montage',email:'y.ferreira@elecarm.fr',
+    to:'atelier@elecarm.fr',subject:'Frigo de l\'atelier : dernier avertissement',
+    time:'13:05',date:'13 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Salut l'équipe,</p>
+<p>Troisième yaourt aux fruits rouges disparu cette semaine. Le mien. Avec mon nom écrit dessus au marqueur.</p>
+<p>Je ne vais pas lancer d'enquête (on a déjà assez d'audits comme ça), mais vendredi, je vide le frigo : tout ce qui n'a pas de nom part à la poubelle.</p>
+<p>Yannick, toujours affamé</p>`
+  },
+  {
+    id:'thierry_chat01',from:'Pierre THIERRY - Gardiennage',email:'p.thierry@elecarm.fr',
+    to:'securite@elecarm.fr',subject:'Alarme du hangar B, 02h10 : le coupable est identifié',
+    time:'06:05',date:'12 mai 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Bonjour,</p>
+<p>L'alarme du hangar B s'est déclenchée cette nuit à 02h10. Ronde immédiate : aucune effraction, aucune porte forcée.</p>
+<p>Le coupable : le chat roux de la zone industrielle, entré par l'aération du quai 3. C'est la troisième fois ce mois-ci. Il a été raccompagné dehors, sans résistance.</p>
+<p>Je propose de poser une grille sur l'aération. En attendant, ne vous affolez pas si l'alarme sonne la nuit : j'y vais à chaque fois, mais il y a de bonnes chances que ce soit encore lui.</p>
+<p>P. Thierry</p>`
+  },
+  {
+    id:'julien_banque01',from:'Crédit Auto Plus - Service recouvrement',email:'recouvrement@creditautoplus.fr',
+    to:'j.moreau@elecarm.fr',subject:'2e relance : échéance impayée de votre crédit automobile',
+    time:'10:12',date:'28 avril 2026',unread:false,urgent:false,visible:false,
+    body:`<p>Monsieur MOREAU,</p>
+<p>Malgré notre premier courrier, l'échéance du 5 avril de votre crédit automobile (<strong>412,80 €</strong>) reste impayée, ainsi que celle du 5 mars.</p>
+<p>Sans régularisation sous 15 jours, nous serons contraints de transmettre votre dossier à notre service contentieux, avec application des pénalités de retard prévues au contrat.</p>
+<p>Service recouvrement - Crédit Auto Plus</p>`
   },
   {
     id:'rousseau01',from:'Camille ROUSSEAU - Commercial',email:'c.rousseau@elecarm.fr',
@@ -1749,9 +1777,9 @@ const MAILS = [
   {
     id:'marc_norm01',from:'Yannick FERREIRA - Montage',email:'y.ferreira@elecarm.fr',
     to:'m.durand@elecarm.fr',subject:'Ordre Renault - besoin de toi ce soir',
-    time:'08:30',date:'17 mai 2026',unread:false,urgent:false,visible:false,
+    time:'08:30',date:'12 mai 2026',unread:false,urgent:false,visible:false,
     body:`<p>Salut Marc,</p>
-<p>On a un retard sur la commande Renault (REN-2026-1847). Les 24 coffrets doivent partir vendredi au plus tard, on est serrés.</p>
+<p>On a un retard sur la commande Renault (REN-2026-1847). Les 24 coffrets doivent partir le vendredi 22 au plus tard, on est serrés.</p>
 <p>Est-ce que tu peux passer en heures sup ce soir et finir le câblage sur les 6 derniers ?</p>
 <p>Je te laisse les schémas sur ton établi. Appelle-moi si t'as un doute sur les plans.</p>
 <p>Merci d'avance !</p>
@@ -1760,7 +1788,7 @@ const MAILS = [
   {
     id:'marc_norm02',from:'Marc DURAND',email:'m.durand@elecarm.fr',
     to:'y.ferreira@elecarm.fr',subject:'Re: Ordre Renault - besoin de toi ce soir',
-    time:'09:15',date:'17 mai 2026',unread:false,urgent:false,visible:false,
+    time:'09:15',date:'12 mai 2026',unread:false,urgent:false,visible:false,
     body:`<p>Yannick,</p>
 <p>Pas de souci, je peux rester jusqu'à 22h ce soir.</p>
 <p>Tu me mets les coffrets 19 à 24 sur mon établi ? Et si la direction peut commander des pizzas ça serait sympa.</p>
@@ -1942,10 +1970,10 @@ const MAILS = [
     to:'y.ferreira@elecarm.fr',subject:'Compresseur atelier : bruit anormal',
     time:'07:35',date:'18 mai 2026',unread:false,urgent:false,visible:false,
     body:`<p>Yannick,</p>
-<p>Le compresseur de l'atelier fait un bruit de claquement depuis ce matin au démarrage. J'ai vérifié la pression et les purges, rien d'anormal. Je propose de l'arrêter à midi pour regarder la courroie, si ça te va.</p>
+<p>Le compresseur de l'atelier fait un bruit de claquement depuis ce matin au démarrage. J'ai vérifié la pression et les purges, rien d'anormal. Je propose de l'arrêter à midi pour regarder la courroie, si ça te va. D'ici là, prévenez les gars : si ça claque, ce n'est pas une attaque, c'est juste le compresseur.</p>
 <p>Thomas</p>`
   },
-  // ── Boîtes employés : courrier de routine (réalisme, aucun indice nouveau) ──
+  // ── Boîtes employés : routine, fausses pistes faciles (accroche et preuve dans la même boîte), indices et exercices de sensibilisation ──
   {
     id:'julien_norm04',from:'Camille ROUSSEAU - Commercial',email:'c.rousseau@elecarm.fr',
     to:'j.moreau@elecarm.fr',subject:'Imprimante du service commercial bloquée',
@@ -1991,7 +2019,7 @@ const MAILS = [
     to:'j.moreau@elecarm.fr',subject:'Douchette du magasin HS',
     time:'07:58',date:'15 mai 2026',unread:false,urgent:false,visible:false,
     body:`<p>Salut Julien,</p>
-<p>La douchette code-barres du magasin ne répond plus depuis ce matin (voyant rouge fixe). Du coup je saisis les sorties de stock à la main dans l'ERP, ça prend un temps fou.</p>
+<p>La douchette code-barres du magasin ne répond plus depuis ce matin (voyant rouge fixe). Du coup je saisis les sorties de stock à la main dans l'ERP, ça prend un temps fou. À ce rythme, mes doigts vont partir à la retraite avant moi.</p>
 <p>Il en reste une de rechange quelque part chez vous ?</p>
 <p>Karim</p>`
   },
@@ -2147,6 +2175,9 @@ const LOGS = [
   {t:'01/05  02h00',agent:'SRV-BACKUP',lv:'INFO',vis:true,mitre:[],
    desc:'Sauvegarde de nuit terminée normalement (23,8 Go).',
    aide:'Activité de routine : les serveurs sont copiés chaque nuit.'},
+  {t:'02/05  08h30',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
+   desc:'Maintenance du samedi : redémarrage planifié des serveurs par j.moreau (TICK-4144). Site fermé, aucun autre salarié connecté.',
+   aide:'Activité de routine : les mises à jour lourdes se font le week-end, quand personne ne travaille. Mais un samedi, le DSI est seul au bureau.'},
   {t:'02/05  16h41',agent:'MESSAGERIE',lv:'SUSPECT',vis:true,mitre:['T1566'],
    desc:'j.moreau ouvre un fichier Word à macros (.docm), joint à un mail reçu le matin même d\'une adresse jamais vue : thales-defence.net.',
    aide:'Une macro est un petit programme caché dans un document Word. Les pirates s\'en servent souvent pour infecter un ordinateur. Question à se poser : ce domaine est-il vraiment celui de Thales ? Cherchez ce mail dans la messagerie.'},
@@ -2171,7 +2202,7 @@ const LOGS = [
   {t:'06/05  02h17',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1041'],
    desc:'847 Mo de données partent vers l\'extérieur entre 2h17 et 6h29 du matin.',
    aide:'Un gros envoi de données, en pleine nuit, depuis un poste de bureau : possible vol de fichiers (exfiltration). Qui travaille à cette heure-là ?'},
-  {t:'06/05  19h41',agent:'BX-GATEWAY-07',lv:'INFO',vis:true,mitre:[],
+  {t:'06/05  20h41',agent:'BX-GATEWAY-07',lv:'INFO',vis:true,mitre:[],
    desc:'Coupure d\'alimentation de la baie de télémaintenance pendant 3 minutes, puis redémarrage normal.',
    aide:'Une courte coupure suivie d\'un redémarrage, c\'est typique d\'une intervention sur le matériel. Question à se poser : le programme de la passerelle a-t-il été modifié ce jour-là ? Comparez avec l\'alerte de contrôle d\'intégrité.'},
   {t:'07/05  04h00',agent:'BX-GATEWAY-07',lv:'VIGILANCE',vis:true,mitre:[],
@@ -2383,14 +2414,14 @@ Suite à l'anomalie de mesure relevée par le Service Qualité sur le lot S42 (v
 };
 
 const EMP_MAILBOXES = [
-  {id:'julien',name:'Julien MOREAU',role:'DSI',email:'j.moreau@elecarm.fr',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',mails:['julien_norm01','julien_norm02','julien_norm03','julien_norm04','julien_norm05','julien_norm06','julien_norm07','julien_norm08','cse01','spearphish01','sigma_rapport01']},
-  {id:'marc',name:'Marc DURAND',role:'Technicien',email:'m.durand@elecarm.fr',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',mails:['marc_norm01','marc_norm02','marc_norm03','marc_norm04','paie01','cse01','marc_fp01']},
+  {id:'julien',name:'Julien MOREAU',role:'DSI',email:'j.moreau@elecarm.fr',initials:'JM',bg:'#1c1c1c',tc:'#d4d4d4',mails:['julien_norm01','julien_norm02','julien_norm03','julien_norm04','julien_norm05','julien_norm06','julien_norm07','julien_norm08','cse01','spearphish01','sigma_rapport01','julien_banque01']},
+  {id:'marc',name:'Marc DURAND',role:'Technicien',email:'m.durand@elecarm.fr',initials:'MD',bg:'#1c1c1c',tc:'#d4d4d4',mails:['marc_norm01','marc_norm02','marc_norm03','marc_norm04','paie01','cse01','marc_fp01','atelier_frigo01']},
   {id:'nathalie',name:'Nathalie BRUNET',role:'Qualité',email:'n.brunet@elecarm.fr',initials:'NB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['nathalie_norm01','nathalie_norm02','nathalie_norm03','nathalie_norm04','nathalie_norm05','nathalie_norm06','qualite_iso01','cse01']},
   {id:'karim',name:'Karim BENYOUCEF',role:'Magasin',email:'k.benyoucef@elecarm.fr',initials:'KB',bg:'#1c1c1c',tc:'#d4d4d4',mails:['karim_norm01','karim_norm02','karim01','julien_norm07','karim_fp01']},
   {id:'farid',name:'Farid HADDAD',role:'Achats',email:'f.haddad@elecarm.fr',initials:'FH',bg:'#1c1c1c',tc:'#d4d4d4',mails:['haddad_norm01','haddad_norm02','haddad01','haddad_fp01','haddad_fp02']},
-  {id:'pierre',name:'Pierre THIERRY',role:'Gardiennage',email:'p.thierry@elecarm.fr',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',mails:['thierry_norm01','thierry01','sg_tech01','thierry_usb01']},
+  {id:'pierre',name:'Pierre THIERRY',role:'Gardiennage',email:'p.thierry@elecarm.fr',initials:'PT',bg:'#1c1c1c',tc:'#d4d4d4',mails:['thierry_norm01','thierry_chat01','thierry01','sg_tech01','thierry_usb01']},
   {id:'camille',name:'Camille ROUSSEAU',role:'Commercial',email:'c.rousseau@elecarm.fr',initials:'CR',bg:'#1c1c1c',tc:'#d4d4d4',mails:['rousseau_norm01','rousseau_norm02','rousseau01','julien_norm04','rousseau_fp01','rousseau_fp02']},
-  {id:'thomas',name:'Thomas VASSEUR',role:'Maintenance',email:'t.vasseur@elecarm.fr',initials:'TV',bg:'#1c1c1c',tc:'#d4d4d4',mails:['vasseur_norm01','vasseur_norm02','marc_norm04','vasseur_fp01','vasseur_fp02']}
+  {id:'thomas',name:'Thomas VASSEUR',role:'Maintenance',email:'t.vasseur@elecarm.fr',initials:'TV',bg:'#1c1c1c',tc:'#d4d4d4',mails:['vasseur_norm01','vasseur_norm02','marc_norm04','vasseur_fp01','vasseur_fp02','atelier_frigo01']}
 ];
 
 // ══════════════════════════════════════════
@@ -2623,6 +2654,7 @@ function renderEmpList(){
 function openEmpMailbox(emp){
   activeEmpContact=emp.id;
   renderEmpList();
+  document.getElementById('mail-body').innerHTML='<div class="mail-body-empty"><div style="font-size:13px;color:var(--tx3)">Sélectionner un message</div></div>';
   document.getElementById('mail-list-title').textContent=emp.name;
   const c=document.getElementById('mail-items');
   c.innerHTML='';
