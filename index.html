@@ -684,6 +684,25 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 .fbi-card-n{font-family:Georgia,'Times New Roman',serif;font-size:16px;font-weight:700;color:#0d2a4a;letter-spacing:.02em;text-transform:uppercase;line-height:1.2}
 .fbi-card-r{font-size:11px;color:#555;margin-top:3px}
 .fbi-card-ref{font-family:var(--mono);font-size:9.5px;color:#8a8474;margin-top:6px}
+/* Pièces du dossier (documents papier ouverts depuis une fiche ENQUÊTE) */
+.fbi-pieces{display:flex;flex-wrap:wrap;gap:8px}
+.fbi-piece{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #cfc8b8;border-radius:4px;padding:8px 12px;font-size:12.5px;font-weight:600;color:#1a1a1a;cursor:pointer;font-family:var(--font)}
+.fbi-piece:hover{border-color:#7f1d1d;color:#7f1d1d}
+.fbi-piece i{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.06em;background:#1a1a1a;color:#f4f1ea;border-radius:2px;padding:2px 5px}
+#piece{position:fixed;inset:0;z-index:10050;background:rgba(0,0,0,.75);display:none;align-items:flex-start;justify-content:center;padding:24px 16px;overflow:auto}
+#piece.show{display:flex}
+.pc-paper{background:#fdfcf8;color:#1d1d1d;max-width:720px;width:100%;margin:auto;border-radius:3px;box-shadow:0 20px 60px rgba(0,0,0,.6);padding:34px 38px;font-size:13.5px;line-height:1.6;font-family:Georgia,'Times New Roman',serif}
+.pc-paper h3{font-family:var(--font);font-size:19px;margin:0 0 2px;color:#111}
+.pc-paper .pc-sub{font-family:var(--font);font-size:11.5px;color:#666;margin-bottom:16px;text-transform:uppercase;letter-spacing:.06em}
+.pc-paper h4{font-family:var(--font);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#7f1d1d;border-bottom:1px solid #ddd;padding-bottom:4px;margin:18px 0 8px}
+.pc-paper table{width:100%;border-collapse:collapse;font-family:var(--font);font-size:12.5px}
+.pc-paper td,.pc-paper th{border-bottom:1px solid #e4e0d6;padding:6px 8px;text-align:left;vertical-align:top}
+.pc-paper th{background:#f1ede2;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#444}
+.pc-paper .pc-yr{white-space:nowrap;font-weight:700;width:130px}
+.pc-paper .pc-note{margin-top:14px;padding:10px 12px;background:#f5f1e6;border-left:3px solid #b8ad92;font-size:12.5px;font-family:var(--font)}
+.pc-paper .pc-hand{font-family:'Comic Sans MS','Segoe Print',cursive;color:#1f3a8a}
+.pc-paper .pc-stamp{display:inline-block;border:2px solid #7f1d1d;color:#7f1d1d;font-family:var(--font);font-weight:800;font-size:11px;letter-spacing:.1em;padding:3px 8px;transform:rotate(-4deg);text-transform:uppercase}
+.pc-close{display:block;margin:22px auto 0;background:#1a1a1a;color:#fff;border:none;border-radius:4px;padding:10px 22px;font-family:var(--font);font-weight:700;cursor:pointer}
 #suspect-modal .modal-box.poster{background:#f4f1ea;color:#1a1a1a;max-width:760px;width:calc(100vw - 32px);padding:0;max-height:92vh;overflow-y:auto}
 .fbi-p-head{text-align:center;padding:18px 24px 12px;border-bottom:3px double #0d2a4a}
 .fbi-p-org{font-size:10px;font-weight:800;letter-spacing:.2em;color:#0d2a4a;text-transform:uppercase}
@@ -872,6 +891,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 </style>
 </head>
 <body>
+<div id="piece"><div class="pc-paper" id="piece-box"></div></div>
 <div id="trap"><div class="tr-box" id="trap-box"></div></div>
 <div id="closed-overlay"><div><div class="co-t" id="co-t">Exercice fermé</div><div class="co-d" id="co-d">L'animateur a fermé l'exercice. Restez sur cette page : elle se rouvrira automatiquement.</div></div></div>
 
@@ -1274,7 +1294,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 <div class="ghx-av" style="background:#6e40c9">AD</div>
                 <div class="ghx-review-body">
                   <div class="ghx-review-head"><b>audit-dsi</b> a laisse un commentaire de revue</div>
-                  <div class="ghx-review-text">Changement MALVEILLANT. La console ecoute sur toutes les interfaces (bind 0.0.0.0, donc exposee) et autorise une adresse EXTERNE, 185.220.101.47, qui n'appartient a aucun equipement ELECARM (voir Journaux / Logs). La variable THALES_TEST_MODE n'existe dans aucune configuration officielle. Le code renvoie en plus l'ensemble des journaux de la passerelle vers cette meme adresse. Pousse sans ticket ni revue, pendant la session RDP non autorisee du 08/05 23h44.</div>
+                  <div class="ghx-review-text">Changement SUSPECT, a verifier dans Journaux / Logs. La console ecoute sur toutes les interfaces (bind 0.0.0.0, donc exposee) et autorise une adresse EXTERNE, 185.220.101.47, qui n'appartient a aucun equipement ELECARM (voir Journaux / Logs). La variable THALES_TEST_MODE n'existe dans aucune configuration officielle. Le code renvoie en plus l'ensemble des journaux de la passerelle vers cette meme adresse. Pousse sans ticket ni revue, pendant la session RDP non autorisee du 08/05 23h44.</div>
                 </div>
               </div>
             </div>
@@ -1295,7 +1315,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
           <div class="enig-scroll">
 
             <div class="enig-ref">
-              Le lot S42 des boîtiers BX-4400-A doit partir chez Thales le 23 mai. Un boîtier présente une mesure anormale, et le Service Montage a avancé une explication : vérifiez-la avec les mesures (intensité et température de chaque boîtier), puis cherchez si ce boîtier apparaît ailleurs dans le dossier (Journaux / Logs, Documents).</div>
+              Le lot S42 des boîtiers BX-4400-A doit partir chez Thales le 23 mai. Un boîtier présente une mesure suspecte, et le Service Montage a avancé une explication : vérifiez-la avec les mesures (intensité et température de chaque boîtier), puis cherchez si ce boîtier apparaît ailleurs dans le dossier (Journaux / Logs, Documents).</div>
 
             <!-- Specs -->
             <div class="enig-section">
@@ -1601,7 +1621,7 @@ const MAILS = [
     to:'k.liu@sinoboard-tech.com',subject:'Re: A small gift for you',
     time:'09:15',date:'7 mai 2026',unread:false,urgent:false,visible:false,
     body:`<p>Dear Mr LIU,</p>
-<p>Thank you for the thought, but our company's ethics charter forbids any gift above 50 euros from a supplier, especially during a selection process. The tablet will be returned to you today, and I have informed our management (copy: r.lambert@elecarm.fr).</p>
+<p>Thank you for the thought, but our company's ethics charter forbids any gift above 50 euros from a supplier, especially during a selection process. When the parcel arrives, it will be refused and sent back to you. I have informed our management (copy: r.lambert@elecarm.fr).</p>
 <p>Best regards,<br>Farid HADDAD<br>Purchasing Manager - ELECARM SAS</p>`
   },
   {
@@ -2183,7 +2203,7 @@ const LOGS = [
    aide:'Une macro est un petit programme caché dans un document Word. Les pirates s\'en servent souvent pour infecter un ordinateur. Question à se poser : ce domaine est-il vraiment celui de Thales ? Cherchez ce mail dans la messagerie.'},
   {t:'02/05  16h43',agent:'WS-MOREAU',lv:'CRITIQUE',vis:true,mitre:['T1566','T1059'],
    desc:'Deux minutes plus tard, Word lance tout seul une fenêtre de commandes cachée sur ce poste.',
-   aide:'Un document Word n\'a aucune raison d\'ouvrir une fenêtre de commandes (PowerShell). C\'est le signe qu\'un programme malveillant s\'installe sur l\'ordinateur.'},
+   aide:'Un document Word n\'a aucune raison d\'ouvrir une fenêtre de commandes (PowerShell). C\'est un comportement très suspect : un programme est probablement en train de s\'installer sur l\'ordinateur. Regardez ce que fait ce poste ensuite.'},
   {t:'02/05  16h44',agent:'WS-MOREAU',lv:'ALERTE',vis:true,mitre:['T1071','T1573'],
    desc:'Le poste contacte un serveur caché sur Internet (réseau TOR, en Roumanie), puis recommence toutes les 60 secondes.',
    aide:'TOR est un réseau qui masque qui se trouve au bout de la connexion. Un ordinateur qui l\'appelle toutes les minutes attend des ordres : il est probablement piloté à distance.'},
@@ -2688,8 +2708,8 @@ function openMail(m,row){
   let attach='';
   if(m.hasAttachment){
     const aClick = m.isForensic
-      ? `toast('','Macro VBA détectée - T1566.001','02/05 16h41 : programme malveillant (dropper PowerShell) lancé depuis cette pièce jointe - voir onglet Journaux / Logs')`
-      : `toast('','Pièce jointe ouverte','${(m.attachmentName||'').replace(/'/g,"\\'")} - analyse rapide : rien d\\'anormal détecté')`;
+      ? `toast('','Pièce jointe suspecte','Ce document contient des macros. Regardez ce qui se passe sur ce poste juste après son ouverture : Journaux / Logs')`
+      : `toast('','Pièce jointe ouverte','${(m.attachmentName||'').replace(/'/g,"\\'")} - analyse rapide : rien de suspect détecté')`;
     const aExt = m.isForensic ? 'DOCM' : 'XLSX';
     const aExtColor = m.isForensic ? '#fca5a5' : '#d4d4d4';
     const aSize = m.isForensic ? 'Document Word avec macros - 238 Ko' : 'Fichier Excel - 847 Ko';
@@ -2824,6 +2844,92 @@ function renderLogs(){
 // ══════════════════════════════════════════
 // Fiches d'identification façon avis FBI (cohérentes avec les âges, anciennetés et profils OSINT).
 // Pas de champ « race » : en France, l'enregistrement de l'origine ethnique est interdit (et inutile à l'enquête).
+// ══════════════════════════════════════════
+// PIÈCES DU DOSSIER : un document par personne de l'enquête, qui raconte son histoire.
+// Tout est cohérent avec les fiches, les mails, l'OSINT et Wazuh (dates vérifiées).
+// ══════════════════════════════════════════
+const PIECES={
+  'Thomas VASSEUR':[{type:'CV',title:'CV remis à l\'embauche (août 2025)',html:`<h3>Thomas VASSEUR</h3><div class="pc-sub">Technicien de maintenance industrielle · Orléans · 32 ans · Permis B</div>
+<h4>Expérience professionnelle</h4>
+<table>
+<tr><td class="pc-yr">oct. 2024 - août 2025</td><td><b>Technicien de maintenance (intérim), Adecco</b><br>Missions en région Centre : agroalimentaire, plasturgie. Dépannage électrique et mécanique, maintenance préventive.</td></tr>
+<tr><td class="pc-yr">2019 - 2023</td><td><b>Technicien de maintenance, Fonderie Loiret</b> (site fermé en juin 2023)<br>Maintenance électromécanique des fours et des lignes de moulage. Astreintes de nuit.</td></tr>
+<tr><td class="pc-yr">2014 - 2019</td><td><b>Agent de maintenance, Papeterie du Val de Loire</b>, Saint-Jean-de-Braye<br>Graissage, remplacement de pièces, premiers dépannages électriques.</td></tr>
+</table>
+<h4>Formation</h4>
+<table><tr><td class="pc-yr">2013</td><td>Bac Pro Maintenance des équipements industriels (MEI), lycée professionnel, Orléans</td></tr></table>
+<h4>Compétences</h4>
+<p>Électricité industrielle, automatismes (lecture de schémas), pneumatique, soudure à l'arc. Habilitation électrique B1V/BR.</p>
+<h4>Centres d'intérêt</h4>
+<p>Mécanique moto (restauration d'une Honda CB500 de 1996), trail, bénévole au club de foot de son quartier.</p>
+<div class="pc-note"><span class="pc-hand">Annotation RH : « Rien entre juin 2023 et octobre 2024 ? À demander. »</span></div>`}],
+
+  'Farid HADDAD':[{type:'RELEVÉ',title:'Déplacements 2025-2026 (Service Achats)',html:`<h3>Relevé des déplacements - Farid HADDAD</h3><div class="pc-sub">Service Achats · Extrait du suivi des ordres de mission et des congés · Octobre 2025 - juin 2026</div>
+<table><tr><th>Dates</th><th>Destination</th><th>Motif</th><th>Type</th></tr>
+<tr><td>13 - 17 oct. 2025</td><td>Shenzhen (Chine)</td><td>Salon de l'électronique, rencontres fournisseurs</td><td>Professionnel</td></tr>
+<tr><td>9 - 13 fév. 2026</td><td>Dongguan (Chine)</td><td>Audit d'un fournisseur de connecteurs</td><td>Professionnel</td></tr>
+<tr><td>30 mars - 9 avr. 2026</td><td>Bagdad (Irak)</td><td>Congés, visite familiale</td><td>Personnel</td></tr>
+<tr><td><b>27 avr. - 4 mai 2026</b></td><td><b>Shenzhen (Chine)</b></td><td><b>Visites fournisseurs, dont SinoBoard (cartes Raspberry Pi)</b></td><td>Professionnel</td></tr>
+<tr><td>8 - 12 juin 2026</td><td>Shenzhen (Chine)</td><td>Évaluation fournisseurs avant l'arbitrage de septembre</td><td>Prévu</td></tr>
+</table>
+<div class="pc-note"><b>Politique « voyage en zone sensible » appliquée</b> : pour chaque déplacement en Chine, F. HADDAD part avec un ordinateur de voyage vide, prêté par la DSI, sans aucun accès au réseau ELECARM. Aucune connexion VPN à son nom pendant ces périodes.</div>`}],
+
+  'Julien MOREAU':[{type:'RH',title:'Entretien annuel (janvier 2026)',html:`<h3>Compte rendu d'entretien annuel</h3><div class="pc-sub">Julien MOREAU, Responsable DSI · Entretien du 20 janvier 2026 · Mené par R. LAMBERT, Directeur Général · Confidentiel</div>
+<h4>Bilan de l'année 2025</h4>
+<p>Objectifs atteints : migration de la messagerie, renouvellement du pare-feu, lancement du projet de VPN « Zero Trust » (mise en service prévue en mai 2026). Très forte charge de travail : J. MOREAU reste <b>le seul administrateur</b> de l'ensemble des systèmes, y compris la passerelle de télémaintenance des boîtiers BX.</p>
+<h4>Ce qu'exprime le salarié</h4>
+<p>« J'ai l'impression que mon expertise n'est pas reconnue à sa juste valeur. Je fais le travail de deux personnes. » Demande une revalorisation de salaire de 15 % et souhaite évoluer vers des missions de sécurité plus « stratégiques ».</p>
+<h4>Réponse de la direction</h4>
+<p>Revalorisation <b>refusée</b> pour 2026 (budget contraint). Le recrutement d'un second profil informatique, qui aurait permis qu'une autre personne relise et valide ses modifications, est <b>reporté à 2027</b>.</p>
+<h4>Appréciation</h4>
+<p>Salarié compétent et investi. Signes de lassitude. À suivre.</p>
+<div class="pc-note">Signatures : R. LAMBERT · J. MOREAU <span class="pc-hand">(« signé avec réserve »)</span></div>`}],
+
+  'Karim BENYOUCEF':[{type:'RH',title:'Note RH confidentielle (novembre 2025)',html:`<h3>Note RH confidentielle</h3><div class="pc-sub">Karim BENYOUCEF, Magasinier · Entretien du 18 novembre 2025 · Rédigée par S. MARCHAND</div>
+<p>M. BENYOUCEF a sollicité un rendez-vous pour demander une <b>avance sur salaire de 800 €</b>. Il explique traverser une période difficile : réparation imprévue de sa voiture, indispensable pour venir travailler, et retard de loyer.</p>
+<p>Avance accordée, remboursable sur 4 mois. Il a été orienté vers l'assistante sociale de la médecine du travail pour l'aider à renégocier son prêt.</p>
+<h4>Situation professionnelle</h4>
+<p>Salarié fiable et apprécié. Inventaires sans écart depuis son arrivée. Accès limité à l'ERP des stocks : <b>aucun accès aux systèmes informatiques, aux serveurs ou à la passerelle</b>.</p>
+<div class="pc-note">Suivi : entretien de point prévu en juin 2026. <span class="pc-hand">Karim a l'air soulagé. Il a remercié trois fois en partant.</span></div>`}],
+
+  'Nathalie BRUNET':[{type:'JOURNAL',title:'Connexions VPN du 15 au 17 mai',html:`<h3>Extrait du journal des connexions VPN</h3><div class="pc-sub">Serveur VPN SRV-DC · Du vendredi 15 au dimanche 17 mai 2026 · Export DSI</div>
+<table><tr><th>Date</th><th>Compte</th><th>Origine</th><th>Durée</th><th>Résultat</th></tr>
+<tr><td>15/05 18h42</td><td>s.marchand</td><td>Box internet, Blois</td><td>1h05</td><td>OK</td></tr>
+<tr><td>15/05 23h14</td><td>jmoreau</td><td>Nœud TOR, Roumanie</td><td>-</td><td>3 échecs</td></tr>
+<tr><td>16/05 10h20</td><td>r.lambert</td><td>Box internet, Blois</td><td>0h40</td><td>OK</td></tr>
+<tr><td>17/05 21h58</td><td>n.brunet</td><td>Box internet, Vendôme</td><td>0h47</td><td>OK</td></tr>
+</table>
+<div class="pc-note">Toutes les connexions réussies viennent de France, depuis des box internet de particuliers. La session de N. BRUNET du 17 mai a porté uniquement sur la base de données qualité (fichiers du lot S42).</div>`}],
+
+  'Pierre THIERRY':[{type:'REGISTRE',title:'Registre des visiteurs (4 au 13 mai)',html:`<h3>Registre des visiteurs</h3><div class="pc-sub">Accueil ELECARM SAS · Du 4 au 13 mai 2026 · Jour : accueil (Sandrine) · Nuit : gardiennage (P. THIERRY)</div>
+<table><tr><th>Date et heure</th><th>Visiteur</th><th>Lieu</th><th>Référence</th><th>Visa</th></tr>
+<tr><td>04/05 09h10</td><td>Livreur Chronopost</td><td>Accueil</td><td>-</td><td>Sandrine</td></tr>
+<tr><td>05/05 14h00</td><td>M. et Mme GUILLOT, cabinet d'expertise comptable</td><td>Direction</td><td>RDV R. LAMBERT</td><td>Sandrine</td></tr>
+<tr><td><b>06/05 20h15</b></td><td><b>Technicien maintenance (badge visiteur V-12)</b></td><td><b>Local technique, baie de télémaintenance</b></td><td><span class="pc-hand">???</span></td><td><span class="pc-hand">P.T.</span></td></tr>
+<tr><td>07/05 08h45</td><td>Métrolab Centre, étalonnage</td><td>Atelier, table de contrôle</td><td>TICK-4151</td><td>Sandrine</td></tr>
+<tr><td>12/05 09h50</td><td>Sigma-Tech (2 personnes)</td><td>Salle serveurs</td><td>TICK-4185</td><td>Sandrine</td></tr>
+<tr><td>13/05 11h30</td><td>Livreur, colis SinoBoard (renvoyé à l'expéditeur)</td><td>Accueil</td><td>-</td><td>Sandrine</td></tr>
+</table>
+<div class="pc-note"><span class="pc-hand">P.T. : « Le gars avait une caisse à outils et le logo TéléMaint sur sa veste. Il a dit que c'était prévu. J'ai pas trouvé le numéro. »</span></div>`}],
+
+  'Camille ROUSSEAU':[{type:'PRESSE',title:'Article de presse (2 mai 2026)',html:`<h3>Une cinquantaine de manifestants devant le salon Défense & Industrie Centre</h3><div class="pc-sub">L'Écho du Loir-et-Cher · Samedi 2 mai 2026 · Rubrique Blois</div>
+<p>Hier matin, une cinquantaine de personnes se sont rassemblées devant le parc des expositions de Blois, où s'ouvrait le salon <i>Défense & Industrie Centre</i>. À l'appel du collectif Objecteurs, les manifestants demandaient « plus de transparence sur les exportations d'armement ».</p>
+<p>« Nous ne sommes pas contre les gens qui travaillent dans l'industrie, beaucoup d'entre nous y travaillent, explique Camille, 27 ans, membre du collectif depuis trois ans. Nous demandons simplement un débat public. »</p>
+<p>Le rassemblement s'est déroulé dans le calme et s'est dispersé vers midi. Aucun incident n'a été signalé par la préfecture.</p>`}],
+
+  'Marc DURAND':[{type:'FORMULAIRE',title:'Demande d\'accès VPN (14 mai)',html:`<h3>Demande d'accès à distance (VPN)</h3><div class="pc-sub">Formulaire DSI-07 · Déposé le jeudi 14 mai 2026</div>
+<table>
+<tr><td class="pc-yr">Demandeur</td><td>Marc DURAND, technicien de production (atelier)</td></tr>
+<tr><td class="pc-yr">Dates souhaitées</td><td>Jeudi 21 et vendredi 22 mai 2026</td></tr>
+<tr><td class="pc-yr">Motif</td><td>Rendez-vous au tribunal judiciaire de Blois (litige avec un ancien propriétaire). Télétravail pour la préparation des dossiers de câblage.</td></tr>
+<tr><td class="pc-yr">Accès demandés</td><td>Messagerie et dossier partagé « Plans atelier ». <span class="pc-hand">Pas besoin de l'ERP ni du reste !</span></td></tr>
+<tr><td class="pc-yr">Avis du responsable</td><td>Y. FERREIRA : favorable</td></tr>
+<tr><td class="pc-yr">Décision DSI</td><td><span class="pc-stamp">Non traitée</span></td></tr>
+</table>
+<div class="pc-note">Rappel : la DSI est seule habilitée à créer ou à modifier un accès à distance.</div>`}],
+};
+function openPiece(name,i){ const pc=(PIECES[name]||[])[i]; if(!pc) return; const b=document.getElementById('piece-box'); b.innerHTML=pc.html+'<button class="pc-close" onclick="closePiece()">Fermer le document</button>'; const m=document.getElementById('piece'); m.classList.add('show'); m.scrollTop=0; }
+function closePiece(){ document.getElementById('piece').classList.remove('show'); }
 const FICHES={
   'Marc DURAND':{ref:'AUD-2026-01',dob:'3 mars 1985',pob:'Tours (Indre-et-Loire)',hair:'Bruns',eyes:'Marron',height:'1,78 m',weight:'80 kg',since:'mars 2018',marks:'Barbe fournie'},
   'Karim BENYOUCEF':{ref:'AUD-2026-02',dob:'14 septembre 1996',pob:'Blois (Loir-et-Cher)',hair:'Bruns foncés',eyes:'Marron',height:'1,75 m',weight:'72 kg',since:'janvier 2023',marks:'Barbe courte'},
@@ -2871,6 +2977,7 @@ function showSuspect(s){
     </div>
     <div class="fbi-p-sec"><div class="fbi-p-t">Accès</div><div class="fbi-p-txt"><ul>${s.access.map(a=>`<li>${a}</li>`).join('')}</ul></div></div>
     <div class="fbi-p-sec"><div class="fbi-p-t">Remarques</div><div class="fbi-p-txt">${s.detail}</div></div>
+    ${(PIECES[s.name]||[]).length?`<div class="fbi-p-sec"><div class="fbi-p-t">Pièces du dossier</div><div class="fbi-pieces">${PIECES[s.name].map((pc,i)=>`<button class="fbi-piece" onclick="openPiece('${s.name}',${i})"><i>${pc.type}</i>${pc.title}</button>`).join('')}</div></div>`:''}
     <div class="fbi-p-foot">Toute information complémentaire doit être signalée à l'équipe d'audit.
       ${s.osintBtn?`<button class="sec" onclick="document.getElementById('suspect-modal').classList.remove('show');switchOSINT('${s.osintId}');document.querySelector('[data-tab=\\'osint\\']').click()">Voir le profil OSINT</button>`:''}
       <button onclick="document.getElementById('suspect-modal').classList.remove('show')">Fermer</button>
