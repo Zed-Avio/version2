@@ -2608,6 +2608,7 @@ function switchTab(btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  if(btn.dataset.tab==='verdict' && !SUP_QUESTIONS.length) refreshSoon();
   saveState();
 }
 
@@ -3563,7 +3564,8 @@ function getSupChoices(){
 function saveSupDraft(){ try{ localStorage.setItem(SUP_DRAFT_KEY,JSON.stringify(getSupChoices())); }catch(e){} }
 function renderSupQuestions(){
   const box=document.getElementById('sup-questions');
-  if(!box || box.dataset.ready || !SUP_QUESTIONS.length) return;
+  if(!box || box.dataset.ready) return;
+  if(!SUP_QUESTIONS.length){ box.innerHTML='<div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Chargement des questions...</div>'; return; }
   let draft={}; try{ draft=JSON.parse(localStorage.getItem(SUP_DRAFT_KEY)||'{}'); }catch(e){}
   box.innerHTML=SUP_QUESTIONS.map((q,n)=>`<div class="verdict-q">
     <div class="verdict-q-title">${n+1}. ${escHtml(q.title)}</div>
@@ -3844,9 +3846,11 @@ function refreshSoon(){ if(liveTick){ clearTimeout(liveTimer); liveTimer=setTime
 function startLiveSync(){
   const ov=document.getElementById('closed-overlay');
   const tick=liveTick=async()=>{
-    const st=await fetchSession(5000);
+    // Questions pas encore reçues (premier appel trop lent au chargement) : on les redemande.
+    const st=await fetchSession(5000,!SUP_QUESTIONS.length);
     if(st){
       apiOnline=true;
+      if(st.questions && !SUP_QUESTIONS.length){ SUP_QUESTIONS=st.questions; renderVerdict(); }
       applyServerMission(st);
       showNewAlerts(st.alerts);
       if(st.me===null && ++meGone<2){ /* à confirmer au prochain passage */ }
@@ -3865,9 +3869,9 @@ function startLiveSync(){
         if(st.me){ followMove(st.me); const changed=JSON.stringify(st.me)!==JSON.stringify(teamView); teamView=st.me; if(changed){ setTeamChip(); renderVerdict(); renderChat(true); } }
       }
     }
-    clearTimeout(liveTimer); liveTimer=setTimeout(tick,chatOpen?5000:10000);
+    clearTimeout(liveTimer); liveTimer=setTimeout(tick,(chatOpen||!SUP_QUESTIONS.length)?5000:10000);
   };
-  liveTimer=setTimeout(tick,chatOpen?5000:10000);
+  liveTimer=setTimeout(tick,SUP_QUESTIONS.length?(chatOpen?5000:10000):300);
 }
 
 // ══════════════════════════════════════════
