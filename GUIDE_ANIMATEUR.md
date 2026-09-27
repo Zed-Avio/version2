@@ -55,6 +55,8 @@ Un réglage (fermeture, déplacement d'un élève) met jusqu'à 20 secondes à a
 | Faille organisationnelle | Modification du code du programme de supervision sans revue ni contrôle des changements |
 | Leviers VICE | Vanité + Espèces |
 
+**À bien faire ressortir au débriefing :** grâce à l'accès DSI (la porte dérobée ajoutée par MOREAU), l'attaquant a aussi **compromis le boîtier BX-4216** (firmware modifié le 16 mai via la télémaintenance), destiné au programme classé Thales. Sa surconsommation (+40 % à 33 °C) a été attribuée trop vite à la chaleur par le rapport de conformité, sous la pression du délai. C'est la conséquence la plus grave de l'attaque.
+
 Le corrigé complet (avec les fausses pistes à écarter) est dans la console, carte **Corrigé**. Il est aussi accessible dans l'exercice via le bouton **ANIM** en haut à droite, **uniquement avec le mot de passe animateur** : le corrigé n'est jamais présent dans les pages des élèves.
 
 ## En cas de problème

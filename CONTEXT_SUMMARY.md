@@ -127,3 +127,11 @@ Outil separe, deploye a `https://qcm-insa.vercel.app/`, **pas de dossier local c
 - Console, carte **Groupes** (juste sous l'état de l'exercice) : « Créer les groupes » (4 TD x 5 groupes x 6 places par défaut, n'ajoute que les manquants), + / - place par groupe (1 à 12, jamais sous le nombre d'inscrits), déplacer un élève (⇄), retirer (×), ajouter un groupe ou un TD, supprimer un groupe, « Vider les groupes » (nouvelle séance, garde les groupes).
 - Groupe = équipe dans `state.json`, avec `td`, `num`, `capacity`, nom `TD1 · Groupe 1`. Les membres sont retrouvés par leur identifiant dans tous les groupes (`findMember`) : un élève déplacé garde son poste, qui met à jour son groupe tout seul.
 - Minuteur MISSION de 4 h retiré de l'affichage (jeu, salle, console) : l'exercice n'a plus de limite de temps, seul l'animateur ferme. Les champs `mission*` restent côté serveur mais ne sont plus utilisés.
+
+## Scénario enrichi (27 septembre 2026)
+
+- **BX-4216 compromis** (choix de l'utilisateur) : le 16 mai à 02h31, via la porte dérobée ajoutée avec l'accès DSI de MOREAU, l'attaquant envoie par la télémaintenance un firmware modifié au BX-4216 (banc de contrôle du lot S42, 10.42.6.116), destiné au programme classé Thales. N. BRUNET mesure +40 % à 33 °C le 17 mai (atelier à température normale). Le rapport de conformité du Montage (19 mai) attribue l'écart à la chaleur sous la pression du délai et valide l'expédition. C'est la conséquence la plus grave de l'attaque, à faire ressortir au débriefing.
+- Fausses pistes en « miroirs » de MOREAU (mobile / accès / traces), accroche dans la fiche, preuve ailleurs ; fausses pistes faciles dans les boîtes employés ; histoires complètes pour chaque faux positif (scan Sigma-Tech, antivirus compta, faux technicien TéléMaint, clé USB).
+- Exercices de sensibilisation : portail de phishing, quiz Facebook (Marc DURAND), antivirus (mail de S. LEBRUN), clé USB (boîte de P. THIERRY). Les actions des élèves apparaissent en direct dans Wazuh (POSTE-AUDIT, WS-COMPTA).
+- Guide de l'enquête (aide automatique sans solution) à côté de « Écrire à l'animateur » ; notification des messages de l'animateur (bandeau en bas à droite, son, bouton qui clignote) ; relevé toutes les 10 s.
+- Message « Travaillez en équipe » dans l'intro (briefing).

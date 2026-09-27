@@ -569,9 +569,9 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 #chat-btn.ping{animation:chatPing 1.2s ease-in-out infinite}
 @keyframes chatPing{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.7)}50%{box-shadow:0 0 0 10px rgba(220,38,38,0)}}
 /* Notification d'un message de l'animateur */
-#anim-banner{position:fixed;top:58px;left:50%;transform:translateX(-50%);z-index:990;display:none;align-items:center;gap:12px;max-width:min(620px,calc(100vw - 32px));background:#1a0b0b;border:1px solid #7f1d1d;border-radius:10px;padding:12px 14px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#anim-banner{position:fixed;right:20px;bottom:76px;z-index:990;display:none;align-items:center;gap:12px;width:min(420px,calc(100vw - 32px));background:#1a0b0b;border:1px solid #7f1d1d;border-radius:10px;padding:12px 14px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #anim-banner.show{display:flex;animation:bannerIn .35s ease-out}
-@keyframes bannerIn{from{opacity:0;transform:translate(-50%,-12px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes bannerIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 #anim-banner .ab-t{font-size:11px;font-weight:800;letter-spacing:.08em;color:#fca5a5;text-transform:uppercase}
 #anim-banner .ab-m{font-size:13.5px;color:#f1e4e4;line-height:1.45;margin-top:2px;word-break:break-word}
 #anim-banner button{border:none;border-radius:6px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:var(--font)}
@@ -978,6 +978,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
     <div class="brief-mission brief-anim" id="ba8">
       <div class="brief-mission-tag">Votre mission</div>
       <div class="brief-mission-text">Vous formez un <strong style="color:#fff">cabinet d'audit externe mandaté par la Direction d'ELECARM SAS</strong> pour répondre à cette directive. Établir <strong style="color:#fff">comment l'intrusion a été rendue possible</strong>, identifier la faille humaine et technique, et proposer des mesures correctives. Votre rapport est attendu par la direction et transmis au Ministère. L'enquête commence maintenant.</div>
+      <div style="margin-top:14px;padding:12px 14px;background:#0f1a12;border:1px solid #1f3a26;border-radius:6px;font-size:14px;line-height:1.6;color:#cfe8d6"><strong style="color:#fff">Travaillez en équipe.</strong> Répartissez-vous les onglets (mails, journaux, enquête, OSINT, documents…) et mettez vos découvertes en commun régulièrement : à plusieurs, vous irez beaucoup plus vite. Une conclusion se construit ensemble.</div>
     </div>
 
     <!-- Navigation 5 onglets -->
@@ -1294,8 +1295,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
           <div class="enig-scroll">
 
             <div class="enig-ref">
-              Deux pistes techniques distinctes concernent les boîtiers BX-4400-A. La première (ci-dessous) porte sur une anomalie de mesure qualité : à vérifier si elle est liée au reste des faits ou s'il s'agit d'un problème de maintenance industrielle indépendant. La seconde porte sur une modification suspecte détectée dans le code du programme de supervision de la passerelle de télémaintenance : voir l'onglet Programmation, l'onglet Documents ("Journal supervision") et l'onglet Journaux / Logs (agent BX-GATEWAY-07).
-            </div>
+              Le lot S42 des boîtiers BX-4400-A doit partir chez Thales le 23 mai. Un boîtier présente une mesure anormale, et le Service Montage a avancé une explication : vérifiez-la avec les mesures (intensité et température de chaque boîtier), puis cherchez si ce boîtier apparaît ailleurs dans le dossier (Journaux / Logs, Documents).</div>
 
             <!-- Specs -->
             <div class="enig-section">
@@ -1335,7 +1335,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 </div>
                 <div class="enig-msg">
                   <div class="enig-msg-label">Nathalie BRUNET - Responsable qualité</div>
-                  "Les mesures ont été effectuées le 17 mai dans les conditions habituelles. Le lot présente une dispersion globalement cohérente avec les conditions thermiques de l'atelier."
+                  "Les mesures ont été faites le dimanche 17 mai à 8h30, atelier à température normale. Tout le lot est dans les tolérances, sauf le BX-4216 : nettement au-dessus, alors qu'il était à 33 °C. Je n'ai pas d'explication."
                 </div>
                 <div class="enig-msg">
                   <div class="enig-msg-label">Note technique BX-4400 (Y. Ferreira - 17/05)</div>
@@ -1347,8 +1347,7 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
                 </div>
               </div>
               <div class="enig-ref" style="margin-top:10px">
-                Rappel : le boîtier BX-4216 est destiné au programme classé Diffusion Restreinte - Thales Defence (réf. THA-REF-28471). La conformité qualité est critique avant expédition. À ce stade, rien ne relie cette anomalie de mesure à l'intrusion : vérifiez si elle mérite une préconisation de maintenance à part entière ou si elle détourne l'attention du vrai problème.
-              </div>
+                Rappel : le boîtier BX-4216 est destiné au programme classé Diffusion Restreinte - Thales Defence (réf. THA-REF-28471). Il doit être expédié dans quatre jours. Votre analyse doit trancher : simple effet de la chaleur, ou conséquence de l'intrusion ?</div>
             </div>
 
             <!-- Analyse -->
@@ -1651,7 +1650,7 @@ const MAILS = [
 </tbody>
 </table>
 <p>Valeur nominale : 0,8 A - Tolérance interne : +/- 10% (0,72 à 0,88 A)</p>
-<p>Le lot présente une dispersion globalement cohérente avec les conditions thermiques de l'atelier cette semaine (chaleur inhabituelle). J'attends votre décision sur la suite.</p>
+<p>Mesures faites dimanche matin, atelier à température normale. Tout le lot est dans les tolérances, <strong>sauf le BX-4216</strong> : 1,12 A pour 0,8 A attendus, alors qu'il n'était qu'à 33 °C. Je n'ai pas d'explication. Je recommande de ne pas l'expédier avant d'avoir compris. J'attends votre décision.</p>
 <p>N. BRUNET<br>Responsable Qualité - ELECARM SAS</p>`
   },
   {
@@ -2143,6 +2142,7 @@ const LOGS = [
   //   07/05 C. ROUSSEAU, site militant      -> une opinion, aucune action technique (mail du collectif)
   //   16/05 F. HADDAD, domaine chinois      -> relation fournisseur des Achats (mail de SinoBoard)
   //   13/05 antivirus, poste comptabilité   -> menace bloquée et mise en quarantaine, aucune exécution
+//   16/05 firmware envoyé au BX-4216 : VRAIE attaque (conséquence), à relier au Boîtier BX et au rapport de conformité hâtif
 //   06/05 coupure de la baie (faux technicien de P. THIERRY) -> mail des Services généraux (TICK-4147), aucune modification du code ce jour-là
   {t:'01/05  02h00',agent:'SRV-BACKUP',lv:'INFO',vis:true,mitre:[],
    desc:'Sauvegarde de nuit terminée normalement (23,8 Go).',
@@ -2210,6 +2210,9 @@ const LOGS = [
   {t:'15/05  23h14',agent:'SRV-DC',lv:'ALERTE',vis:true,mitre:['T1133'],
    desc:'3 essais de connexion à distance (VPN) avec le compte jmoreau, depuis le réseau caché TOR. Le blocage automatique du compte avait été désactivé.',
    aide:'Quelqu\'un essaie d\'entrer depuis l\'extérieur avec ce compte. Le blocage après plusieurs essais sert justement à empêcher ça : qui a le droit de le désactiver ?'},
+  {t:'16/05  02h31',agent:'BX-GATEWAY-07',lv:'ALERTE',vis:true,mitre:['T1195'],
+   desc:'La passerelle envoie une mise à jour de firmware au boîtier BX-4216, branché sur le banc de contrôle du lot S42. Aucun ticket, aucune mise à jour prévue. La commande vient de la console d\'administration à distance de la passerelle.',
+   aide:'La passerelle de télémaintenance sert à mettre à jour les boîtiers à distance. Le firmware, c\'est le programme interne du boîtier. Questions à se poser : qui a pu lancer cette commande en pleine nuit, et par quel accès ? Que montrent les mesures de ce boîtier le lendemain (onglet Boîtier BX) ?'},
   {t:'16/05  09h15',agent:'SRV-DC',lv:'INFO',vis:true,mitre:[],
    desc:'Mot de passe expiré pour y.ferreira, remis à zéro par le support (TICK-4192).',
    aide:'Activité de routine.'},
@@ -2302,6 +2305,7 @@ Récapitulatif des dossiers fournisseurs actuellement en réflexion pour le seco
 <tr><td>09/05</td><td>185.220.101.47</td><td>Externe</td><td>412 Mo</td></tr>
 <tr><td>11/05</td><td>10.42.6.11</td><td>Supervision interne (serveur ELECARM)</td><td>3 Mo</td></tr>
 <tr><td>14/05</td><td>185.220.101.47</td><td>Externe</td><td>528 Mo</td></tr>
+<tr><td>16/05</td><td>10.42.6.116</td><td>Interne - banc de contrôle (boîtier BX-4216)</td><td>2 Mo</td></tr>
 <tr><td>16/05</td><td>20.42.73.18</td><td>Externe</td><td>38 Ko</td></tr>
 <tr><td>18/05</td><td>185.220.101.47</td><td>Externe</td><td>601 Mo</td></tr>
 </tbody></table>
@@ -2370,13 +2374,12 @@ Suite à l'anomalie de mesure relevée par le Service Qualité sur le lot S42 (v
 </div>
 <table class="data-table"><thead><tr><th>Point de contrôle</th><th>Résultat</th></tr></thead><tbody>
 <tr><td>Conformité électrique (tension, intensité, puissance)</td><td style="color:#8a8a8a">Conforme aux tolérances constructeur</td></tr>
-<tr><td>Origine de l'écart BX-4216</td><td>Confirmée thermique (atelier), sans impact fonctionnel</td></tr>
+<tr><td>Origine de l'écart BX-4216</td><td>Attribuée à la chaleur de l'atelier (hypothèse du Service Montage)</td></tr>
 <tr><td>Conformité mécanique et assemblage</td><td style="color:#8a8a8a">Conforme</td></tr>
 <tr><td>Décision expédition</td><td style="color:#8a8a8a;font-weight:600">Lot validé pour livraison Thales</td></tr>
 </tbody></table>
 <div style="margin-top:12px;background:var(--s2);border-left:3px solid var(--bd2);padding:12px;border-radius:4px;font-size:13px;color:var(--tx2);line-height:1.75">
-<strong style="color:#fff">Conclusion :</strong> l'anomalie du lot S42 est un phénomène de maintenance industrielle indépendant, sans lien avec l'intrusion informatique en cours d'investigation. Les boîtiers BX-4400-A sont déclarés conformes.
-</div>`
+<strong style="color:#fff">Conclusion :</strong> l'écart du BX-4216 est attribué aux fortes chaleurs de la semaine. Compte tenu du délai contractuel Thales (23 mai), le lot est validé pour expédition.</div>`
 };
 
 const EMP_MAILBOXES = [
@@ -2693,7 +2696,7 @@ const WZ_AGENTS={'WS-MOREAU':['004','10.42.2.31'],'WS-BRUNET':['007','10.42.2.44
   'SRV-DC':['001','10.42.1.10'],'FW-ELECARM':['005','10.42.1.1'],'PROXY-WEB':['006','10.42.1.20'],'WS-COMPTA':['009','10.42.2.52'],'POSTE-AUDIT':['015','10.42.2.99'],'SRV-BACKUP':['002','10.42.1.12'],'MESSAGERIE':['003','10.42.1.15'],'IMPRIMANTE':['013','10.42.3.50'],'BADGE-ATELIER':['014','10.42.5.8']};
 const WZ_MITRE={T1087:'Account Discovery',T1591:'Gather Victim Org Information',T1059:'Command and Scripting Interpreter',T1105:'Ingress Tool Transfer',
   T1566:'Phishing',T1071:'Application Layer Protocol',T1573:'Encrypted Channel',T1041:'Exfiltration Over C2 Channel',T1078:'Valid Accounts',
-  T1021:'Remote Services',T1046:'Network Service Discovery',T1204:'User Execution',T1091:'Replication Through Removable Media',T1562:'Impair Defenses',T1554:'Compromise Host Software Binary',T1133:'External Remote Services',T1003:'OS Credential Dumping'};
+  T1021:'Remote Services',T1046:'Network Service Discovery',T1204:'User Execution',T1091:'Replication Through Removable Media',T1195:'Supply Chain Compromise',T1562:'Impair Defenses',T1554:'Compromise Host Software Binary',T1133:'External Remote Services',T1003:'OS Credential Dumping'};
 const WZ_MOIS=['janv.','févr.','mars','avr.','mai','juin'];
 let wzMinLevel=0, wzOpen=-1;
 function wzParse(t){ const m=t.match(/(\d+)\/(\d+)\s+(\d+)h(\d+)/); return m?{d:+m[1],mo:+m[2],h:+m[3],mi:+m[4]}:{d:0,mo:0,h:0,mi:0}; }
@@ -2701,7 +2704,7 @@ function wzRuleId(l){
   if(l.mitre.includes('T1554')) return '550';
   if(l.agent==='BADGE-ATELIER') return '81620';
   if(l.lv==='INFO') return l.agent==='SRV-BACKUP'?'61104':'2902';
-  const base={T1087:'92031',T1591:'92213',T1059:'91816',T1566:'87105',T1071:'87701',T1041:'87712',T1078:'60122',T1021:'92653',T1133:'60204',T1003:'92900',T1046:'40704',T1204:'52502',T1091:'81101',T1562:'67028'};
+  const base={T1087:'92031',T1591:'92213',T1059:'91816',T1566:'87105',T1071:'87701',T1041:'87712',T1078:'60122',T1021:'92653',T1133:'60204',T1003:'92900',T1046:'40704',T1204:'52502',T1091:'81101',T1195:'88210',T1562:'67028'};
   return base[l.mitre[0]]||'100210';
 }
 // Actions de l'élève visibles dans le SIEM (enregistrées sur ce poste par les exercices de sensibilisation)
@@ -3516,7 +3519,7 @@ let guideOpen=false, guideStarted=false, guideHint={};
 const GUIDE_TOPICS={
   start:{label:'Par où commencer ?',text:`Voici une feuille de route pour les 2h20 :
 <b>1. Comprendre la situation (15 min)</b> : SITUATION et les mails de la Direction. Que s'est-il passé le 19 mai à 8h ?
-<b>2. Suivre la fuite (30 min)</b> : JOURNAUX / LOGS et le journal de la passerelle (DOCUMENTS). D'où partent les données, et vers où ?
+<b>2. Suivre la fuite (30 min)</b> : JOURNAUX / LOGS, le journal de la passerelle (DOCUMENTS) et BOÎTIER BX. D'où partent les données, vers où, et qu'est-ce qui a été touché ?
 <b>3. Trouver l'entrée (30 min)</b> : MAILS, pièces jointes, PROGRAMMATION. Comment l'attaquant est-il entré ? Qu'a-t-il modifié ?
 <b>4. Comprendre l'humain (30 min)</b> : ENQUÊTE, OSINT, boîtes des employés. Qui avait un mobile, un accès et a laissé des traces ?
 <b>5. Conclure (35 min)</b> : SUPPOSITIONS. Mettez-vous d'accord en groupe avant d'envoyer : vous n'avez que 5 tentatives.
@@ -3574,6 +3577,7 @@ const GUIDE_LEX=[
   [/exfiltr|fuite/,'L\'<b>exfiltration</b>, c\'est le vol de données : des fichiers qui sortent de l\'entreprise vers l\'extérieur, souvent la nuit et en gros volumes.'],
   [/faux positif|fausse alerte/,null,'fp'],
   [/usb|cl[eé]/,'Une <b>clé USB</b> inconnue peut contenir un programme qui s\'exécute dès qu\'on la branche. On ne branche jamais un support dont on ne connaît pas l\'origine.'],
+  [/firmware|micrologiciel/,'Le <b>firmware</b> est le programme interne d\'un appareil (ici un boîtier électronique). Le modifier, c\'est changer ce que fait l\'appareil, sans que cela se voie de l\'extérieur.'],
   [/ntp|horloge/,'Le <b>NTP</b> est le service qui met les horloges des machines à l\'heure. Il utilise le port 123 et des volumes minuscules.'],
 ];
 function gdEsc(t){ return String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
