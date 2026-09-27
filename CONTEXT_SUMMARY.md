@@ -135,3 +135,13 @@ Outil separe, deploye a `https://qcm-insa.vercel.app/`, **pas de dossier local c
 - Exercices de sensibilisation : portail de phishing, quiz Facebook (Marc DURAND), antivirus (mail de S. LEBRUN), clé USB (boîte de P. THIERRY). Les actions des élèves apparaissent en direct dans Wazuh (POSTE-AUDIT, WS-COMPTA).
 - Guide de l'enquête (aide automatique sans solution) à côté de « Écrire à l'animateur » ; notification des messages de l'animateur (bandeau en bas à droite, son, bouton qui clignote) ; relevé toutes les 10 s.
 - Message « Travaillez en équipe » dans l'intro (briefing).
+
+## Dernières évolutions (27 septembre 2026, suite)
+
+- **Pièces du dossier** sur chaque fiche ENQUÊTE (document façon papier) : CV de VASSEUR (trou juin 2023 - octobre 2024), relevé des déplacements de HADDAD (Shenzhen du 27 avril au 4 mai, ordinateur de voyage vide), entretien annuel de MOREAU (seul administrateur, augmentation refusée, second profil reporté à 2027), note RH de BENYOUCEF, journal VPN du 15 au 17 mai (BRUNET, et les échecs TOR de jmoreau), registre des visiteurs (technicien du 6 mai à 20h15 sans référence), article de presse sur ROUSSEAU, demande de VPN de DURAND.
+- **Vocabulaire** : dans les indications de l'interface, « suspect » au lieu de « malveillant » ou « anormal », avec renvoi vers Journaux / Logs.
+- **Boîtes employés** : plus vivantes (frigo de l'atelier, chat du hangar B, relance du crédit auto de MOREAU) ; dates vérifiées (jours de la semaine, 1er et 8 mai fériés, service de THIERRY de 20h à 6h, maintenance du samedi 2 mai qui explique la présence de MOREAU).
+- **OSINT** : profils recoupés avec les pièces (BRUNET habite Blois, VASSEUR Orléans) et enrichis (rénovation et pizzas de DURAND, rondes de THIERRY révélées sur Facebook, vacances de ROUSSEAU).
+- **/salle** : encadré « Pour réussir l'exercice, travaillez en groupe. »
+- Vérifié : 5 tentatives par groupe (compteur partagé, verrouillage, persistance, remise à zéro par la console), les 8 boîtes employés (55 mails), les 8 profils OSINT, les pièges et le guide, sans erreur.
+- **Avant la première séance** : dans la console, Supprimer tous les groupes, Créer les groupes (4 TD, 4 groupes, 6 places), Mettre en veille ; faire une répétition complète chronométrée.
