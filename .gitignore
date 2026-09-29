@@ -5,3 +5,4 @@ package-lock.json
 JOURNAL_MODIFICATIONS.md
 ffuf/
 .playwright-mcp/
+etat-local.json

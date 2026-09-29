@@ -7,7 +7,12 @@
 const fs = require('fs');
 
 const PATH = process.env.STATE_PATH || 'state.json';   // STATE_PATH : fichier de test isolé
-const READ_TTL_MS = 8000;
+// Duree du cache memoire selon l'etat de la session : le plus long possible pour economiser les lectures Blob
+// (quota Hobby), sans retarder la salle d'attente ni l'exercice de facon genante.
+function readTtl(state) {
+  const st = state && state.session && state.session.status;
+  return st === 'running' ? 12000 : st === 'waiting' ? 8000 : 15000;
+}
 let cache = null; // { state, etag, at }
 
 function defaultState() {
@@ -50,7 +55,7 @@ async function writeState(state, etag) {
 // minRev : version minimale deja vue par le client (chaque ecriture incremente state.rev) ; si le cache
 // de cette instance est plus ancien, on relit : chacun voit toujours au moins ses propres actions.
 async function read(fresh, minRev) {
-  if (!fresh && cache && Date.now() - cache.at < READ_TTL_MS && !((minRev || 0) > (cache.state.rev || 0))) return cache.state;
+  if (!fresh && cache && Date.now() - cache.at < readTtl(cache.state) && !((minRev || 0) > (cache.state.rev || 0))) return cache.state;
   const { state, etag } = await readFresh();
   cache = { state, etag, at: Date.now() };
   return state;
