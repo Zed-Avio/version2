@@ -3840,8 +3840,11 @@ function setTeamChip(){
   if(teamView){ c.textContent=teamView.team.name; c.title=teamView.team.members.join(', '); c.style.display='block'; } else c.style.display='none';
 }
 // Suivi en cours de partie : fermeture par l'animateur, tentatives et messages des autres postes de l'équipe.
-// Toutes les 10 s, toutes les 5 s quand la discussion est ouverte.
+// Toutes les 15 s, toutes les 6 s quand la discussion est ouverte, 4 fois moins souvent si l'onglet est cache
+// (quota du plan gratuit : une centaine de postes interrogent le serveur en continu).
 let liveTimer=null, liveTick=null, meGone=0;
+function liveDelay(ms){ return Math.round(ms*(document.hidden?4:1)*(0.85+Math.random()*0.3)); }
+document.addEventListener('visibilitychange',function(){ if(!document.hidden) refreshSoon(); });
 function refreshSoon(){ if(liveTick){ clearTimeout(liveTimer); liveTimer=setTimeout(liveTick,300); } }
 function startLiveSync(){
   const ov=document.getElementById('closed-overlay');
@@ -3869,9 +3872,9 @@ function startLiveSync(){
         if(st.me){ followMove(st.me); const changed=JSON.stringify(st.me)!==JSON.stringify(teamView); teamView=st.me; if(changed){ setTeamChip(); renderVerdict(); renderChat(true); } }
       }
     }
-    clearTimeout(liveTimer); liveTimer=setTimeout(tick,(chatOpen||!SUP_QUESTIONS.length)?5000:10000);
+    clearTimeout(liveTimer); liveTimer=setTimeout(tick,liveDelay(!SUP_QUESTIONS.length?5000:(chatOpen?6000:15000)));
   };
-  liveTimer=setTimeout(tick,SUP_QUESTIONS.length?(chatOpen?5000:10000):300);
+  liveTimer=setTimeout(tick,SUP_QUESTIONS.length?liveDelay(chatOpen?6000:15000):300);
 }
 
 // ══════════════════════════════════════════

@@ -7,7 +7,7 @@
 const fs = require('fs');
 
 const PATH = process.env.STATE_PATH || 'state.json';   // STATE_PATH : fichier de test isolé
-const READ_TTL_MS = 5000;
+const READ_TTL_MS = 8000;
 let cache = null; // { state, etag, at }
 
 function defaultState() {

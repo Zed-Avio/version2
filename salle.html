@@ -137,7 +137,7 @@ function ask(text, then){
 var API = '/api/session';
 var TEAM_API = '/api/team';
 var EXO = '/';
-var POLL = 3000;
+var POLL = 6000;   // plan gratuit : ~100 postes en attente en meme temps
 var KEY = 'elecarm_team';
 
 var cur = null;          // dernier etat serveur
@@ -311,8 +311,10 @@ function poll(once){
         cur=st; renderTeams();
       }
     }).catch(function(){})
-    .then(function(){ if(!launched && !once) setTimeout(poll, POLL); });
+    .then(function(){ if(!launched && !once) pollTimer=setTimeout(poll, Math.round(POLL*(document.hidden?4:1)*(0.85+Math.random()*0.3))); });
 }
+var pollTimer=null;
+document.addEventListener('visibilitychange',function(){ if(!document.hidden && !launched){ clearTimeout(pollTimer); poll(); } });
 tick(); poll();
 </script>
 </body>

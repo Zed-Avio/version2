@@ -486,7 +486,7 @@ function renderTeams(){
 }
 function poll(){
   api({action:'state',minRev:(st&&st.rev)||0}).then(function(o){ if(o.ok) apply(o.j); }).catch(function(){})
-    .then(function(){ setTimeout(poll,4000); });
+    .then(function(){ setTimeout(poll,document.hidden?30000:4000); });
 }
 setInterval(renderState,1000);
 function copyLink(){ var t=location.origin+'/salle'; navigator.clipboard&&navigator.clipboard.writeText(t); msg('Lien copié.',false); }
