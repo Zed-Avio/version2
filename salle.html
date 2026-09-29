@@ -225,15 +225,27 @@ function join(){
   if(!name){ setErr('Indiquez votre nom et prénom.'); document.getElementById('mname').focus(); return; }
   var btn=document.getElementById('joinbtn'); btn.disabled=true;
   setErr('');
-  fetch(TEAM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'join', memberName:name, teamId:selGroup})})
-    .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
-    .then(function(o){
-      btn.disabled=false;
-      if(!o.ok){ setErr(o.j.message||'Erreur, réessayez.'); return; }
-      saveTeam({teamId:o.j.teamId, memberId:o.j.memberId, teamName:o.j.teamName, memberName:o.j.memberName});
-      if(o.j.view){ cur=o.j.view; noteRev(o.j.view.rev); }
-      selTd=null; selGroup=null; lastSig=''; renderTeams();
-    }).catch(function(){ btn.disabled=false; setErr('Serveur injoignable, réessayez.'); });
+  // Arrivee de toute la classe en meme temps : petit delai aleatoire au depart, puis jusqu'a 6 essais automatiques
+  // (delais aleatoires croissants) quand le serveur est occupe, au lieu d'afficher une erreur a recliquer.
+  var group=selGroup, tries=0;
+  function fail(msg){ btn.disabled=false; setErr(msg); }
+  function retry(){
+    if(++tries>=6) return fail('Le serveur est très sollicité. Cliquez de nouveau sur « Rejoindre » dans quelques secondes.');
+    setErr('Connexion au groupe en cours, veuillez patienter...');
+    setTimeout(attempt, 600*tries+Math.random()*1200);
+  }
+  function attempt(){
+    fetch(TEAM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'join', memberName:name, teamId:group})})
+      .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,status:r.status,j:j}; }); })
+      .then(function(o){
+        if(!o.ok){ if(o.status>=500) return retry(); return fail(o.j.message||'Erreur, réessayez.'); }
+        btn.disabled=false; setErr('');
+        saveTeam({teamId:o.j.teamId, memberId:o.j.memberId, teamName:o.j.teamName, memberName:o.j.memberName});
+        if(o.j.view){ cur=o.j.view; noteRev(o.j.view.rev); }
+        selTd=null; selGroup=null; lastSig=''; renderTeams();
+      }).catch(retry);
+  }
+  setTimeout(attempt, Math.random()*800);
 }
 
 function leave(){

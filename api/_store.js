@@ -68,7 +68,7 @@ function mutate(fn) {
 }
 async function mutateNow(fn) {
   let lastErr;
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 12; i++) {
     const { state, etag } = await readFresh();
     const result = fn(state) || {};
     if (result.error) { cache = { state, etag, at: Date.now() }; return result; }
